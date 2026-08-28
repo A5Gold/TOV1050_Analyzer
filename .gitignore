@@ -1,0 +1,93 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.pytest_cache/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+.pnp
+.pnp.js
+
+# Electron
+dist_electron/
+
+# React
+build/
+coverage/
+frontend/coverage/
+
+# Operating System
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE / Agent Config
+.claude/
+.kiro/
+.cursor/
+.superpowers/
+.worktrees/
+
+# Windows reserved names
+nul
+
+# Project Specific
+output/
+Reference_Expired/
+*.log
+*.bak
+config/backups/
+raw_data/
+setup_env.bat
+setup_env.ps1
+commit_msg.txt
+
+# Generated codebase index
+.codebase-memory/
+
+# Local scratch / extracted source notes
+manual_extract.txt
+tmp_manual.txt
+
+# Legacy TOV640-only fixtures and seed data (TOV1050 uses migration fixtures)
+docs/test data/
+docs/1 year database record/
+docs/Chainge metadata comparison/
+docs/legacy_code/
+config/database-records/
+config/wire-wear-seed.json
+config/EAL metadata.xlsx
+config/TML metadata.xlsx

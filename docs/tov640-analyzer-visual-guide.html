@@ -1,0 +1,1714 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TOV640 Analyzer Visual Guide</title>
+  <style>
+    :root {
+      --bg: #eef3f8;
+      --surface: #ffffff;
+      --surface-soft: #f6f9fc;
+      --ink: #162130;
+      --muted: #5d6b7c;
+      --line: #d9e3ee;
+      --accent: #0f5ea8;
+      --accent-strong: #0a4275;
+      --ok: #1d7f5f;
+      --ok-soft: #e8f6ef;
+      --warn: #b86a0f;
+      --warn-soft: #fff4e5;
+      --danger: #b0382f;
+      --danger-soft: #fdeceb;
+      --info: #2563eb;
+      --info-soft: #e9f0ff;
+      --shadow: 0 12px 30px rgba(22, 33, 48, 0.08);
+      --radius: 10px;
+      --sans: "Segoe UI", "Microsoft JhengHei", Arial, sans-serif;
+      --mono: Consolas, "Courier New", monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--sans);
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top right, rgba(15, 94, 168, 0.08), transparent 26%),
+        linear-gradient(180deg, #f5f8fc 0%, var(--bg) 100%);
+      line-height: 1.58;
+    }
+
+    .page {
+      max-width: 1520px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #102340 0%, #155998 58%, #1c7ca0 100%);
+      color: #fff;
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+      padding: 28px 30px;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 {
+      margin: 0 0 10px;
+      font-size: 34px;
+      line-height: 1.12;
+    }
+
+    .hero p {
+      margin: 0;
+      max-width: 1040px;
+      color: rgba(255, 255, 255, 0.92);
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 11px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 290px minmax(0, 1fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .toc {
+      position: sticky;
+      top: 18px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px;
+    }
+
+    .toc h2 {
+      margin: 0 0 12px;
+      font-size: 18px;
+    }
+
+    .toc a {
+      display: block;
+      color: var(--ink);
+      text-decoration: none;
+      padding: 7px 0;
+      font-size: 14px;
+      border-bottom: 1px solid #edf2f7;
+    }
+
+    .toc a:last-child {
+      border-bottom: 0;
+    }
+
+    .main {
+      display: grid;
+      gap: 18px;
+    }
+
+    section {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 24px;
+    }
+
+    section h2 {
+      margin: 0 0 14px;
+      font-size: 26px;
+      line-height: 1.2;
+    }
+
+    section h3 {
+      margin: 18px 0 10px;
+      font-size: 18px;
+      line-height: 1.3;
+    }
+
+    .lead {
+      color: var(--muted);
+      margin: 0 0 14px;
+    }
+
+    .grid-2,
+    .grid-3,
+    .grid-4 {
+      display: grid;
+      gap: 14px;
+    }
+
+    .grid-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .grid-3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .grid-4 {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .card,
+    .scenario,
+    .flow-box,
+    .formula,
+    .glossary-card {
+      background: var(--surface-soft);
+      border: 1px solid #e4ecf5;
+      border-radius: 10px;
+      padding: 16px;
+      min-width: 0;
+    }
+
+    .card h4,
+    .scenario h4,
+    .flow-box h4,
+    .glossary-card h4 {
+      margin: 0 0 8px;
+      font-size: 16px;
+      line-height: 1.3;
+    }
+
+    .tiny {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .inline-note {
+      display: block;
+      margin: -2px 0 8px;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .kicker {
+      font-size: 12px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .flow-rail {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 12px;
+      align-items: stretch;
+    }
+
+    .flow-box {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .flow-box::after {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 4px;
+      background: linear-gradient(180deg, var(--accent), #51a0dc);
+    }
+
+    .band {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .pill {
+      border-radius: 999px;
+      padding: 4px 10px;
+      background: #edf4fb;
+      border: 1px solid #d9e8f8;
+      font-size: 12px;
+      color: var(--accent-strong);
+    }
+
+    .flowline {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: stretch;
+    }
+
+    .step {
+      flex: 1 1 170px;
+      min-width: 170px;
+      background: var(--surface-soft);
+      border: 1px solid #e4ecf5;
+      border-radius: 10px;
+      padding: 14px;
+      position: relative;
+    }
+
+    .step:not(:last-child)::after {
+      content: "→";
+      position: absolute;
+      right: -11px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--accent);
+      font-size: 22px;
+      font-weight: 700;
+      z-index: 1;
+    }
+
+    .mini-diagram {
+      margin-top: 12px;
+      border: 1px dashed #c9d8e6;
+      background: #fbfdff;
+      border-radius: 10px;
+      padding: 12px;
+    }
+
+    .bars {
+      display: grid;
+      gap: 10px;
+    }
+
+    .bar-row {
+      position: relative;
+      height: 26px;
+      background: #eff5fb;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .bar-segment {
+      position: absolute;
+      top: 4px;
+      bottom: 4px;
+      border-radius: 999px;
+    }
+
+    .peak {
+      position: absolute;
+      top: -2px;
+      width: 0;
+      height: 0;
+      border-left: 7px solid transparent;
+      border-right: 7px solid transparent;
+      border-top: 12px solid currentColor;
+      filter: drop-shadow(0 1px 2px rgba(22, 33, 48, 0.16));
+    }
+
+    .peak::after {
+      content: "";
+      position: absolute;
+      left: -1px;
+      top: -1px;
+      width: 2px;
+      height: 12px;
+      background: currentColor;
+      border-radius: 999px;
+      opacity: 0.75;
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .legend span::before {
+      content: "";
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
+      margin-right: 6px;
+      vertical-align: middle;
+      background: currentColor;
+    }
+
+    .decision-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 1.5fr 1fr;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 10px;
+    }
+
+    .decision-grid > div {
+      padding: 12px 14px;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .decision-grid > div:nth-child(-n + 3) {
+      background: #f4f8fc;
+      font-weight: 700;
+    }
+
+    .decision-grid > div:nth-child(3n) {
+      border-right: 0;
+    }
+
+    .decision-grid > div:nth-last-child(-n + 3) {
+      border-bottom: 0;
+    }
+
+    .layer-stack {
+      display: grid;
+      gap: 10px;
+      margin: 14px 0;
+    }
+
+    .layer {
+      display: grid;
+      grid-template-columns: 220px minmax(0, 1fr);
+      gap: 14px;
+      align-items: center;
+      background: var(--surface-soft);
+      border: 1px solid #dce8f3;
+      border-left: 5px solid var(--accent);
+      border-radius: 8px;
+      padding: 12px 14px;
+    }
+
+    .layer strong {
+      color: var(--accent-strong);
+    }
+
+    .api-grid {
+      display: grid;
+      grid-template-columns: 0.9fr 1.4fr 1.2fr 1fr;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 10px;
+      font-size: 13px;
+    }
+
+    .api-grid > div {
+      padding: 10px 12px;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .api-grid > div:nth-child(-n + 4) {
+      background: #f4f8fc;
+      font-weight: 700;
+    }
+
+    .api-grid > div:nth-child(4n) {
+      border-right: 0;
+    }
+
+    .api-grid > div:nth-last-child(-n + 4) {
+      border-bottom: 0;
+    }
+
+    .chain-diagram {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin: 14px 0;
+    }
+
+    .chain-node {
+      position: relative;
+      background: #fbfdff;
+      border: 1px solid #d9e5f0;
+      border-radius: 8px;
+      padding: 12px;
+      min-height: 96px;
+    }
+
+    .chain-node:not(:last-child)::after {
+      content: "→";
+      position: absolute;
+      right: -15px;
+      top: 38px;
+      color: var(--accent);
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    .timeline {
+      position: relative;
+      margin: 18px 0;
+      padding: 20px 12px 8px;
+      border: 1px dashed #c9d8e6;
+      border-radius: 10px;
+      background: #fbfdff;
+    }
+
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 36px;
+      right: 36px;
+      top: 42px;
+      height: 4px;
+      background: #d8e5f1;
+      border-radius: 999px;
+    }
+
+    .timeline-points {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .timeline-point {
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .timeline-dot {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--accent);
+      margin: 5px auto 8px;
+      border: 3px solid #fff;
+      box-shadow: 0 0 0 1px #c9d8e6;
+    }
+
+    .scenario-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 12px;
+    }
+
+    .scenario {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .scenario::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 6px;
+    }
+
+    .scenario.ok::before { background: var(--ok); }
+    .scenario.warn::before { background: var(--warn); }
+    .scenario.danger::before { background: var(--danger); }
+    .scenario.info::before { background: var(--info); }
+
+    .tag {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .tag.ok { background: var(--ok-soft); color: var(--ok); }
+    .tag.warn { background: var(--warn-soft); color: var(--warn); }
+    .tag.danger { background: var(--danger-soft); color: var(--danger); }
+    .tag.info { background: var(--info-soft); color: var(--info); }
+
+    .condition-list,
+    .logic-list {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    .logic-list li,
+    .condition-list li {
+      margin: 6px 0;
+    }
+
+    .formula {
+      font-family: var(--mono);
+      white-space: pre-wrap;
+      color: #102945;
+      font-size: 13px;
+    }
+
+    .source-note {
+      border-radius: 10px;
+      background: #f4f8fd;
+      border: 1px solid #dbe7f4;
+      padding: 14px;
+      color: var(--muted);
+    }
+
+    .var-chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #fff;
+      border: 1px solid #dbe6f2;
+      font-size: 12px;
+      margin: 0 8px 8px 0;
+    }
+
+    .stack {
+      display: grid;
+      gap: 10px;
+    }
+
+    .arrow-flow {
+      display: grid;
+      gap: 10px;
+    }
+
+    .arrow-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .node {
+      background: #fff;
+      border: 1px solid #d6e2ee;
+      border-radius: 10px;
+      padding: 12px 14px;
+      min-width: 140px;
+      flex: 1 1 140px;
+    }
+
+    .arrow {
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 20px;
+      flex: 0 0 auto;
+    }
+
+    code {
+      font-family: var(--mono);
+      background: #eff5fa;
+      border-radius: 6px;
+      padding: 1px 5px;
+      font-size: 0.96em;
+    }
+
+    @media (max-width: 1180px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .toc {
+        position: static;
+      }
+
+      .flow-rail,
+      .grid-4,
+      .scenario-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 840px) {
+      .grid-2,
+      .grid-3,
+      .grid-4,
+      .flow-rail,
+      .scenario-grid,
+      .decision-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .step:not(:last-child)::after {
+        content: "↓";
+        top: auto;
+        right: 50%;
+        bottom: -18px;
+        transform: translateX(50%);
+      }
+
+      .hero h1 {
+        font-size: 28px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="hero">
+      <h1>TOV640 Analyzer 教學式演算法圖解頁</h1>
+      <p>
+        這份頁面不是 UI 導覽，而是把 TOV640 Analyzer 真正在做的判斷邏輯拆成
+        「資料從哪裡來、條件怎麼過、什麼情況算 valid / invalid / edge case、最後系統會採取什麼動作」。
+        目標讀者是非開發人員，因此主體以 HTML/CSS 圖卡、流程圖和條件分支圖來說明。
+      </p>
+      <div class="hero-meta">
+        <span class="chip">主題：Algorithm / Architecture / Variable Naming / Data Flow</span>
+        <span class="chip">重點：Threshold、Repeat、1 Year、Trend、Wear、Stagger</span>
+        <span class="chip">形式：純 HTML/CSS，可直接用瀏覽器開啟</span>
+      </div>
+    </header>
+
+    <div class="layout">
+      <aside class="toc">
+        <h2>目錄</h2>
+        <a href="#overview">系統總覽</a>
+        <a href="#architecture">架構與資料流</a>
+        <a href="#variables">常用變數命名</a>
+        <a href="#thresholds">1. L1 / L2 / L3 Threshold Exception Alarm</a>
+        <a href="#repeat">2. Repeat 配對</a>
+        <a href="#year-record">3. 1 Year 記錄</a>
+        <a href="#wear-analysis">4. Wear Calculator Analysis</a>
+        <a href="#wire-wear-records">5. Wire Wear Records Workbench</a>
+        <a href="#stagger">6. Stagger Calculation</a>
+        <a href="#sources">來源與依據</a>
+      </aside>
+
+      <main class="main">
+        <section id="overview">
+          <h2>系統總覽</h2>
+          <p class="lead">
+            TOV640 Analyzer 的核心任務是把原始量測、既有 metadata、歷史比對結果、以及資料庫中的追蹤紀錄串起來，
+            最後輸出異常告警、重複比對、追蹤建議、磨耗趨勢與 stagger 計算結果。
+            系統定位是單機、離線優先的桌面工具：Electron 管理桌面容器與 Python backend lifecycle，
+            React + Vite 負責互動介面，FastAPI 提供分析、計算、匯出與資料庫 API，重型工程計算集中在 Python backend。
+          </p>
+
+          <div class="flow-rail">
+            <div class="flow-box">
+              <div class="kicker">Input</div>
+              <h4>原始與派生資料</h4>
+              <p class="tiny"><code>.datac</code>、Exception Report Excel、n_Repeated Report、metadata workbook、SQLite。</p>
+            </div>
+            <div class="flow-box">
+              <div class="kicker">Detect</div>
+              <h4>異常判定</h4>
+              <p class="tiny">先把 chainage 與 metadata 對齊，再依 threshold 做 Height、Wear、Stagger 告警。</p>
+            </div>
+            <div class="flow-box">
+              <div class="kicker">Compare</div>
+              <h4>歷史鏈式比對</h4>
+              <p class="tiny">以最新報表為主，逐份和更舊報表做嚴格交集與 peak 驗證。</p>
+            </div>
+            <div class="flow-box">
+              <div class="kicker">Decide</div>
+              <h4>跟催與計算</h4>
+              <p class="tiny">做 1 年內已驗證比對、Wire Wear 平均、L2 趨勢判讀、Stagger span 評估。</p>
+            </div>
+            <div class="flow-box">
+              <div class="kicker">Output</div>
+              <h4>結果與行動</h4>
+              <p class="tiny">Exception IDs、Previous N、reoccurrence_id、recommendation、pass / fail / n/a。</p>
+            </div>
+          </div>
+
+          <h3>模組關係圖</h3>
+          <div class="arrow-flow">
+            <div class="arrow-row">
+              <div class="node"><strong>Frontend</strong><br>React views / stores</div>
+              <div class="arrow">→</div>
+              <div class="node"><strong>API</strong><br>FastAPI endpoints</div>
+              <div class="arrow">→</div>
+              <div class="node"><strong>Core Algorithms</strong><br>Analyzer / Repeated / Calculation</div>
+              <div class="arrow">→</div>
+              <div class="node"><strong>Export / DB</strong><br>Excel + SQLite</div>
+            </div>
+            <div class="arrow-row">
+              <div class="node"><strong>Electron Shell</strong><br>桌面容器與 backend 啟動</div>
+              <div class="arrow">→</div>
+              <div class="node"><strong>Metadata</strong><br>Boundary / Threshold / Support / Wind Factor</div>
+              <div class="arrow">→</div>
+              <div class="node"><strong>Decision Output</strong><br>Alarm / Repeat / Follow-up / Trend / Stagger</div>
+            </div>
+          </div>
+        </section>
+
+        <section id="architecture">
+          <h2>Architecture 與 Data Flow</h2>
+          <p class="lead">
+            這一頁以圖解方式補充 <code>docs/architecture.md</code>：主文件定義系統邊界，本頁把每條資料流轉成可視化步驟。
+          </p>
+
+          <h3>執行時層次</h3>
+          <div class="layer-stack">
+            <div class="layer">
+              <strong>Desktop Shell</strong>
+              <span>Electron 建立桌面視窗，載入前端，並處理 backend 啟動與本機 bridge。</span>
+            </div>
+            <div class="layer">
+              <strong>Frontend Presentation</strong>
+              <span>React + Vite views、MUI tables/dialogs/charts、Zustand 保存 UI workflow state。</span>
+            </div>
+            <div class="layer">
+              <strong>Backend Service</strong>
+              <span>FastAPI routers 暴露 /api/analyze、/api/export、/api/database、/api/calculation 等 HTTP 邊界。</span>
+            </div>
+            <div class="layer">
+              <strong>Core Domain / Algorithm</strong>
+              <span>DataLoader、MetadataManager、ExceptionDetector、RepeatedExceptionFinder、calculation modules 執行核心邏輯。</span>
+            </div>
+            <div class="layer">
+              <strong>Persistence / Files</strong>
+              <span>SQLite 保存 repeated follow-up records；Excel metadata、Exception Report、n_Repeated Report 是主要資料來源與輸出。</span>
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div class="card">
+              <h3>資料來源到演算法</h3>
+              <div class="flowline">
+                <div class="step">
+                  <div class="kicker">Source</div>
+                  <strong><code>.datac</code></strong>
+                  <div class="tiny">原始量測 CSV</div>
+                </div>
+                <div class="step">
+                  <div class="kicker">Parse</div>
+                  <strong>DataLoader</strong>
+                  <div class="tiny">欄位 rename、去頭尾、Chainage、height +5300</div>
+                </div>
+                <div class="step">
+                  <div class="kicker">Map</div>
+                  <strong>MetadataManager</strong>
+                  <div class="tiny">Class / Track Type / Overlap / Tension Length / Landmark / Threshold</div>
+                </div>
+                <div class="step">
+                  <div class="kicker">Detect</div>
+                  <strong>ExceptionDetector</strong>
+                  <div class="tiny">Low Height / High Height / Wire Wear / Stagger</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <h3>報表與追蹤流程</h3>
+              <div class="flowline">
+                <div class="step">
+                  <div class="kicker">Report</div>
+                  <strong>Exception Report Excel</strong>
+                  <div class="tiny">Wire Wear、ChartData、Summary</div>
+                </div>
+                <div class="step">
+                  <div class="kicker">Compare</div>
+                  <strong>RepeatedExceptionFinder</strong>
+                  <div class="tiny">Previous 1 / Previous 2 / Previous N</div>
+                </div>
+                <div class="step">
+                  <div class="kicker">Check</div>
+                  <strong>check_1_year_records</strong>
+                  <div class="tiny">SQLite 追溯 365 天內既有紀錄</div>
+                </div>
+                <div class="step">
+                  <div class="kicker">Persist</div>
+                  <strong>saved_repeated_exceptions</strong>
+                  <div class="tiny">action / check / verify / adjust / reoccurrence_id</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <h3>端到端資料流</h3>
+          <div class="decision-grid">
+            <div>入口</div>
+            <div>系統內部處理</div>
+            <div>輸出</div>
+
+            <div><code>.datac</code></div>
+            <div>Frontend 選檔 → <code>/api/analyze</code> → DataLoader → MetadataManager → ExceptionDetector</div>
+            <div>異常表、Boundary、ChartData</div>
+
+            <div>Exception Report Excel</div>
+            <div><code>/api/calculation/wear</code>、<code>/api/calculation/trend</code>、<code>/api/calculation/stagger</code></div>
+            <div>WearResult、TrendResult、Stagger results / traces</div>
+
+            <div>n_Repeated Report</div>
+            <div>Trend 只保留 ID 對得上的 L2 Wire Wear；Stagger 只保留 repeated 內有效 stagger ID</div>
+            <div>Case B 篩選、max_location override、warning</div>
+
+            <div>metadata workbook</div>
+            <div>Boundary / Threshold / Support / Wind Factor / Tension Length lookup</div>
+            <div>Threshold Value、Class、Track Type、k_eq</div>
+
+            <div>SQLite</div>
+            <div><code>/api/database/repeated-records/check-1-year</code> → 區間、日期、type、section、write-back</div>
+            <div>action 更新、reoccurrence_id 串接</div>
+          </div>
+
+          <h3>API 邊界矩陣</h3>
+          <div class="api-grid">
+            <div>Domain</div>
+            <div>Endpoint</div>
+            <div>Used by</div>
+            <div>Output</div>
+
+            <div>Analysis</div>
+            <div><code>POST /api/analyze</code></div>
+            <div>Exception Generator</div>
+            <div>exceptions / boundaries / chart_data</div>
+
+            <div>Compare</div>
+            <div><code>POST /api/analyze/compare</code></div>
+            <div>History Compare</div>
+            <div>repeated / stats / chain_order</div>
+
+            <div>Database</div>
+            <div><code>/api/database/repeated-records*</code></div>
+            <div>Database Record / History Compare</div>
+            <div>saved repeated records / workflow updates</div>
+
+            <div>Calculation</div>
+            <div><code>/api/calculation/wear</code>, <code>/trend</code>, <code>/stagger</code></div>
+            <div>Wear / Trend / Stagger views</div>
+            <div>WearResult / TrendResult / StaggerResult + trace</div>
+
+            <div>Export</div>
+            <div><code>/api/export/*/generate</code></div>
+            <div>Generator / Compare</div>
+            <div>Excel / CSV downloads</div>
+          </div>
+          <h3>Frontend State Ownership</h3>
+          <p class="lead">
+            前端用 Zustand stores 保存 workflow state。store 保留畫面狀態與 API 回傳結果；演算法判斷仍以 backend 為準。
+          </p>
+          <div class="chain-diagram">
+            <div class="chain-node">
+              <div class="kicker">Analysis</div>
+              <strong>useAnalysisStore</strong>
+              <p class="tiny">保存 analyze / compare sessions、selected exception、chart/table 狀態與歷史比對結果。</p>
+            </div>
+            <div class="chain-node">
+              <div class="kicker">Records</div>
+              <strong>useDatabaseStore</strong>
+              <p class="tiny">管理 repeated records 的 filters、import/export、batch update、counts 與列表資料。</p>
+            </div>
+            <div class="chain-node">
+              <div class="kicker">Calculation</div>
+              <strong>useCalculationStore</strong>
+              <p class="tiny">保存 stagger uploaded file、results、traces、warnings；wear/trend 多由 calculation API 回傳後即時呈現。</p>
+            </div>
+            <div class="chain-node">
+              <div class="kicker">Boundary</div>
+              <strong>API Client</strong>
+              <p class="tiny">metadata 與 calculation 有專用 helper；analysis、export、database、sessions 多直接透過 apiClient 呼叫。</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="variables">
+          <h2>Variable Naming</h2>
+          <p class="lead">
+            這些欄位在不同模組之間反覆出現。理解它們的語意，比記 UI 欄位名稱更重要。
+            Backend canonical 多為 <code>snake_case</code>；分析報表、compare UI 與 Excel 仍保留 <code>FromM</code>、
+            <code>MaxValue</code>、<code>Exception Type</code> 這類 legacy/display shape。看到大小寫不一致時，應以資料流位置判斷語意。
+          </p>
+
+          <div class="grid-4">
+            <div class="glossary-card">
+              <h4>聚合量測值</h4>
+              <div class="band">
+                <span class="var-chip"><code>height_min</code>：四路 height 最低值</span>
+                <span class="var-chip"><code>height_max</code>：四路 height 最高值</span>
+                <span class="var-chip"><code>wear_min</code>：四路 wear 最低值</span>
+                <span class="var-chip"><code>wear_max</code>：四路 wear 最高值</span>
+                <span class="var-chip"><code>stg_max</code>：四路 stagger 最大正值</span>
+                <span class="var-chip"><code>stg_min</code>：四路 stagger 最小負值</span>
+              </div>
+            </div>
+
+            <div class="glossary-card">
+              <h4>區段與峰值</h4>
+              <div class="band">
+                <span class="var-chip"><code>FromM</code> / <code>ToM</code>：異常區段起迄</span>
+                <span class="var-chip"><code>length</code>：區段長度</span>
+                <span class="var-chip"><code>maxValue</code>：該區段最壞值</span>
+                <span class="var-chip"><code>maxLocation</code>：最壞值所在 chainage</span>
+              </div>
+            </div>
+
+            <div class="glossary-card">
+              <h4>Trend 判讀</h4>
+              <div class="band">
+                <span class="var-chip"><code>record_points</code>：各日期實測點</span>
+                <span class="var-chip"><code>trend_points</code>：各日期 fitted 點</span>
+                <span class="var-chip"><code>trend_next</code>：決策參考 fitted 值</span>
+                <span class="inline-note">目前實作等同 <code>trend_points[0]</code>，不是下一週期外推。</span>
+                <span class="var-chip"><code>logic_1</code>：是否碰到 L2 threshold</span>
+                <span class="var-chip"><code>logic_2</code>：實測與 fitted 差距是否超過 tolerance</span>
+              </div>
+            </div>
+
+            <div class="glossary-card">
+              <h4>Stagger 計算</h4>
+              <div class="band">
+                <span class="var-chip"><code>chi</code>：本次計算使用的定位 chainage</span>
+                <span class="var-chip"><code>spt_a</code> / <code>spt_i</code> / <code>spt_b</code>：前中後支點</span>
+                <span class="var-chip"><code>span_ai</code> / <code>span_ib</code>：左右 span</span>
+                <span class="var-chip"><code>k_eq</code>：等效風係數</span>
+                <span class="var-chip"><code>allowable</code>：允收值</span>
+                <span class="var-chip"><code>short_circuit</code>：是否套用短路通過規則</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="thresholds">
+          <h2>1. L1 / L2 / L3 Threshold 的 Exception Alarm</h2>
+          <p class="lead">
+            這一段描述的是系統怎麼把原始量測點先轉成「同一個 chainage 的最壞值」，再對照 metadata 的 threshold 形成正式異常區段。
+          </p>
+
+          <div class="grid-3">
+            <div class="card">
+              <h4>Purpose</h4>
+              <p>把 Height、Wire Wear、Stagger 量測轉成有等級、有範圍、有 ID 的 exception alarm。</p>
+            </div>
+            <div class="card">
+              <h4>Input</h4>
+              <p><code>.datac</code> 解析後 DataFrame、boundary / threshold metadata、<code>line / section / track / date</code>。</p>
+            </div>
+            <div class="card">
+              <h4>Output / Action</h4>
+              <p>輸出 <code>Low Height</code>、<code>High Height</code>、<code>Wire Wear</code>、<code>Stagger Left</code>、<code>Stagger Right</code> 異常表。</p>
+            </div>
+          </div>
+
+          <h3>Core Logic</h3>
+          <div class="flowline">
+            <div class="step"><strong>Step 1</strong><br>Map <code>Class</code>、<code>Track Type</code>、<code>Overlap</code>、<code>Tension Length</code>、<code>Landmark</code></div>
+            <div class="step"><strong>Step 2</strong><br>預先計算 <code>height_min</code>、<code>height_max</code>、<code>wear_min</code>、<code>wear_max</code></div>
+            <div class="step"><strong>Step 3</strong><br>Stagger 再計算 <code>stg_max</code> 與 <code>stg_min</code></div>
+            <div class="step"><strong>Step 4</strong><br>以 gatekeeper 過濾點，再把連續點群組成區段</div>
+            <div class="step"><strong>Step 5</strong><br>逐區段判斷 L1 / L2 / L3 並產生 exception ID</div>
+          </div>
+
+          <h3>Decision Conditions</h3>
+          <div class="decision-grid">
+            <div>演算法</div>
+            <div>條件</div>
+            <div>等級輸出</div>
+
+            <div>Low Height / Wire Wear</div>
+            <div>先抓每列最小值；gatekeeper = <code>max(L1, L2)</code>；值越小越嚴重</div>
+            <div>先檢 L1，再檢 L2</div>
+
+            <div>High Height</div>
+            <div>先抓每列最大值；gatekeeper = <code>min(L1, L2)</code>；值越大越嚴重</div>
+            <div>先檢 L1，再檢 L2</div>
+
+            <div>Stagger Left / Right</div>
+            <div>依 <code>Track Type = Tangent / Curve</code> 讀 threshold；用 <code>abs(maxValue)</code> 比 L1/L2/L3</div>
+            <div>先檢 L1，再檢 L2，最後檢 L3</div>
+          </div>
+
+          <div class="formula">Scalar gatekeeper
+min-mode  : alarm when row_value &lt;= max(L1, L2)
+max-mode  : alarm when row_value &gt;= min(L1, L2)
+stagger   : alarm when left >= min(L1,L2,L3) or right <= -min(L1,L2,L3)</div>
+
+          <h3>Visual Scenarios</h3>
+          <div class="scenario-grid">
+            <div class="scenario ok">
+              <span class="tag ok">No Alarm</span>
+              <h4>仍在 gatekeeper 之外</h4>
+              <p>量測點沒有跨過最外層門檻，這一列不會進入異常群組。</p>
+              <ul class="condition-list">
+                <li>Low Height / Wear 沒有低於 gatekeeper</li>
+                <li>High Height 沒有高於 gatekeeper</li>
+                <li>Stagger 絕對值沒有超過最小 threshold</li>
+              </ul>
+            </div>
+            <div class="scenario warn">
+              <span class="tag warn">L2</span>
+              <h4>區段成立，但只到 L2</h4>
+              <p>連續點已形成區段，最壞值跨過 L2，尚未跨過 L1。</p>
+              <ul class="condition-list">
+                <li>先過 gatekeeper 才能成區段</li>
+                <li>分類階段先檢 L1，不成立才落到 L2</li>
+                <li>輸出 <code>Threshold Value = L2</code></li>
+              </ul>
+            </div>
+            <div class="scenario danger">
+              <span class="tag danger">L1 / L3</span>
+              <h4>高嚴重度或 stagger 邊界</h4>
+              <p>Height / Wear 會升到 L1；Stagger 則可能落在 L1、L2、或僅 L3 的邊界警示。</p>
+              <ul class="condition-list">
+                <li>Height / Wear 沒有 L3</li>
+                <li>Stagger 才有 L3</li>
+                <li>Curve / Tangent 會影響 stagger threshold</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section id="repeat">
+          <h2>2. Repeat 配對</h2>
+          <p class="lead">
+            Repeat 配對不是單純看區段有沒有交集，而是同時要求「同類型 + 區間有交集 + 兩個 peak 都落在交集內」。
+            它不是兩兩獨立比對後合併，而是以最新報表為主軸，逐期向舊報表延伸 repeated chain。
+          </p>
+
+          <div class="grid-3">
+            <div class="card">
+              <h4>Purpose</h4>
+              <p>確認最新報表中的異常，是否能沿著多期報表一路存活成 repeated chain。</p>
+            </div>
+            <div class="card">
+              <h4>Input</h4>
+              <p>最新 Exception Report 累積器 <code>df_chain</code>，以及下一份更舊的報表 <code>df_new</code>。</p>
+            </div>
+            <div class="card">
+              <h4>Output / Action</h4>
+              <p>保留最新報表欄位，新增 <code>Previous 1</code>、<code>Previous 2</code>、<code>Previous N</code> 與對應 metadata。</p>
+            </div>
+          </div>
+
+          <h3>Core Logic</h3>
+          <div class="flowline">
+            <div class="step"><strong>Step 1</strong><br>把舊版欄位與新版欄位統一成 <code>FromM / ToM / maxLocation / id</code></div>
+            <div class="step"><strong>Step 2</strong><br>先用 <code>exception type</code> 做 inner join</div>
+            <div class="step"><strong>Step 3</strong><br>算交集 <code>i_start = max(FromM)</code>、<code>i_end = min(ToM)</code></div>
+            <div class="step"><strong>Step 4</strong><br>驗證最新與舊報表兩邊的 peak 都落在交集內</div>
+            <div class="step"><strong>Step 5</strong><br>去重後保留最新報表列，將舊報表 ID 掛到 <code>Previous N</code></div>
+          </div>
+
+          <div class="formula">Repeat condition
+same exception type
+AND i_start &lt;= i_end
+AND maxLocation_master in [i_start, i_end]
+AND maxLocation_target in [i_start, i_end]</div>
+
+          <h3>Repeated Chain</h3>
+          <div class="chain-diagram">
+            <div class="chain-node">
+              <div class="kicker">Base</div>
+              <strong>Latest Report</strong>
+              <p class="tiny">作為 accumulator，保留最新報表欄位。</p>
+            </div>
+            <div class="chain-node">
+              <div class="kicker">Hop 1</div>
+              <strong>Previous 1</strong>
+              <p class="tiny">同類型、區間交集、雙方 peak 都在交集內。</p>
+            </div>
+            <div class="chain-node">
+              <div class="kicker">Hop 2</div>
+              <strong>Previous 2</strong>
+              <p class="tiny">只拿上一輪存活者繼續往舊報表比對。</p>
+            </div>
+            <div class="chain-node">
+              <div class="kicker">Result</div>
+              <strong>Previous N</strong>
+              <p class="tiny">能一路存活的列才是 repeated result。</p>
+            </div>
+          </div>
+
+          <h3>Visual Scenarios</h3>
+          <div class="scenario-grid">
+            <div class="scenario ok">
+              <span class="tag ok">Valid Match</span>
+              <h4>交集成立，兩個 peak 都在交集內</h4>
+              <div class="mini-diagram">
+                <div class="bars">
+                  <div class="bar-row">
+                    <div class="bar-segment" style="left:10%; width:58%; background:#e85b5b;"></div>
+                    <div class="peak" style="left:38%; color:#c93c3c;"></div>
+                  </div>
+                  <div class="bar-row">
+                    <div class="bar-segment" style="left:34%; width:48%; background:#3b82f6;"></div>
+                    <div class="peak" style="left:52%; color:#2563eb;"></div>
+                  </div>
+                </div>
+                <div class="legend">
+                  <span style="color:#e85b5b">Latest</span>
+                  <span style="color:#3b82f6">Previous</span>
+                  <span style="color:#4b5563">Peak Marker</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="scenario warn">
+              <span class="tag warn">Gap</span>
+              <h4>區段沒有交集</h4>
+              <div class="mini-diagram">
+                <div class="bars">
+                  <div class="bar-row">
+                    <div class="bar-segment" style="left:6%; width:24%; background:#e85b5b;"></div>
+                    <div class="peak" style="left:17%; color:#c93c3c;"></div>
+                  </div>
+                  <div class="bar-row">
+                    <div class="bar-segment" style="left:58%; width:24%; background:#3b82f6;"></div>
+                    <div class="peak" style="left:69%; color:#2563eb;"></div>
+                  </div>
+                </div>
+              </div>
+              <p>沒有交集就直接淘汰，不進入 repeated chain。</p>
+            </div>
+
+            <div class="scenario danger">
+              <span class="tag danger">Peak Drift</span>
+              <h4>有交集，但 peak 飄出有效區</h4>
+              <div class="mini-diagram">
+                <div class="bars">
+                  <div class="bar-row">
+                    <div class="bar-segment" style="left:12%; width:58%; background:#e85b5b;"></div>
+                    <div class="peak" style="left:18%; color:#c93c3c;"></div>
+                  </div>
+                  <div class="bar-row">
+                    <div class="bar-segment" style="left:42%; width:42%; background:#3b82f6;"></div>
+                    <div class="peak" style="left:80%; color:#2563eb;"></div>
+                  </div>
+                </div>
+              </div>
+              <p>交集不是唯一條件。只要任一邊 peak 不在交集內，也不能算 repeated。</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="year-record">
+          <h2>3. 1 Year 記錄</h2>
+          <p class="lead">
+            這段邏輯是把 repeated 比對後的結果再去資料庫裡看，是否在過去 365 天內就已經處理或驗證過。
+            它是 repeated records follow-up 的輔助檢查，主要資料表是 <code>saved_repeated_exceptions</code>。
+          </p>
+
+          <div class="timeline">
+            <div class="timeline-points">
+              <div class="timeline-point">
+                <div class="timeline-dot"></div>
+                <strong>current date - 365 days</strong><br>
+                DB record 早於此日期不算 match
+              </div>
+              <div class="timeline-point">
+                <div class="timeline-dot"></div>
+                <strong>DB record date</strong><br>
+                必須同 section / type，且 current maxLocation 落在 DB from_m..to_m
+              </div>
+              <div class="timeline-point">
+                <div class="timeline-dot"></div>
+                <strong>current exception date</strong><br>
+                命中後更新 action 並回寫 reoccurrence_id
+              </div>
+            </div>
+          </div>
+
+          <div class="grid-3">
+            <div class="card">
+              <h4>Purpose</h4>
+              <p>避免同一類問題在 1 年內重複開單，直接標記成已驗證。</p>
+            </div>
+            <div class="card">
+              <h4>Input</h4>
+              <p>ComparisonDataGrid 的 repeated exceptions、<code>line</code>、<code>track</code>、SQLite 中的 <code>saved_repeated_exceptions</code>。</p>
+            </div>
+            <div class="card">
+              <h4>Output / Action</h4>
+              <p>匹配成功時寫入 <code>action = No action required (Verified within 1 year)</code>，並更新 <code>reoccurrence_id</code>。</p>
+            </div>
+          </div>
+
+          <h3>Decision Conditions</h3>
+          <div class="decision-grid">
+            <div>必要條件</div>
+            <div>判斷內容</div>
+            <div>結果</div>
+
+            <div>篩選範圍</div>
+            <div>SQL 先用 <code>line + track</code> 撈候選</div>
+            <div>縮小資料集</div>
+
+            <div>欄位一致</div>
+            <div><code>section</code> 相同，<code>exception type</code> 相同</div>
+            <div>不同就不匹配</div>
+
+            <div>位置命中</div>
+            <div>目前異常的 <code>maxLocation</code> 必須落在 DB 紀錄 <code>from_m..to_m</code> 內</div>
+            <div>未命中就不匹配</div>
+
+            <div>時間命中</div>
+            <div><code>(current exception date - 365 days) &lt;= db_date &lt;= current exception date</code></div>
+            <div>超過 1 年就不匹配</div>
+
+            <div>動作限制</div>
+            <div>若該列已有非 <code>Pending</code> action，直接跳過</div>
+            <div>不覆蓋既有處理</div>
+          </div>
+
+          <h3>Visual Scenarios</h3>
+          <div class="scenario-grid">
+            <div class="scenario ok">
+              <span class="tag ok">Verified Within 1 Year</span>
+              <h4>直接標記免再處理</h4>
+              <ul class="condition-list">
+                <li>同 line / track / section / exception type</li>
+                <li><code>maxLocation</code> 落在既有區段內</li>
+                <li>DB 紀錄日期在 365 天窗口內</li>
+              </ul>
+              <p>系統會回填 DB 的 <code>exception_id</code> 到目前列 <code>reoccurrence_id</code>，並把目前 ID append 回 DB。</p>
+            </div>
+            <div class="scenario warn">
+              <span class="tag warn">Outside Window</span>
+              <h4>位置相近，但超過 1 年</h4>
+              <p>這不是免處理條件。就算區段重合，只要日期超過 365 天，action 仍保持原值。</p>
+            </div>
+            <div class="scenario info">
+              <span class="tag info">Skip Existing Action</span>
+              <h4>已有處理中的列不重寫</h4>
+              <p>若輸入列 action 不是空白也不是 <code>Pending</code>，系統直接略過，避免把人工流程覆蓋掉。</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="wear-analysis">
+          <h2>4. Wear Calculator Analysis</h2>
+          <p class="lead">
+            The Wear Calculator now has two feature tabs: <strong>Analysis</strong> and
+            <strong>Wire Wear Records</strong>. The Analysis tab aggregates an upload batch into one
+            <code>WearResult</code> per Line and Tension Length name before records are saved.
+          </p>
+
+          <h3>Batch Aggregation Flow</h3>
+          <div class="flowline">
+            <div class="step"><strong>Upload batch</strong><br>Read one or more Exception Report files and collect ChartData records.</div>
+            <div class="step"><strong>Resolve TL</strong><br>Use chainage metadata to resolve Tension Length; fall back to the ChartData TL when metadata is unavailable.</div>
+            <div class="step"><strong>Merge same TL</strong><br>The same Tension Length name is merged across date, session, track, file, and metadata rows.</div>
+            <div class="step"><strong>Set output date</strong><br>The output cycle date is the latest date in the upload batch.</div>
+            <div class="step"><strong>Save result</strong><br>Save one cycle value per merged Tension Length.</div>
+          </div>
+
+          <div class="grid-3">
+            <div class="card">
+              <h4>Grouping Rule</h4>
+              <p>The aggregation key is <code>line + tension_length</code>. It no longer splits one TL into multiple analysis rows only because the raw rows came from different tracks, files, dates, or sessions.</p>
+            </div>
+            <div class="card">
+              <h4>Track / Section Output</h4>
+              <p>If the merged TL crosses both UP and DN, the output track is shown as <code>Siding</code>. If multiple sections are merged, the output section is shown as <code>Mixed</code>.</p>
+            </div>
+            <div class="card">
+              <h4>Output Fields</h4>
+              <p>The result includes <code>avg_wear_min</code>, <code>sd</code>, <code>wear_percentage</code>, <code>dates</code>, <code>record_points</code>, and merged <code>from_m</code> / <code>to_m</code>.</p>
+            </div>
+          </div>
+
+          <h3>Colour and Chart Rules</h3>
+          <div class="decision-grid">
+            <div>Avg Wear Min</div>
+            <div>Status</div>
+            <div>UI Behaviour</div>
+
+            <div><code>&gt; 10.2</code></div>
+            <div><span class="tag ok">Green</span></div>
+            <div><code>Wear %</code> follows the same status colour as <code>Avg Wear Min</code>.</div>
+
+            <div><code>9.1 to 10.2</code></div>
+            <div><span class="tag warn">Yellow</span></div>
+            <div>The Analysis tab shows both the Wear % chart and the Avg Wear Min chart.</div>
+
+            <div><code>&lt; 9.1</code></div>
+            <div><span class="tag danger">Red</span></div>
+            <div>The Avg Wear Min chart includes dotted threshold lines at <code>10.2</code> and <code>9.1</code>.</div>
+          </div>
+
+          <div class="formula">Wear percentage
+r = mean_remaining
+R = 6.6
+worn_area = acos((r - R)/R) * R^2 - R * sin(theta) * (r - R)
+wear_percentage = worn_area / 120 * 100</div>
+        </section>
+
+        <section id="wire-wear-records">
+          <h2>5. Wire Wear Records Workbench</h2>
+          <p class="lead">
+            The Wire Wear Records tab is the single workbench for historical database review, raw record maintenance,
+            trends, dashboard cards, and 20% projection review.
+          </p>
+
+          <h3>Workbench Layout</h3>
+          <div class="flowline">
+            <div class="step"><strong>Line selector</strong><br>Switch between EAL and TML record groups.</div>
+            <div class="step"><strong>Quick Select TL</strong><br>Jump directly to one Tension Length and drive the detail panel and trend chart.</div>
+            <div class="step"><strong>Export Excel</strong><br>Export workbook sheets for History Avg Wear Min, Latest Summary, and Raw Records.</div>
+            <div class="step"><strong>Offline Sync</strong><br>Export or import a JSON sync package for moving records between offline PCs.</div>
+            <div class="step"><strong>Add Record</strong><br>Create raw wire wear database records from the workbench.</div>
+          </div>
+
+          <div class="grid-3">
+            <div class="card">
+              <h4>Historical Avg Wear Min</h4>
+              <p>Table 1 is a date-by-Tension-Length pivot. Rows are cycle dates, columns are TL names, and each cell is the aggregated Avg Wear Min.</p>
+            </div>
+            <div class="card">
+              <h4>Latest Summary</h4>
+              <p>Table 2 summarizes latest wear values, wear rate per year, and 20% / 33% projection years by Tension Length.</p>
+            </div>
+            <div class="card">
+              <h4>Raw Records</h4>
+              <p>The detail panel is <strong>Raw Wire Wear Records</strong>. Edit and Delete operate on raw rows; aggregate table cells are recalculated from those records.</p>
+            </div>
+          </div>
+
+          <h3>Visual Analytics</h3>
+          <div class="scenario-grid">
+            <div class="scenario info">
+              <span class="tag info">Wear Trend</span>
+              <h4>Metric Toggle</h4>
+              <p>The trend chart can switch between <code>Wear %</code> and <code>Avg Wear Min</code>. The x-axis uses cycle dates suitable for monthly or quarterly records.</p>
+            </div>
+            <div class="scenario ok">
+              <span class="tag ok">All Tension Lengths</span>
+              <h4>Overview Chart</h4>
+              <p>The overview chart shows all TL values for the selected line and selected metric, so users can compare the whole database at a glance.</p>
+            </div>
+            <div class="scenario warn">
+              <span class="tag warn">20% Projection</span>
+              <h4>Projected Year Labels</h4>
+              <p>The 20% Wear Projection section groups projected years and lists the Tension Lengths marked in each year.</p>
+            </div>
+          </div>
+
+          <h3>Dashboard Integration</h3>
+          <div class="grid-3">
+            <div class="card">
+              <h4>Top 5 Max Wear Rate</h4>
+              <p>Highlights TLs with the highest calculated wire wear rate.</p>
+            </div>
+            <div class="card">
+              <h4>Top 5 Min Wear Rate</h4>
+              <p>Highlights TLs with the lowest calculated wire wear rate for comparison and anomaly review.</p>
+            </div>
+            <div class="card">
+              <h4>Top 5 Current Wire Wear</h4>
+              <p>Highlights TLs with the highest current wear level from the latest saved records.</p>
+            </div>
+          </div>
+
+          <h3>Phase 2 Operations</h3>
+          <div class="scenario-grid">
+            <div class="scenario ok">
+              <span class="tag ok">Offline Sync</span>
+              <h4>Export / Import Package</h4>
+              <p>Offline sync now uses a JSON package with schema version, data version, export timestamp, source label, wire wear records, optional repeated records, and metadata file hashes. Import creates a SQLite backup first, compares row-level <code>updated_at</code>, applies newer imported rows, and reports skipped local-newer rows.</p>
+            </div>
+            <div class="scenario info">
+              <span class="tag info">Directory Package</span>
+              <h4>Recommended Packaging</h4>
+              <p>The recommended production target remains <code>dir</code>. Runtime diagnostics show the active database path, and production Electron sets the database under the package data folder. Single-exe packages must use an external writable data folder such as <code>%APPDATA%</code>.</p>
+            </div>
+            <div class="scenario warn">
+              <span class="tag warn">Hosted Server Option</span>
+              <h4>Future Deployment Guideline</h4>
+              <p>A hosted server remains optional future work. Before exposing write APIs, use authentication, HTTPS, firewall restrictions, backups, PostgreSQL for multi-user writes, and migration scripts. SharePoint is suitable for file exchange or backup storage, not live database concurrency.</p>
+            </div>
+          </div>
+        </section>
+
+        <div hidden aria-hidden="true">
+        <section id="legacy-trend">
+          <h2>4. Wire Wear L2 Trend</h2>
+          <p class="lead">
+            Trend 只分析 L2 Wire Wear，而且預設只看「最新週期、ACTION 空白」的候選。若另附 n_Repeated，則還要先通過 ID 配對。
+          </p>
+
+          <h3>Wear / Trend Parser 分流</h3>
+          <div class="flowline">
+            <div class="step"><strong>Exception Report Excel</strong><br>讀取 Summary / Wire Wear / ChartData</div>
+            <div class="step"><strong>Parser</strong><br>轉成 <code>WireWearRecord[]</code> 與 <code>ChartDataRecord[]</code></div>
+            <div class="step"><strong>/api/calculation/wear</strong><br>依 tension length 匯總 <code>WearResult</code></div>
+            <div class="step"><strong>/api/calculation/trend</strong><br>只針對 L2 Wire Wear 產生 recommendation</div>
+            <div class="step"><strong>/api/calculation/upload</strong><br>combined endpoint，同時回 wear 與 trend</div>
+          </div>
+
+          <div class="grid-3">
+            <div class="card">
+              <h4>Purpose</h4>
+              <p>判斷 L2 Wire Wear 是不用動作、需要現場驗證，還是確認為有效 L2。</p>
+            </div>
+            <div class="card">
+              <h4>Input</h4>
+              <p><code>WireWearRecord[]</code>、<code>{task_run_date: ChartDataRecord[]}</code>，以及可選的 <code>RepeatedSummaryRecord[]</code>。</p>
+            </div>
+            <div class="card">
+              <h4>Output / Action</h4>
+              <p>輸出 <code>record_points</code>、<code>trend_points</code>、<code>logic_1</code>、<code>logic_2</code>、<code>recommendation</code>。</p>
+            </div>
+          </div>
+
+          <h3>Core Logic</h3>
+          <div class="flowline">
+            <div class="step"><strong>Case A</strong><br>沒有 n_Repeated：保留最新週期、ACTION 空白、Level = L2 的 Wire Wear</div>
+            <div class="step"><strong>Case B</strong><br>有 n_Repeated：還必須 ID 在 repeated summary 中出現</div>
+            <div class="step"><strong>By Date</strong><br>對每個日期，在 <code>from_m..to_m</code> 區間內取 <code>wear_min</code> 最小值</div>
+            <div class="step"><strong>Regression</strong><br>用有效日期做線性回歸，產生 <code>trend_points</code></div>
+            <div class="step"><strong>Decision</strong><br>依 <code>logic_1</code> / <code>logic_2</code> 轉成 recommendation</div>
+          </div>
+
+          <div class="formula">Trend recommendation
+logic_1 = fitted_value &lt;= 10.2
+logic_2 = abs(latest_record_point - fitted_value) &gt; 0.2
+
+if logic_1 == false  -> no action required
+if logic_1 == true and logic_2 == true -> verify on site
+if logic_1 == true and logic_2 == false -> confirmed valid L2</div>
+
+          <h3>Decision Conditions</h3>
+          <div class="decision-grid">
+            <div>Scenario</div>
+            <div>條件</div>
+            <div>Recommendation</div>
+
+            <div>未碰到 L2 threshold</div>
+            <div><code>logic_1 = false</code>，即 fitted 值高於 10.2</div>
+            <div><code>no action required</code></div>
+
+            <div>碰到 threshold，且和實測差很大</div>
+            <div><code>logic_1 = true</code> 且 <code>logic_2 = true</code></div>
+            <div><code>verify on site</code></div>
+
+            <div>碰到 threshold，但趨勢與實測一致</div>
+            <div><code>logic_1 = true</code> 且 <code>logic_2 = false</code></div>
+            <div><code>confirmed valid L2</code></div>
+          </div>
+
+          <h3>Visual Scenarios</h3>
+          <div class="scenario-grid">
+            <div class="scenario info">
+              <span class="tag info">No Action</span>
+              <h4>fitted 值仍高於 L2 threshold</h4>
+              <p>代表目前趨勢參考值還沒進入 L2 判定區，系統不建議採取動作。</p>
+            </div>
+            <div class="scenario warn">
+              <span class="tag warn">Verify On Site</span>
+              <h4>趨勢碰線，而且偏差大</h4>
+              <p>這通常是「同樣是 L2，但當前量測與趨勢線不一致」的 edge case，因此建議現場驗證。</p>
+            </div>
+            <div class="scenario ok">
+              <span class="tag ok">Confirmed Valid L2</span>
+              <h4>趨勢碰線，但與實測一致</h4>
+              <p>表示該 L2 不是偶發尖峰，模型與當前量測對得上，因此確認為有效 L2。</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="legacy-average-wear">
+          <h2>5. Average Wire Wear Value of Each Tension Length</h2>
+          <p class="lead">
+            這段不是異常分類，而是把 ChartData 中每個 tension length 的 wear_min 匯總成可比較的統計結果。
+            Wear 與 Trend 共享 Exception Report parsing，但決策目的不同：Wear 做 tension length 統計，Trend 做 L2 recommendation。
+          </p>
+
+          <div class="grid-3">
+            <div class="card">
+              <h4>Purpose</h4>
+              <p>為每個 tension length 算出平均磨耗、標準差、磨耗百分比，以及日期序列點。</p>
+            </div>
+            <div class="card">
+              <h4>Input</h4>
+              <p><code>ChartDataRecord[]</code>，以及可選的 tension length lookup metadata。</p>
+            </div>
+            <div class="card">
+              <h4>Output / Action</h4>
+              <p>輸出 <code>WearResult</code>：<code>avg_wear_min</code>、<code>sd</code>、<code>wear_percentage</code>、<code>record_points</code>。</p>
+            </div>
+          </div>
+
+          <h3>Core Logic</h3>
+          <div class="flowline">
+            <div class="step"><strong>Step 1</strong><br>若有 metadata lookup，先用 chainage 落點與 track_type 去 resolve segment</div>
+            <div class="step"><strong>Step 2</strong><br>若 lookup 沒命中，就把原始 <code>tension_length</code> 以逗號拆開 fallback</div>
+            <div class="step"><strong>Step 3</strong><br>展平成 <code>task_run_date / chainage / wear_min / tension_length</code> 列</div>
+            <div class="step"><strong>Step 4</strong><br>按 tension length 分組，再按日期算平均點 <code>record_points</code></div>
+            <div class="step"><strong>Step 5</strong><br>算整體平均、標準差、磨耗百分比、範圍 <code>from_m..to_m</code></div>
+          </div>
+
+          <div class="formula">Wear percentage
+r = mean_remaining
+R = 6.6
+worn_area = acos((r - R)/R) * R^2 - R * sin(theta) * (r - R)
+wear_percentage = worn_area / 120 * 100</div>
+
+          <h3>Visual Scenarios</h3>
+          <div class="scenario-grid">
+            <div class="scenario ok">
+              <span class="tag ok">Metadata Match</span>
+              <h4>精準落在 metadata 區段</h4>
+              <p>可直接取得正確的 <code>tension_length</code>、<code>from_m</code>、<code>to_m</code>，同時優先比對 <code>track_type</code>。</p>
+            </div>
+            <div class="scenario warn">
+              <span class="tag warn">Fallback Split</span>
+              <h4>lookup 沒命中，用原始字串拆段</h4>
+              <p>如果 metadata 查不到，就把原始 <code>Tension Length</code> 欄位用逗號拆開，區段邊界則退回 chainage 最小值與最大值。</p>
+            </div>
+            <div class="scenario info">
+              <span class="tag info">Mixed Track Merge</span>
+              <h4>同一 TL 來自多個 track</h4>
+              <p>若同一個 tension length 橫跨多個 track，輸出 track 會標成 <code>Crossing/Siding</code>，提醒這是混合來源。</p>
+            </div>
+          </div>
+        </section>
+
+        </div>
+
+        <section id="stagger">
+          <h2>6. Stagger Calculation</h2>
+          <p class="lead">
+            Stagger 計算分成兩層。第一層先決定哪些 summary row 可以進入計算；第二層再根據支點、量測值、風係數與公式判斷 pass / fail / n/a。
+            這是獨立於 wear/trend 的 calculation 子模組；除了 summary，也輸出 trace，讓支點、span 與公式判斷可追溯。
+          </p>
+
+          <div class="grid-3">
+            <div class="card">
+              <h4>Purpose</h4>
+              <p>把 Stagger Left / Right 的異常區段轉成 span 級判斷，並附上可追溯 trace。</p>
+            </div>
+            <div class="card">
+              <h4>Input</h4>
+              <p>Summary row、ChartData channels、support metadata、wind factor、可選 n_Repeated summary。</p>
+            </div>
+            <div class="card">
+              <h4>Output / Action</h4>
+              <p>輸出 <code>results</code> + <code>traces</code> + <code>warnings</code>，並標示 <code>case_type</code> 與 <code>trace_status</code>。</p>
+            </div>
+          </div>
+
+          <h3>Core Logic</h3>
+          <div class="flowline">
+            <div class="step"><strong>Step 1</strong><br>選候選：只保留 <code>L1 / L2</code> 且類型是 <code>Stagger Left / Right</code></div>
+            <div class="step"><strong>Step 2</strong><br>Case A 用 Exception Report；Case B 必須 repeated summary 有相同 ID，且可覆蓋 <code>max_location</code></div>
+            <div class="step"><strong>Step 3</strong><br>依 <code>chi</code> 找到 <code>spt_a / spt_i / spt_b</code>，若缺支點則輸出 partial trace</div>
+            <div class="step"><strong>Step 4</strong><br>從最近列抓 A/I/B 量測值，再算 <code>k_eq</code>、<code>b</code>、<code>p</code>、<code>s</code>、<code>e</code>、<code>allowable</code></div>
+            <div class="step"><strong>Step 5</strong><br>兩個 span 各自判定後彙總為 overall pass / fail / n/a</div>
+          </div>
+
+          <div class="formula">Span decision
+b = 0.6137 * 0.8 * 1.08 * (34.3 * k_eq)^2 * 0.0132 * span^2 / (32 * tension)
+p = abs((stg_x + stg_i) / 2)
+s = abs(stg_x - stg_i)
+e = s^2 / (16 * b)
+allowable = 505 - (b + e) - height_correction
+
+if s >= 4 * b         -> pass_short_circuit
+else if p <= allowable -> pass
+else                   -> fail</div>
+
+          <h3>Trace 結構圖</h3>
+          <div class="chain-diagram">
+            <div class="chain-node">
+              <div class="kicker">Candidate</div>
+              <strong>Selection</strong>
+              <p class="tiny">Case A 取 Exception Report；Case B 必須 ID 出現在 n_Repeated，且不 fallback。</p>
+            </div>
+            <div class="chain-node">
+              <div class="kicker">Reference</div>
+              <strong>Support Lookup</strong>
+              <p class="tiny">用 chi 找 SPT A / I / B；缺支點則 partial trace + n/a。</p>
+            </div>
+            <div class="chain-node">
+              <div class="kicker">Formula</div>
+              <strong>Span Decision</strong>
+              <p class="tiny">計算 b / p / s / e / allowable，分 AI、IB span 判斷。</p>
+            </div>
+            <div class="chain-node">
+              <div class="kicker">Output</div>
+              <strong>pass / fail / n/a</strong>
+              <p class="tiny">任一 span fail 則 overall fail；完整 trace 交給 UI 展開。</p>
+            </div>
+          </div>
+
+          <h3>Visual Scenarios</h3>
+          <div class="scenario-grid">
+            <div class="scenario ok">
+              <span class="tag ok">Case A Pass</span>
+              <h4>只靠主檔就能完成計算</h4>
+              <ul class="condition-list">
+                <li>summary row 本身是有效 L1 / L2 stagger</li>
+                <li>支點完整</li>
+                <li>至少一個 span 得到 <code>pass</code> 或 <code>pass_short_circuit</code></li>
+              </ul>
+            </div>
+            <div class="scenario info">
+              <span class="tag info">Case B Override</span>
+              <h4>repeated summary 接手定位點</h4>
+              <p>當 repeated 內有相同 ID，<code>max_location</code> 會改用 repeated 的值，<code>chi_source</code> 也從 <code>exception_report</code> 變成 <code>n_repeated</code>。</p>
+            </div>
+            <div class="scenario warn">
+              <span class="tag warn">Partial Trace</span>
+              <h4>支點不足，只能輸出 n/a</h4>
+              <p>只要 <code>spt_a</code>、<code>spt_i</code>、<code>spt_b</code> 有任何缺漏，系統會保留 trace，但結果只能是 <code>n/a</code>。</p>
+            </div>
+          </div>
+
+          <h3>Overall Result 機制</h3>
+          <div class="decision-grid">
+            <div>Span 結果組合</div>
+            <div>整體判斷</div>
+            <div>說明</div>
+
+            <div>任一 span = fail</div>
+            <div><code>fail</code></div>
+            <div>只要有一邊不過，就整體失敗</div>
+
+            <div>沒有 fail，但至少一邊 pass / pass_short_circuit</div>
+            <div><code>pass</code></div>
+            <div>任一邊可接受就算過</div>
+
+            <div>兩邊都沒有有效結果</div>
+            <div><code>n/a</code></div>
+            <div>通常是缺支點或缺量測</div>
+          </div>
+        </section>
+
+        <section id="sources">
+          <h2>來源與依據</h2>
+          <p class="lead">
+            這份頁面的內容來自實際程式、測試與新的主文件，而不是手動猜測。<code>docs/architecture.md</code> 是唯一維護的主文件；
+            <code>docs/algorithm.md</code> 與 <code>docs/field-mapping-spec.md</code> 已改為導覽頁，用來保留舊連結。
+          </p>
+          <div class="grid-2">
+            <div class="source-note">
+              <strong>主文件</strong><br>
+              <code>docs/architecture.md</code> 整合系統架構、端到端資料流、演算法規格、欄位契約與維護指引。
+              本 HTML guide 是它的視覺化 companion，負責把流程、分支與資料邊界圖解化。
+            </div>
+            <div class="source-note">
+              <strong>主要演算法符號</strong><br>
+              <code>ExceptionDetector.analyze</code>、<code>ExceptionDetector._detect_scalar</code>、
+              <code>ExceptionDetector._detect_stagger</code>、<code>RepeatedExceptionFinder.find_repeated</code>、
+              <code>check_1_year_records</code>、<code>analyze_trend</code>、
+              <code>calculate_average_wear</code>、<code>select_stagger_candidates</code>、
+              <code>compute_stagger_result_for_record</code>。
+            </div>
+            <div class="source-note">
+              <strong>入口與資料結構</strong><br>
+              <code>analysis.py</code>、<code>calculation.py</code>、<code>database_records.py</code>、
+              <code>data_ingestion.py</code>、<code>excel_parser.py</code>、<code>stagger_formula.py</code>、
+              以及對應的 backend tests 與 docs。
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

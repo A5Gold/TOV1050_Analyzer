@@ -1,0 +1,7 @@
+{
+    "default_metadata_path": "config/LAR_AEL metadata.xlsx",
+    "default_output_dir": "output",
+    "supported_lines": ["AEL", "TCL", "DRL", "KTL", "ISL", "TWL", "TKL"],
+    "supported_sections": ["Mainline", "PL", "TKS"]
+}
+

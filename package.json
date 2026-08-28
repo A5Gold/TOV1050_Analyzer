@@ -1,0 +1,82 @@
+{
+  "name": "tov1050-analyzer",
+  "version": "2.0.0",
+  "description": "TOV1050 Analyzer - Railway Catenary Maintenance Data Analysis Tool",
+  "author": "MTR Corporation Limited",
+  "main": "electron/main.js",
+  "scripts": {
+    "dev:frontend": "cd frontend && npm run dev -- --strictPort",
+    "dev:electron": "cross-env NODE_ENV=development electron .",
+    "dev": "node scripts/dev-latest.mjs",
+    "dev:local": "concurrently -k \"npm run dev:frontend\" \"wait-on tcp:5173 && npm run dev:electron\"",
+    "install:all": "npm install && cd frontend && npm install",
+    "build:frontend": "cd frontend && npm run build",
+    "build:backend": "cd backend && pyinstaller --clean --noconfirm backend_server.spec",
+    "wear:seed": "venv\\Scripts\\python.exe backend/scripts/generate_wear_cycle_seed.py",
+    "clean:package": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\"",
+    "package": "node scripts/dev-latest.mjs package:local",
+    "package:local": "npm run clean:package && npm run build:frontend && npm run build:backend && electron-builder",
+    "package:win": "node scripts/dev-latest.mjs package:win:local",
+    "package:win:local": "npm run clean:package && npm run build:frontend && npm run build:backend && electron-builder --win"
+  },
+  "build": {
+    "appId": "com.mtr.tov1050analyzer",
+    "productName": "TOV1050 Analyzer",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "electron/**/*",
+      "frontend/dist/**/*",
+      "!**/node_modules/*/{CHANGELOG.md,README.md,readme.md,LICENSE,license,*.ts}",
+      "!**/*.{iml,o,hprof,orig,pyc,pyo,rbc,swp,csproj,sln,xproj}"
+    ],
+    "extraResources": [
+      {
+        "from": "backend/dist/backend_server",
+        "to": "backend",
+        "filter": [
+          "**/*"
+        ]
+      },
+      {
+        "from": "config",
+        "to": "config",
+        "filter": [
+          "**/*"
+        ]
+      },
+      {
+        "from": "docs/stagger",
+        "to": "config/stagger",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "dir",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "signAndEditExecutable": false
+    }
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.0",
+    "cross-env": "^7.0.3",
+    "electron": "^25.3.0",
+    "electron-builder": "^24.13.3",
+    "wait-on": "^7.0.1"
+  },
+  "dependencies": {
+    "axios": "^1.4.0",
+    "docx": "^9.5.1",
+    "gitnexus": "^1.6.4-rc.48",
+    "util": "^0.12.5"
+  }
+}
