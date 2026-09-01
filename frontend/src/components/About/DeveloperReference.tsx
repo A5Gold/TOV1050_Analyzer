@@ -23,6 +23,7 @@ import {
   guideSourceReferences,
   versionDifferenceLimits,
   verificationRows,
+  metadataCanonicalRows,
 } from './aboutGuideContent';
 import DiagnosticsPanel from './DiagnosticsPanel';
 import { GuideFlow } from './GuideVisuals';
@@ -88,6 +89,24 @@ const DeveloperReference: React.FC<DeveloperReferenceProps> = ({
         <Typography variant="body2" color="text.secondary" sx={{ maxWidth: '76ch' }}>
           Alignment 先以完整資料計算 shift、RMSE、coverage 與 overlap，再以 deterministic shared-index min/max envelope 將圖表 arrays 限制在 8,000 點。response 另外提供 source_points、display_points、downsampled。Dense path 上限為 640,000 normalized ticks；sparse path 受 unique observed ticks × 401 不超過 25,000,000 probes 的 hard budget 保護。
         </Typography>
+      </Box>
+
+      <Box component="section" id="developer-tov1050-contract" sx={sectionSx}>
+        <Typography variant="h6" component="h3" gutterBottom>TOV1050 metadata 與分析契約</Typography>
+        <Typography variant="body2" color="text.secondary" sx={{ maxWidth: '76ch', mb: 2 }}>
+          Metadata adapter 將現場 workbook 正規化為 detector canonical model。分析與匯出則以 request 的表格 context 為 source of truth，原始 filename 只保留作 lineage。
+        </Typography>
+        <TableContainer>
+          <Table size="small" aria-label="TOV1050 canonical metadata contract">
+            <TableHead><TableRow><TableCell>契約</TableCell><TableCell>Required behavior</TableCell></TableRow></TableHead>
+            <TableBody>{metadataCanonicalRows.map((row) => (
+              <TableRow key={row.cells[0]}><TableCell>{row.cells[0]}</TableCell><TableCell>{row.cells[1]}</TableCell></TableRow>
+            ))}</TableBody>
+          </Table>
+        </TableContainer>
+        <Alert severity="info" sx={{ mt: 2 }}>
+          Canonical filename parser 仍保留給標準報表與單元測試；任意合法 CSV basename 不應成為分析的阻擋條件。
+        </Alert>
       </Box>
 
       <Box component="section" id="developer-check-1-year" sx={sectionSx}>

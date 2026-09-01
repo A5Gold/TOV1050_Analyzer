@@ -8,6 +8,7 @@ const fs = require('fs');
 let mainWindow;
 let apiProcess;
 let backendStartError = null;
+const DEV_PORT = Number(process.env.TOV1050_DEV_PORT || 5174);
 const API_PORT = 8000;
 const HEALTH_CHECK_URL = `http://127.0.0.1:${API_PORT}/api/health`;
 const HEALTH_CHECK_INTERVAL_MS = 500;
@@ -28,7 +29,7 @@ function createWindow() {
   });
 
   if (process.env.NODE_ENV === 'development') {
-    mainWindow.loadURL('http://localhost:5173');
+    mainWindow.loadURL(`http://localhost:${DEV_PORT}`);
     mainWindow.webContents.openDevTools();
   } else {
     // In production, load from packaged app resources

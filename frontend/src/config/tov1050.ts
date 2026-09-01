@@ -1,5 +1,7 @@
 export const TOV1050_LINES = ['AEL', 'TCL', 'DRL', 'KTL', 'ISL', 'TWL', 'TKL'] as const;
 export type Tov1050Line = typeof TOV1050_LINES[number];
+export type Tov1050Direction = typeof TOV1050_DIRECTIONS[number];
+export type Tov1050Session = 'Mainline' | 'PL' | 'TKS';
 
 export const TOV1050_SESSIONS: Record<Tov1050Line, readonly string[]> = {
   AEL: ['Mainline'],
@@ -30,3 +32,9 @@ export const TOV1050_SECTION_OPTIONS = Array.from(
 
 export const sessionsForLine = (line: string): readonly string[] =>
   TOV1050_SESSIONS[line as Tov1050Line] ?? ['Mainline'];
+
+export const isTov1050Line = (value: string): value is Tov1050Line =>
+  (TOV1050_LINES as readonly string[]).includes(value);
+
+export const isTov1050Direction = (value: string): value is Tov1050Direction =>
+  (TOV1050_DIRECTIONS as readonly string[]).includes(value);

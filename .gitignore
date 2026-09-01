@@ -91,3 +91,7 @@ config/database-records/
 config/wire-wear-seed.json
 config/EAL metadata.xlsx
 config/TML metadata.xlsx
+
+# Large local reference CSVs (kept out of the remote repository)
+00 Reference Document/Raw data/KTL/20260825_KTL_UT.csv
+00 Reference Document/Raw data/TKL/20260708_TKL_DT.csv

@@ -40,7 +40,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import { useDatabaseStore } from '../../store/useDatabaseStore';
 import { DatabaseFilters } from '../../types/api';
 import { formatDateToCompact } from '../../utils/dateFormatter';
-import { TOV1050_DIRECTIONS } from '../../config/tov1050';
+import { TOV1050_DIRECTIONS, Tov1050Line, Tov1050Session } from '../../config/tov1050';
 
 // =============================================================================
 // CONSTANTS
@@ -90,9 +90,9 @@ const SELECT_FILTER_KEYS = new Set([
 
 interface FilterPanelProps {
   /** Current TOV1050 line from parent tab */
-  line: string;
+  line: Tov1050Line;
   /** Current section from parent sub-tab (null = All Sections) */
-  section: string | null;
+  section: Tov1050Session | null;
   /** Loading state from parent */
   loading: boolean;
 }
@@ -149,8 +149,8 @@ function countActiveFilters(filters: LocalFilterState): number {
  */
 function buildApiFilters(
   localFilters: LocalFilterState,
-  line: string,
-  section: string | null,
+  line: Tov1050Line,
+  section: Tov1050Session | null,
 ): DatabaseFilters {
   const apiFilters: DatabaseFilters = { line };
 

@@ -114,7 +114,7 @@ export interface MetadataRow {
  */
 export interface HistoricalSession {
   id: string;                        // UUID
-  line: string;                      // EAL / TML
+  line: string;                      // TOV1050 line identifier
   section: string;                   // Mainline / RAC / LOW / LMC
   track: string;                     // UP / DOWN
   date_str: string;                  // YYYYMMDD
@@ -191,9 +191,11 @@ export interface SessionExceptionsResponse {
  * Filters for database record queries
  */
 export interface DatabaseFilters {
+  /** TOV1050 line/session contract. `section` remains the backend wire name. */
   line?: string;
   track?: string;
   section?: string;
+  session?: import('../config/tov1050').Tov1050Session;
   date_from?: string;
   date_to?: string;
   level?: string;

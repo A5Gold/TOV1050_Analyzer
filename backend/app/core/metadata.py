@@ -71,7 +71,10 @@ class MetadataManager:
                 if sheet_name == 'threshold':
                      for col in df.columns:
                          if 'min' in col.lower() or 'max' in col.lower() or 'L1' in col or 'L2' in col or 'L3' in col:
-                             df[col] = pd.to_numeric(df[col], errors='coerce')
+                             df[col] = pd.to_numeric(
+                                 df[col].astype(str).str.replace(',', '', regex=False).str.strip(),
+                                 errors='coerce',
+                             )
 
                 self._cache[sheet_name] = df
                 logger.info(f"Sheet '{sheet_name}' cached successfully")

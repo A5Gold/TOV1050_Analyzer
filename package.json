@@ -8,7 +8,7 @@
     "dev:frontend": "cd frontend && npm run dev -- --strictPort",
     "dev:electron": "cross-env NODE_ENV=development electron .",
     "dev": "node scripts/dev-latest.mjs",
-    "dev:local": "concurrently -k \"npm run dev:frontend\" \"wait-on tcp:5173 && npm run dev:electron\"",
+    "dev:local": "concurrently -k \"npm run dev:frontend\" \"wait-on tcp:5174 && npm run dev:electron\"",
     "install:all": "npm install && cd frontend && npm install",
     "build:frontend": "cd frontend && npm run build",
     "build:backend": "cd backend && pyinstaller --clean --noconfirm backend_server.spec",

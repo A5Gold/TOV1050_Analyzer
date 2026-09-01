@@ -141,6 +141,12 @@ const ExceptionGeneratorView = () => {
       updateAnalysisSession(activeSession.id, { error: "Please select a data file first." });
       return;
     }
+    if (!activeSession.stationStart || !activeSession.stationEnd) {
+      updateAnalysisSession(activeSession.id, {
+        error: "Please enter Station Start and Station End before analysis. These fields define the output report context.",
+      });
+      return;
+    }
 
     updateAnalysisSession(activeSession.id, { loading: true, error: null });
 
@@ -262,7 +268,11 @@ const ExceptionGeneratorView = () => {
     if (!activeSession) return;
       const validSections = sessionsForLine(activeSession.line);
     if (!validSections.includes(activeSession.section)) {
-       updateAnalysisSession(activeSession.id, { section: validSections[0] || '' });
+       updateAnalysisSession(activeSession.id, {
+         section: validSections[0] || '',
+         result: null,
+         error: null,
+       });
     }
   }, [activeSession?.line]); // Only run when line changes
 
@@ -515,20 +525,30 @@ const ExceptionGeneratorView = () => {
                                     <Select 
                                         value={activeSession.line} 
                                         label="Line" 
-                                        onChange={(e) => updateAnalysisSession(activeSession.id, { line: e.target.value })}
+                                        onChange={(e) => {
+                                            const nextLine = e.target.value;
+                                            updateAnalysisSession(activeSession.id, {
+                                                line: nextLine,
+                                                section: sessionsForLine(nextLine)[0] || 'Mainline',
+                                                result: null,
+                                                loading: false,
+                                                error: null,
+                                                selectedExceptionId: null,
+                                            });
+                                        }}
                                     >
                                         {TOV1050_LINES.map((line) => <MenuItem key={line} value={line}>{line}</MenuItem>)}
                                     </Select>
                                 </FormControl>
 
                                 <FormControl fullWidth size="small">
-                                    <InputLabel>Track</InputLabel>
+                                    <InputLabel>Direction</InputLabel>
                                     <Select 
                                         value={activeSession.track} 
-                                        label="Track" 
+                                        label="Direction"
                                         onChange={(e) => updateAnalysisSession(activeSession.id, { track: e.target.value })}
                                     >
-                                        {TOV1050_DIRECTIONS.map((direction) => <MenuItem key={direction} value={direction}>{direction} Track</MenuItem>)}
+                                        {TOV1050_DIRECTIONS.map((direction) => <MenuItem key={direction} value={direction}>{direction}</MenuItem>)}
                                     </Select>
                                 </FormControl>
 
@@ -560,7 +580,7 @@ const ExceptionGeneratorView = () => {
                                 </LocalizationProvider>
                             </Box>
 
-                            {/* Optional Fields for Custom File Naming */}
+                            {/* TOV1050 output context */}
                             <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 2 }}>
                                 <TextField
                                     label="Task Number (Optional)"
@@ -575,7 +595,7 @@ const ExceptionGeneratorView = () => {
                                 />
 
                                 <TextField
-                                    label="Station Start (Optional)"
+                                    label="Station Start"
                                     placeholder="e.g., HUH, LOW"
                                     size="small"
                                     fullWidth
@@ -583,11 +603,11 @@ const ExceptionGeneratorView = () => {
                                     onChange={(e) => updateAnalysisSession(activeSession.id, { 
                                         stationStart: e.target.value.trim().toUpperCase() || undefined 
                                     })}
-                                    helperText="Station code"
+                                    helperText="Required for TOV1050 output context"
                                 />
 
                                 <TextField
-                                    label="Station End (Optional)"
+                                    label="Station End"
                                     placeholder="e.g., TAP, KSR"
                                     size="small"
                                     fullWidth
@@ -595,7 +615,7 @@ const ExceptionGeneratorView = () => {
                                     onChange={(e) => updateAnalysisSession(activeSession.id, { 
                                         stationEnd: e.target.value.trim().toUpperCase() || undefined 
                                     })}
-                                    helperText="Station code"
+                                    helperText="Required for TOV1050 output context"
                                 />
                             </Box>
 

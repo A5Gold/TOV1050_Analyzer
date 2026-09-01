@@ -65,6 +65,37 @@ def test_filename_and_metadata_mapping():
     assert metadata_workbook_for("TKL", "TKS", REFERENCE_ROOT / "config").name == "TKS metadata.xlsx"
 
 
+def test_filename_rejects_non_tov1050_line_or_direction():
+    import pytest
+
+    with pytest.raises(ValueError, match="Unsupported TOV1050 line"):
+        parse_input_filename("20260822_EAL_UT_SHO_AWE.csv")
+    with pytest.raises(ValueError, match="Unsupported TOV1050 direction"):
+        parse_input_filename("20260822_AEL_UP_SHO_AWE.csv")
+
+
+def test_metadata_boundaries_fail_closed_for_missing_columns_or_overlap(tmp_path):
+    import pytest
+
+    missing_path = tmp_path / "missing.xlsx"
+    with pd.ExcelWriter(missing_path) as writer:
+        pd.DataFrame({"location type": ["Open"]}).to_excel(writer, sheet_name="location type", index=False)
+    with pytest.raises(ValueError, match="missing columns"):
+        TOV1050MetadataManager(missing_path).get_exception_boundaries("AEL", "UT", "Mainline")
+
+    overlap_path = tmp_path / "overlap.xlsx"
+    with pd.ExcelWriter(overlap_path) as writer:
+        pd.DataFrame(
+            {
+                "location type": ["Open", "Tunnel"],
+                "startKM": [0, 10],
+                "endKM": [20, 30],
+            }
+        ).to_excel(writer, sheet_name="location type", index=False)
+    with pytest.raises(ValueError, match="intervals overlap"):
+        TOV1050MetadataManager(overlap_path).get_exception_boundaries("AEL", "UT", "Mainline")
+
+
 def test_metadata_adapter_matches_real_workbook():
     workbook = metadata_workbook_for("AEL", "Mainline", REFERENCE_ROOT / "config")
     manager = TOV1050MetadataManager(workbook)
@@ -74,3 +105,51 @@ def test_metadata_adapter_matches_real_workbook():
     assert not boundaries.empty
     assert not track_types.empty
     assert {"Class", "Track Type", "Exc Type"}.issubset(thresholds.columns)
+
+
+def test_output_filename_requires_station_range_and_valid_context():
+    import pytest
+
+    with pytest.raises(ValueError, match="required"):
+        build_output_filename("20260822", "AEL", "UT", "Mainline", "", "AWE", "Report", "xlsx")
+    with pytest.raises(ValueError, match="not supported"):
+        build_output_filename("20260822", "DRL", "UT", "TKS", "SHO", "AWE", "Report", "xlsx")
+
+
+def test_metadata_adapter_rejects_mixed_long_and_wide_threshold_schema(tmp_path):
+    import pytest
+
+    workbook = tmp_path / "mixed.xlsx"
+    with pd.ExcelWriter(workbook) as writer:
+        pd.DataFrame(
+            {
+                "Location Type": ["Open"],
+                "Track Type": ["Tangent"],
+                "Exc Type": ["Low Height L1"],
+                "min": [4000],
+                "max": [4500],
+                "Low Height L1": [4500],
+            }
+        ).to_excel(writer, sheet_name="threshold", index=False)
+
+    with pytest.raises(ValueError, match="mixes long min/max"):
+        TOV1050MetadataManager(workbook).get_all_thresholds()
+
+
+def test_metadata_adapter_normalizes_case_and_numeric_commas(tmp_path):
+    workbook = tmp_path / "wide.xlsx"
+    with pd.ExcelWriter(workbook) as writer:
+        pd.DataFrame(
+            {
+                " class ": [" Open "],
+                "track_type": [" Tangent "],
+                "exception type": ["Low Height"],
+                "Low Height L1": ["4,500"],
+                "Low Height L2": ["4,600"],
+            }
+        ).to_excel(writer, sheet_name="threshold", index=False)
+
+    frame = TOV1050MetadataManager(workbook).get_all_thresholds()
+    assert frame.loc[0, "Class"] == "Open"
+    assert frame.loc[0, "Track Type"] == "Tangent"
+    assert frame.loc[0, "Low Height L1"] == 4500

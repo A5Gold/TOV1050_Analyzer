@@ -196,6 +196,33 @@ def test_tov1050_reference_sample_contract(monkeypatch):
     assert "20260822_AEL_UT_MAINLINE_SHO_AWE_Exception_Report.xlsx" in export.headers["content-disposition"]
 
 
+def test_tov1050_analysis_ignores_noncanonical_input_basename(monkeypatch):
+    """Operational CSV basenames must not override complete form context."""
+    monkeypatch.setattr(analysis_endpoint, "CONFIG_DIR", REFERENCE_CONFIG)
+    monkeypatch.setattr(
+        analysis_endpoint,
+        "parse_input_filename",
+        lambda _path: (_ for _ in ()).throw(ValueError("non-canonical basename")),
+    )
+
+    response = client.post(
+        "/api/analyze",
+        json={
+            "file_path": str(REFERENCE_SAMPLE),
+            "line": "AEL",
+            "section": "Mainline",
+            "session": "Mainline",
+            "track": "UT",
+            "date_str": "20260822",
+            "station_start": "SHO",
+            "station_end": "AWE",
+        },
+    )
+
+    assert response.status_code == 200, response.text
+    assert response.json()["params"]["station_start"] == "SHO"
+
+
 @pytest.mark.parametrize(
     ("field", "value"),
     [("session", "TKS"), ("track", "SIDE")],

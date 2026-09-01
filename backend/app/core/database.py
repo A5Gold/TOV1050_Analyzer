@@ -302,6 +302,7 @@ class DatabaseManager:
         cursor = conn.execute("PRAGMA table_info(saved_repeated_exceptions)")
         existing_columns = {row['name'] for row in cursor.fetchall()}
         required_columns = [
+            'session',
             'reoccurrence_id',
             'verify_deadline',
             'verify_date',
@@ -1313,6 +1314,7 @@ def save_repeated_records_batch(
     latest_file_name: Optional[str] = None,
     comparison_files: Optional[List[str]] = None,
     task_run_date: Optional[str] = None  # NEW: Phase 8.1 (2026-02-01)
+    ,session: str = 'Mainline'
 ) -> Dict[str, int]:
     """
     Batch save repeated exception records (Sub-module 2).
@@ -1380,9 +1382,9 @@ def save_repeated_records_batch(
                     action, check_date, checked_by, check_result, remarks,
                     verify_deadline, verify_date, verify_result, verified_by,
                     adjust_deadline, adjust_date, adjust_result, adjusted_by,
-                    line, track, date_str, task_run_date, task_no, station_start, station_end,
+                    line, track, session, date_str, task_run_date, task_no, station_start, station_end,
                     latest_file_name, comparison_files, saved_by
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """, (
                 exc_id,
                 get_field(exc, 'exception_type', 'exception type', default=''),
@@ -1418,6 +1420,7 @@ def save_repeated_records_batch(
                 get_field(exc, 'adjusted_by', default=None),
                 line,
                 track,
+                session,
                 date_str,
                 task_run_date,
                 task_no,
@@ -1474,6 +1477,7 @@ def _build_repeated_record_predicates(
     for key, column in (
         ('line', 'line'),
         ('track', 'track'),
+        ('session', 'session'),
         ('level', 'level'),
         ('exception_type', 'exception_type'),
         ('class', 'class'),
@@ -1739,7 +1743,7 @@ def export_repeated_records_to_df(
     # Phase 10.10-F: Reorder columns per spec 12.7 (matches Database Frontend 12.6)
     export_columns = [
         # Task Run Data (#1-#7)
-        'task_run_date', 'line', 'track', 'section',
+        'task_run_date', 'line', 'track', 'session', 'section',
         'task_no', 'station_start', 'station_end',
         # Exception Details (#8-#22)
         'exception_id', 'from_m', 'to_m', 'length',
@@ -1764,6 +1768,7 @@ def export_repeated_records_to_df(
         'task_run_date': 'Run Date',
         'line': 'Line',
         'track': 'Track',
+        'session': 'Session',
         'section': 'Section',
         'task_no': 'Task Number',
         'station_start': 'Station Start',
@@ -2224,6 +2229,7 @@ def import_repeated_records_from_data(
     line: str,
     track: str,
     date_str: str
+    ,session: str = 'Mainline'
 ) -> Dict[str, int]:
     """
     Import repeated exception records from parsed Excel data.
@@ -2260,6 +2266,7 @@ def import_repeated_records_from_data(
 
             rec_line = rec.get('line', line)
             rec_track = rec.get('track', track)
+            rec_session = rec.get('session', session) or session
             rec_date_raw = rec.get('task_run_date', '') or rec.get('date_str', '') or date_str
             rec_date = _normalize_date_to_compact(str(rec_date_raw))
             exc_id = rec.get('exception_id', '')
@@ -2274,9 +2281,9 @@ def import_repeated_records_from_data(
             cursor = conn.execute("""
                 SELECT record_id, last_updated
                 FROM saved_repeated_exceptions
-                WHERE exception_id = ? AND line = ? AND track = ?
+                WHERE exception_id = ? AND line = ? AND track = ? AND session = ?
                 AND (date_str = ? OR date_str = ?)
-            """, (exc_id, rec_line, rec_track, rec_date, rec_date_alt))
+            """, (exc_id, rec_line, rec_track, rec_session, rec_date, rec_date_alt))
 
             existing = cursor.fetchone()
 
@@ -2334,8 +2341,8 @@ def import_repeated_records_from_data(
                         action, check_date, checked_by, check_result, remarks,
                         verify_deadline, verify_date, verify_result, verified_by,
                         adjust_deadline, adjust_date, adjust_result, adjusted_by,
-                        line, track, date_str
-                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                        line, track, session, date_str
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """, (
                     exc_id,
                     rec.get('exception_type', ''),
@@ -2371,6 +2378,7 @@ def import_repeated_records_from_data(
                     rec.get('adjusted_by'),
                     rec_line,
                     rec_track,
+                    rec_session,
                     rec_date,
                 ))
                 created_count += 1

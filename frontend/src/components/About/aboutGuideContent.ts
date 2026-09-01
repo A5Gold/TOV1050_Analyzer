@@ -14,6 +14,7 @@ export interface GuideMatrixRow {
 
 export const operatorNavItems: GuideNavItem[] = [
   { id: 'operator-workflow', label: '工作流程' },
+  { id: 'operator-tov1050-input', label: 'TOV1050 輸入' },
   { id: 'operator-version-difference', label: 'Version Difference' },
   { id: 'operator-threshold', label: 'Threshold' },
   { id: 'operator-repeat', label: 'Repeat' },
@@ -25,6 +26,7 @@ export const operatorNavItems: GuideNavItem[] = [
 
 export const developerNavItems: GuideNavItem[] = [
   { id: 'developer-architecture', label: '架構' },
+  { id: 'developer-tov1050-contract', label: 'TOV1050 契約' },
   { id: 'developer-version-difference', label: 'Version Difference API' },
   { id: 'developer-check-1-year', label: 'Check 1 Year API' },
   { id: 'developer-api-state', label: 'API 與 state' },
@@ -113,6 +115,20 @@ export const architectureLayers: GuideFlowStep[] = [
     title: 'SQLite 與 config workbooks',
     detail: 'SQLite 保存分析與追蹤紀錄；EAL/TML metadata workbooks 提供受版本控制的業務設定。',
   },
+];
+
+export const tov1050InputRows: GuideMatrixRow[] = [
+  { cells: ['CSV basename', '只保留為來源 lineage；不要求符合報表命名格式。'] },
+  { cells: ['表格 context', 'Date、Line、Direction、Section、Station Start／End 是分析與輸出的 authoritative 參數。'] },
+  { cells: ['Filename parser', '只在表格欄位缺漏時 best-effort 補值；解析失敗不阻擋合法 CSV。'] },
+  { cells: ['輸出命名', '使用 canonical `YYYYMMDD_LINE_TRACK_SESSION_START_END_<artifact>` 格式，供其他模組穩定引用。'] },
+];
+
+export const metadataCanonicalRows: GuideMatrixRow[] = [
+  { cells: ['Threshold schema', '`Class`、`Track Type`、`Exc Type` 與各異常 L1/L2/L3 欄位。'] },
+  { cells: ['Input formats', 'TOV1050 long table 與 TOV640 legacy wide table 都先轉成 canonical model。'] },
+  { cells: ['Mixed workbook', '混合欄位、缺欄、非數值或 threshold 順序錯誤會 fail closed，錯誤需帶 sheet／列號。'] },
+  { cells: ['Write-back', '只寫回 canonical 欄位並保留備份，避免舊欄位殘留造成 detector 與 UI 不一致。'] },
 ];
 
 export const apiOwnershipRows: GuideMatrixRow[] = [

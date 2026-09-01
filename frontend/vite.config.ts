@@ -20,7 +20,8 @@ export default defineConfig({
     },
   },
   server: {
-    port: 5173,
+    // The launcher sets TOV1050_DEV_PORT when the default port is occupied.
+    port: Number(process.env.TOV1050_DEV_PORT || 5174),
     proxy: {
       '/api': {
         target: 'http://127.0.0.1:8000',

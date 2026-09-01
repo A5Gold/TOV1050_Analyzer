@@ -21,6 +21,7 @@ import {
   operatorWorkflowSteps,
   versionDifferenceLimits,
   versionDifferenceRoles,
+  tov1050InputRows,
 } from './aboutGuideContent';
 import {
   CoverageExample,
@@ -51,6 +52,24 @@ const OperatorGuide: React.FC = () => (
           選檔後先確認 Line、日期與 metadata 範圍。預覽是作出保存決定的必要步驟，不應直接略過 conflict、blocking reason 或 trace。
         </Typography>
         <GuideFlow steps={operatorWorkflowSteps} label="TOV640 Analyzer 操作流程" desktopColumns={5} />
+      </Box>
+
+      <Box component="section" id="operator-tov1050-input" sx={sectionSx}>
+        <Typography variant="h6" component="h3" gutterBottom>TOV1050 輸入與輸出</Typography>
+        <Typography variant="body2" color="text.secondary" sx={{ maxWidth: '76ch', mb: 2 }}>
+          原始量測 CSV 的檔名可能來自設備或現場流程，不一定是報表名稱。請在輸入表格確認業務參數；系統會用這些參數分析與產生可供其他模組使用的輸出檔名。
+        </Typography>
+        <TableContainer>
+          <Table size="small" aria-label="TOV1050 input and output contract">
+            <TableHead><TableRow><TableCell>項目</TableCell><TableCell>行為</TableCell></TableRow></TableHead>
+            <TableBody>{tov1050InputRows.map((row) => (
+              <TableRow key={row.cells[0]}><TableCell>{row.cells[0]}</TableCell><TableCell>{row.cells[1]}</TableCell></TableRow>
+            ))}</TableBody>
+          </Table>
+        </TableContainer>
+        <Alert severity="warning" sx={{ mt: 2 }}>
+          若缺少日期、Line、Direction、Session 或 Station range，請先補齊表格欄位；不要嘗試修改原始 CSV 檔名來繞過提示。
+        </Alert>
       </Box>
 
       <Box component="section" id="operator-version-difference" sx={sectionSx}>

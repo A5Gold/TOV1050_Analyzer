@@ -23,7 +23,7 @@ vi.mock('../../components/ExceptionTable', () => ({
 
 // Mock Electron API
 window.electronAPI = {
-  openFile: vi.fn().mockResolvedValue('C:\\Test\\Data.datac'),
+  openFile: vi.fn().mockResolvedValue('C:\\Test\\Data.csv'),
   saveFile: vi.fn().mockResolvedValue({ success: true, filePath: 'saved.xlsx' })
 };
 

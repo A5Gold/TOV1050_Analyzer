@@ -238,6 +238,7 @@ CREATE TABLE IF NOT EXISTS saved_repeated_exceptions (
     -- Task Run Data (identifies the comparison context)
     line TEXT NOT NULL,
     track TEXT NOT NULL,
+    session TEXT NOT NULL DEFAULT 'Mainline',
     date_str TEXT NOT NULL,                   -- Latest analysis date (YYYYMMDD)
     task_run_date TEXT,                       -- Task run date (YYYY/MM/DD format for display, stored as ISO)
     

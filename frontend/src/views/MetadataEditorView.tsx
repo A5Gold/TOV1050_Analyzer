@@ -147,6 +147,7 @@ const MetadataEditorView: React.FC = () => {
                       let label = name;
                       if (name === 'threshold') label = 'Thresholds';
                       else if (name === 'location type') label = 'Location intervals';
+                      else if (name.toLowerCase() === 'exception boundarys' || name.toLowerCase() === 'exception boundaries') label = 'Boundaries';
                       else if (name.toLowerCase().includes('track type')) label = name.replace(/ track type$/i, ' direction');
                       return { label, sheet: name };
                   });

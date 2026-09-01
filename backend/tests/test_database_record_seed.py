@@ -106,6 +106,16 @@ def _create_empty_database(path: Path) -> None:
     DatabaseManager.reset_instance()
 
 
+def test_fresh_database_defaults_to_no_legacy_seed(tmp_path):
+    db_path = tmp_path / "fresh.db"
+    DatabaseManager.reset_instance()
+    manager = DatabaseManager(str(db_path))
+    try:
+        with manager.get_connection() as conn:
+            assert conn.execute("SELECT COUNT(*) FROM saved_repeated_exceptions").fetchone()[0] == 0
+    finally:
+        manager.close()
+        DatabaseManager.reset_instance()
 def _connect(path: Path) -> sqlite3.Connection:
     conn = sqlite3.connect(path)
     conn.row_factory = sqlite3.Row

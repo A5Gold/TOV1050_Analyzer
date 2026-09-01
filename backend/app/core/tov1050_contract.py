@@ -67,11 +67,25 @@ def parse_input_filename(file_path: str | Path) -> TOV1050FileContext:
         )
     return TOV1050FileContext(
         date_str=match.group("date"),
-        line=match.group("line").upper(),
-        track=match.group("track").upper(),
+        line=_validate_filename_line(match.group("line")),
+        track=_validate_filename_track(match.group("track")),
         station_start=match.group("start").upper(),
         station_end=match.group("end").upper(),
     )
+
+
+def _validate_filename_line(line: str) -> str:
+    value = str(line).strip().upper()
+    if value not in LINE_WORKBOOKS:
+        raise ValueError(f"Unsupported TOV1050 line in filename: {line}")
+    return value
+
+
+def _validate_filename_track(track: str) -> str:
+    value = str(track).strip().upper()
+    if value not in {"UT", "DT"}:
+        raise ValueError(f"Unsupported TOV1050 direction in filename: {track}")
+    return value
 
 
 def build_output_filename(
@@ -85,12 +99,16 @@ def build_output_filename(
     extension: str,
 ) -> str:
     """Build YYYYMMDD_LINE_TRACK_SESSION_START_END_ARTIFACT.ext."""
+    logical_line = _validate_filename_line(line)
+    direction = _validate_filename_track(track)
     session_name = normalize_session(session)
+    if session_name not in LINE_SESSIONS[logical_line]:
+        raise ValueError(f"Session {session_name!r} is not supported for {logical_line}")
     ext = extension.lstrip(".")
     fields = [
         str(date_str).strip(),
-        str(line).strip().upper(),
-        str(track).strip().upper(),
+        logical_line,
+        direction,
         session_name.upper(),
         str(station_start).strip().upper(),
         str(station_end).strip().upper(),

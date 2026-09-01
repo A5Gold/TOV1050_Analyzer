@@ -195,7 +195,14 @@ class MetadataService:
                     # Use internal load method if available, or just recursive call with correct name (risky if infinite loop, but we broke loop by using matched_sheet)
                     # Better to use MetadataManager directly to avoid recursion logic issues
                     # Create new manager to be safe
-                    mgr_retry = MetadataManager(config_path=file_path)
+                    # Preserve the TOV1050 long-form schema on normalized-sheet
+                    # retries; falling back to the legacy manager would drop
+                    # Location Type/min/max fields.
+                    retry_manager_type = TOV1050MetadataManager if filename in {
+                        *LINE_WORKBOOKS.values(),
+                        "TKS metadata.xlsx",
+                    } else MetadataManager
+                    mgr_retry = retry_manager_type(config_path=file_path)
                     # Access internal _load_sheet logic via public method if possible, or protected
                     df = mgr_retry._load_sheet(matched_sheet)
                     
@@ -254,6 +261,8 @@ class MetadataService:
                 logger.info("Copied original file to temp location")
             
             df = pd.DataFrame(data)
+            if sheet_name == 'threshold' and self._is_tov1050_workbook(filename):
+                df = self._canonicalize_tov1050_thresholds(df)
             
             with pd.ExcelWriter(temp_path, engine='openpyxl', mode='a', if_sheet_exists='replace') as writer:
                 df.to_excel(writer, sheet_name=sheet_name, index=False)
@@ -299,3 +308,57 @@ class MetadataService:
 
         logger.info(f"Configuration saved successfully. Backup: {backup_path}")
         return {"status": "success", "backup": backup_path}
+
+    @staticmethod
+    def _is_tov1050_workbook(filename: str) -> bool:
+        return filename in {*LINE_WORKBOOKS.values(), "TKS metadata.xlsx"}
+
+    def _canonicalize_tov1050_thresholds(self, frame: pd.DataFrame) -> pd.DataFrame:
+        """Write one stable detector schema and reject mixed editor payloads."""
+        if frame.empty:
+            raise ValueError("TOV1050 threshold payload cannot be empty")
+        aliases = {str(column).strip().lower(): column for column in frame.columns}
+        rename = {}
+        for canonical, candidates in {
+            "Class": ("class", "location type", "location_type"),
+            "Track Type": ("track type", "track_type"),
+            "Exc Type": ("exc type", "exception type", "exception_type"),
+            "min": ("min", "minimum"),
+            "max": ("max", "maximum"),
+        }.items():
+            for candidate in candidates:
+                if candidate in aliases:
+                    rename[aliases[candidate]] = canonical
+                    break
+        frame = frame.rename(columns=rename).copy()
+        required = {"Class", "Track Type", "Exc Type"}
+        missing = sorted(required.difference(frame.columns))
+        if missing:
+            raise ValueError("TOV1050 threshold payload missing columns: " + ", ".join(missing))
+        wide = {
+            column for column in frame.columns
+            if column.rsplit(" ", 1)[-1] in {"L1", "L2", "L3"}
+            and any(column.startswith(prefix) for prefix in ("Stagger ", "Low Height ", "High Height ", "Wire Wear "))
+            and frame[column].notna().any()
+        }
+        if wide and {"min", "max"}.intersection(frame.columns):
+            raise ValueError("TOV1050 threshold payload mixes long and wide columns")
+        if {"min", "max"}.intersection(frame.columns) and not wide:
+            frame = MetadataManager._normalize_thresholds(
+                MetadataManager.__new__(MetadataManager), frame
+            )
+        canonical = ["Class", "Track Type", "Exc Type"]
+        canonical += [
+            f"{prefix} L{level}"
+            for prefix in ("Stagger", "Wire Wear", "High Height", "Low Height")
+            for level in (1, 2, 3)
+            if f"{prefix} L{level}" in frame.columns
+        ]
+        result = frame.loc[:, list(dict.fromkeys(canonical))].copy()
+        for column in result.columns:
+            if column not in {"Class", "Track Type", "Exc Type"}:
+                result[column] = pd.to_numeric(
+                    result[column].astype(str).str.replace(",", "", regex=False).str.strip(),
+                    errors="coerce",
+                )
+        return result

@@ -72,8 +72,14 @@ def generate_filename(
         ...                   task_no="U1", station_start="HUH", station_end="RAC")
         "20260127_EAL_U1_HUH-RAC_Exception_Report.xlsx"
     """
-    # TOV1050 format is selected only when a session is present, preserving
-    # compatibility with the copied TOV640 export routes.
+    tov1050_lines = {"AEL", "TCL", "DRL", "ISL", "KTL", "TKL", "TWL"}
+    # TOV1050 exports must always carry the selected session and station range.
+    if str(line).strip().upper() in tov1050_lines and not session:
+        raise ValueError("TOV1050 export requires an explicit session")
+    if str(line).strip().upper() in tov1050_lines and (not station_start or not station_end):
+        raise ValueError("TOV1050 export requires station_start and station_end")
+
+    # TOV1050 format is selected when a session is present.
     if session:
         artifact = {
             'raw': 'Catenary_Report',
@@ -88,8 +94,8 @@ def generate_filename(
             line=line,
             track=track,
             session=session,
-            station_start=station_start or 'UNKNOWN',
-            station_end=station_end or 'UNKNOWN',
+            station_start=station_start,
+            station_end=station_end,
             artifact=artifact,
             extension=extension,
         )
@@ -175,10 +181,16 @@ async def analyze_data(request: AnalyzeRequest):
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
 
-    try:
-        parsed_name = parse_input_filename(data_path)
-    except ValueError:
-        parsed_name = None
+    # The form is the source of truth for TOV1050 context.  Real-world CSV
+    # exports often have operational basenames (for example
+    # ``20260817_022959_olpar.csv``) that are not report filenames.  Parse a
+    # canonical basename only as a best-effort fallback for omitted fields.
+    parsed_name = None
+    if is_tov1050:
+        try:
+            parsed_name = parse_input_filename(data_path)
+        except ValueError:
+            logger.info("Ignoring non-canonical input basename: %s", data_path.name)
     station_start = request.station_start or (parsed_name.station_start if parsed_name else None)
     station_end = request.station_end or (parsed_name.station_end if parsed_name else None)
     # Cache the normalized context so every export uses the same inferred
@@ -454,6 +466,8 @@ async def compare_history(files: List[UploadFile] = File(...)):
             "chart_data": all_charts # Return List of chart data
         }
 
+    except ValueError as e:
+        raise HTTPException(status_code=422, detail=str(e)) from e
     except Exception as e:
         import traceback
         traceback.print_exc()
@@ -550,6 +564,8 @@ async def generate_compare_report(request: GenerateExportRequest):
             media_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
         )
 
+    except ValueError as e:
+        raise HTTPException(status_code=422, detail=str(e)) from e
     except Exception as e:
         import traceback
         traceback.print_exc()
@@ -681,6 +697,8 @@ async def generate_report_from_data(request: GenerateAnalysisReportRequest):
             media_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
         )
 
+    except ValueError as e:
+        raise HTTPException(status_code=422, detail=str(e)) from e
     except Exception as e:
         import traceback
         traceback.print_exc()
@@ -732,6 +750,8 @@ async def export_raw_data(
             'Content-Disposition': f'attachment; filename="{filename}"; filename*=utf-8\'\'{encoded_filename}'
         }
         return StreamingResponse(csv_file, headers=headers, media_type='text/csv')
+    except ValueError as e:
+        raise HTTPException(status_code=422, detail=str(e)) from e
     except Exception as e:
         import traceback
         traceback.print_exc()
@@ -833,6 +853,8 @@ async def export_raw_data_generate(request: ExportRawRequest):
         
         return StreamingResponse(csv_file, headers=headers, media_type='text/csv')
         
+    except ValueError as e:
+        raise HTTPException(status_code=422, detail=str(e)) from e
     except Exception as e:
         import traceback
         traceback.print_exc()

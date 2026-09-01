@@ -35,7 +35,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { RepeatedRecordSectionCounts, SavedRepeatedRecord } from '../../types/api';
 import FilterPanel from './FilterPanel';
 import { useDatabaseStore } from '../../store/useDatabaseStore';
-import { TOV1050_LINES, TOV1050_SESSIONS } from '../../config/tov1050';
+import { TOV1050_LINES, TOV1050_SESSIONS, Tov1050Line, Tov1050Session } from '../../config/tov1050';
 
 // =============================================================================
 // TYPES
@@ -47,7 +47,7 @@ interface LineTabPanelProps {
   /** Loading state */
   loading: boolean;
   /** Callback when Line/Section filter changes (legacy, optional) */
-  onFilterChange?: (line: string | null, section: string | null) => void;
+  onFilterChange?: (line: Tov1050Line | null, session: Tov1050Session | null) => void;
   /** Child component to render the table */
   children: (filteredRecords: SavedRepeatedRecord[]) => React.ReactNode;
 }
@@ -72,10 +72,10 @@ const LINE_TABS = TOV1050_LINES.map((line, index) => ({
 // Feature-006: Separate section options for EAL (all) vs TML (Mainline only)
 // BUG 10.9.1-1 FIX: Use 'LOW S1' as value to match DatabaseRecordView SECTION_OPTIONS
 // This prevents MUI "out-of-range value" warning when selecting LOW S1 button
-const sectionOptionsForLine = (line: string) => [
+const sectionOptionsForLine = (line: Tov1050Line) => [
   { label: 'All Sections', value: null },
   ...(TOV1050_SESSIONS[line as keyof typeof TOV1050_SESSIONS] ?? ['Mainline'])
-    .map((value) => ({ label: value, value })),
+    .map((value) => ({ label: value, value: value as Tov1050Session })),
 ];
 
 const SECTION_COUNT_KEYS: Record<string, keyof RepeatedRecordSectionCounts> = {
@@ -155,7 +155,7 @@ const LineTabPanel: React.FC<LineTabPanelProps> = ({
   // =========================================================================
 
   const [selectedLineIndex, setSelectedLineIndex] = useState(0);
-  const [selectedSection, setSelectedSection] = useState<string | null>(null);
+  const [selectedSection, setSelectedSection] = useState<Tov1050Session | null>(null);
   const [filterOpen, setFilterOpen] = useState(false);
 
   // Phase 12 Bug 4: Use API-based line counts instead of local computation
@@ -170,7 +170,7 @@ const LineTabPanel: React.FC<LineTabPanelProps> = ({
   // COMPUTED VALUES
   // =========================================================================
 
-  const selectedLine = LINE_TABS[selectedLineIndex].value;
+  const selectedLine = LINE_TABS[selectedLineIndex].value as Tov1050Line;
   const sectionCounts = repeatedRecordSectionCounts ?? EMPTY_SECTION_COUNTS;
 
   // Feature-006: Get section options based on selected line (TML only shows Mainline)
@@ -195,10 +195,6 @@ const LineTabPanel: React.FC<LineTabPanelProps> = ({
     if (selectedSection) {
       filtered = filtered.filter((record) => {
         const section = record.section || '';
-        // Handle LOW S1 matching - records with 'LOW' in section match 'LOW S1' filter
-        if (selectedSection === 'LOW S1') {
-          return section.includes('LOW');
-        }
         return section === selectedSection;
       });
     }
@@ -223,7 +219,7 @@ const LineTabPanel: React.FC<LineTabPanelProps> = ({
 
   const handleSectionChange = useCallback(
     (_event: React.MouseEvent<HTMLElement>, newSection: string | null) => {
-      const normalizedSection = newSection || null;
+      const normalizedSection = (newSection || null) as Tov1050Session | null;
       setSelectedSection(normalizedSection);
       // Legacy callback (optional) — FilterPanel now handles fetch internally
       onFilterChange?.(selectedLine, normalizedSection);
@@ -298,8 +294,8 @@ const LineTabPanel: React.FC<LineTabPanelProps> = ({
         {/* Section Sub-tabs (Toggle Buttons) — always visible */}
         <Box sx={{ py: 1, px: 1.5, bgcolor: 'background.paper', overflowX: 'auto' }}>
           <Stack direction="row" spacing={2} alignItems="center" sx={{ minWidth: 'max-content' }}>
-            <Typography variant="body2" color="text.secondary">
-              Section:
+              <Typography variant="body2" color="text.secondary">
+              Session:
             </Typography>
             <ToggleButtonGroup
               value={selectedSection ?? ''}

@@ -1,6 +1,19 @@
 import { execFileSync, spawn } from 'node:child_process';
 import path from 'node:path';
 import process from 'node:process';
+import net from 'node:net';
+
+const canListen = (port) => new Promise((resolve) => {
+  const server = net.createServer();
+  server.once('error', () => resolve(false));
+  server.once('listening', () => server.close(() => resolve(true)));
+  // Bind all local interfaces so IPv4/IPv6 listeners are both detected.
+  server.listen(port);
+});
+
+let devPort = Number(process.env.TOV1050_DEV_PORT || 5174);
+while (!(await canListen(devPort))) devPort += 1;
+process.env.TOV1050_DEV_PORT = String(devPort);
 
 const worktreeOutput = execFileSync(
   'git',
@@ -34,7 +47,7 @@ const npmCommand = npmCli ? process.execPath : (process.platform === 'win32' ? '
 const npmArguments = npmCli ? [npmCli, 'run', targetScript] : ['run', targetScript];
 const child = spawn(npmCommand, npmArguments, {
   cwd: canonicalRoot,
-  env: { ...process.env, NODE_USE_SYSTEM_CA: '1' },
+  env: { ...process.env, NODE_USE_SYSTEM_CA: '1', TOV1050_DEV_PORT: String(devPort) },
   stdio: 'inherit',
 });
 

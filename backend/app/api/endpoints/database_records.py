@@ -48,11 +48,29 @@ from app.core.database import (
     import_repeated_records_from_data,
 )
 from app.core.check_1_year_rules import evaluate_recurrence, append_recurrence_ids, target_version, parse_date
+from app.core.tov1050_contract import LINE_SESSIONS, normalize_session
 
 # Configure logging
 logger = logging.getLogger(__name__)
 
 router = APIRouter()
+
+def _validate_tov1050_context(line: str, track: str, session: str) -> str:
+    logical_line = str(line or '').strip().upper()
+    direction = str(track or '').strip().upper()
+    # Legacy EAL/TML callers remain available for explicit regression tools;
+    # the product UI only supplies TOV1050 lines and takes the strict branch.
+    if logical_line not in LINE_SESSIONS:
+        return str(session or 'Mainline').strip() or 'Mainline'
+    if direction not in {'UT', 'DT'}:
+        raise HTTPException(status_code=422, detail=f'Unsupported TOV1050 direction: {track}')
+    try:
+        normalized = normalize_session(session)
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+    if normalized not in LINE_SESSIONS[logical_line]:
+        raise HTTPException(status_code=422, detail=f'Session {normalized} is not supported for {logical_line}')
+    return normalized
 
 
 # =============================================================================
@@ -64,6 +82,7 @@ class SaveRepeatedRecordsRequest(BaseModel):
     """Request model for saving repeated records (Sub-module 2)."""
     line: str
     track: str
+    session: str = 'Mainline'
     date_str: str
     repeated_exceptions: List[Dict[str, Any]]
     task_no: Optional[str] = None
@@ -110,6 +129,7 @@ class ImportRecordsRequest(BaseModel):
     records: List[Dict[str, Any]]
     line: str
     track: str
+    session: str = 'Mainline'
     date_str: str
 
 
@@ -205,6 +225,7 @@ async def save_repeated_records(request: SaveRepeatedRecordsRequest) -> SaveSucc
     - `comparison_files`: List of files used in comparison
     """
     try:
+        normalized_session = _validate_tov1050_context(request.line, request.track, request.session)
         if not request.repeated_exceptions:
             raise HTTPException(
                 status_code=400,
@@ -236,6 +257,7 @@ async def save_repeated_records(request: SaveRepeatedRecordsRequest) -> SaveSucc
                 conn=conn,
                 line=request.line,
                 track=request.track,
+                session=normalized_session,
                 date_str=request.date_str,
                 repeated_exceptions=request.repeated_exceptions,
                 task_no=request.task_no,
@@ -360,6 +382,7 @@ async def get_repeated_record_counts():
 async def get_repeated_records(
     line: Optional[str] = Query(None, description="Filter by line"),
     track: Optional[str] = Query(None, description="Filter by track"),
+    session: Optional[str] = Query(None, description="Filter by TOV1050 session"),
     section: Optional[str] = Query(None, description="Filter by section (Mainline/RAC/LOW S1/LMC/Unknown)"),
     level: Optional[str] = Query(None, description="Filter by level (L1/L2/L3)"),
     action: Optional[str] = Query(None, description="Filter by action status"),
@@ -388,11 +411,15 @@ async def get_repeated_records(
     - `chainage_from`, `chainage_to`: Chainage range filter (partial overlap logic)
     """
     try:
+        if session:
+            _validate_tov1050_context(line or 'AEL', track or 'UT', session)
         filters: Dict[str, Any] = {}
         if line:
             filters['line'] = line
         if track:
             filters['track'] = track
+        if session:
+            filters['session'] = normalize_session(session)
         if section:
             filters['section'] = section
         if level:
@@ -624,6 +651,7 @@ async def delete_repeated_record_endpoint(record_id: int) -> SuccessResponse:
 async def export_repeated_records(
     line: Optional[str] = Query(None),
     track: Optional[str] = Query(None),
+    session: Optional[str] = Query(None),
     action: Optional[str] = Query(None),
     level: Optional[str] = Query(None),
     date_from: Optional[str] = Query(None),
@@ -636,11 +664,15 @@ async def export_repeated_records(
     Returns an Excel file (.xlsx) as a downloadable attachment.
     """
     try:
+        if session:
+            _validate_tov1050_context(line or 'AEL', track or 'UT', session)
         filters: Dict[str, Any] = {}
         if line:
             filters['line'] = line
         if track:
             filters['track'] = track
+        if session:
+            filters['session'] = normalize_session(session)
         if action:
             filters['action'] = action
         if level:
@@ -714,6 +746,7 @@ async def import_repeated_records(request: ImportRecordsRequest) -> ImportRecord
     - `error_count`: Number of failed records
     """
     try:
+        normalized_session = _validate_tov1050_context(request.line, request.track, request.session)
         if not request.records:
             raise HTTPException(
                 status_code=400,
@@ -727,7 +760,8 @@ async def import_repeated_records(request: ImportRecordsRequest) -> ImportRecord
                 records=request.records,
                 line=request.line,
                 track=request.track,
-                date_str=request.date_str
+                date_str=request.date_str,
+                session=normalized_session
             )
         
         total_processed = result['created_count'] + result['updated_count'] + result['error_count']

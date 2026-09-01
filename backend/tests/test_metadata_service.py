@@ -113,6 +113,25 @@ def test_validation_logic_stagger():
         "Stagger L3": 350
     }
     assert service.validate_row(valid_row) == True
+
+
+def test_tov1050_save_writes_canonical_threshold_columns(tmp_path):
+    workbook = tmp_path / "LAR_TCL metadata.xlsx"
+    with pd.ExcelWriter(workbook) as writer:
+        pd.DataFrame({"Location Type": ["Open"], "Track Type": ["Tangent"], "Exc Type": ["Low Height L1"], "min": [None], "max": ["4,500"]}).to_excel(writer, sheet_name="threshold", index=False)
+
+    service = MetadataService(config_dir=tmp_path)
+    service.save_configuration(workbook.name, [{
+        "Location Type": "Open",
+        "Track Type": "Tangent",
+        "Exc Type": "Low Height L1",
+        "min": None,
+        "max": "4,500",
+    }])
+
+    reloaded = pd.read_excel(workbook, sheet_name="threshold")
+    assert list(reloaded.columns) == ["Class", "Track Type", "Exc Type", "Low Height L1"]
+    assert reloaded.loc[0, "Low Height L1"] == 4500
     
     invalid_row = {
         "Exc Type": "Stagger Left",
