@@ -23,6 +23,7 @@
 - TOV1050 仍使用既有 line/session/track、CSV `Km -> Chainage`、`1.#IO` 清洗、前後 100 rows trim 與 fail-closed metadata resolution 規則。
 - TOV640 detector 語意可重用；TOV1050 adapter 只負責 CSV、欄位、metadata workbook 與 context 差異。
 - `TKS` 是 `TKL` session；UI 顯示欄位使用 `Track`，不再使用 `Direction`。
+- TOV1050 原始 CSV 的 `Km` 會在 adapter 邊界轉成公尺；graph、`FromM/ToM`、metadata interval 與 bracket mapping 統一使用 `m`，以貼合 TOV640。
 - 不修改 `C:\Smart Maintanence\TOV640_Analyzer`，不覆蓋既有未提交修改。
 
 ## 現況盤點
@@ -41,19 +42,21 @@
 3. 重新設計 Exception Generator 配置輸入：run list quick-fill、Track 選擇、Station/Task 可覆寫、檔名 fallback 與驗證狀態。
 4. 為六個分析模組加入 skeleton/staged progress；匯出加入背景 processing 狀態。
 5. 以 gpt-image-2 產生輸入表單概念稿及各模組/整體架構說明圖，整合至對應 Algorithm Explain dialog 與 About。
+6. 保留現有 Graph／Table 結果版面，加入圖表多解析度效能最佳化、Graph/Table 選取同步與 FromM-ToM zoom 定位。
 
 ### 不在範圍
 
 - 不重寫 TOV640 detector 的判定語意。
-- 不把 reference workbook 直接當成 packaged runtime 檔案；runtime 是否採寬表或 adapter 轉換需在設計審批後決定。
+- 不把 reference workbook 直接當成 packaged runtime 檔案；runtime 是否採寬表或 adapter 轉換需在設計審批後決定，且所有 TOV1050 km 來源值必須明確轉成 m 並記錄來源。
 - 不在未完成 benchmark 前承諾固定秒數或記憶體上限。
 - 不引入第二套 UI design system；沿用 MUI/Plotly、既有 token 與 Electron workflow。
+- 不以 Graph／Table 子頁重新設計取代既有工作流；只加入可驗證的 performance、selection sync 與 zoom enhancement。
 
 ### 資料流與錯誤處理
 
 候選資料流：
 
-`CSV stream -> row lineage/cleaning -> metadata wide-table adapter -> detector state -> exception summaries -> chart decimation + exact outlier points -> UI/export`
+`CSV stream (Km) -> row lineage/cleaning -> Km-to-m normalization -> metadata wide-table adapter (m) -> detector state -> exception summaries (FromM/ToM) -> chart decimation + exact outlier points -> UI/export`
 
 任何 schema、metadata sheet、interval overlap/ambiguity 或必要 context 錯誤都 fail closed；`1.#IO`、部分 wire 缺測與可計數的 invalid numeric cell 顯示在 cleaning summary，但不靜默產生 exception。圖表取樣不可刪除 exception peak、threshold crossing、區間邊界或 selected exception 附近資料。
 
@@ -61,6 +64,7 @@
 
 - 八份 TOV1050 metadata workbook 的寬表 schema、sheet 命名、欄位型別與 interval 資料可被檢查並產生差異報告；DRL 與 TOV640 EAL/TML 的對照結果可追溯。
 - `TOV1050 TL-BK No.xlsx` 的 line/track/chainage/bracket mapping 可被 resolver 或報告引用，重複與空白資料會被診斷。
+- TOV1050 `Km` 來源值與標準化後的 `m` 值可互相追溯；`98150.2` 類型的 graph 座標與 `FromM/ToM`、metadata boundary 單位一致。
 - 116 MB KTL CSV 與 32 KB DRL CSV 都可完成分析；chunk/full-frame 結果在代表性 fixture 上一致。
 - Plotly UI 在取樣後仍保留所有異常峰值與選取定位，互動不因完整 raw trace 阻塞主執行緒。
 - Exception Generator 可由 run list 快速填入 line、track、station start/end、task no.，且每個文字欄位仍可覆寫並通過 validation。
