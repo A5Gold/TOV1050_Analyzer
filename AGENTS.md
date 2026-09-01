@@ -13,6 +13,15 @@
 - 若 Linear MCP 可用，使用 MCP 完成 project/issue 的查找、建立、更新與留言，並在回覆中提供實際操作結果。
 - 若 Linear MCP 不可用或連線失效，立即向使用者明確說明「本工作階段未掛載 Linear MCP」，不得聲稱已建立、更新或同步 issue，也不得以猜測的 issue id 代替。
 - Linear MCP 缺失時仍可在 repo 的 request/spec 文件記錄待同步內容，但必須標記為 `Linear sync blocked`，列出偵測到的工具狀態、影響與下一步（重新連接／啟用 Linear MCP 後再同步）；不可把 repo 文件當成 Linear 更新的替代品。
+- Linear MCP 恢復流程（PowerShell）如下，執行前只對該程序設定系統 CA：
+  ```powershell
+  $env:NODE_USE_SYSTEM_CA='1'
+  codex mcp list
+  codex mcp get linear
+  codex mcp login linear
+  ```
+  若 `linear` 設定不存在，才使用 `codex mcp add linear --url https://mcp.linear.app/mcp` 後再執行 `codex mcp login linear`；不可重複新增同名 server。
+- OAuth 登入成功後必須關閉並重新開啟 Codex，或建立新的 local task；已啟動的工作階段不會動態增加新 MCP tool。重開後再次驗證工具是否實際出現在工作階段清單中。
 - 重新連接或恢復工具後，第一個動作應先同步累積的 request/spec、實作進度、測試結果與阻塞，再繼續新的開發工作。
 
 ## 執行與同步
