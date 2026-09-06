@@ -1,4 +1,5 @@
 import React from 'react';
+import wearCalculationImage from '../../assets/wear-calculation-algorithm.png';
 import AltRouteIcon from '@mui/icons-material/AltRoute';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import CloseIcon from '@mui/icons-material/Close';
@@ -74,6 +75,9 @@ const WearAlgorithmDialog: React.FC<WearAlgorithmDialogProps> = ({ open, onClose
         <Typography variant="body2" color="text.secondary" sx={{ pt: 2, maxWidth: '72ch' }}>
           依實際處理次序說明檔案辨識、張力段解析、主線範圍、衝突處理、覆蓋率及保存條件。
         </Typography>
+        <Box component="figure" sx={{ m: 0, py: 2, display: 'flex', justifyContent: 'center' }}>
+          <Box component="img" src={wearCalculationImage} alt="Wear calculation algorithm flow" sx={{ width: '100%', maxWidth: 720, maxHeight: 260, objectFit: 'contain', borderRadius: 1 }} />
+        </Box>
         <Stack divider={<Divider flexItem />}>
           <Box component="section" aria-labelledby="wear-guide-input" sx={{ py: 3 }}>
             <Stack direction="row" spacing={1.25} alignItems="center" sx={{ mb: 1 }}>

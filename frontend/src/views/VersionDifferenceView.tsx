@@ -27,6 +27,7 @@ import {
   useVersionDifferenceStore,
   type VersionDifferenceFileRole,
 } from '../store/useVersionDifferenceStore';
+import TaskLoadingState from '../components/TaskLoadingState';
 
 interface FileSlotProps {
   cycle: VersionDifferenceCycle;
@@ -217,6 +218,7 @@ const VersionDifferenceView = () => {
 
       {error && !response && <Alert severity="error">{error}</Alert>}
       <Divider />
+      {loading && <TaskLoadingState stage="detecting" />}
       <VersionDifferenceChart key={activeTab.id} response={response} loading={loading} error={error} />
     </Stack>
   );

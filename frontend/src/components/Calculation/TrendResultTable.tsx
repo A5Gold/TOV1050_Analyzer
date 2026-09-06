@@ -4,6 +4,7 @@ import DownloadIcon from '@mui/icons-material/Download';
 import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
 import * as XLSX from 'xlsx';
 import { TrendResult } from '../../types/api';
+import TaskLoadingState from '../TaskLoadingState';
 
 interface TrendResultTableProps {
   results: TrendResult[];
@@ -78,6 +79,19 @@ const tpColumns: GridColDef[] = Array.from({ length: 6 }, (_, i) => ({
 
 const TrendResultTable = ({ results, onViewChart, selectedId }: TrendResultTableProps) => {
   const [filterRec, setFilterRec] = useState<TrendResult['recommendation'] | null>(null);
+  const [isExporting, setIsExporting] = useState(false);
+
+  const handleExport = async () => {
+    if (!results.length || isExporting) return;
+    setIsExporting(true);
+    // Yield once so the export state is painted before synchronous XLSX generation.
+    await new Promise<void>(resolve => window.setTimeout(resolve, 0));
+    try {
+      exportExcel(results);
+    } finally {
+      setIsExporting(false);
+    }
+  };
 
   const rows = useMemo(
     () => results.map((r, i) => ({ ...r, id: r.exception_id || `${r.tension_length}-${i}` })),
@@ -182,12 +196,13 @@ const TrendResultTable = ({ results, onViewChart, selectedId }: TrendResultTable
           size="small"
           variant="outlined"
           startIcon={<DownloadIcon />}
-          onClick={() => exportExcel(results)}
-          disabled={results.length === 0}
+          onClick={() => void handleExport()}
+          disabled={results.length === 0 || isExporting}
         >
-          Export Excel
+          {isExporting ? 'Exporting...' : 'Export Excel'}
         </Button>
       </Box>
+      {isExporting && <Box sx={{ mb: 1, display: 'flex', justifyContent: 'flex-end' }}><TaskLoadingState stage="exporting" exportMode /></Box>}
       <Box sx={{ display: 'flex', gap: 1, mb: 1, flexWrap: 'wrap' }}>
         {(Object.entries(counts) as [TrendResult['recommendation'], number][]).map(([rec, count]) => (
           <Chip

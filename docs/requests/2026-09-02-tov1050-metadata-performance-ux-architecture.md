@@ -2,9 +2,9 @@
 
 - 日期：2026-09-02
 - Linear project：TOV1050_Analyzer（https://linear.app/david-chu/project/tov1050-analyzer-d897dfced2f1）
-- Linear issue：DAV-9（功能增強收納；本工作尚待拆分/更新）
+- Linear issue：DAV-10（TOV1050 metadata、效能與 UX 交付）
 - 負責人：Codex + 使用者審閱
-- 狀態：Draft
+- 狀態：In Progress（candidate promotion/write-back 尚待使用者核准）
 
 ## 需求與目的
 
@@ -30,8 +30,8 @@
 
 - 相關程式碼：`frontend/src/views/ExceptionGeneratorView.tsx`（617 行單一視圖）、`frontend/src/components/ChartComponent.tsx`（Plotly scatter traces）、`frontend/src/views/MetadataEditorView.tsx`、`backend/app/api/endpoints/analysis.py`、`backend/app/core/tov1050_metadata.py`、`backend/app/core/tov1050_contract.py`。
 - 相關 API／資料流程：`POST /analyze` 目前載入完整 DataFrame 並回傳 column-oriented `chart_data`；`GET /metadata-preview` 提供 metadata 預覽。分析結果由 `ExceptionDetector.analyze` 產生。
-- 現有測試：`backend/tests/test_tov1050_adapter.py`、`test_metadata_service.py`、`test_api_analysis.py`、`frontend/src/views/__tests__/ExceptionGeneratorView.test.tsx` 等；repo 尚有未提交修改。
-- 已知風險或阻塞：Linear MCP issue 操作工具未在本工作階段暴露，只能引用 repo 已記錄的 DAV issue；`00 Reference Document/config/DRL metadata.xlsx` 與根目錄 `config/DRL metadata.xlsx` 格式不同，需明確分成 reference workbook 與 packaged runtime workbook。
+- 現有測試：`backend/tests/test_tov1050_adapter.py`、`test_tov1050_metadata_candidates.py`、`test_metadata_service.py`、`test_api_analysis.py`、`frontend/src/views/__tests__/ExceptionGeneratorView.test.tsx` 等；repo 尚有未提交修改。
+- 已知風險或阻塞：`00 Reference Document/config/DRL metadata.xlsx` 與根目錄 `config/DRL metadata.xlsx` 格式不同，需明確分成 reference workbook 與 packaged runtime workbook。
 
 ## 設計
 
@@ -75,24 +75,37 @@
 
 ### 實作
 
-尚未開始；等待設計分段審批。
+- 2026-09-02：確認本工作階段實際掛載 Linear MCP 與 codebase-memory MCP；已重新 index current worktree。
+- 2026-09-02：完成七份 TOV1050 metadata candidate 的初步產生與來源 audit；來源 workbook 維持唯讀。
+- 2026-09-02：開始審核 ISL、KTL、LAR_AEL、LAR_TCL、TKL、TKS、TWL candidate，重點為 wide schema、interval overlap、invalid rows、TL-BK mapping 與來源 row lineage。
+- 2026-09-02：完成 provenance-preserving validator 強化；修正 location parity tuple 與 provenance target 契約，並將 reversed interval、TL-BK marker、exact duplicate identity、location/bracket conflict、provenance mismatch 納入可追溯診斷。七份 candidate 重新驗證結果為 ISL/KTL `fail`，LAR_AEL/LAR_TCL/TKL/TKS/TWL `review_required`；所有候選仍維持 review-only。新增 90 萬筆 benchmark 腳本與摘要，確認 detector 使用 899,800 筆完整資料、chart 僅送出 12,000 個 envelope 點。
+- 2026-09-02：完成 detail chart session/tab isolation review；`ChartComponent` 以 session key remount，detail request 帶入 `file_path`/`line`，後端若來源不同於最近一次分析則重新載入該 CSV，避免全域 raw cache 汙染其他 tab。清除選取時恢復 overview payload。
+- 2026-09-02：依使用者要求唯讀重跑 `scripts/validate_tov1050_metadata_candidates.py --lines ISL KTL LAR_AEL LAR_TCL TKL TKS TWL`；因 ISL/KTL 仍有 `fail` finding，程序回傳 exit code `1`，但已正常產生完整 JSON/Markdown audit。新增 `docs/audits/2026-09-02-tov1050-metadata-review-summary.md`，整理逐線 overlap、反向 interval、TL-BK marker/conflict、invalid row、provenance 與人工決策表；原始與 candidate workbook 均未覆寫。
+- 2026-09-02：使用 A6API `gpt-image-2` 產生四張模組演算法圖，並接入 Exception Detector、Trend Analysis、Wear Calculation、History Compare 四個 Algorithm Explain dialog；原有 Stagger 圖一併納入，五個 dialog 均具備圖像、caption/legend 與可測試 alt text。圖片同時保存在 `docs/visual-guide-assets/` 與前端 assets，未以圖中文字取代程式規格。
+
+目前階段只允許產生候選 workbook、validation、audit 與 provenance 報告；未經使用者批准不得 write-back `config/*.xlsx` 或 `00 Reference Document/config/*.xlsx`。
 
 ### 測試與 debug
 
 ```text
-尚未執行；設計確認後建立 baseline、benchmark 與 focused UI tests。
+既有 backend targeted tests（20 passed）、frontend TypeScript 與 production build 已完成；validator/adapter/chart focused suite 19 passed；七份 candidate validation 已產生 JSON/Markdown；900,000-row benchmark 已完成。
+Benchmark：load 10.971s（82,016.9 rows/s）、detect 5.697s（157,931.4 rows/s）、chart 3.674s、peak RSS 353,013,760 bytes、raw detector parity=true。
+Candidate validation：ISL `fail`（DT 反向 interval 6 列、同軌 overlap 29、provenance invalid mismatch 6）；KTL `fail`（DT 反向/overlap 與 provenance invalid mismatch 10）；LAR_AEL/LAR_TCL/TKL/TKS/TWL `review_required`（TL-BK identity/location conflicts 或 invalid mapping 需人工核准）。
+Isolation focused tests：backend chart-data reload test 通過；metadata/adapter/chart targeted suite 15 passed；frontend production build 通過。ExceptionGeneratorView Vitest 在本機執行超過 90 秒無輸出，已中止並列為待查測試環境／runner hang，非功能失敗判定。
+Algorithm Explain focused tests：Trend、Wear、History Compare 3 個 test files／4 tests 以 Vitest fork pool 單 worker 全部通過；threads pool 曾因 worker 啟動逾時而未完成，視為 runner 環境限制，非功能 assertion 失敗。ExceptionGeneratorView multi-tab focused test 亦以 fork pool 單 worker 通過（4 tests）；執行耗時 178 秒，主要成本在 import/environment，並出現既有 MUI Tabs `act(...)` warnings，沒有 assertion failure。
 ```
 
 ### 驗收結果
 
-尚未驗收。
+部分驗收完成。候選 workbook 的 wide schema/row parity、LAR mapping alias、provenance row parity、status/target mismatch、digest guard、reversed interval 與 TL-BK diagnostics 已有自動驗證；ISL/KTL 的來源 overlap/反向列與所有 mapping marker/conflict 仍需使用者核准，候選不得直接啟用。Detail chart 已完成跨 tab source isolation；About 與五個 Algorithm Explain dialog 的視覺素材已補齊並完成 focused assertions。
 
 ## Linear 同步
 
 - 最後同步時間：2026-09-02
-- Issue 狀態：DAV-9 既有狀態以 repo 文件為準；本階段無 Linear MCP 寫入能力
-- Next action：設計審批後將 metadata、效能、UX/loading、visual guide 拆為可獨立驗收的 issue
-- 阻塞／需要決策：確認寬表作為 reference 外部契約；決定 runtime adapter 是否在載入時轉換為 canonical detector input
+- Issue 狀態：DAV-10 為 In Progress；本工作階段已確認 Linear MCP 可用，將同步本階段 audit、validation、測試與下一步。
+- Next action：由使用者審閱 ISL/KTL 的 DT overlap/反向 interval、ISL/KTL provenance invalid mismatch、TL-BK marker/identity/location conflicts 與 TWL invalid Location，再決定是否批准 candidate promotion；批准前維持 review-only。threads pool runner hang 已以 fork pool 單 worker 驗證替代；ExceptionGeneratorView focused multi-tab 已通過，仍可另行處理其測試中的 `act(...)` warnings 與 import/environment 慢速問題。
+- 阻塞／需要決策：candidate 尚未獲准 write-back；ISL/KTL 的 overlap 與 TL-BK invalid rows、以及 wide threshold adapter 啟用時機仍需使用者審閱。
+- Linear sync：本階段已透過 Linear MCP 更新 DAV-10，附上 validation、benchmark、測試與下一步。
 
 ## 相關檔案
 

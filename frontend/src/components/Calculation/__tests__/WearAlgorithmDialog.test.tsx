@@ -21,5 +21,6 @@ describe('WearAlgorithmDialog', () => {
     expect(screen.getByText(/保存失敗時，待處理內容會保留/)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: '關閉線耗計算邏輯' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: '關閉' })).toBeInTheDocument();
+    expect(screen.getByAltText('Wear calculation algorithm flow')).toBeInTheDocument();
   });
 });

@@ -1,4 +1,5 @@
 import React from 'react';
+import historyCompareImage from '../../assets/history-compare-algorithm.png';
 import {
   Box,
   Button,
@@ -82,6 +83,9 @@ const AlgorithmTutorialDialog: React.FC<AlgorithmTutorialDialogProps> = ({ open,
 
       <DialogContent sx={{ p: 0 }}>
         <Stack spacing={0}>
+          <Box sx={{ px: 3, pt: 2.5, display: 'flex', justifyContent: 'center' }}>
+            <Box component="img" src={historyCompareImage} alt="History compare algorithm flow" sx={{ width: '100%', maxWidth: 720, maxHeight: 260, objectFit: 'contain', borderRadius: 1 }} />
+          </Box>
           <Box sx={{ px: 3, py: 2.5 }}>
             <Stack spacing={2}>
               <Typography variant="h6" color="primary" fontWeight={700}>

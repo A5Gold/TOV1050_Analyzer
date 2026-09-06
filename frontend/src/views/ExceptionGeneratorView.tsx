@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { 
   Box, Button, Card, CardContent, FormControl, InputLabel, 
   MenuItem, Select, TextField, Typography, CircularProgress, 
-  Alert, ToggleButton, ToggleButtonGroup, Stack, Paper, Tabs, Tab, Snackbar
+  Alert, ToggleButton, ToggleButtonGroup, Stack, Paper, Tabs, Tab, Snackbar, Autocomplete, Chip
 } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -29,8 +29,9 @@ import ExceptionTable from '../components/ExceptionTable';
 import { useAnalysisStore, AnalysisSession } from '../store/useAnalysisStore';
 // useDatabaseStore removed - Sub-module 1 (Exception Record) deprecated
 import ExceptionAlgorithmDialog from '../components/ExceptionGenerator/ExceptionAlgorithmDialog';
+import TaskLoadingState from '../components/TaskLoadingState';
 import { fillDataRegionSx, scrollablePageSx } from '../utils/pageLayout';
-import { TOV1050_DIRECTIONS, TOV1050_LINES, sessionsForLine } from '../config/tov1050';
+import { TOV1050_DIRECTIONS, TOV1050_LINES, TOV1050_RUN_PRESETS, sessionsForLine, Tov1050RunPreset } from '../config/tov1050';
 
 // Enable custom parsing for dayjs
 dayjs.extend(customParseFormat);
@@ -54,6 +55,7 @@ const ExceptionGeneratorView = () => {
   const [tutorialOpen, setTutorialOpen] = useState(false);
   const [toast, setToast] = useState<{ open: boolean; message: string; severity: 'info' | 'success' | 'error' }>({ open: false, message: '', severity: 'info' });
   const [isDragActive, setIsDragActive] = React.useState(false);
+  const [exporting, setExporting] = useState(false);
 
   const handleCloseToast = () => setToast({ ...toast, open: false });
 
@@ -94,6 +96,33 @@ const ExceptionGeneratorView = () => {
   // --- Active Session Handlers ---
 
   const activeSession = analysisSessions.find(s => s.id === activeAnalysisTabId);
+
+  const runPresetsForLine = activeSession
+    ? TOV1050_RUN_PRESETS.filter(preset => preset.line === activeSession.line)
+    : [];
+  const selectedRunPreset = activeSession
+    ? runPresetsForLine.find(preset => (
+      preset.track === activeSession.track
+      && preset.section === activeSession.section
+      && preset.taskNo === activeSession.taskNo
+      && preset.stationStart === activeSession.stationStart
+      && preset.stationEnd === activeSession.stationEnd
+    )) || null
+    : null;
+
+  const applyRunPreset = (preset: Tov1050RunPreset | null) => {
+    if (!activeSession || !preset) return;
+    updateAnalysisSession(activeSession.id, {
+      line: preset.line,
+      track: preset.track,
+      section: preset.section,
+      taskNo: preset.taskNo,
+      stationStart: preset.stationStart,
+      stationEnd: preset.stationEnd,
+      result: null,
+      error: null,
+    });
+  };
 
   const handleOpenFile = async () => {
     if (!activeSession) return;
@@ -159,7 +188,8 @@ const ExceptionGeneratorView = () => {
       // Optional fields for custom naming
       task_no: activeSession.taskNo,
       station_start: activeSession.stationStart,
-      station_end: activeSession.stationEnd
+      station_end: activeSession.stationEnd,
+      client_session_id: activeSession.id,
     };
 
     try {
@@ -173,7 +203,7 @@ const ExceptionGeneratorView = () => {
 
     const handleExport = async (type: 'report' | 'raw') => {
         if (!activeSession) return;
-        
+        setExporting(true);
         setToast({ open: true, message: 'Generating Report...', severity: 'info' });
 
         try {
@@ -187,7 +217,8 @@ const ExceptionGeneratorView = () => {
                     exceptions: activeSession.result.exceptions,
                     boundaries: activeSession.result.boundaries,
                     chart_data: activeSession.result.chart_data,
-                    params: activeSession.result.params
+                    params: activeSession.result.params,
+                    client_session_id: activeSession.id,
                 };
                 response = await apiClient.post('/export/report/generate', payload, { responseType: 'blob' });
             } else {
@@ -207,7 +238,8 @@ const ExceptionGeneratorView = () => {
                         task_no: activeSession.taskNo,
                         station_start: activeSession.stationStart,
                         station_end: activeSession.stationEnd
-                    }
+                    },
+                    client_session_id: activeSession.id
                 };
                 response = await apiClient.post('/export/raw/generate', payload, { responseType: 'blob' });
             }
@@ -257,6 +289,8 @@ const ExceptionGeneratorView = () => {
             console.error("Export failed", err);
             updateAnalysisSession(activeSession.id, { error: "Export failed." });
             setToast({ open: true, message: 'Export Failed', severity: 'error' });
+        } finally {
+            setExporting(false);
         }
     };
 
@@ -392,16 +426,18 @@ const ExceptionGeneratorView = () => {
                             <Button 
                                 variant="outlined" 
                                 size="small" 
-                                startIcon={<DownloadIcon />} 
+                                startIcon={exporting ? <CircularProgress size={16} /> : <DownloadIcon />}
                                 onClick={() => handleExport('report')}
+                                disabled={exporting}
                             >
                                 Report
                             </Button>
                             <Button 
                                 variant="outlined" 
                                 size="small" 
-                                startIcon={<DownloadIcon />} 
+                                startIcon={exporting ? <CircularProgress size={16} /> : <DownloadIcon />}
                                 onClick={() => handleExport('raw')}
+                                disabled={exporting}
                             >
                                 Raw
                             </Button>
@@ -425,12 +461,19 @@ const ExceptionGeneratorView = () => {
                         </ToggleButtonGroup>
                     </Paper>
 
+                    {exporting && (
+                      <Box sx={{ px: 2, pt: 1 }}>
+                        <TaskLoadingState stage="exporting" exportMode />
+                      </Box>
+                    )}
+
                     {/* Content */}
                     <Box sx={{ flexGrow: 1, minHeight: 0, overflow: 'hidden' }}>
                         {activeSession.viewMode === 'graph' ? (
                             <Box sx={{ display: 'flex', width: '100%', height: '100%' }}>
                                 <Box sx={{ flexGrow: 1, height: '100%', minWidth: 0 }}>
                                     <ChartComponent 
+                                        key={activeSession.id}
                                         result={activeSession.result}
                                         selectedExceptionId={activeSession.selectedExceptionId}
                                         onSelectException={(id) => updateAnalysisSession(activeSession.id, { selectedExceptionId: id })}
@@ -478,8 +521,33 @@ const ExceptionGeneratorView = () => {
                         Configuration
                     </Typography>
 
+                    {activeSession.loading && <TaskLoadingState stage="detecting" />}
+
                     <Card sx={{ minWidth: 400, maxWidth: 600, width: '90%' }}>
                         <CardContent sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+                            <Box>
+                                <Autocomplete
+                                    size="small"
+                                    options={runPresetsForLine}
+                                    value={selectedRunPreset}
+                                    onChange={(_, value) => applyRunPreset(value)}
+                                    getOptionLabel={(option) => `${option.taskNo} · ${option.track} · ${option.stationStart} -> ${option.stationEnd}`}
+                                    isOptionEqualToValue={(option, value) => option.taskCode === value.taskCode}
+                                    renderInput={(params) => (
+                                        <TextField {...params} label="Quick select run (from TOV1050 Run List)" placeholder="Choose a standard run or enter fields below" />
+                                    )}
+                                    noOptionsText="No standard run for this line"
+                                />
+                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 0.75 }}>
+                                    <Typography variant="caption" color="text.secondary">
+                                        Quick select fills the context; fields remain editable for special cases.
+                                    </Typography>
+                                    {!selectedRunPreset && (activeSession.taskNo || activeSession.stationStart || activeSession.stationEnd) && (
+                                        <Chip size="small" variant="outlined" color="warning" label="Custom override" />
+                                    )}
+                                </Box>
+                            </Box>
+
                             {/* File Selection */}
                             <Box
                                 onDragOver={handleDragOver}
@@ -542,10 +610,10 @@ const ExceptionGeneratorView = () => {
                                 </FormControl>
 
                                 <FormControl fullWidth size="small">
-                                    <InputLabel>Direction</InputLabel>
+                                    <InputLabel>Track</InputLabel>
                                     <Select 
                                         value={activeSession.track} 
-                                        label="Direction"
+                                        label="Track"
                                         onChange={(e) => updateAnalysisSession(activeSession.id, { track: e.target.value })}
                                     >
                                         {TOV1050_DIRECTIONS.map((direction) => <MenuItem key={direction} value={direction}>{direction}</MenuItem>)}

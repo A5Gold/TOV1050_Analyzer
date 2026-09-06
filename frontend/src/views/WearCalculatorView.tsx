@@ -27,6 +27,7 @@ import WearFeatureToolbar, { type WearFeatureTab } from '../components/Calculati
 import { scrollablePageSx } from '../utils/pageLayout';
 import type { WireWearLineClass } from '../types/api';
 import { exportWearCycleExcel } from '../api/client';
+import TaskLoadingState from '../components/TaskLoadingState';
 
 const formatFileSize = (size: number) => {
   if (size < 1024 * 1024) return `${Math.max(1, Math.round(size / 1024))} KB`;
@@ -67,6 +68,7 @@ const WearCalculatorView: React.FC = () => {
   const [featureTab, setFeatureTab] = useState<WearFeatureTab>('analysis');
   const [pendingFeatureTab, setPendingFeatureTab] = useState<WearFeatureTab | null>(null);
   const [isDragActive, setIsDragActive] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
 
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
@@ -105,13 +107,20 @@ const WearCalculatorView: React.FC = () => {
 
   const handleDownloadExcel = async () => {
     if (!lastCycleSave) return;
-    const blob = await exportWearCycleExcel({ lineGroup: lastCycleSave.lineGroup, cycleDate: lastCycleSave.cycleDate });
-    const url = URL.createObjectURL(blob);
-    const anchor = document.createElement('a');
-    anchor.href = url;
-    anchor.download = `${lastCycleSave.cycleDate}_${lastCycleSave.lineGroup}_Wear_Cycle.xlsx`;
-    anchor.click();
-    URL.revokeObjectURL(url);
+    setIsExporting(true);
+    try {
+      const blob = await exportWearCycleExcel({ lineGroup: lastCycleSave.lineGroup, cycleDate: lastCycleSave.cycleDate });
+      const url = URL.createObjectURL(blob);
+      const anchor = document.createElement('a');
+      anchor.href = url;
+      anchor.download = `${lastCycleSave.cycleDate}_${lastCycleSave.lineGroup}_Wear_Cycle.xlsx`;
+      anchor.click();
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Wear cycle export failed', error);
+    } finally {
+      setIsExporting(false);
+    }
   };
 
   const renderAnalysis = () => (
@@ -159,10 +168,12 @@ const WearCalculatorView: React.FC = () => {
         )}
         {(activeTab.error || cycleError) && <Alert severity="error" sx={{ mt: 2 }}>{activeTab.error || cycleError}</Alert>}
         <Box sx={{ mt: 2.5, display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: 1 }}>
-          <Button variant="contained" disabled={activeTab.uploadedFiles.length === 0 || cyclePreviewLoading} onClick={() => void previewCycle()} startIcon={cyclePreviewLoading ? <CircularProgress size={16} color="inherit" /> : <FolderOpenOutlinedIcon />} sx={{ minWidth: 154 }}>{cyclePreviewLoading ? 'Analyzing...' : 'Process files'}</Button>
+          <Button variant="contained" disabled={activeTab.uploadedFiles.length === 0 || cyclePreviewLoading || isExporting} onClick={() => void previewCycle()} startIcon={cyclePreviewLoading ? <CircularProgress size={16} color="inherit" /> : <FolderOpenOutlinedIcon />} sx={{ minWidth: 154 }}>{cyclePreviewLoading ? 'Analyzing...' : 'Process files'}</Button>
           <Button variant="outlined" color="inherit" disabled={activeTab.uploadedFiles.length === 0} onClick={() => resetAll()} startIcon={<RestartAltIcon />} sx={{ borderColor: '#cfd6e1', color: '#58667a', '&:hover': { borderColor: '#9ca9ba', bgcolor: '#ffffff' } }}>Clear all</Button>
-          {lastCycleSave && <Button variant="outlined" startIcon={<DownloadIcon />} onClick={() => void handleDownloadExcel()}>Download Excel</Button>}
+          {lastCycleSave && <Button variant="outlined" disabled={isExporting} startIcon={isExporting ? <CircularProgress size={16} /> : <DownloadIcon />} onClick={() => void handleDownloadExcel()}>{isExporting ? 'Exporting...' : 'Download Excel'}</Button>}
         </Box>
+        {cyclePreviewLoading && <Box sx={{ mt: 2, display: 'flex', justifyContent: 'center' }}><TaskLoadingState stage="reading" /></Box>}
+        {isExporting && <Box sx={{ mt: 2, display: 'flex', justifyContent: 'center' }}><TaskLoadingState stage="exporting" exportMode /></Box>}
       </Box>
 
       {lastCycleSave && (

@@ -1,4 +1,5 @@
 import React from 'react';
+import trendAlgorithmImage from '../../assets/trend-analysis-algorithm.png';
 import {
   Box,
   Button,
@@ -43,6 +44,9 @@ const TrendAlgorithmDialog: React.FC<TrendAlgorithmDialogProps> = ({ open, onClo
 
       <DialogContent sx={{ p: 3 }}>
         <Stack spacing={3}>
+          <Box component="figure" sx={{ m: 0, display: 'flex', justifyContent: 'center' }}>
+            <Box component="img" src={trendAlgorithmImage} alt="Trend analysis algorithm flow" sx={{ width: '100%', maxWidth: 720, maxHeight: 260, objectFit: 'contain', borderRadius: 1 }} />
+          </Box>
           <Box>
             <Typography variant="subtitle1" fontWeight={700} gutterBottom>
               1. Current Flow

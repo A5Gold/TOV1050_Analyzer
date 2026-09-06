@@ -15,6 +15,7 @@ describe('AlgorithmTutorialDialog', () => {
     expect(screen.getByText(/CASE A/i)).toBeInTheDocument();
     expect(screen.getByText(/CASE B/i)).toBeInTheDocument();
     expect(screen.getByText(/CASE C/i)).toBeInTheDocument();
+    expect(screen.getByAltText('History compare algorithm flow')).toBeInTheDocument();
   });
 
   it('separates the chain rule card from the next section header', () => {

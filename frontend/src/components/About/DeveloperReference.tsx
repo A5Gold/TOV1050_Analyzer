@@ -27,6 +27,8 @@ import {
 } from './aboutGuideContent';
 import DiagnosticsPanel from './DiagnosticsPanel';
 import { GuideFlow } from './GuideVisuals';
+import architectureOverview from '../../assets/tov1050-architecture-overview.png';
+import dataFlowDiagram from '../../assets/tov1050-data-flow.png';
 
 interface DeveloperReferenceProps {
   diagnostics: DiagnosticsResponse | null;
@@ -56,9 +58,24 @@ const DeveloperReference: React.FC<DeveloperReferenceProps> = ({
           Desktop shell 與 browser UI 分離；frontend 不直接讀取 SQLite 或 metadata workbook，所有業務資料均通過本機 FastAPI。About guide 本身是 React runtime，不再依賴 iframe 內容。
         </Typography>
         <GuideFlow steps={architectureLayers} label="TOV640 Analyzer runtime layers" desktopColumns={3} />
+        <Box
+          component="img"
+          src={architectureOverview}
+          alt="TOV1050 Analyzer architecture: inputs, metadata adapter, full-fidelity detector, chart envelope and Electron React frontend"
+          sx={{ display: 'block', width: '100%', maxWidth: 980, height: 'auto', mt: 2, border: 1, borderColor: 'divider' }}
+        />
+        <Typography variant="caption" color="text.secondary" display="block" sx={{ mt: 0.75 }}>
+          圖中顯示五層 runtime 邊界；告警判定使用完整資料，Graph 才採 envelope 與 zoom LOD。
+        </Typography>
         <Typography variant="subtitle1" component="h4" fontWeight={700} sx={{ mt: 3, mb: 1 }}>
           端到端資料流
         </Typography>
+        <Box
+          component="img"
+          src={dataFlowDiagram}
+          alt="TOV1050 Analyzer data flow from raw CSV through streaming loader, Chainage metre adapter, metadata mapping, detector and chart payload"
+          sx={{ display: 'block', width: '100%', maxWidth: 980, height: 'auto', mb: 2, border: 1, borderColor: 'divider' }}
+        />
         <TableContainer>
           <Table size="small" aria-label="端到端資料流">
             <TableHead><TableRow><TableCell>入口</TableCell><TableCell>主要處理</TableCell><TableCell>輸出</TableCell></TableRow></TableHead>

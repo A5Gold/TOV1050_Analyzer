@@ -34,6 +34,7 @@ import StaggerRawDataPanel from '../components/Calculation/StaggerRawDataPanel';
 import { exportStaggerResults } from '../components/Calculation/staggerExport';
 import { useCalculationStore } from '../store/useCalculationStore';
 import { scrollablePageSx } from '../utils/pageLayout';
+import TaskLoadingState from '../components/TaskLoadingState';
 
 const resultColorMap: Record<string, 'success' | 'error' | 'default'> = {
   pass: 'success',
@@ -115,6 +116,7 @@ const CalculationView: React.FC = () => {
   const [algoOpen, setAlgoOpen] = useState(false);
   const [isMainDragOver, setIsMainDragOver] = useState(false);
   const [isRepeatedDragOver, setIsRepeatedDragOver] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
   const mainInputRef = useRef<HTMLInputElement>(null);
   const repeatedInputRef = useRef<HTMLInputElement>(null);
 
@@ -196,6 +198,18 @@ const CalculationView: React.FC = () => {
     void analyze().catch(() => {
       // Store state already captures the user-facing error message.
     });
+  };
+
+  const handleExport = async () => {
+    if (!activeCycle.results.length || isExporting) return;
+    setIsExporting(true);
+    // Yield once so the loading state is visible before synchronous workbook generation.
+    await new Promise<void>(resolve => window.setTimeout(resolve, 0));
+    try {
+      exportStaggerResults(activeCycle.results);
+    } finally {
+      setIsExporting(false);
+    }
   };
 
   return (
@@ -369,14 +383,20 @@ const CalculationView: React.FC = () => {
             <Button
               variant="outlined"
               startIcon={<DownloadOutlinedIcon />}
-              onClick={() => exportStaggerResults(activeCycle.results)}
-              disabled={activeCycle.results.length === 0}
+              onClick={() => void handleExport()}
+              disabled={activeCycle.results.length === 0 || isExporting}
             >
-              Export Excel
+              {isExporting ? '匯出中...' : 'Export Excel'}
             </Button>
           </Stack>
         </Stack>
       </Paper>
+
+      {(activeCycle.isLoading || isExporting) && (
+        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+          <TaskLoadingState stage={isExporting ? 'exporting' : 'detecting'} exportMode={isExporting} />
+        </Box>
+      )}
 
       <Grid container spacing={2}>
         {summaryCards.map((card) => (

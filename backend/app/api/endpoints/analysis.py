@@ -24,6 +24,7 @@ from app.core.metadata import MetadataManager
 from app.core.analyzers import ExceptionDetector
 from app.core.exporter import ExcelExporter
 from app.core.repeated_finder import RepeatedExceptionFinder
+from app.core.chart_sampling import build_chart_payload
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -73,6 +74,9 @@ def generate_filename(
         "20260127_EAL_U1_HUH-RAC_Exception_Report.xlsx"
     """
     tov1050_lines = {"AEL", "TCL", "DRL", "ISL", "KTL", "TKL", "TWL"}
+    # Accept legacy UI direction aliases when generating a filename.
+    if str(line).strip().upper() in tov1050_lines:
+        track = {"UP": "UT", "DN": "DT"}.get(str(track).strip().upper(), track)
     # TOV1050 exports must always carry the selected session and station range.
     if str(line).strip().upper() in tov1050_lines and not session:
         raise ValueError("TOV1050 export requires an explicit session")
@@ -125,9 +129,28 @@ def generate_filename(
 # Global Cache for Single-User Desktop App
 LAST_ANALYSIS_RESULTS = {}
 LAST_RAW_DF = pd.DataFrame()
+LAST_ANALYSIS_SOURCE_PATH: Optional[str] = None
 LAST_COMPARE_RESULTS = pd.DataFrame()
 LAST_COMPARE_FILES = []
 LAST_ANALYSIS_PARAMS = {} # Store context for file naming
+
+# Per-tab analysis state.  The desktop UI supplies ``client_session_id`` for
+# every analysis request; keeping raw frames and parameters under that key
+# prevents a later tab from replacing the data used by an earlier tab's
+# detail chart or legacy GET export.  The LAST_* globals remain as a backward
+# compatible fallback for API clients that predate this contract.
+ANALYSIS_SESSIONS: dict[str, dict[str, Any]] = {}
+MAX_ANALYSIS_SESSIONS = 8
+
+
+def _session_key(client_session_id: Optional[str]) -> str:
+    return str(client_session_id or "default")
+
+
+def _state_for(client_session_id: Optional[str]) -> Optional[dict[str, Any]]:
+    if not client_session_id:
+        return None
+    return ANALYSIS_SESSIONS.get(_session_key(client_session_id))
 
 # Define Request Model
 class AnalyzeRequest(BaseModel):
@@ -141,6 +164,9 @@ class AnalyzeRequest(BaseModel):
     task_no: Optional[str] = None        # e.g., "U1", "D3", "S1"
     station_start: Optional[str] = None  # e.g., "HUH", "LOW"
     station_end: Optional[str] = None    # e.g., "RAC", "SHA"
+    # Frontend analysis-tab identity.  This is distinct from the railway
+    # metadata ``session`` (Mainline/PL/TKS).
+    client_session_id: Optional[str] = None
 
 class GenerateExportRequest(BaseModel):
     data: List[Dict[str, Any]]
@@ -150,6 +176,7 @@ class GenerateAnalysisReportRequest(BaseModel):
     exceptions: Dict[str, Any]
     chart_data: Optional[Dict[str, List[Any]]] = None
     params: Dict[str, Any]
+    client_session_id: Optional[str] = None
 
 # Define Paths - Handle both development and PyInstaller frozen modes
 import sys
@@ -158,13 +185,37 @@ from app.core.config import get_config_dir
 CONFIG_DIR = get_config_dir()
 logger.info(f"[Analysis] CONFIG_DIR initialized: {CONFIG_DIR.absolute()}")
 
+
+def _chart_columns(frame: pd.DataFrame) -> list[str]:
+    """Keep the existing chart contract while centralising column selection."""
+    columns = ["Chainage"]
+    columns += [column for column in frame.columns if "height" in column.lower()]
+    columns += [column for column in frame.columns if "stagger" in column.lower()]
+    columns += [column for column in frame.columns if "wear" in column.lower()]
+    columns += [column for column in ("Track Type", "Overlap", "Tension Length", "Landmark", "Class") if column in frame.columns]
+    columns += [column for column in ("stg_max", "stg_min") if column in frame.columns]
+    columns += [column for column in ("task_run_date", "line", "track", "Section", "task_no", "station_start", "station_end") if column in frame.columns]
+    return list(dict.fromkeys(columns))
+
+
+def _exception_chainages(results: dict[str, pd.DataFrame], boundaries: pd.DataFrame) -> list[float]:
+    values: list[float] = []
+    for frame in results.values():
+        for column in ("FromM", "ToM", "maxLocation"):
+            if column in frame.columns:
+                values.extend(pd.to_numeric(frame[column], errors="coerce").dropna().tolist())
+    for column in ("FromM", "ToM", "UP Track FromM", "UP Track ToM", "DN Track FromM", "DN Track ToM"):
+        if column in boundaries.columns:
+            values.extend(pd.to_numeric(boundaries[column], errors="coerce").dropna().tolist())
+    return values
+
 @router.post("/analyze")
 async def analyze_data(request: AnalyzeRequest):
     """
     Core Analysis Endpoint.
     Loads data, applies metadata mapping, and detects exceptions.
     """
-    global LAST_ANALYSIS_RESULTS, LAST_RAW_DF, LAST_ANALYSIS_PARAMS
+    global LAST_ANALYSIS_RESULTS, LAST_RAW_DF, LAST_ANALYSIS_PARAMS, LAST_ANALYSIS_SOURCE_PATH
     
     # 1. Validate Paths
     data_path = Path(request.file_path)
@@ -195,7 +246,7 @@ async def analyze_data(request: AnalyzeRequest):
     station_end = request.station_end or (parsed_name.station_end if parsed_name else None)
     # Cache the normalized context so every export uses the same inferred
     # session and station range as the analysis response.
-    LAST_ANALYSIS_PARAMS = {
+    normalized_params = {
         **request.model_dump(),
         "session": session,
         "station_start": station_start,
@@ -251,10 +302,44 @@ async def analyze_data(request: AnalyzeRequest):
             station_start=station_start,
             station_end=station_end
         )
+
+        # Preserve task-run context on the complete raw frame used by report
+        # and CSV export.  The chart payload is derived from this frame and
+        # may be downsampled independently for rendering.
+        task_run_cols = {
+            'task_run_date': request.date_str,
+            'line': request.line,
+            'track': request.track,
+            'Section': session,
+            'task_no': request.task_no,
+            'station_start': station_start,
+            'station_end': station_end,
+        }
+        for col, val in task_run_cols.items():
+            if col not in df.columns:
+                df[col] = val
         
         # Cache results for export
+        source_path = str(data_path.resolve())
+        # Keep a per-client-tab snapshot.  Copy the frame so subsequent
+        # requests cannot mutate the data referenced by an existing tab.
+        client_key = _session_key(request.client_session_id)
+        ANALYSIS_SESSIONS[client_key] = {
+            "results": results,
+            "raw_df": df.copy(deep=True),
+            "source_path": source_path,
+            "params": normalized_params,
+        }
+        # Bound process memory when a user opens many tabs with large CSVs.
+        # Dict insertion order makes the oldest completed tab the eviction
+        # candidate; active frontend tabs retain their own response data.
+        while len(ANALYSIS_SESSIONS) > MAX_ANALYSIS_SESSIONS:
+            ANALYSIS_SESSIONS.pop(next(iter(ANALYSIS_SESSIONS)))
+        # Legacy globals are retained for clients that do not send a tab id.
         LAST_ANALYSIS_RESULTS = results
         LAST_RAW_DF = df
+        LAST_ANALYSIS_SOURCE_PATH = source_path
+        LAST_ANALYSIS_PARAMS = normalized_params
         
         # 5. Format Response
         def df_to_records(d: pd.DataFrame):
@@ -268,44 +353,20 @@ async def analyze_data(request: AnalyzeRequest):
         
         # 6. Prepare Chart Data (Column-oriented for Plotly performance)
         # Phase 10.10.I: Inject Task Run Data into DataFrame for Catenary Report export
-        task_run_cols = {
-            'task_run_date': request.date_str,
-            'line': request.line,
-            'track': request.track,
-            'Section': session,
-            'task_no': request.task_no,
-            'station_start': station_start,
-            'station_end': station_end,
-        }
-        for col, val in task_run_cols.items():
-            if col not in df.columns:
-                df[col] = val
-
-        plot_cols = ['Chainage']
-        plot_cols += [c for c in df.columns if 'height' in c]
-        plot_cols += [c for c in df.columns if 'stagger' in c]
-        plot_cols += [c for c in df.columns if 'wear' in c]
-        # Phase 10.10.I: 新增 metadata 和 computed 欄位
-        metadata_cols = ['Track Type', 'Overlap', 'Tension Length', 'Landmark', 'Class']
-        plot_cols += [c for c in metadata_cols if c in df.columns]
-        computed_cols = ['stg_max', 'stg_min']
-        plot_cols += [c for c in computed_cols if c in df.columns]
-        
-        # Phase 10.10.I: Add Task Run Data columns
-        plot_cols += [c for c in task_run_cols.keys() if c in df.columns]
-        
-        valid_plot_cols = [c for c in plot_cols if c in df.columns]
-        # De-duplicate
-        valid_plot_cols = list(dict.fromkeys(valid_plot_cols))
-        
-        chart_data = df[valid_plot_cols].replace({np.nan: None}).to_dict(orient='list')
+        chart_data, chart_resolution = build_chart_payload(
+            df,
+            _chart_columns(df),
+            preserve_chainage=_exception_chainages(results, boundary_df),
+        )
 
         return {
             "status": "success",
-            "params": {**request.model_dump(), "session": session, "station_start": station_start, "station_end": station_end},
+            "params": normalized_params,
             "exceptions": formatted_results,
             "boundaries": formatted_boundaries,
             "chart_data": chart_data,
+            "chart_resolution": chart_resolution,
+            "client_session_id": request.client_session_id,
             "cleaning_summary": getattr(loader, "last_cleaning_summary", None),
         }
 
@@ -318,6 +379,53 @@ async def analyze_data(request: AnalyzeRequest):
         import traceback
         traceback.print_exc()
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/analyze/chart-data")
+async def get_chart_data(
+    from_m: Optional[float] = Query(default=None, ge=0),
+    to_m: Optional[float] = Query(default=None, ge=0),
+    max_points: int = Query(default=6000, ge=500, le=100000),
+    file_path: Optional[str] = Query(default=None),
+    line: Optional[str] = Query(default=None),
+    client_session_id: Optional[str] = Query(default=None),
+):
+    """Return a higher-resolution chart window for the selected analysis tab.
+
+    The desktop UI keeps multiple analysis results in separate tabs while the
+    legacy backend cache stores only the most recent raw frame.  When a tab's
+    source differs from that cache, reload its CSV locally so detail requests
+    cannot display another tab's data.
+    """
+    state = _state_for(client_session_id)
+    source_df = state["raw_df"] if state is not None else LAST_RAW_DF
+    cached_source_path = state.get("source_path") if state is not None else LAST_ANALYSIS_SOURCE_PATH
+    if file_path:
+        requested_path = Path(file_path).resolve()
+        cached_path = Path(cached_source_path).resolve() if cached_source_path else None
+        if cached_path != requested_path:
+            if not requested_path.exists():
+                raise HTTPException(status_code=404, detail=f"Data file not found: {file_path}")
+            is_tov1050 = (line or "").strip().upper() in {"AEL", "TCL", "DRL", "ISL", "KTL", "TKL", "TWL"}
+            loader = TOV1050DataLoader() if is_tov1050 else DataLoader()
+            try:
+                source_df = loader.load_data(str(requested_path))
+            except Exception as exc:
+                raise HTTPException(status_code=400, detail=f"Unable to load chart data: {exc}") from exc
+
+    if source_df.empty:
+        raise HTTPException(status_code=409, detail="No completed analysis is available")
+    if from_m is not None and to_m is not None and from_m > to_m:
+        raise HTTPException(status_code=400, detail="from_m must be less than or equal to to_m")
+    chart_data, chart_resolution = build_chart_payload(
+        source_df,
+        _chart_columns(source_df),
+        max_points=max_points,
+        from_m=from_m,
+        to_m=to_m,
+        preserve_chainage=(),
+    )
+    return {"status": "success", "chart_data": chart_data, "chart_resolution": chart_resolution}
 @router.post("/analyze/compare")
 async def compare_history(files: List[UploadFile] = File(...)):
     """
@@ -468,6 +576,8 @@ async def compare_history(files: List[UploadFile] = File(...)):
 
     except ValueError as e:
         raise HTTPException(status_code=422, detail=str(e)) from e
+    except HTTPException:
+        raise
     except Exception as e:
         import traceback
         traceback.print_exc()
@@ -600,7 +710,7 @@ async def export_compare_report():
             task_no=p.get('task_no'),
             station_start=p.get('station_start'),
             station_end=p.get('station_end'),
-            session=p.get('session')
+            session=(p.get('session') or (p.get('section') if str(line).strip().upper() in {"AEL", "TCL", "DRL", "ISL", "KTL", "TKL", "TWL"} else None))
         )
         encoded_filename = urllib.parse.quote(filename)
         
@@ -639,7 +749,7 @@ async def export_report():
             task_no=p.get('task_no'),
             station_start=p.get('station_start'),
             station_end=p.get('station_end'),
-            session=p.get('session')
+            session=p.get('session') or p.get('section')
         )
         encoded_filename = urllib.parse.quote(filename)
         
@@ -658,9 +768,14 @@ async def generate_report_from_data(request: GenerateAnalysisReportRequest):
     Generate Analysis Report from frontend data (Stateful-Safe).
     """
     try:
-        # Convert chart_data back to DataFrame if present
+        # Prefer the complete raw frame captured for this analysis tab.  The
+        # chart payload is intentionally downsampled for rendering and must
+        # not become the report's raw ChartData.
         chart_df = None
-        if request.chart_data:
+        state = _state_for(request.client_session_id)
+        if state is not None and isinstance(state.get("raw_df"), pd.DataFrame):
+            chart_df = state["raw_df"].copy(deep=True)
+        elif request.chart_data:
             chart_df = pd.DataFrame(request.chart_data)
         
         # Generate Excel
@@ -682,7 +797,7 @@ async def generate_report_from_data(request: GenerateAnalysisReportRequest):
             task_no=p.get('task_no'),
             station_start=p.get('station_start'),
             station_end=p.get('station_end'),
-            session=p.get('session')
+            session=(p.get('session') or (p.get('section') if str(line).strip().upper() in {"AEL", "TCL", "DRL", "ISL", "KTL", "TKL", "TWL"} else None))
         )
         
         # Encode filename
@@ -697,6 +812,8 @@ async def generate_report_from_data(request: GenerateAnalysisReportRequest):
             media_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
         )
 
+    except HTTPException:
+        raise
     except ValueError as e:
         raise HTTPException(status_code=422, detail=str(e)) from e
     except Exception as e:
@@ -776,8 +893,12 @@ class ExportRawRequest(BaseModel):
     - Column-oriented (Dict[str, List]): {"col1": [v1, v2], "col2": [v3, v4]}
     - Row-oriented (List[Dict]): [{"col1": v1, "col2": v3}, {"col1": v2, "col2": v4}]
     """
-    chart_data: Union[Dict[str, List[Any]], List[Dict[str, Any]]]
+    # Optional for session-scoped exports.  The preferred contract is to send
+    # client_session_id and let the backend retrieve the complete raw frame;
+    # chart_data remains a backwards-compatible fallback for older clients.
+    chart_data: Optional[Union[Dict[str, List[Any]], List[Dict[str, Any]]]] = None
     params: Dict[str, Any]
+    client_session_id: Optional[str] = None
 
 
 @router.post("/export/raw/generate")
@@ -807,18 +928,26 @@ async def export_raw_data_generate(request: ExportRawRequest):
     Returns:
         StreamingResponse with CSV file
     """
-    # BUG 10.8-2: Check for empty data (both formats)
-    if not request.chart_data:
-        raise HTTPException(status_code=400, detail="No data provided for export.")
-    
-    # Handle empty dict for column-oriented format
-    if isinstance(request.chart_data, dict) and len(request.chart_data) == 0:
-        raise HTTPException(status_code=400, detail="No data provided for export.")
-    
     try:
-        # BUG 10.8-2: Handle both column-oriented and row-oriented formats
-        # Both formats can be passed directly to pd.DataFrame()
-        df = pd.DataFrame(request.chart_data)
+        # Prefer the complete raw frame captured for this analysis tab.  The
+        # frontend chart payload may be envelope-sampled, so it is only a
+        # backward-compatible fallback when no tab state exists.
+        state = _state_for(request.client_session_id)
+        if state is not None and isinstance(state.get("raw_df"), pd.DataFrame) and not state["raw_df"].empty:
+            df = state["raw_df"].copy(deep=True)
+        else:
+            # BUG 10.8-2: Check for empty fallback data (both formats)
+            if request.client_session_id is None and request.chart_data is None:
+                # Preserve the validation contract for legacy clients that do
+                # not provide either a tab identity or payload.
+                raise HTTPException(status_code=422, detail="chart_data is required for legacy export")
+            if not request.chart_data:
+                raise HTTPException(status_code=400, detail="No data provided for export.")
+            if isinstance(request.chart_data, dict) and len(request.chart_data) == 0:
+                raise HTTPException(status_code=400, detail="No data provided for export.")
+            # BUG 10.8-2: Handle both column-oriented and row-oriented formats
+            # Both formats can be passed directly to pd.DataFrame()
+            df = pd.DataFrame(request.chart_data)
         
         # Export to CSV
         csv_file = ExcelExporter.export_raw_csv(df)
@@ -855,6 +984,8 @@ async def export_raw_data_generate(request: ExportRawRequest):
         
     except ValueError as e:
         raise HTTPException(status_code=422, detail=str(e)) from e
+    except HTTPException:
+        raise
     except Exception as e:
         import traceback
         traceback.print_exc()

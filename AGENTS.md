@@ -43,3 +43,16 @@
 ## 文件模板
 
 新需求請以 `docs/requests/TEMPLATE.md` 為起點，檔名使用當日日期與短 topic。
+
+## Metadata 與圖表資料正確性
+
+- TOV1050 的 chart downsampling 只允許作用於前端圖表 payload；ExceptionDetector、threshold crossing、overshoot、exception peak 與匯出資料必須使用完整 raw data。
+- Overview 圖表可使用 min/max envelope 以支援 90 萬筆資料的互動效能，但必須保留 first/last、各量測欄位 extrema、exception chainage 與 FromM/ToM；選取例外後再載入 detail window。
+- Chainage 的 canonical unit 為公尺（`Km * 1000 -> Chainage_m`）。介面與 metadata 可沿用 TOV640 的 `FromM`/`ToM` 命名，不得把 `98150.2` 誤當成公里。
+- 原始 metadata workbook 不得靜默覆蓋。標準化工作應先輸出候選 workbook、provenance 與 validation/audit 報告，確認 overlap、invalid row 及 TL-BK mapping 後才可提出 write-back。
+
+## Linear MCP 工作階段恢復
+
+- 每次新 Codex 工作階段先檢查 Linear MCP 是否實際掛載；OAuth 或 `codex mcp login linear` 成功後，必須重開 Codex 或建立新的 local task，再驗證工具清單。
+- 工具恢復後第一個動作是同步累積的 request/spec、實作進度、測試結果與阻塞到既有 issue；不可只因 Linear URL 存在就聲稱已同步。
+- 若工具未掛載，回覆必須明確標示 `本工作階段未掛載 Linear MCP`，並在 request/spec 記錄 `Linear sync blocked`、影響與重新連接 action。

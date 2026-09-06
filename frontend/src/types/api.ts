@@ -9,6 +9,7 @@ export interface AnalyzeRequest {
   task_no?: string;
   station_start?: string;
   station_end?: string;
+  client_session_id?: string;
 }
 
 // Response Types
@@ -18,6 +19,15 @@ export interface AnalysisResponse {
   exceptions: Record<string, ExceptionRecord[]>;
   boundaries: BoundaryRecord[];
   chart_data: Record<string, (number | null)[]>; // Column-oriented data
+  chart_resolution?: {
+    source_points: number;
+    returned_points: number;
+    bucket_count?: number;
+    strategy: 'raw' | 'min_max_envelope' | 'empty' | 'none';
+    from_m?: number | null;
+    to_m?: number | null;
+  };
+  client_session_id?: string;
 }
 
 export interface ExceptionRecord {

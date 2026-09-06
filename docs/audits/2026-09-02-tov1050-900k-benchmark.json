@@ -1,0 +1,38 @@
+{
+  "rows_generated": 900000,
+  "rows_retained": 899800,
+  "generation_seconds": 1.904,
+  "load_seconds": 10.971,
+  "load_rows_per_second": 82016.9,
+  "detect_seconds": 5.697,
+  "detect_rows_per_second": 157931.4,
+  "chart_seconds": 3.674,
+  "chart_metadata": {
+    "source_points": 899800,
+    "returned_points": 12000,
+    "bucket_count": 6000,
+    "strategy": "min_max_envelope",
+    "from_m": null,
+    "to_m": null,
+    "preserved_chainage_count": 0
+  },
+  "chart_payload_bytes": 300380,
+  "exception_rows": 0,
+  "boundary_rows": 1,
+  "cleaning_summary": {
+    "raw_row_count": 900000,
+    "retained_row_count": 899800,
+    "trimmed_leading_count": 100,
+    "trimmed_trailing_count": 100,
+    "io_value_count": 0,
+    "invalid_chainage_count": 0,
+    "no_valid_measurement_count": 0,
+    "delimiter": ",",
+    "chunk_size": 50000,
+    "chainage_unit": "m",
+    "chainage_scale": 1000.0
+  },
+  "peak_rss_bytes": 353013760,
+  "detector_input_rows": 899800,
+  "raw_detector_parity": true
+}

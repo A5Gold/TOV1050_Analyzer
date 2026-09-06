@@ -1,9 +1,10 @@
 import React, { useEffect, useState, useMemo, useRef } from 'react';
 import Plotly from 'plotly.js';
 import Plot from 'react-plotly.js';
-import { Box, Typography, Paper, FormGroup, FormControlLabel, Checkbox, Button } from '@mui/material';
+import { Box, Typography, Paper, FormGroup, FormControlLabel, Checkbox, Button, Chip, CircularProgress } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 import { AnalysisResponse, ExceptionRecord } from '../types/api';
+import apiClient from '../api/client';
 
 const LEVEL_COLORS: Record<string, string> = {
   'L1': '#d32f2f', // Red
@@ -24,6 +25,9 @@ const ChartComponent = ({ result, selectedExceptionId, onSelectException, sessio
   const [showThresholds, setShowThresholds] = useState(true);
   const [showLegend, setShowLegend] = useState(true);
   const [layoutState, setLayoutState] = useState<Partial<Plotly.Layout>>({});
+  const [chartData, setChartData] = useState<AnalysisResponse['chart_data']>({});
+  const [chartResolution, setChartResolution] = useState<AnalysisResponse['chart_resolution']>();
+  const [detailLoading, setDetailLoading] = useState(false);
   const chartRef = useRef<any>(null); // Ref to hold the Plotly chart instance
 
   // Generate a unique axis group ID for this session to prevent infinite loops
@@ -37,6 +41,48 @@ const ChartComponent = ({ result, selectedExceptionId, onSelectException, sessio
     }
     return null;
   }, [result, selectedExceptionId]);
+
+  useEffect(() => {
+    setChartData(result?.chart_data || {});
+    setChartResolution(result?.chart_resolution);
+  }, [result]);
+
+  // Overview stays compact; fetch raw detail only for the selected exception window.
+  useEffect(() => {
+    if (!selectedException) {
+      setChartData(result?.chart_data || {});
+      setChartResolution(result?.chart_resolution);
+      setDetailLoading(false);
+      return;
+    }
+    const from = Math.max(0, selectedException.FromM - 100);
+    const to = selectedException.ToM + 100;
+    let cancelled = false;
+    setDetailLoading(true);
+    apiClient.get<{ chart_data: AnalysisResponse['chart_data']; chart_resolution: AnalysisResponse['chart_resolution'] }>(
+      '/analyze/chart-data',
+      {
+        params: {
+          from_m: from,
+          to_m: to,
+          max_points: 12000,
+          file_path: result?.params.file_path,
+          line: result?.params.line,
+          client_session_id: sessionId,
+        },
+      },
+    ).then(({ data }) => {
+      if (!cancelled) {
+        setChartData(data.chart_data);
+        setChartResolution(data.chart_resolution);
+      }
+    }).catch(() => {
+      // Keep the overview visible when a detail request is unavailable.
+    }).finally(() => {
+      if (!cancelled) setDetailLoading(false);
+    });
+    return () => { cancelled = true; };
+  }, [selectedException, result?.params.file_path, result?.params.line, sessionId]);
 
   // Handle Chart Zoom based on Selection
   useEffect(() => {
@@ -80,16 +126,15 @@ const ChartComponent = ({ result, selectedExceptionId, onSelectException, sessio
     return <Typography>No data loaded.</Typography>;
   }
 
-  const { chart_data } = result;
-  const chainage = chart_data['Chainage'] as number[];
+  const chainage = chartData['Chainage'] as number[];
   const traces: Plotly.Data[] = [];
 
     const addLineTrace = (name: string, yCol: string, row: number) => {
-    if (chart_data[yCol]) {
+    if (chartData[yCol]) {
       traces.push({
         x: chainage,
-        y: chart_data[yCol] as number[],
-        type: 'scatter', // Changed from scattergl to scatter for stability
+        y: chartData[yCol] as number[],
+        type: 'scattergl',
         mode: 'lines',
         name: name,
         xaxis: axisGroup, 
@@ -129,7 +174,7 @@ const ChartComponent = ({ result, selectedExceptionId, onSelectException, sessio
             x: x,
             y: y,
             mode: 'markers',
-            type: 'scatter', // Changed from scattergl to scatter for stability
+            type: 'scattergl',
             name: `${type} Dots`,
             text: ids, // Added text property for hovertemplate
             xaxis: axisGroup,
@@ -259,7 +304,11 @@ const ChartComponent = ({ result, selectedExceptionId, onSelectException, sessio
   return (
     <Box sx={{ width: '100%', height: '100%', p: 1, display: 'flex', flexDirection: 'column' }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1, px: 1 }}>
-        <Typography variant="h6" color="primary">{chartTitle}</Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, minWidth: 0 }}>
+          <Typography variant="h6" color="primary" noWrap>{chartTitle}</Typography>
+          {chartResolution && <Chip size="small" variant="outlined" label={`${chartResolution.strategy === 'min_max_envelope' ? 'Overview envelope' : 'Raw detail'} · ${chartResolution.returned_points.toLocaleString()} / ${chartResolution.source_points.toLocaleString()} pts`} />}
+          {detailLoading && <CircularProgress size={16} aria-label="Loading chart detail" />}
+        </Box>
         <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
           <FormGroup row>
             <FormControlLabel 

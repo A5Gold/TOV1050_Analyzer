@@ -37,6 +37,7 @@ import BatchEditDialog, { BatchEditValues } from '../components/HistoryCompare/B
 // M5: Field normalization utility for consistent snake_case field names
 import { normalizeRecord, getFieldValue } from '../utils/fieldNormalizer';
 import { fillDataRegionSx, scrollablePageSx } from '../utils/pageLayout';
+import TaskLoadingState from '../components/TaskLoadingState';
 
 // --- Helpers ---
 
@@ -64,6 +65,7 @@ const HistoryCompareView = () => {
   const [resultTabIndex, setResultTabIndex] = useState(0); // 0: Table, 1: Chart
   const [toast, setToast] = useState<{ open: boolean; message: string; severity: 'info' | 'success' | 'error' }>({ open: false, message: '', severity: 'info' });
   const [isChecking1Year, setIsChecking1Year] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
   
   // Feature-001: Dialog state for Save to DB and Check 1 Year
   const [saveDialogOpen, setSaveDialogOpen] = useState(false);
@@ -307,7 +309,7 @@ const HistoryCompareView = () => {
 
   const handleDownload = async () => {
       if (!activeSession) return;
-      
+      setIsExporting(true);
       setToast({ open: true, message: 'Generating Report...', severity: 'info' });
 
       try {
@@ -362,6 +364,8 @@ const HistoryCompareView = () => {
           console.error("Export failed", err);
           if (activeSession) updateCompareSession(activeSession.id, { error: "Failed to download report." });
           setToast({ open: true, message: 'Export Failed', severity: 'error' });
+      } finally {
+          setIsExporting(false);
       }
   };
 
@@ -1189,8 +1193,9 @@ const HistoryCompareView = () => {
                                         color="success"
                                         startIcon={<DownloadIcon />}
                                         onClick={handleDownload}
+                                        disabled={isExporting}
                                     >
-                                        Export
+                                        {isExporting ? 'Exporting...' : 'Export'}
                                     </Button>
                                     <Button
                                         variant="contained"
@@ -1209,6 +1214,16 @@ const HistoryCompareView = () => {
 
                     {/* Result Content (Scrollable) */}
                     <Box sx={{ flexGrow: 1, minHeight: 0, overflow: 'hidden', position: 'relative', bgcolor: 'background.default' }}>
+                        {activeSession.loading && (
+                            <Box sx={{ position: 'absolute', inset: 0, zIndex: 2, bgcolor: 'background.default', p: 3, display: 'flex', alignItems: 'flex-start', justifyContent: 'center' }}>
+                                <TaskLoadingState stage="detecting" />
+                            </Box>
+                        )}
+                        {isExporting && (
+                            <Box sx={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 3, p: 2, bgcolor: 'background.default' }}>
+                                <TaskLoadingState stage="exporting" exportMode />
+                            </Box>
+                        )}
                         {resultTabIndex === 0 && (
                             <Box sx={{ height: '100%', width: '100%', p: 2, overflow: 'auto' }}>
                                 <Paper elevation={0} sx={{ height: '100%', minHeight: 0, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>

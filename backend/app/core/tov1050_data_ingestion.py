@@ -32,6 +32,7 @@ MEASUREMENT_COLUMNS = [
     "stagger1", "stagger2", "stagger3", "stagger4",
     "wear1", "wear2", "wear3", "wear4",
 ]
+CHAINAGE_SCALE_M_PER_KM = 1000.0
 
 
 class TOV1050DataLoader:
@@ -115,9 +116,13 @@ class TOV1050DataLoader:
             if keep_start >= keep_end:
                 continue
             chunk = chunk.iloc[keep_start:keep_end].copy()
+            source_chainage_km = pd.to_numeric(chunk["Km"], errors="coerce")
             chunk = chunk.rename(columns=RAW_TO_CANONICAL)
+            chunk["source_chainage_km"] = source_chainage_km.to_numpy()
             for column in ["Chainage", *MEASUREMENT_COLUMNS]:
                 chunk[column] = pd.to_numeric(chunk[column], errors="coerce")
+            # TOV1050 files expose Km; the detector/export contract is metres.
+            chunk["Chainage"] = chunk["Chainage"] * CHAINAGE_SCALE_M_PER_KM
             invalid_chainage_count += int(chunk["Chainage"].isna().sum())
             chunk = chunk.dropna(subset=["Chainage"])
             valid_measurement = chunk[MEASUREMENT_COLUMNS].notna().any(axis=1)
@@ -141,6 +146,8 @@ class TOV1050DataLoader:
             "no_valid_measurement_count": no_valid_measurement_count,
             "delimiter": delimiter,
             "chunk_size": self.chunk_size,
+            "chainage_unit": "m",
+            "chainage_scale": CHAINAGE_SCALE_M_PER_KM,
         }
         if result.empty:
             raise ValueError("TOV1050 CSV has no valid measurement rows after cleaning")

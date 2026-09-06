@@ -1,4 +1,5 @@
 import React from 'react';
+import exceptionDetectorImage from '../../assets/exception-detector-algorithm.png';
 import {
     Dialog,
     DialogTitle,
@@ -65,6 +66,11 @@ const ExceptionAlgorithmDialog: React.FC<ExceptionAlgorithmDialogProps> = ({ ope
             
             <DialogContent sx={{ p: 4 }}>
                 <Grid container spacing={4}>
+                    <Grid item xs={12}>
+                        <Box component="figure" sx={{ m: 0, display: 'flex', justifyContent: 'center' }}>
+                            <Box component="img" src={exceptionDetectorImage} alt="Exception detector algorithm flow" sx={{ width: '100%', maxWidth: 720, maxHeight: 260, objectFit: 'contain', borderRadius: 1 }} />
+                        </Box>
+                    </Grid>
                     
                     {/* Section 1: Threshold Determination Flow */}
                     <Grid item xs={12}>

@@ -37,7 +37,9 @@ def test_loader_trims_io_and_preserves_source_rows(tmp_path):
     assert frame["source_row_number"].iloc[0] == 102
     assert frame["source_row_number"].iloc[-1] == 106
     assert len(frame) == 4
-    assert frame["Chainage"].iloc[0] == 48.01
+    # TOV1050 Km is normalized to the canonical metre contract at ingestion.
+    assert frame["Chainage"].iloc[0] == 48010
+    assert frame["source_chainage_km"].iloc[0] == 48.01
     assert frame["height1"].iloc[0] == 4300
     assert loader.last_cleaning_summary["raw_row_count"] == 205
     assert loader.last_cleaning_summary["trimmed_leading_count"] == 100
@@ -74,7 +76,7 @@ def test_filename_rejects_non_tov1050_line_or_direction():
         parse_input_filename("20260822_AEL_UP_SHO_AWE.csv")
 
 
-def test_metadata_boundaries_fail_closed_for_missing_columns_or_overlap(tmp_path):
+def test_metadata_boundaries_fail_closed_for_missing_columns_and_allow_legal_overlap(tmp_path):
     import pytest
 
     missing_path = tmp_path / "missing.xlsx"
@@ -92,8 +94,8 @@ def test_metadata_boundaries_fail_closed_for_missing_columns_or_overlap(tmp_path
                 "endKM": [20, 30],
             }
         ).to_excel(writer, sheet_name="location type", index=False)
-    with pytest.raises(ValueError, match="intervals overlap"):
-        TOV1050MetadataManager(overlap_path).get_exception_boundaries("AEL", "UT", "Mainline")
+    boundaries = TOV1050MetadataManager(overlap_path).get_exception_boundaries("AEL", "UT", "Mainline")
+    assert len(boundaries) == 2
 
 
 def test_metadata_adapter_matches_real_workbook():
@@ -134,6 +136,26 @@ def test_metadata_adapter_rejects_mixed_long_and_wide_threshold_schema(tmp_path)
 
     with pytest.raises(ValueError, match="mixes long min/max"):
         TOV1050MetadataManager(workbook).get_all_thresholds()
+
+
+def test_metadata_interval_outputs_use_metres(tmp_path):
+    workbook = tmp_path / "units.xlsx"
+    with pd.ExcelWriter(workbook) as writer:
+        pd.DataFrame(
+            {"location type": ["Open"], "startKM": [48.0], "endKM": [49.0]}
+        ).to_excel(writer, sheet_name="location type", index=False)
+        pd.DataFrame(
+            {"track type": ["Tangent"], "startKM": [48.0], "endKM": [49.0]}
+        ).to_excel(writer, sheet_name="UT track type", index=False)
+
+    manager = TOV1050MetadataManager(workbook)
+    boundaries = manager.get_boundaries_for_plot("AEL", "UT", "Mainline")
+    intervals = manager.get_track_type_intervals("AEL", "Mainline", "UT")
+
+    assert boundaries.loc[0, "FromM"] == 48000
+    assert boundaries.loc[0, "ToM"] == 49000
+    assert intervals.index[0].left == 48000
+    assert intervals.index[0].right == 49000
 
 
 def test_metadata_adapter_normalizes_case_and_numeric_commas(tmp_path):

@@ -14,6 +14,7 @@ import TrendChart from '../components/Calculation/TrendChart';
 import TrendResultTable from '../components/Calculation/TrendResultTable';
 import TrendAlgorithmDialog from '../components/Calculation/TrendAlgorithmDialog';
 import { scrollablePageSx } from '../utils/pageLayout';
+import TaskLoadingState from '../components/TaskLoadingState';
 
 const TrendAnalyzerView: React.FC = () => {
   const {
@@ -187,6 +188,8 @@ const TrendAnalyzerView: React.FC = () => {
           </Stack>
         </Collapse>
       </Paper>
+
+      {activeTab.isLoading && <TaskLoadingState stage="detecting" />}
 
       {hasResults ? (
         <Paper sx={{ p: 2, flexGrow: 1 }}>

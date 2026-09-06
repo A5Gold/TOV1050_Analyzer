@@ -11,6 +11,9 @@ from .metadata import MetadataManager
 from .tov1050_contract import metadata_track_sheet
 
 
+CHAINAGE_SCALE_M_PER_KM = 1000.0
+
+
 class TOV1050MetadataManager(MetadataManager):
     """Expose TOV1050 metadata through the TOV640 detector contract."""
 
@@ -32,14 +35,11 @@ class TOV1050MetadataManager(MetadataManager):
         frame = frame.dropna(subset=["startKM", "endKM"])
         if frame.empty:
             raise ValueError("TOV1050 location type sheet has no valid intervals")
-        starts = np.minimum(frame["startKM"], frame["endKM"])
-        ends = np.maximum(frame["startKM"], frame["endKM"])
-        ordered = pd.DataFrame({"start": starts, "end": ends}).sort_values(["start", "end"])
-        # Workbooks may have millimetre-level boundary rounding overlap;
-        # reject only material overlap (> 0.01 km) that makes classification ambiguous.
-        overlap = ordered["end"].iloc[:-1].to_numpy() - ordered["start"].iloc[1:].to_numpy()
-        if (overlap > 0.01).any():
-            raise ValueError("TOV1050 location type intervals overlap")
+        starts = np.minimum(frame["startKM"], frame["endKM"]) * CHAINAGE_SCALE_M_PER_KM
+        ends = np.maximum(frame["startKM"], frame["endKM"]) * CHAINAGE_SCALE_M_PER_KM
+        # Overlap is valid at tension/section changeovers.  The detector's
+        # interval mapper resolves overlapping matches by shortest interval;
+        # validation keeps the source overlap visible for human review.
         frame["Class"] = frame["location type"].astype(str).str.strip()
         frame.index = pd.IntervalIndex.from_arrays(
             starts,
@@ -62,14 +62,18 @@ class TOV1050MetadataManager(MetadataManager):
         return pd.DataFrame(
             {
                 "Class": frame["location type"].astype(str).str.strip(),
-                "FromM": np.minimum(frame["startKM"], frame["endKM"]),
-                "ToM": np.maximum(frame["startKM"], frame["endKM"]),
+                "FromM": np.minimum(frame["startKM"], frame["endKM"]) * CHAINAGE_SCALE_M_PER_KM,
+                "ToM": np.maximum(frame["startKM"], frame["endKM"]) * CHAINAGE_SCALE_M_PER_KM,
             }
         )
 
     def get_track_type_intervals(self, line: str, section: str, track: str) -> pd.DataFrame:
         sheet = self._get_direction_sheet(section, track)
         result = self._extract_interval_data(sheet, "startKM", "endKM", ["track type"])
+        if not result.empty:
+            starts = result.index.left.to_numpy(dtype=float) * CHAINAGE_SCALE_M_PER_KM
+            ends = result.index.right.to_numpy(dtype=float) * CHAINAGE_SCALE_M_PER_KM
+            result.index = pd.IntervalIndex.from_arrays(starts, ends, closed="both")
         return result.rename(columns={"track type": "Track Type"})
 
     def get_overlap_intervals(self, line: str, section: str, track: str) -> pd.DataFrame:

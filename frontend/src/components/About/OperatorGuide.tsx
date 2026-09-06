@@ -33,6 +33,7 @@ import {
   ThresholdRangeChart,
   WearResolutionVisual,
 } from './GuideVisuals';
+import operatorWorkflowDiagram from '../../assets/tov1050-operator-workflow.png';
 
 const sectionSx = { scrollMarginTop: 16, py: 3 } as const;
 
@@ -52,6 +53,15 @@ const OperatorGuide: React.FC = () => (
           選檔後先確認 Line、日期與 metadata 範圍。預覽是作出保存決定的必要步驟，不應直接略過 conflict、blocking reason 或 trace。
         </Typography>
         <GuideFlow steps={operatorWorkflowSteps} label="TOV640 Analyzer 操作流程" desktopColumns={5} />
+        <Box
+          component="img"
+          src={operatorWorkflowDiagram}
+          alt="TOV1050 Exception Generator operator workflow from selecting a run preset through reviewing Graph and Table and exporting a report"
+          sx={{ display: 'block', width: '100%', maxWidth: 980, height: 'auto', mt: 2, border: 1, borderColor: 'divider' }}
+        />
+        <Typography variant="caption" color="text.secondary" display="block" sx={{ mt: 0.75 }}>
+          Run preset 僅提供快速填入；特殊案例仍可直接編輯 Track、Station 與 Task 欄位。
+        </Typography>
       </Box>
 
       <Box component="section" id="operator-tov1050-input" sx={sectionSx}>

@@ -14,5 +14,6 @@ describe('TrendAlgorithmDialog', () => {
     expect(screen.getAllByText(/x-axis/i).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/只保留實際有資料的日期/i).length).toBeGreaterThan(0);
     expect(screen.getByText(/T3/i)).toBeInTheDocument();
+    expect(screen.getByAltText('Trend analysis algorithm flow')).toBeInTheDocument();
   });
 });

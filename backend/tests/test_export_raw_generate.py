@@ -15,6 +15,7 @@ from fastapi.testclient import TestClient
 from unittest.mock import patch, MagicMock
 import pandas as pd
 import io
+import app.api.endpoints.analysis as analysis_endpoint
 
 from app.main import app
 
@@ -42,7 +43,7 @@ class TestExportRawGenerateEndpoint:
 
         response = client.post("/api/export/raw/generate", json=payload)
 
-        assert response.status_code == 200
+        assert response.status_code == 200, response.text
         assert response.headers["content-type"] == "text/csv; charset=utf-8"
         
         # Check Content-Disposition header for filename
@@ -204,6 +205,47 @@ class TestExportRawGenerateEndpoint:
         # Should use "Unknown" defaults in filename
         content_disposition = response.headers.get("content-disposition", "")
         assert "UnknownDate" in content_disposition or response.status_code == 200
+
+    def test_session_scoped_raw_export_uses_complete_frame_without_chart_data(self, monkeypatch):
+        """A tab export must use its complete raw frame, never an envelope payload."""
+        raw = pd.DataFrame({
+            "Chainage": [100.0, 101.0, 102.0],
+            "height1": [5000, 5100, 5200],
+            "raw_marker": ["first", "middle", "last"],
+        })
+        monkeypatch.setattr(analysis_endpoint, "ANALYSIS_SESSIONS", {
+            "tab-full": {"raw_df": raw, "source_path": "raw.csv"},
+        })
+        response = client.post("/api/export/raw/generate", json={
+            "params": {"date_str": "20260907", "line": "AEL", "track": "UT", "section": "Mainline", "session": "Mainline", "station_start": "A", "station_end": "B"},
+            "client_session_id": "tab-full",
+        })
+        assert response.status_code == 200, response.text
+        csv = response.content.decode("utf-8")
+        assert csv.count("\n") == len(raw) + 1
+        assert "middle" in csv
+
+    def test_session_scoped_report_uses_complete_frame_for_chartdata(self, monkeypatch):
+        """Report ChartData must retain all raw rows even when chart_data is sampled."""
+        raw = pd.DataFrame({
+            "Chainage": [100.0, 101.0, 102.0],
+            "height1": [5000, 5100, 5200],
+            "raw_marker": ["first", "middle", "last"],
+        })
+        monkeypatch.setattr(analysis_endpoint, "ANALYSIS_SESSIONS", {
+            "tab-report": {"raw_df": raw, "source_path": "raw.csv"},
+        })
+        response = client.post("/api/export/report/generate", json={
+            "exceptions": {},
+            # Deliberately sampled chart payload; the session frame is authoritative.
+            "chart_data": {"Chainage": [100.0], "height1": [5000]},
+            "params": {"date_str": "20260907", "line": "AEL", "track": "UT", "section": "Mainline", "session": "Mainline", "station_start": "A", "station_end": "B"},
+            "client_session_id": "tab-report",
+        })
+        assert response.status_code == 200
+        chart = pd.read_excel(io.BytesIO(response.content), sheet_name="ChartData")
+        assert len(chart) == len(raw)
+        assert chart["Chainage"].tolist() == raw["Chainage"].tolist()
 
 
 class TestBug1082ColumnOrientedFormat:
