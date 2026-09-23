@@ -33,6 +33,7 @@ from standardize_tov1050_metadata import (
 CHAINAGE_SCALE_M_PER_KM = 1000.0
 TRACK_DIRECTIONS = ("UT", "DT", "PL")
 _BRACKET_ID_RE = re.compile(r"^(?:\d+|[A-Z]{1,5}\d+)-\d+$", re.IGNORECASE)
+_LANDMARK_PREFIX_RE = re.compile(r"^(?:SI|MID\s+POINT|POA)(?![A-Z])", re.IGNORECASE)
 
 
 def _sha256(path: Path) -> str:
@@ -53,9 +54,17 @@ def _text(value: Any) -> str:
 
 
 def _is_landmark(value: Any) -> bool:
-    """TL/BK marker tokens may recur; physical bracket identities may not."""
+    """Return whether a non-empty TL/BK label is not a physical bracket ID.
+
+    Landmarks such as SI, Mid Point, POA, station names, and equipment codes
+    remain in the mapping, but do not participate in physical bracket
+    identity checks.
+    """
     text = _text(value)
-    return bool(text) and _BRACKET_ID_RE.fullmatch(text) is None
+    return bool(text) and (
+        _LANDMARK_PREFIX_RE.match(text) is not None
+        or _BRACKET_ID_RE.fullmatch(text) is None
+    )
 
 
 def _token(value: Any) -> tuple[str, Any]:
@@ -127,6 +136,7 @@ def _interval_report(
         "overlap_count": 0,
         "touching_count": 0,
         "ambiguous_overlap_count": 0,
+        "ambiguous_overlap_examples": [],
         "reversed_row_count": 0,
         "reversed_rows": [],
         "overlap_examples": [],
@@ -177,6 +187,15 @@ def _interval_report(
                 current_length = current["to_m"] - current["from_m"]
                 if math.isclose(previous_length, current_length, rel_tol=0, abs_tol=1e-6):
                     result["ambiguous_overlap_count"] += 1
+                    if len(result["ambiguous_overlap_examples"]) < 100:
+                        result["ambiguous_overlap_examples"].append({
+                            "label": current["label"],
+                            "previous_source_row": previous["source_row"],
+                            "current_source_row": current["source_row"],
+                            "overlap_m": round(overlap_m, 6),
+                            "previous_length_m": round(previous_length, 6),
+                            "current_length_m": round(current_length, 6),
+                        })
                 if len(result["overlap_examples"]) < 20:
                     result["overlap_examples"].append({
                         "label": current["label"],
@@ -318,10 +337,16 @@ def _mapping_rows(frame: pd.DataFrame, scale: float) -> tuple[Counter, list[dict
         for (location, bracket), rows in by_identity.items()
         if len(rows) > 1 and not _is_landmark(bracket)
     ]
-    location_conflicts = [
-        {"from_m": location, "brackets": sorted({item["bracket"] for item in items}), "source_rows": [item["source_row"] for item in items]}
-        for location, items in by_location.items() if len({item["bracket"] for item in items}) > 1
-    ]
+    location_conflicts = []
+    for location, items in by_location.items():
+        physical_brackets = [item for item in items if not _is_landmark(item["bracket"])]
+        bracket_ids = sorted({item["bracket"] for item in physical_brackets})
+        if len(bracket_ids) > 1:
+            location_conflicts.append({
+                "from_m": location,
+                "brackets": bracket_ids,
+                "source_rows": [item["source_row"] for item in physical_brackets],
+            })
     bracket_location_conflicts = [
         {"bracket": bracket, "from_m_values": sorted({item["from_m"] for item in items}), "source_rows": [item["source_row"] for item in items]}
         for bracket, items in by_bracket.items() if len({item["from_m"] for item in items}) > 1
@@ -698,9 +723,10 @@ def main() -> int:
 
     output_dir = args.output_dir
     output_dir.mkdir(parents=True, exist_ok=True)
-    report = {"generated_at": date.today().isoformat(), "workbooks": reports}
-    json_path = output_dir / "2026-09-02-tov1050-metadata-candidate-validation.json"
-    md_path = output_dir / "2026-09-02-tov1050-metadata-candidate-validation.md"
+    generated_at = date.today().isoformat()
+    report = {"generated_at": generated_at, "workbooks": reports}
+    json_path = output_dir / f"{generated_at}-tov1050-metadata-candidate-validation.json"
+    md_path = output_dir / f"{generated_at}-tov1050-metadata-candidate-validation.md"
     json_path.write_text(json.dumps(report, indent=2, ensure_ascii=False, default=str), encoding="utf-8")
     md_path.write_text(_markdown(report), encoding="utf-8")
     print(json.dumps({"json": str(json_path), "markdown": str(md_path), "statuses": {item["line"]: item["status"] for item in reports}}, ensure_ascii=False))

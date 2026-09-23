@@ -8,6 +8,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "scripts"))
 from standardize_tov1050_metadata import standardize_workbook, _wide_thresholds
 from validate_tov1050_metadata_candidates import (
     _interval_report,
+    _is_landmark,
     _mapping_rows,
     _provenance_check,
     _threshold_check,
@@ -110,6 +111,29 @@ def test_reversed_interval_is_directional_and_canonicalized_for_parity():
     assert report["reversed_rows"][0]["reason"].startswith("directional source ordering")
 
 
+def test_interval_report_lists_ambiguous_overlap_source_rows():
+    report = _interval_report(
+        pd.DataFrame({
+            "track type": ["Tangent", "Tangent"],
+            "startKM": [48.0, 48.5],
+            "endKM": [49.0, 49.5],
+        }),
+        "UT track type",
+        scale=1000.0,
+        group_by_track=True,
+    )
+
+    assert report["ambiguous_overlap_count"] == 1
+    assert report["ambiguous_overlap_examples"] == [{
+        "label": "Tangent",
+        "previous_source_row": 2,
+        "current_source_row": 3,
+        "overlap_m": 500.0,
+        "previous_length_m": 1000.0,
+        "current_length_m": 1000.0,
+    }]
+
+
 def test_mapping_marker_and_duplicate_identity_are_review_diagnostics():
     expected, invalid, records, diagnostics = _mapping_rows(
         pd.DataFrame(
@@ -131,6 +155,33 @@ def test_mapping_marker_and_duplicate_identity_are_review_diagnostics():
         "from_m": 48100.0,
         "bracket": "2-045",
         "source_rows": [2, 3],
+    }]
+
+
+def test_bracket_format_and_landmarks_are_classified_separately():
+    assert _is_landmark("123-01") is False
+    assert _is_landmark("CR283-15") is False
+    assert _is_landmark("SI") is True
+    assert _is_landmark("Mid Point") is True
+    assert _is_landmark("POA") is True
+    assert _is_landmark("POA804-01") is True
+
+
+def test_landmarks_do_not_create_same_location_bracket_conflicts():
+    _, _, _, diagnostics = _mapping_rows(
+        pd.DataFrame({
+            "Location": [48.1, 48.1, 48.2, 48.2, 48.2],
+            "Bracket": ["123-01", "SI", "123-02", "CR283-15", "Mid Point"],
+        }),
+        1000.0,
+    )
+
+    assert diagnostics["marker_row_count"] == 2
+    assert diagnostics["location_conflict_count"] == 1
+    assert diagnostics["location_conflicts"] == [{
+        "from_m": 48200.0,
+        "brackets": ["123-02", "CR283-15"],
+        "source_rows": [4, 5],
     }]
 
 
