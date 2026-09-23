@@ -1,0 +1,7 @@
+Create a clean landscape Traditional Chinese educational UI concept. Title "UI 設計：支援實際審閱工作". Subtitle exactly "工作流程示意，非實際截圖". White blue MUI-style desktop tool, not a marketing page.
+At top above the mock interface show workflow labels "匯入 → 分析 → 審閱 → 匯出".
+Inside mock interface: left sidebar "異常分析" selected, then "歷史比較", "資料庫", "Metadata", "計算". Top bar has empty selectors "線路", "Session", "方向", and "匯入 CSV" button.
+Center plot shows a simple blue curve with one shaded selection region. IMPORTANT: no numeric tick labels at all. Axis titles only "里程（m）" and "量測值". Chart caption "曲線僅為示意". Under plot show table with exactly headers "類型 / 等級 / FromM / ToM / 峰值" and 2 rows of dash placeholders.
+Right details area "來源與明細" with "來源檔案" and "選取區間", values blank. Bottom button "匯出報表".
+Bottom outside the interface show four independent status examples under heading "狀態範例": "載入中", "無結果", "驗證錯誤", "完成". These are ALTERNATIVE STATES; absolutely no arrows connecting these four states.
+Footer "保留來源、單位與異常脈絡". Use only these texts, no additional text or made-up data. Large legible Chinese characters.

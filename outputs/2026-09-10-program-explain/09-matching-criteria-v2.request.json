@@ -1,0 +1,13 @@
+{
+  "endpoint": "https://api.a6api.com/images/generations",
+  "requested_model": "gpt-image-2.5-sunburst",
+  "input_images": [],
+  "response_model": null,
+  "response_created": 1789055702,
+  "output": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\2026-09-10-program-explain\\09-matching-criteria-v2.png",
+  "output_sha256": "1704cef347a80fd01b5bef3cfdf0c25249008c7868be42b7875fab5dfd306a2e",
+  "width": 1672,
+  "height": 941,
+  "quality": "high",
+  "prompt": "Create a precise Traditional Chinese landscape interval-matching explainer, white dark-blue teal flat diagram. Title \"匹配條件：Valid Match、Gap、Peak Shift\". Prerequisite \"相同異常類型\". Three rows with two horizontal interval bars each, Latest blue above Previous teal. Put a diamond peak on each bar. NO numerical values, tick marks or numeric axes anywhere: abstract interval examples only, not to scale.\nRow 1 heading \"Valid Match\". Latest bar x=30..70 percent, Previous bar x=45..85 percent. Shared vertical shaded band x=45..70. Latest diamond x=55, Previous diamond x=60, both inside band. Caption \"區間重疊，兩峰皆在交集內\" and green \"通過\".\nRow 2 heading \"Gap\". Latest bar x=30..45, Previous bar x=60..85, visible blank gap. Diamonds inside respective bars. No shaded intersection. Caption \"區間沒有交集\" and red \"不匹配\".\nRow 3 heading \"Peak Shift\". Same bar endpoints as row 1 and same shared band. Latest diamond x=35 lies OUTSIDE intersection; Previous diamond x=60 lies inside. Caption \"區間重疊，但峰位在交集外\" and red \"不匹配\".\nFooter: \"i_start = max(兩個 FromM)\"; \"i_end = min(兩個 ToM)\"; \"i_start ≤ i_end，且兩峰皆在交集內（含端點）\". Small \"教學示意，非實際紀錄\". Avoid any axis numbers or extra formulae.\n"
+}

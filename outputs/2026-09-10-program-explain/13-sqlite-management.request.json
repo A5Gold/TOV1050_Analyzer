@@ -1,0 +1,13 @@
+{
+  "endpoint": "https://api.a6api.com/images/generations",
+  "requested_model": "gpt-image-2.5-sunburst",
+  "input_images": [],
+  "response_model": null,
+  "response_created": 1789055520,
+  "output": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\2026-09-10-program-explain\\13-sqlite-management.png",
+  "output_sha256": "8a3922868eeb9e5ce774130073a3c3dde314df747726ab24be8b8a6ec588fe42",
+  "width": 1672,
+  "height": 941,
+  "quality": "high",
+  "prompt": "Create one high-quality landscape educational information graphic for railway maintenance engineers explaining the actual TOV1050 Analyzer repository. All explanatory visible copy must use Traditional Chinese, retain named English technical identifiers exactly. Flat crisp editorial engineering illustration, white/cool #f6f8fb background, #263348 dark ink, #2b63c9 blue, #256f62 teal, amber only for caveats, red only failures. Noto Sans TC-like legible type, large headings and generous margins. Clear directed arrows, no decorative gradients, no fake logos, no ornamental cards, no microscopic text. Main graphic should dominate, concise labels arranged in reading order. The image is explanatory, not certification. Render only the specified facts and labels, no invented metrics. Keep typography accurate; no simplified Chinese. \nTitle: 「SQLite 資料庫管理」\nStorage architecture with SQLite cylinder, three logical groups around it: 分析紀錄 (sessions / exceptions / history); 重複異常 (saved_repeated_exceptions); 線耗週期 (cycles / records / segments / decisions / tombstones). Bottom transaction flow 預覽 → digest 核對 → version 核對 → 原子寫入; success branch COMMIT and failure branch ROLLBACK. Side connection notes thread-local connection; WAL; foreign keys. Distinguish 線耗保存契約 from general CRUD, do not imply all DB writes use preview digest. Footer 本機資料庫；遷移與備份需保留追溯. No invented cloud service or DB path.\n"
+}

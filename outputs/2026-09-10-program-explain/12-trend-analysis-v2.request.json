@@ -1,0 +1,13 @@
+{
+  "endpoint": "https://api.a6api.com/images/generations",
+  "requested_model": "gpt-image-2.5-sunburst",
+  "input_images": [],
+  "response_model": null,
+  "response_created": 1789055756,
+  "output": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\2026-09-10-program-explain\\12-trend-analysis-v2.png",
+  "output_sha256": "0bb370ad5276efeb02396bc17b8ddc6578f6985aa35e8ab62623939f9eab3e77",
+  "width": 1672,
+  "height": 941,
+  "quality": "high",
+  "prompt": "Create a Traditional Chinese landscape educational infographic. Title \"趨勢分析：兩種不同用途\". Two separate balanced panels, white and blue/teal typography.\nLeft \"L2 異常覆核\". Flow \"最新 L2、Action 空白 → 各日期區間最小 wear_min → 線性擬合 → 最新擬合值\". Below a three-row decision table, reproduce EXACTLY, no extra numbers:\n\"擬合值 > 10.2\" | \"毋須行動\"\n\"擬合值 ≤ 10.2，偏差 > 0.2\" | \"現場核實\"\n\"擬合值 ≤ 10.2，偏差 ≤ 0.2\" | \"確認 L2\"\nSmall label \"單位：mm\".\nRight \"TL 長期線耗\". A conceptual blue scatter plot and downward fitted line, NO numeric tick labels. Axis titles \"剩餘厚度\" and \"日期\". Caption \"曲線示意\". Text \"同日先平均\"; \"mm/year = −slope\"; \"少於兩日期：資料不足\"; \"非正磨耗率：不外推\".\nFooter \"最新擬合值不是下一週期預測\". Amber note \"舊 L2 常數需驗證 TOV1050 適用性\". Do not add extraneous numbers or text.\n"
+}

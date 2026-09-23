@@ -1,0 +1,13 @@
+{
+  "endpoint": "https://api.a6api.com/images/generations",
+  "requested_model": "gpt-image-2.5-sunburst",
+  "input_images": [],
+  "response_model": null,
+  "response_created": 1789055462,
+  "output": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\2026-09-10-program-explain\\09-matching-criteria.png",
+  "output_sha256": "18b46adadbc172ca076f1af29bc68b73f9dcf6e94aedf6a225c751c7141e5805",
+  "width": 1672,
+  "height": 941,
+  "quality": "high",
+  "prompt": "Create one high-quality landscape educational information graphic for railway maintenance engineers explaining the actual TOV1050 Analyzer repository. All explanatory visible copy must use Traditional Chinese, retain named English technical identifiers exactly. Flat crisp editorial engineering illustration, white/cool #f6f8fb background, #263348 dark ink, #2b63c9 blue, #256f62 teal, amber only for caveats, red only failures. Noto Sans TC-like legible type, large headings and generous margins. Clear directed arrows, no decorative gradients, no fake logos, no ornamental cards, no microscopic text. Main graphic should dominate, concise labels arranged in reading order. The image is explanatory, not certification. Render only the specified facts and labels, no invented metrics. Keep typography accurate; no simplified Chinese. \nTitle: 「匹配條件：Valid Match、Gap、Peak Shift」\nThree vertically stacked interval diagrams sharing metre axes, exact numeric examples clearly marked 教學示例. Valid Match: Latest [100,110] peak 106; Previous [104,114] peak 108; overlap [104,110]; both peaks inside; green 通過. Gap: Latest [100,103] peak 102; Previous [105,110] peak 107; red 無交集. Peak Shift: Latest [100,110] peak 102; Previous [104,114] peak 108; overlap [104,110]; red 峰位在交集外. Render intervals as horizontal bars and peaks as diamonds, latest blue and previous teal. Top prerequisite 相同異常類型. Footer exact formula i_start = max(FromM); i_end = min(ToM); i_start ≤ i_end. Small note 兩峰皆須落在交集，含端點. Do not shift diamonds away from stated numeric positions.\n"
+}

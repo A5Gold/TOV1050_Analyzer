@@ -1,0 +1,13 @@
+{
+  "endpoint": "https://api.a6api.com/images/generations",
+  "requested_model": "gpt-image-2.5-sunburst",
+  "input_images": [],
+  "response_model": "gpt-image-2.5-sunburst",
+  "response_created": 1789055317,
+  "output": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\2026-09-10-program-explain\\05-development-plan.png",
+  "output_sha256": "6d645d1ab198c9f0d71befc163a104ac61ffcc53cf7a10bfcc07aab50f7baa6a",
+  "width": 1672,
+  "height": 941,
+  "quality": "high",
+  "prompt": "Create one high-quality landscape educational information graphic for railway maintenance engineers explaining the actual TOV1050 Analyzer repository. All explanatory visible copy must use Traditional Chinese, retain named English technical identifiers exactly. Flat crisp editorial engineering illustration, white/cool #f6f8fb background, #263348 dark ink, #2b63c9 blue, #256f62 teal, amber only for caveats, red only failures. Noto Sans TC-like legible type, large headings and generous margins. Clear directed arrows, no decorative gradients, no fake logos, no ornamental cards, no microscopic text. Main graphic should dominate, concise labels arranged in reading order. The image is explanatory, not certification. Render only the specified facts and labels, no invented metrics. Keep typography accurate; no simplified Chinese. \nTitle: 「開發計畫與後續階段」\nA dependency roadmap without dates or completion percentages. Left solid foundation labeled 已有基礎: CSV adapter / 異常判定 / 圖表取樣 / SQLite. Then three sequential amber outlined phases under 建議後續順序: 1 正確性收斂 (邊界規則、文件與程式一致); 2 業務規則適配 (Metadata 核准、各線線耗與 Stagger); 3 驗收與交付 (90 萬列效能、回歸測試、Portable 打包). Gates between phases labeled 明確規則 / 測試證據. Footer: 規劃示意，非完成承諾. Show Linear sync blocked as small operational note 本工作階段待恢復 Linear 同步.\n"
+}

@@ -1,0 +1,8 @@
+Create a precise educational landscape diagram. Traditional Chinese, large readable dark typography on white, restrained blue/teal, flat vector-like appearance. Title exactly "程式架構與資料流". No logos. Use two visibly separate panels.
+Top narrow panel title "操作層". Exactly four boxes and three arrows in one horizontal row: "Electron" → "React / MUI" → "FastAPI" → "分析核心".
+Bottom large panel title "資料層". A clean left-to-right branching tree. Leftmost "CSV" → "清洗與轉換" → central "完整清洗資料". This central node branches to three independent horizontal lanes stacked vertically on the right:
+Lane 1: "ExceptionDetector" → "異常結果" → "SQLite／報表".
+Lane 2: "圖表取樣" → "Plotly 概覽".
+Lane 3: "原始資料匯出".
+Place a small "Metadata" box directly above "ExceptionDetector", with exactly one short downward arrow into ExceptionDetector. Metadata must not connect to 原始資料匯出. Never connect sampling or Plotly back into ExceptionDetector or export. Avoid crossed or ambiguous arrows. Each arrow begins and ends at the described box.
+Footer exact: "取樣僅限圖表；判定與匯出使用完整清洗資料". Second footer: "source_id 隔離分析來源". Do not add any other arrows, legends, nodes, decorative illustrations or repeated labels.

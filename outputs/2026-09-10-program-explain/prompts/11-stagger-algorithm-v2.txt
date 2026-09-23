@@ -1,0 +1,6 @@
+Create a landscape Traditional Chinese engineering algorithm poster. Title "Stagger 演算法解說". White dark-blue teal precise typography, no decorative railway or bridge rendering.
+Top simple three support markers A, I, B. Draw span A–I and span I–B as TWO separate double-ended arrows. Caption "相鄰支撐點與跨距示意". Do not draw one span A–B. Do not label stg_x and stg_i as left/right; below simply define "stg_x：相鄰支撐點 stagger"; "stg_i：中心支撐點 stagger".
+Middle workflow "L1／L2 候選 → 支撐點與量測 → span、k_eq、tension → 公式 → 判定與 trace".
+Formula panel exact "B ∝ k_eq² × span² / tension（比例關係）"; "P = |(stg_x + stg_i) / 2|"; "S = |stg_x − stg_i|"; "E = S² / (16B)，B > 0"; "allowable = 505 − (B + E) − height_correction".
+Outcome strips "S ≥ 4B：short-circuit pass" and "支撐點不足：n/a＋partial trace".
+Footer amber "目前預設 EAL／TML workbook；TOV1050 仍需適配". No extra labels, no invented constants.

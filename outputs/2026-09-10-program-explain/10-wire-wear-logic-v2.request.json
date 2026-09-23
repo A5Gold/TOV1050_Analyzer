@@ -1,0 +1,13 @@
+{
+  "endpoint": "https://api.a6api.com/images/generations",
+  "requested_model": "gpt-image-2.5-sunburst",
+  "input_images": [],
+  "response_model": null,
+  "response_created": 1789055749,
+  "output": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\2026-09-10-program-explain\\10-wire-wear-logic-v2.png",
+  "output_sha256": "257c161ef8a78823c4ee4f3bc5c1b01f29907c86acad52a20eb9f190a1b21394",
+  "width": 1672,
+  "height": 941,
+  "quality": "high",
+  "prompt": "Create a precise Traditional Chinese landscape formula teaching poster, white/dark blue/teal, large clean typography. Title \"線耗計算邏輯\".\nTop flow \"wear_min → TL 彙整 → 平均／標準差 → 截面換算\".\nLeft exactly ONE circle diagram. Circle center clearly marked O. Original circumference dashed. One HORIZONTAL wear plane in lower half of circle. Upper LARGE area light blue labelled \"剩餘截面\". Lower SMALL circular cap amber labelled \"磨耗面積 A\". Draw radius R as HORIZONTAL arrow from center O to RIGHT circumference at center height. Label \"R = 6.6 mm\". Draw remaining thickness r as VERTICAL arrow outside LEFT of circle from TOPMOST original circle point down to wear plane. Label \"r：平均剩餘厚度\". R MUST NOT span diameter. r MUST start at true topmost point. Do not add a second circle.\nRight formula panel exact:\n\"θ = acos((r − R) / R)\"\n\"A = θR² − R sin(θ)(r − R)\"\n\"線耗率 = clamp(A / 120 × 100, 0, 100) %\"\n\"120 mm²：程式名義截面積\"\nBottom amber note \"r = 0 回傳 0%：程式特殊行為，非物理解釋\".\nFooter \"既有線材常數，TOV1050 適用性待核定\". No other formulas or numbers.\n"
+}

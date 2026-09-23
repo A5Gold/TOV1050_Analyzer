@@ -1,0 +1,13 @@
+{
+  "endpoint": "https://api.a6api.com/images/generations",
+  "requested_model": "gpt-image-2.5-sunburst",
+  "input_images": [],
+  "response_model": null,
+  "response_created": 1789055647,
+  "output": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\2026-09-10-program-explain\\03-key-modules-v2.png",
+  "output_sha256": "9211920f511e6826ba15f5f68af98f3e670e45a9511166cda88cd41732102195",
+  "width": 1672,
+  "height": 941,
+  "quality": "high",
+  "prompt": "Create a landscape educational module responsibility infographic, Traditional Chinese, large dark ink sans text, white/cool background, blue and teal accents with amber caveat. Title \"核心模組：從量測到維護判斷\". This is a catalog of responsibilities, NOT a sequential execution pipeline. Do not draw ANY arrows between the six modules. Arrange as a beautifully legible two-column responsibility table with six rows, simple small functional icons, ample whitespace. Headers \"模組\" and \"輸入與輸出\". Exact rows:\n\"匯入模組\" | \"CSV → 標準欄位\"\n\"Metadata 映射\" | \"位置 → 工程脈絡\"\n\"ExceptionDetector\" | \"量測＋門檻 → 異常區間\"\n\"Repeated Finder\" | \"歷史報表 → 重複異常\"\n\"Calculation\" | \"報表 → 線耗／Stagger／Trend\"\n\"Repository\" | \"結果 → 交易與追溯\"\nOnly Calculation has amber label \"舊模組規則待適配\".\nBelow the table put one blue detector detail strip, title \"ExceptionDetector 內部流程\", containing exactly \"門檻判定 → 區間分組 → 峰值擷取\". No arrows from Repository or other modules into this strip.\nFooter \"完整清洗資料保留判定依據\". No extra text or made-up data, no trains, no decorative arrows.\n"
+}

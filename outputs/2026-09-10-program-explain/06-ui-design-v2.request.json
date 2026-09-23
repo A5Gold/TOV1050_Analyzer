@@ -1,0 +1,13 @@
+{
+  "endpoint": "https://api.a6api.com/images/generations",
+  "requested_model": "gpt-image-2.5-sunburst",
+  "input_images": [],
+  "response_model": null,
+  "response_created": 1789055654,
+  "output": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\2026-09-10-program-explain\\06-ui-design-v2.png",
+  "output_sha256": "50e474fe3365d9f06bd94a39e3759f1b059d2c09a7dc1664d3dd0d943c51611c",
+  "width": 1672,
+  "height": 941,
+  "quality": "high",
+  "prompt": "Create a clean landscape Traditional Chinese educational UI concept. Title \"UI 設計：支援實際審閱工作\". Subtitle exactly \"工作流程示意，非實際截圖\". White blue MUI-style desktop tool, not a marketing page.\nAt top above the mock interface show workflow labels \"匯入 → 分析 → 審閱 → 匯出\".\nInside mock interface: left sidebar \"異常分析\" selected, then \"歷史比較\", \"資料庫\", \"Metadata\", \"計算\". Top bar has empty selectors \"線路\", \"Session\", \"方向\", and \"匯入 CSV\" button.\nCenter plot shows a simple blue curve with one shaded selection region. IMPORTANT: no numeric tick labels at all. Axis titles only \"里程（m）\" and \"量測值\". Chart caption \"曲線僅為示意\". Under plot show table with exactly headers \"類型 / 等級 / FromM / ToM / 峰值\" and 2 rows of dash placeholders.\nRight details area \"來源與明細\" with \"來源檔案\" and \"選取區間\", values blank. Bottom button \"匯出報表\".\nBottom outside the interface show four independent status examples under heading \"狀態範例\": \"載入中\", \"無結果\", \"驗證錯誤\", \"完成\". These are ALTERNATIVE STATES; absolutely no arrows connecting these four states.\nFooter \"保留來源、單位與異常脈絡\". Use only these texts, no additional text or made-up data. Large legible Chinese characters.\n"
+}

@@ -1,0 +1,8 @@
+Create a Traditional Chinese landscape educational infographic. Title "趨勢分析：兩種不同用途". Two separate balanced panels, white and blue/teal typography.
+Left "L2 異常覆核". Flow "最新 L2、Action 空白 → 各日期區間最小 wear_min → 線性擬合 → 最新擬合值". Below a three-row decision table, reproduce EXACTLY, no extra numbers:
+"擬合值 > 10.2" | "毋須行動"
+"擬合值 ≤ 10.2，偏差 > 0.2" | "現場核實"
+"擬合值 ≤ 10.2，偏差 ≤ 0.2" | "確認 L2"
+Small label "單位：mm".
+Right "TL 長期線耗". A conceptual blue scatter plot and downward fitted line, NO numeric tick labels. Axis titles "剩餘厚度" and "日期". Caption "曲線示意". Text "同日先平均"; "mm/year = −slope"; "少於兩日期：資料不足"; "非正磨耗率：不外推".
+Footer "最新擬合值不是下一週期預測". Amber note "舊 L2 常數需驗證 TOV1050 適用性". Do not add extraneous numbers or text.

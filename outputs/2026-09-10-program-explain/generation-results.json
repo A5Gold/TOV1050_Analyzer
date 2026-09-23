@@ -1,0 +1,108 @@
+[
+  {
+    "id": "02-architecture-data-flow",
+    "status": "existing"
+  },
+  {
+    "id": "01-migration-gap",
+    "status": "existing"
+  },
+  {
+    "id": "03-key-modules",
+    "status": "existing"
+  },
+  {
+    "id": "04-metadata-review",
+    "status": "existing"
+  },
+  {
+    "id": "05-development-plan",
+    "status": "existing"
+  },
+  {
+    "id": "03-key-modules-v2",
+    "exit_code": 0,
+    "summary": "{\"output\": \"C:\\\\Smart Maintanence\\\\TOV1050_Analyzer\\\\outputs\\\\2026-09-10-program-explain\\\\03-key-modules-v2.png\", \"model\": \"gpt-image-2.5-sunburst\", \"size\": \"1920*1080\", \"mime\": \"image/png\", \"width\": 1672, \"height\": 941, \"dimensions_match\": false, \"bytes\": 1194539}",
+    "error": ""
+  },
+  {
+    "id": "06-ui-design",
+    "status": "existing"
+  },
+  {
+    "id": "02-architecture-data-flow-v2",
+    "exit_code": 0,
+    "summary": "{\"output\": \"C:\\\\Smart Maintanence\\\\TOV1050_Analyzer\\\\outputs\\\\2026-09-10-program-explain\\\\02-architecture-data-flow-v2.png\", \"model\": \"gpt-image-2.5-sunburst\", \"size\": \"1920*1080\", \"mime\": \"image/png\", \"width\": 1672, \"height\": 941, \"dimensions_match\": false, \"bytes\": 1036606}",
+    "error": ""
+  },
+  {
+    "id": "07-threshold-determination",
+    "status": "existing"
+  },
+  {
+    "id": "06-ui-design-v2",
+    "exit_code": 0,
+    "summary": "{\"output\": \"C:\\\\Smart Maintanence\\\\TOV1050_Analyzer\\\\outputs\\\\2026-09-10-program-explain\\\\06-ui-design-v2.png\", \"model\": \"gpt-image-2.5-sunburst\", \"size\": \"1920*1080\", \"mime\": \"image/png\", \"width\": 1672, \"height\": 941, \"dimensions_match\": false, \"bytes\": 1077553}",
+    "error": ""
+  },
+  {
+    "id": "08-history-chain-rule",
+    "status": "existing"
+  },
+  {
+    "id": "07-threshold-determination-v2",
+    "exit_code": 0,
+    "summary": "{\"output\": \"C:\\\\Smart Maintanence\\\\TOV1050_Analyzer\\\\outputs\\\\2026-09-10-program-explain\\\\07-threshold-determination-v2.png\", \"model\": \"gpt-image-2.5-sunburst\", \"size\": \"1920*1080\", \"mime\": \"image/png\", \"width\": 1672, \"height\": 941, \"dimensions_match\": false, \"bytes\": 1111267}",
+    "error": ""
+  },
+  {
+    "id": "09-matching-criteria",
+    "status": "existing"
+  },
+  {
+    "id": "09-matching-criteria-v2",
+    "exit_code": 0,
+    "summary": "{\"output\": \"C:\\\\Smart Maintanence\\\\TOV1050_Analyzer\\\\outputs\\\\2026-09-10-program-explain\\\\09-matching-criteria-v2.png\", \"model\": \"gpt-image-2.5-sunburst\", \"size\": \"1920*1080\", \"mime\": \"image/png\", \"width\": 1672, \"height\": 941, \"dimensions_match\": false, \"bytes\": 1088356}",
+    "error": ""
+  },
+  {
+    "id": "10-wire-wear-logic",
+    "status": "existing"
+  },
+  {
+    "id": "08-history-chain-rule-v2",
+    "exit_code": 0,
+    "summary": "{\"output\": \"C:\\\\Smart Maintanence\\\\TOV1050_Analyzer\\\\outputs\\\\2026-09-10-program-explain\\\\08-history-chain-rule-v2.png\", \"model\": \"gpt-image-2.5-sunburst\", \"size\": \"1920*1080\", \"mime\": \"image/png\", \"width\": 1672, \"height\": 941, \"dimensions_match\": false, \"bytes\": 1242726}",
+    "error": ""
+  },
+  {
+    "id": "11-stagger-algorithm",
+    "status": "existing"
+  },
+  {
+    "id": "11-stagger-algorithm-v2",
+    "exit_code": 0,
+    "summary": "{\"output\": \"C:\\\\Smart Maintanence\\\\TOV1050_Analyzer\\\\outputs\\\\2026-09-10-program-explain\\\\11-stagger-algorithm-v2.png\", \"model\": \"gpt-image-2.5-sunburst\", \"size\": \"1920*1080\", \"mime\": \"image/png\", \"width\": 1672, \"height\": 941, \"dimensions_match\": false, \"bytes\": 1149076}",
+    "error": ""
+  },
+  {
+    "id": "12-trend-analysis",
+    "status": "existing"
+  },
+  {
+    "id": "13-sqlite-management",
+    "status": "existing"
+  },
+  {
+    "id": "10-wire-wear-logic-v2",
+    "exit_code": 0,
+    "summary": "{\"output\": \"C:\\\\Smart Maintanence\\\\TOV1050_Analyzer\\\\outputs\\\\2026-09-10-program-explain\\\\10-wire-wear-logic-v2.png\", \"model\": \"gpt-image-2.5-sunburst\", \"size\": \"1920*1080\", \"mime\": \"image/png\", \"width\": 1672, \"height\": 941, \"dimensions_match\": false, \"bytes\": 1231595}",
+    "error": ""
+  },
+  {
+    "id": "12-trend-analysis-v2",
+    "exit_code": 0,
+    "summary": "{\"output\": \"C:\\\\Smart Maintanence\\\\TOV1050_Analyzer\\\\outputs\\\\2026-09-10-program-explain\\\\12-trend-analysis-v2.png\", \"model\": \"gpt-image-2.5-sunburst\", \"size\": \"1920*1080\", \"mime\": \"image/png\", \"width\": 1672, \"height\": 941, \"dimensions_match\": false, \"bytes\": 1689038}",
+    "error": ""
+  }
+]

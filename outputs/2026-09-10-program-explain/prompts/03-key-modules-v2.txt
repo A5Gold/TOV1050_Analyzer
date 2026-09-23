@@ -1,0 +1,10 @@
+Create a landscape educational module responsibility infographic, Traditional Chinese, large dark ink sans text, white/cool background, blue and teal accents with amber caveat. Title "核心模組：從量測到維護判斷". This is a catalog of responsibilities, NOT a sequential execution pipeline. Do not draw ANY arrows between the six modules. Arrange as a beautifully legible two-column responsibility table with six rows, simple small functional icons, ample whitespace. Headers "模組" and "輸入與輸出". Exact rows:
+"匯入模組" | "CSV → 標準欄位"
+"Metadata 映射" | "位置 → 工程脈絡"
+"ExceptionDetector" | "量測＋門檻 → 異常區間"
+"Repeated Finder" | "歷史報表 → 重複異常"
+"Calculation" | "報表 → 線耗／Stagger／Trend"
+"Repository" | "結果 → 交易與追溯"
+Only Calculation has amber label "舊模組規則待適配".
+Below the table put one blue detector detail strip, title "ExceptionDetector 內部流程", containing exactly "門檻判定 → 區間分組 → 峰值擷取". No arrows from Repository or other modules into this strip.
+Footer "完整清洗資料保留判定依據". No extra text or made-up data, no trains, no decorative arrows.

@@ -1,0 +1,13 @@
+{
+  "endpoint": "https://api.a6api.com/images/generations",
+  "requested_model": "gpt-image-2.5-sunburst",
+  "input_images": [],
+  "response_model": "gpt-image-2.5-sunburst",
+  "response_created": 1789055280,
+  "output": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\2026-09-10-program-explain\\02-architecture-data-flow.png",
+  "output_sha256": "4d231d60ec6052b1cf00159807a5d9408769c01296aa198b4d3a7aecd649413d",
+  "width": 1672,
+  "height": 941,
+  "quality": "high",
+  "prompt": "Create one high-quality landscape educational information graphic for railway maintenance engineers explaining the actual TOV1050 Analyzer repository. All explanatory visible copy must use Traditional Chinese, retain named English technical identifiers exactly. Flat crisp editorial engineering illustration, white/cool #f6f8fb background, #263348 dark ink, #2b63c9 blue, #256f62 teal, amber only for caveats, red only failures. Noto Sans TC-like legible type, large headings and generous margins. Clear directed arrows, no decorative gradients, no fake logos, no ornamental cards, no microscopic text. Main graphic should dominate, concise labels arranged in reading order. The image is explanatory, not certification. Render only the specified facts and labels, no invented metrics. Keep typography accurate; no simplified Chinese. \nTitle: 「程式架構與資料流」\nLayered systems diagram, exact directed arrows: Electron → React / MUI / Zustand → FastAPI → 分析核心. Feed CSV → 清洗與欄位轉換 → 完整清洗資料 → 分析核心. Metadata → 分析核心. From 完整清洗資料 draw separate branch 圖表取樣 → Plotly 概覽 → 明細視窗. From 分析核心 draw 異常結果 → SQLite and 異常結果 → 報表匯出. From 完整清洗資料 draw 原始資料匯出. A clear callout: 取樣僅限圖表. Other note: source_id 隔離分析來源. Avoid showing sampled data flowing to detector or exports.\n"
+}

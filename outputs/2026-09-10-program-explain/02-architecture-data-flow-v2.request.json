@@ -1,0 +1,13 @@
+{
+  "endpoint": "https://api.a6api.com/images/generations",
+  "requested_model": "gpt-image-2.5-sunburst",
+  "input_images": [],
+  "response_model": null,
+  "response_created": 1789055654,
+  "output": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\2026-09-10-program-explain\\02-architecture-data-flow-v2.png",
+  "output_sha256": "eb0c9eb52b2372b91ef2c421c45a279b7fa4ae65ff985c8a581005ffbbe5de6e",
+  "width": 1672,
+  "height": 941,
+  "quality": "high",
+  "prompt": "Create a precise educational landscape diagram. Traditional Chinese, large readable dark typography on white, restrained blue/teal, flat vector-like appearance. Title exactly \"程式架構與資料流\". No logos. Use two visibly separate panels.\nTop narrow panel title \"操作層\". Exactly four boxes and three arrows in one horizontal row: \"Electron\" → \"React / MUI\" → \"FastAPI\" → \"分析核心\".\nBottom large panel title \"資料層\". A clean left-to-right branching tree. Leftmost \"CSV\" → \"清洗與轉換\" → central \"完整清洗資料\". This central node branches to three independent horizontal lanes stacked vertically on the right:\nLane 1: \"ExceptionDetector\" → \"異常結果\" → \"SQLite／報表\".\nLane 2: \"圖表取樣\" → \"Plotly 概覽\".\nLane 3: \"原始資料匯出\".\nPlace a small \"Metadata\" box directly above \"ExceptionDetector\", with exactly one short downward arrow into ExceptionDetector. Metadata must not connect to 原始資料匯出. Never connect sampling or Plotly back into ExceptionDetector or export. Avoid crossed or ambiguous arrows. Each arrow begins and ends at the described box.\nFooter exact: \"取樣僅限圖表；判定與匯出使用完整清洗資料\". Second footer: \"source_id 隔離分析來源\". Do not add any other arrows, legends, nodes, decorative illustrations or repeated labels.\n"
+}

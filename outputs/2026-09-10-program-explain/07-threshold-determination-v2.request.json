@@ -1,0 +1,13 @@
+{
+  "endpoint": "https://api.a6api.com/images/generations",
+  "requested_model": "gpt-image-2.5-sunburst",
+  "input_images": [],
+  "response_model": null,
+  "response_created": 1789055690,
+  "output": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\2026-09-10-program-explain\\07-threshold-determination-v2.png",
+  "output_sha256": "6efc9f86bc06319d2e9557c0e02c02bb4d3a4d269adebc11cdc13ebae7b01f3f",
+  "width": 1672,
+  "height": 941,
+  "quality": "high",
+  "prompt": "Create a precise landscape Traditional Chinese threshold explainer. Title \"門檻判定 Threshold Determination\". White background dark readable text, blue and teal, amber for fallback.\nTop flow \"threshold 表 → Exc Type → Track Type → Class\".\nMiddle is a THREE-ROW decision table, not a spaghetti graph. Headers \"Class 狀態\" and \"處理方式\". Row 1 \"已定義數值\" → \"使用指定值\". Row 2 \"未定義 Class\" → \"使用 both 備援\". IMPORTANT render literal lowercase English token \"both\", never translate it to 雙方. Row 3 \"已定義但 NaN\" → \"保留 NaN，不進行該項判定\".\nBelow separate strip \"有效門檻 → 超限區間 → L1 / L2 / L3\", with note \"L1 最嚴重；缺少等級不補造\".\nBottom pair of conceptual line charts with no numbers. Left \"Height Low／Wear：越低越嚴重\", right \"Height High：越高越嚴重\". Use a clear threshold line and curve, no rail hardware illustrations. Footer \"使用完整清洗資料判定\". No extra labels.\n"
+}

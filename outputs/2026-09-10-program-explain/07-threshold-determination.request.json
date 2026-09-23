@@ -1,0 +1,13 @@
+{
+  "endpoint": "https://api.a6api.com/images/generations",
+  "requested_model": "gpt-image-2.5-sunburst",
+  "input_images": [],
+  "response_model": null,
+  "response_created": 1789055415,
+  "output": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\2026-09-10-program-explain\\07-threshold-determination.png",
+  "output_sha256": "4b4d48960699263a0282b4a8cb61ade153d7f91d528fb57794f3403b0ff2d593",
+  "width": 1672,
+  "height": 941,
+  "quality": "high",
+  "prompt": "Create one high-quality landscape educational information graphic for railway maintenance engineers explaining the actual TOV1050 Analyzer repository. All explanatory visible copy must use Traditional Chinese, retain named English technical identifiers exactly. Flat crisp editorial engineering illustration, white/cool #f6f8fb background, #263348 dark ink, #2b63c9 blue, #256f62 teal, amber only for caveats, red only failures. Noto Sans TC-like legible type, large headings and generous margins. Clear directed arrows, no decorative gradients, no fake logos, no ornamental cards, no microscopic text. Main graphic should dominate, concise labels arranged in reading order. The image is explanatory, not certification. Render only the specified facts and labels, no invented metrics. Keep typography accurate; no simplified Chinese. \nTitle: 「門檻判定 Threshold Determination」\nA clear decision flow: threshold 表 → Exc Type → Track Type → Class. At Class decision show three mutually distinct branches: 已定義數值 → 使用指定值; 未定義 Class → both 備援; 已定義但 NaN → 保留 NaN. Then 有效門檻 → 超限區間 → L1 / L2 / L3. Note L1 最嚴重；缺少等級不補造. Small conceptual paired sketches labelled Height Low／Wear：越低越嚴重 and Height High：越高越嚴重. Avoid numeric threshold values. Footer: 使用完整清洗資料判定. Ensure NaN branch does not lead into detection.\n"
+}

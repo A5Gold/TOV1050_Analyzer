@@ -1,0 +1,13 @@
+{
+  "endpoint": "https://api.a6api.com/images/generations",
+  "requested_model": "gpt-image-2.5-sunburst",
+  "input_images": [],
+  "response_model": null,
+  "response_created": 1789055709,
+  "output": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\2026-09-10-program-explain\\08-history-chain-rule-v2.png",
+  "output_sha256": "a8d09de3059a49f73cd640ea03aeadea4a1531ca7f1d03111859961b28364ecc",
+  "width": 1672,
+  "height": 941,
+  "quality": "high",
+  "prompt": "Create a crisp landscape Traditional Chinese educational infographic. Title \"Chain Rule：歷史連續比對\". Subtitle \"每輪只保留持續命中的最新異常\". Main matrix columns \"最新候選\", \"Previous 1\", \"Previous 2\", \"Previous 3\". Rows A, B, C. A cells: \"起點\", \"通過\", \"通過\", \"通過\". B cells: \"起點\", \"通過\", \"失敗\", \"停止\". C cells: \"起點\", \"失敗\", \"停止\", \"停止\". Color pass teal with check, fail red with cross, stopped grey. NEVER label Latest a comparison round; use only 起點. Do not add text claiming 四輪 or 前兩輪.\nRight schematic: top \"最新區間與峰位\" with three independent arrows down to \"Previous 1\", \"Previous 2\", \"Previous 3\". Caption \"每輪以最新幾何為基準\". No arrows linking the older geometries to one another here.\nFooter notes \"日期由新至舊排序\"; \"保存 Previous ID 與幾何\"; \"同一 latest ID 保留首個匹配\"; \"教學示意，非實際紀錄\". White, blue, teal, large accurate typography. No decorative railroad tracks.\n"
+}

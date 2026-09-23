@@ -1,0 +1,13 @@
+{
+  "endpoint": "https://api.a6api.com/images/generations",
+  "requested_model": "gpt-image-2.5-sunburst",
+  "input_images": [],
+  "response_model": "gpt-image-2.5-sunburst",
+  "response_created": 1789055323,
+  "output": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\2026-09-10-program-explain\\04-metadata-review.png",
+  "output_sha256": "b1dd8e9df6e46fd70259c113a2cbfa488cb5815bd137e9643804275769ef2244",
+  "width": 1672,
+  "height": 941,
+  "quality": "high",
+  "prompt": "Create one high-quality landscape educational information graphic for railway maintenance engineers explaining the actual TOV1050 Analyzer repository. All explanatory visible copy must use Traditional Chinese, retain named English technical identifiers exactly. Flat crisp editorial engineering illustration, white/cool #f6f8fb background, #263348 dark ink, #2b63c9 blue, #256f62 teal, amber only for caveats, red only failures. Noto Sans TC-like legible type, large headings and generous margins. Clear directed arrows, no decorative gradients, no fake logos, no ornamental cards, no microscopic text. Main graphic should dominate, concise labels arranged in reading order. The image is explanatory, not certification. Render only the specified facts and labels, no invented metrics. Keep typography accurate; no simplified Chinese. \nTitle: 「Metadata 審閱與核准流程」\nAn audit workflow: 原始 Workbook → 候選 Workbook → 驗證與溯源 → 人工決策 → 核准後導入. Original and candidate visibly separate. Under validation illustrate three check areas: 單位與區間 (98.1502 km = 98150.2 m); TL–BK 身分 (同 Bracket 多位置需處理); 來源追蹤 (sheet / row / digest). Decision labels 通過 / 待審 / 阻擋. Important amber labels: 合法 TL 重疊與 Landmark 分開判讀; 反向區間不可靜默修正; 未核准不得覆蓋原始檔. Do not show stale audit counts or claim latest edited workbooks are validated.\n"
+}

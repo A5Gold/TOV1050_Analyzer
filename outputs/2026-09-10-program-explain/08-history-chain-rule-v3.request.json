@@ -1,0 +1,21 @@
+{
+  "endpoint": "https://api.a6api.com/v1/images/edits",
+  "requested_model": "gpt-image-2.5-sunburst",
+  "input_images": [
+    {
+      "filename": "08-history-chain-rule-v2.png",
+      "sha256": "a8d09de3059a49f73cd640ea03aeadea4a1531ca7f1d03111859961b28364ecc",
+      "bytes": 1242726,
+      "width": 1672,
+      "height": 941
+    }
+  ],
+  "response_model": null,
+  "response_created": 1789055885,
+  "output": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\2026-09-10-program-explain\\08-history-chain-rule-v3.png",
+  "output_sha256": "0e8139e684682e20e4b5c0e8552483be433cf1330833b0db2e00f7f76c9343d4",
+  "width": 1672,
+  "height": 941,
+  "quality": "high",
+  "prompt": "Edit the supplied infographic. Make ONE targeted correction: remove the erroneous English text \"(NEVER)\" under \"最新候選\" in the table header. The header cell should contain only \"最新候選\", vertically centered. Preserve all other content, layout, icons, words, lines, colours, arrows, and row states exactly. Do not add replacement English words or any extra text. Keep Traditional Chinese typography sharp.\n"
+}

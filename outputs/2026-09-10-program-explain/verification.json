@@ -1,0 +1,236 @@
+[
+  {
+    "topic": 1,
+    "id": "01-migration-gap",
+    "title": "TOV1050 與 TOV640 遷移差異",
+    "file": "01-migration-gap.png",
+    "sources": "backend/app/core/tov1050_data_ingestion.py; docs/development-plan.md; backend/app/core/calculation/stagger_metadata.py",
+    "dimensions": [
+      1672,
+      941
+    ],
+    "bytes": 1425577,
+    "sha256": "4a2832e479127553455a685d50704a2165ad607d63339a5a05b38b1a59bfff82",
+    "format": "PNG",
+    "response_model": "gpt-image-2.5-sunburst",
+    "requested_model": "gpt-image-2.5-sunburst",
+    "visual_review": "reviewed",
+    "requested_dimensions_honored": false
+  },
+  {
+    "topic": 2,
+    "id": "02-architecture-data-flow",
+    "title": "程式架構與資料流",
+    "file": "02-architecture-data-flow-v2.png",
+    "sources": "PRODUCT.md; backend/app/api/endpoints/analysis.py; backend/app/core/chart_sampling.py",
+    "dimensions": [
+      1672,
+      941
+    ],
+    "bytes": 1036606,
+    "sha256": "eb0c9eb52b2372b91ef2c421c45a279b7fa4ae65ff985c8a581005ffbbe5de6e",
+    "format": "PNG",
+    "response_model": null,
+    "requested_model": "gpt-image-2.5-sunburst",
+    "visual_review": "reviewed",
+    "requested_dimensions_honored": false
+  },
+  {
+    "topic": 3,
+    "id": "03-key-modules",
+    "title": "核心模組：從量測到維護判斷",
+    "file": "03-key-modules-v2.png",
+    "sources": "backend/app/core/tov1050_data_ingestion.py; backend/app/core/analyzers.py; backend/app/core/repeated_finder.py; docs/architecture.md",
+    "dimensions": [
+      1672,
+      941
+    ],
+    "bytes": 1194539,
+    "sha256": "9211920f511e6826ba15f5f68af98f3e670e45a9511166cda88cd41732102195",
+    "format": "PNG",
+    "response_model": null,
+    "requested_model": "gpt-image-2.5-sunburst",
+    "visual_review": "reviewed",
+    "requested_dimensions_honored": false
+  },
+  {
+    "topic": 4,
+    "id": "04-metadata-review",
+    "title": "Metadata 審閱與核准流程",
+    "file": "04-metadata-review.png",
+    "sources": "docs/requests/2026-09-07-tov1050-correctness-session-export-metadata.md; docs/audits/2026-09-02-tov1050-metadata-review-summary.md",
+    "dimensions": [
+      1672,
+      941
+    ],
+    "bytes": 1318784,
+    "sha256": "b1dd8e9df6e46fd70259c113a2cbfa488cb5815bd137e9643804275769ef2244",
+    "format": "PNG",
+    "response_model": "gpt-image-2.5-sunburst",
+    "requested_model": "gpt-image-2.5-sunburst",
+    "visual_review": "reviewed",
+    "requested_dimensions_honored": false
+  },
+  {
+    "topic": 5,
+    "id": "05-development-plan",
+    "title": "開發計畫與後續階段",
+    "file": "05-development-plan.png",
+    "sources": "docs/development-plan.md; docs/requests/2026-09-07-tov1050-correctness-session-export-metadata.md",
+    "dimensions": [
+      1672,
+      941
+    ],
+    "bytes": 1210794,
+    "sha256": "6d645d1ab198c9f0d71befc163a104ac61ffcc53cf7a10bfcc07aab50f7baa6a",
+    "format": "PNG",
+    "response_model": "gpt-image-2.5-sunburst",
+    "requested_model": "gpt-image-2.5-sunburst",
+    "visual_review": "reviewed",
+    "requested_dimensions_honored": false
+  },
+  {
+    "topic": 6,
+    "id": "06-ui-design",
+    "title": "UI 設計：支援實際審閱工作",
+    "file": "06-ui-design-v2.png",
+    "sources": "PRODUCT.md; DESIGN.md; frontend/src/App.tsx; frontend/src/views/ExceptionGeneratorView.tsx",
+    "dimensions": [
+      1672,
+      941
+    ],
+    "bytes": 1077553,
+    "sha256": "50e474fe3365d9f06bd94a39e3759f1b059d2c09a7dc1664d3dd0d943c51611c",
+    "format": "PNG",
+    "response_model": null,
+    "requested_model": "gpt-image-2.5-sunburst",
+    "visual_review": "reviewed",
+    "requested_dimensions_honored": false
+  },
+  {
+    "topic": 7,
+    "id": "07-threshold-determination",
+    "title": "門檻判定 Threshold Determination",
+    "file": "07-threshold-determination-v2.png",
+    "sources": "backend/app/core/analyzers.py:327; backend/app/core/tov1050_metadata.py",
+    "dimensions": [
+      1672,
+      941
+    ],
+    "bytes": 1111267,
+    "sha256": "6efc9f86bc06319d2e9557c0e02c02bb4d3a4d269adebc11cdc13ebae7b01f3f",
+    "format": "PNG",
+    "response_model": null,
+    "requested_model": "gpt-image-2.5-sunburst",
+    "visual_review": "reviewed",
+    "requested_dimensions_honored": false
+  },
+  {
+    "topic": 8,
+    "id": "08-history-chain-rule",
+    "title": "Chain Rule：歷史連續比對",
+    "file": "08-history-chain-rule-v3.png",
+    "sources": "backend/app/core/repeated_finder.py:38; backend/app/api/endpoints/analysis.py",
+    "dimensions": [
+      1672,
+      941
+    ],
+    "bytes": 1407655,
+    "sha256": "0e8139e684682e20e4b5c0e8552483be433cf1330833b0db2e00f7f76c9343d4",
+    "format": "PNG",
+    "response_model": null,
+    "requested_model": "gpt-image-2.5-sunburst",
+    "visual_review": "reviewed",
+    "requested_dimensions_honored": false
+  },
+  {
+    "topic": 9,
+    "id": "09-matching-criteria",
+    "title": "匹配條件：Valid Match、Gap、Peak Shift",
+    "file": "09-matching-criteria-v2.png",
+    "sources": "backend/app/core/repeated_finder.py:38",
+    "dimensions": [
+      1672,
+      941
+    ],
+    "bytes": 1088356,
+    "sha256": "1704cef347a80fd01b5bef3cfdf0c25249008c7868be42b7875fab5dfd306a2e",
+    "format": "PNG",
+    "response_model": null,
+    "requested_model": "gpt-image-2.5-sunburst",
+    "visual_review": "reviewed",
+    "requested_dimensions_honored": false
+  },
+  {
+    "topic": 10,
+    "id": "10-wire-wear-logic",
+    "title": "線耗計算邏輯",
+    "file": "10-wire-wear-logic-v2.png",
+    "sources": "backend/app/core/calculation/wear_calculator.py:14; backend/app/core/calculation/wear_calculator.py:34; docs/architecture.md",
+    "dimensions": [
+      1672,
+      941
+    ],
+    "bytes": 1231595,
+    "sha256": "257c161ef8a78823c4ee4f3bc5c1b01f29907c86acad52a20eb9f190a1b21394",
+    "format": "PNG",
+    "response_model": null,
+    "requested_model": "gpt-image-2.5-sunburst",
+    "visual_review": "reviewed",
+    "requested_dimensions_honored": false
+  },
+  {
+    "topic": 11,
+    "id": "11-stagger-algorithm",
+    "title": "Stagger 演算法解說",
+    "file": "11-stagger-algorithm-v2.png",
+    "sources": "backend/app/core/calculation/stagger_formula.py; backend/app/core/calculation/stagger_metadata.py; docs/architecture.md",
+    "dimensions": [
+      1672,
+      941
+    ],
+    "bytes": 1149076,
+    "sha256": "f84731b22b75a680b99aa01a28de89a460fecd424c058ab9fdf2bfe2330a7837",
+    "format": "PNG",
+    "response_model": null,
+    "requested_model": "gpt-image-2.5-sunburst",
+    "visual_review": "reviewed",
+    "requested_dimensions_honored": false
+  },
+  {
+    "topic": 12,
+    "id": "12-trend-analysis",
+    "title": "趨勢分析：兩種不同用途",
+    "file": "12-trend-analysis-v3.png",
+    "sources": "backend/app/core/calculation/trend_analyzer.py; backend/app/core/calculation/wear_cycle_analytics.py:77",
+    "dimensions": [
+      1672,
+      941
+    ],
+    "bytes": 1203705,
+    "sha256": "ce345a6dc326360a3e8e1cfd27a8cc6c118de2e2120f72073cdb463df0b2a34f",
+    "format": "PNG",
+    "response_model": null,
+    "requested_model": "gpt-image-2.5-sunburst",
+    "visual_review": "reviewed",
+    "requested_dimensions_honored": false
+  },
+  {
+    "topic": 13,
+    "id": "13-sqlite-management",
+    "title": "SQLite 資料庫管理",
+    "file": "13-sqlite-management.png",
+    "sources": "backend/app/core/database.py; backend/app/core/calculation/wear_cycle_repository.py; docs/architecture.md",
+    "dimensions": [
+      1672,
+      941
+    ],
+    "bytes": 1315246,
+    "sha256": "8a3922868eeb9e5ce774130073a3c3dde314df747726ab24be8b8a6ec588fe42",
+    "format": "PNG",
+    "response_model": null,
+    "requested_model": "gpt-image-2.5-sunburst",
+    "visual_review": "reviewed",
+    "requested_dimensions_honored": false
+  }
+]
