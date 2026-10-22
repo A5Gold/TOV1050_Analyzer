@@ -1,0 +1,265 @@
+{
+  "source_digests": [
+    {
+      "line": "ISL",
+      "old_sha256": "b2cc62f45846af81a874204fc09b039597467a2ec78fe8c715f0de536c313f97",
+      "current_sha256": "afa1b1e6246bb2d9c2096c36bb8a4cbfa16b36185bf8d357d57c6847f4e0a22f"
+    },
+    {
+      "line": "KTL",
+      "old_sha256": "e1d49d23615c678b82b1c22e90ed5d4241607c29ddbf076cbffb51fa0d0e938d",
+      "current_sha256": "1f4f256906ccfdc934ebf4a9a4fccdf5deda8cc5b0255e67d81097688e6d99cf"
+    },
+    {
+      "line": "LAR_AEL",
+      "old_sha256": "2ea84a38e558f3bf4c5758d76879f1634fc01562375df834e3d6da1f4923b71c",
+      "current_sha256": "2ea84a38e558f3bf4c5758d76879f1634fc01562375df834e3d6da1f4923b71c"
+    },
+    {
+      "line": "LAR_TCL",
+      "old_sha256": "0f6cc87e8daf61e4ee7122c9dac06122246915b5cfaa7c64cbdb57f5536e1534",
+      "current_sha256": "0f6cc87e8daf61e4ee7122c9dac06122246915b5cfaa7c64cbdb57f5536e1534"
+    },
+    {
+      "line": "TKL",
+      "old_sha256": "12632a1c2e4365a06b6587feb3e2c53d4994f4b998a1be3e794e01b93d5cd77e",
+      "current_sha256": "12632a1c2e4365a06b6587feb3e2c53d4994f4b998a1be3e794e01b93d5cd77e"
+    },
+    {
+      "line": "TKS",
+      "old_sha256": "f5d65130b46db133db4280c67ce8d9248b033edbd32b1f5d5cede825f9e8ad69",
+      "current_sha256": "f5d65130b46db133db4280c67ce8d9248b033edbd32b1f5d5cede825f9e8ad69"
+    },
+    {
+      "line": "TWL",
+      "old_sha256": "9de8ea8f247d16b8f0bbebeac1020db06f648a6919ee9197d7cb7eef457d4ad5",
+      "current_sha256": "9de8ea8f247d16b8f0bbebeac1020db06f648a6919ee9197d7cb7eef457d4ad5"
+    }
+  ],
+  "source_changed_cells": 2155,
+  "mapping_baselines": {
+    "dbce953": {
+      "sha256": "a3fab7a2a12cfb8a5f52a9bd5a11098a362b00843299f865dca0af25a7486d19",
+      "changed_records": 2
+    },
+    "9742a50": {
+      "sha256": "e1e008b334a0e13b2c10d496d5cca2b79eb6f94409660d8f3a12860da1e66656",
+      "changed_records": 76
+    }
+  },
+  "mapping_sheet_count": 16,
+  "intervals": 146,
+  "unconfirmed_same_location_groups": 295,
+  "unclassified_rows": 189,
+  "unclassified_risk_groups": 23,
+  "mapping_sheets": [
+    {
+      "sheet": "AEL UT",
+      "invalid": 0,
+      "physical_multiple_locations": 0,
+      "exact_duplicate_identity": 0,
+      "variants": 0,
+      "confirmed_variant_overlap": 0,
+      "unconfirmed_overlap": 59,
+      "unclassified": 0,
+      "unclassified_multiple_locations": 0,
+      "unclassified_same_location": 0,
+      "components": 0
+    },
+    {
+      "sheet": "AEL DT",
+      "invalid": 0,
+      "physical_multiple_locations": 0,
+      "exact_duplicate_identity": 0,
+      "variants": 21,
+      "confirmed_variant_overlap": 3,
+      "unconfirmed_overlap": 50,
+      "unclassified": 0,
+      "unclassified_multiple_locations": 0,
+      "unclassified_same_location": 0,
+      "components": 0
+    },
+    {
+      "sheet": "TCL UT",
+      "invalid": 0,
+      "physical_multiple_locations": 0,
+      "exact_duplicate_identity": 0,
+      "variants": 1,
+      "confirmed_variant_overlap": 0,
+      "unconfirmed_overlap": 34,
+      "unclassified": 0,
+      "unclassified_multiple_locations": 0,
+      "unclassified_same_location": 0,
+      "components": 0
+    },
+    {
+      "sheet": "TCL DT",
+      "invalid": 0,
+      "physical_multiple_locations": 0,
+      "exact_duplicate_identity": 0,
+      "variants": 0,
+      "confirmed_variant_overlap": 0,
+      "unconfirmed_overlap": 21,
+      "unclassified": 0,
+      "unclassified_multiple_locations": 0,
+      "unclassified_same_location": 0,
+      "components": 0
+    },
+    {
+      "sheet": "DRL UT",
+      "invalid": 0,
+      "physical_multiple_locations": 0,
+      "exact_duplicate_identity": 0,
+      "variants": 0,
+      "confirmed_variant_overlap": 0,
+      "unconfirmed_overlap": 4,
+      "unclassified": 6,
+      "unclassified_multiple_locations": 0,
+      "unclassified_same_location": 0,
+      "components": 0
+    },
+    {
+      "sheet": "DRL PL",
+      "invalid": 0,
+      "physical_multiple_locations": 0,
+      "exact_duplicate_identity": 0,
+      "variants": 0,
+      "confirmed_variant_overlap": 0,
+      "unconfirmed_overlap": 5,
+      "unclassified": 2,
+      "unclassified_multiple_locations": 0,
+      "unclassified_same_location": 0,
+      "components": 0
+    },
+    {
+      "sheet": "TWL UT",
+      "invalid": 0,
+      "physical_multiple_locations": 0,
+      "exact_duplicate_identity": 0,
+      "variants": 0,
+      "confirmed_variant_overlap": 0,
+      "unconfirmed_overlap": 15,
+      "unclassified": 0,
+      "unclassified_multiple_locations": 0,
+      "unclassified_same_location": 0,
+      "components": 0
+    },
+    {
+      "sheet": "TWL DT",
+      "invalid": 0,
+      "physical_multiple_locations": 0,
+      "exact_duplicate_identity": 0,
+      "variants": 0,
+      "confirmed_variant_overlap": 0,
+      "unconfirmed_overlap": 16,
+      "unclassified": 0,
+      "unclassified_multiple_locations": 0,
+      "unclassified_same_location": 0,
+      "components": 0
+    },
+    {
+      "sheet": "KTL UT",
+      "invalid": 0,
+      "physical_multiple_locations": 0,
+      "exact_duplicate_identity": 0,
+      "variants": 30,
+      "confirmed_variant_overlap": 0,
+      "unconfirmed_overlap": 21,
+      "unclassified": 0,
+      "unclassified_multiple_locations": 0,
+      "unclassified_same_location": 0,
+      "components": 0
+    },
+    {
+      "sheet": "KTL DT",
+      "invalid": 0,
+      "physical_multiple_locations": 0,
+      "exact_duplicate_identity": 0,
+      "variants": 49,
+      "confirmed_variant_overlap": 1,
+      "unconfirmed_overlap": 13,
+      "unclassified": 24,
+      "unclassified_multiple_locations": 0,
+      "unclassified_same_location": 0,
+      "components": 0
+    },
+    {
+      "sheet": "ISL UT",
+      "invalid": 0,
+      "physical_multiple_locations": 0,
+      "exact_duplicate_identity": 0,
+      "variants": 15,
+      "confirmed_variant_overlap": 0,
+      "unconfirmed_overlap": 23,
+      "unclassified": 6,
+      "unclassified_multiple_locations": 0,
+      "unclassified_same_location": 0,
+      "components": 0
+    },
+    {
+      "sheet": "ISL DT",
+      "invalid": 0,
+      "physical_multiple_locations": 0,
+      "exact_duplicate_identity": 0,
+      "variants": 9,
+      "confirmed_variant_overlap": 0,
+      "unconfirmed_overlap": 24,
+      "unclassified": 10,
+      "unclassified_multiple_locations": 0,
+      "unclassified_same_location": 0,
+      "components": 0
+    },
+    {
+      "sheet": "TKL UT",
+      "invalid": 0,
+      "physical_multiple_locations": 0,
+      "exact_duplicate_identity": 0,
+      "variants": 5,
+      "confirmed_variant_overlap": 0,
+      "unconfirmed_overlap": 2,
+      "unclassified": 53,
+      "unclassified_multiple_locations": 5,
+      "unclassified_same_location": 3,
+      "components": 0
+    },
+    {
+      "sheet": "TKL DT",
+      "invalid": 0,
+      "physical_multiple_locations": 0,
+      "exact_duplicate_identity": 0,
+      "variants": 2,
+      "confirmed_variant_overlap": 0,
+      "unconfirmed_overlap": 5,
+      "unclassified": 60,
+      "unclassified_multiple_locations": 4,
+      "unclassified_same_location": 6,
+      "components": 0
+    },
+    {
+      "sheet": "TKS UT",
+      "invalid": 0,
+      "physical_multiple_locations": 0,
+      "exact_duplicate_identity": 0,
+      "variants": 0,
+      "confirmed_variant_overlap": 0,
+      "unconfirmed_overlap": 2,
+      "unclassified": 8,
+      "unclassified_multiple_locations": 1,
+      "unclassified_same_location": 0,
+      "components": 0
+    },
+    {
+      "sheet": "TKS DT",
+      "invalid": 0,
+      "physical_multiple_locations": 0,
+      "exact_duplicate_identity": 0,
+      "variants": 0,
+      "confirmed_variant_overlap": 0,
+      "unconfirmed_overlap": 1,
+      "unclassified": 20,
+      "unclassified_multiple_locations": 2,
+      "unclassified_same_location": 2,
+      "components": 0
+    }
+  ]
+}

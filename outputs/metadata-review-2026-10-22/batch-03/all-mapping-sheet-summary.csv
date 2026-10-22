@@ -1,0 +1,17 @@
+﻿sheet,invalid,physical_multiple_locations,exact_duplicate_identity,variants,confirmed_variant_overlap,unconfirmed_overlap,unclassified,unclassified_multiple_locations,unclassified_same_location,components
+AEL UT,0,0,0,0,0,59,0,0,0,0
+AEL DT,0,0,0,21,3,50,0,0,0,0
+TCL UT,0,0,0,1,0,34,0,0,0,0
+TCL DT,0,0,0,0,0,21,0,0,0,0
+DRL UT,0,0,0,0,0,4,6,0,0,0
+DRL PL,0,0,0,0,0,5,2,0,0,0
+TWL UT,0,0,0,0,0,15,0,0,0,0
+TWL DT,0,0,0,0,0,16,0,0,0,0
+KTL UT,0,0,0,30,0,21,0,0,0,0
+KTL DT,0,0,0,49,1,13,24,0,0,0
+ISL UT,0,0,0,15,0,23,6,0,0,0
+ISL DT,0,0,0,9,0,24,10,0,0,0
+TKL UT,0,0,0,5,0,2,53,5,3,0
+TKL DT,0,0,0,2,0,5,60,4,6,0
+TKS UT,0,0,0,0,0,2,8,1,0,0
+TKS DT,0,0,0,0,0,1,20,2,2,0

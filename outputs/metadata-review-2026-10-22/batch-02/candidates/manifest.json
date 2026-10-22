@@ -1,0 +1,198 @@
+[
+  {
+    "line": "ISL",
+    "source": "00 Reference Document\\config\\ISL metadata.xlsx",
+    "output": "outputs\\metadata-review-2026-10-22\\batch-02\\candidates\\ISL metadata (wide candidate).xlsx",
+    "mapping": "00 Reference Document\\TOV1050 TL-BK No.xlsx",
+    "source_sha256": "afa1b1e6246bb2d9c2096c36bb8a4cbfa16b36185bf8d357d57c6847f4e0a22f",
+    "mapping_sha256": "d1651946e0dc96459323b089459f7c940883164d497fa65a04f8f37af41bea46",
+    "chainage_scale": 1000.0,
+    "sheets": {
+      "threshold": {
+        "rows": 30,
+        "schema": "wide"
+      },
+      "Exception Boundarys": {
+        "rows": 3,
+        "schema": "wide"
+      },
+      "ISL UT": {
+        "rows": 1369,
+        "schema": "wide+bracket"
+      },
+      "ISL DT": {
+        "rows": 1363,
+        "schema": "wide+bracket"
+      }
+    },
+    "provenance_rows": 2823
+  },
+  {
+    "line": "KTL",
+    "source": "00 Reference Document\\config\\KTL metadata.xlsx",
+    "output": "outputs\\metadata-review-2026-10-22\\batch-02\\candidates\\KTL metadata (wide candidate).xlsx",
+    "mapping": "00 Reference Document\\TOV1050 TL-BK No.xlsx",
+    "source_sha256": "1f4f256906ccfdc934ebf4a9a4fccdf5deda8cc5b0255e67d81097688e6d99cf",
+    "mapping_sha256": "d1651946e0dc96459323b089459f7c940883164d497fa65a04f8f37af41bea46",
+    "chainage_scale": 1000.0,
+    "sheets": {
+      "threshold": {
+        "rows": 38,
+        "schema": "wide"
+      },
+      "Exception Boundarys": {
+        "rows": 6,
+        "schema": "wide"
+      },
+      "KTL UT": {
+        "rows": 2078,
+        "schema": "wide+bracket"
+      },
+      "KTL DT": {
+        "rows": 2304,
+        "schema": "wide+bracket"
+      }
+    },
+    "provenance_rows": 4492
+  },
+  {
+    "line": "LAR_AEL",
+    "source": "00 Reference Document\\config\\LAR_AEL metadata.xlsx",
+    "output": "outputs\\metadata-review-2026-10-22\\batch-02\\candidates\\LAR_AEL metadata (wide candidate).xlsx",
+    "mapping": "00 Reference Document\\TOV1050 TL-BK No.xlsx",
+    "source_sha256": "2ea84a38e558f3bf4c5758d76879f1634fc01562375df834e3d6da1f4923b71c",
+    "mapping_sha256": "d1651946e0dc96459323b089459f7c940883164d497fa65a04f8f37af41bea46",
+    "chainage_scale": 1000.0,
+    "sheets": {
+      "threshold": {
+        "rows": 30,
+        "schema": "wide"
+      },
+      "Exception Boundarys": {
+        "rows": 6,
+        "schema": "wide"
+      },
+      "LAR_AEL UT": {
+        "rows": 1499,
+        "schema": "wide+bracket"
+      },
+      "LAR_AEL DT": {
+        "rows": 1530,
+        "schema": "wide+bracket"
+      }
+    },
+    "provenance_rows": 3123
+  },
+  {
+    "line": "LAR_TCL",
+    "source": "00 Reference Document\\config\\LAR_TCL metadata.xlsx",
+    "output": "outputs\\metadata-review-2026-10-22\\batch-02\\candidates\\LAR_TCL metadata (wide candidate).xlsx",
+    "mapping": "00 Reference Document\\TOV1050 TL-BK No.xlsx",
+    "source_sha256": "0f6cc87e8daf61e4ee7122c9dac06122246915b5cfaa7c64cbdb57f5536e1534",
+    "mapping_sha256": "d1651946e0dc96459323b089459f7c940883164d497fa65a04f8f37af41bea46",
+    "chainage_scale": 1000.0,
+    "sheets": {
+      "threshold": {
+        "rows": 30,
+        "schema": "wide"
+      },
+      "Exception Boundarys": {
+        "rows": 6,
+        "schema": "wide"
+      },
+      "LAR_TCL UT": {
+        "rows": 1319,
+        "schema": "wide+bracket"
+      },
+      "LAR_TCL DT": {
+        "rows": 1328,
+        "schema": "wide+bracket"
+      }
+    },
+    "provenance_rows": 2741
+  },
+  {
+    "line": "TKL",
+    "source": "00 Reference Document\\config\\TKL metadata.xlsx",
+    "output": "outputs\\metadata-review-2026-10-22\\batch-02\\candidates\\TKL metadata (wide candidate).xlsx",
+    "mapping": "00 Reference Document\\TOV1050 TL-BK No.xlsx",
+    "source_sha256": "12632a1c2e4365a06b6587feb3e2c53d4994f4b998a1be3e794e01b93d5cd77e",
+    "mapping_sha256": "d1651946e0dc96459323b089459f7c940883164d497fa65a04f8f37af41bea46",
+    "chainage_scale": 1000.0,
+    "sheets": {
+      "threshold": {
+        "rows": 30,
+        "schema": "wide"
+      },
+      "Exception Boundarys": {
+        "rows": 1,
+        "schema": "wide"
+      },
+      "TKL UT": {
+        "rows": 675,
+        "schema": "wide+bracket"
+      },
+      "TKL DT": {
+        "rows": 686,
+        "schema": "wide+bracket"
+      }
+    },
+    "provenance_rows": 1450
+  },
+  {
+    "line": "TKS",
+    "source": "00 Reference Document\\config\\TKS metadata.xlsx",
+    "output": "outputs\\metadata-review-2026-10-22\\batch-02\\candidates\\TKS metadata (wide candidate).xlsx",
+    "mapping": "00 Reference Document\\TOV1050 TL-BK No.xlsx",
+    "source_sha256": "f5d65130b46db133db4280c67ce8d9248b033edbd32b1f5d5cede825f9e8ad69",
+    "mapping_sha256": "d1651946e0dc96459323b089459f7c940883164d497fa65a04f8f37af41bea46",
+    "chainage_scale": 1000.0,
+    "sheets": {
+      "threshold": {
+        "rows": 30,
+        "schema": "wide"
+      },
+      "Exception Boundarys": {
+        "rows": 1,
+        "schema": "wide"
+      },
+      "TKS UT": {
+        "rows": 183,
+        "schema": "wide+bracket"
+      },
+      "TKS DT": {
+        "rows": 195,
+        "schema": "wide+bracket"
+      }
+    },
+    "provenance_rows": 467
+  },
+  {
+    "line": "TWL",
+    "source": "00 Reference Document\\config\\TWL metadata.xlsx",
+    "output": "outputs\\metadata-review-2026-10-22\\batch-02\\candidates\\TWL metadata (wide candidate).xlsx",
+    "mapping": "00 Reference Document\\TOV1050 TL-BK No.xlsx",
+    "source_sha256": "9de8ea8f247d16b8f0bbebeac1020db06f648a6919ee9197d7cb7eef457d4ad5",
+    "mapping_sha256": "d1651946e0dc96459323b089459f7c940883164d497fa65a04f8f37af41bea46",
+    "chainage_scale": 1000.0,
+    "sheets": {
+      "threshold": {
+        "rows": 30,
+        "schema": "wide"
+      },
+      "Exception Boundarys": {
+        "rows": 5,
+        "schema": "wide"
+      },
+      "TWL UT": {
+        "rows": 1259,
+        "schema": "wide+bracket"
+      },
+      "TWL DT": {
+        "rows": 1259,
+        "schema": "wide+bracket"
+      }
+    },
+    "provenance_rows": 2611
+  }
+]

@@ -1,0 +1,24 @@
+﻿workbook,sheet,risk,label,source_rows,locations_km,detail
+C:\Smart Maintanence\TOV1050_Analyzer\00 Reference Document\TOV1050 TL-BK No.xlsx,TKL UT,unclassified_multiple_locations,553-BWA,394;438,58.093;59.423,同一未分類標籤多位置；先確認是否屬 physical Bracket identity
+C:\Smart Maintanence\TOV1050_Analyzer\00 Reference Document\TOV1050 TL-BK No.xlsx,TKL UT,unclassified_multiple_locations,555-BWA,335;336;392,59.442;60.351;60.357,同一未分類標籤多位置；先確認是否屬 physical Bracket identity
+C:\Smart Maintanence\TOV1050_Analyzer\00 Reference Document\TOV1050 TL-BK No.xlsx,TKL UT,unclassified_multiple_locations,563-BWA,294;346,60.282;61.086,同一未分類標籤多位置；先確認是否屬 physical Bracket identity
+C:\Smart Maintanence\TOV1050_Analyzer\00 Reference Document\TOV1050 TL-BK No.xlsx,TKL UT,unclassified_multiple_locations,575-BWA,154;209,62.401;63.109,同一未分類標籤多位置；先確認是否屬 physical Bracket identity
+C:\Smart Maintanence\TOV1050_Analyzer\00 Reference Document\TOV1050 TL-BK No.xlsx,TKL UT,unclassified_multiple_locations,579-BWA,58;145,63.302;64.561,同一未分類標籤多位置；先確認是否屬 physical Bracket identity
+C:\Smart Maintanence\TOV1050_Analyzer\00 Reference Document\TOV1050 TL-BK No.xlsx,TKL UT,unclassified_same_location,577-001;TKO803,162;163,63.037,未分類標籤與其他標籤同位置；確認類別和 overlap 意義
+C:\Smart Maintanence\TOV1050_Analyzer\00 Reference Document\TOV1050 TL-BK No.xlsx,TKL UT,unclassified_same_location,QUB807;545-BWA,504;505,56.927,未分類標籤與其他標籤同位置；確認類別和 overlap 意義
+C:\Smart Maintanence\TOV1050_Analyzer\00 Reference Document\TOV1050 TL-BK No.xlsx,TKL UT,unclassified_same_location,NOP801;SI-NOP801,589;590,55.759,未分類標籤與其他標籤同位置；確認類別和 overlap 意義
+C:\Smart Maintanence\TOV1050_Analyzer\00 Reference Document\TOV1050 TL-BK No.xlsx,TKL DT,unclassified_multiple_locations,554-BWA,404;452,58.071;59.448,同一未分類標籤多位置；先確認是否屬 physical Bracket identity
+C:\Smart Maintanence\TOV1050_Analyzer\00 Reference Document\TOV1050 TL-BK No.xlsx,TKL DT,unclassified_multiple_locations,562-BWA,291;349,60.01;60.853,同一未分類標籤多位置；先確認是否屬 physical Bracket identity
+C:\Smart Maintanence\TOV1050_Analyzer\00 Reference Document\TOV1050 TL-BK No.xlsx,TKL DT,unclassified_multiple_locations,574-BWA,145;197,62.406;63.105,同一未分類標籤多位置；先確認是否屬 physical Bracket identity
+C:\Smart Maintanence\TOV1050_Analyzer\00 Reference Document\TOV1050 TL-BK No.xlsx,TKL DT,unclassified_multiple_locations,576-BWA,68;157,63.023;64.327,同一未分類標籤多位置；先確認是否屬 physical Bracket identity
+C:\Smart Maintanence\TOV1050_Analyzer\00 Reference Document\TOV1050 TL-BK No.xlsx,TKL DT,unclassified_same_location,576-BWA;578-007,68;69,64.327,未分類標籤與其他標籤同位置；確認類別和 overlap 意義
+C:\Smart Maintanence\TOV1050_Analyzer\00 Reference Document\TOV1050 TL-BK No.xlsx,TKL DT,unclassified_same_location,YAT893;560-029,337;338,60.075,未分類標籤與其他標籤同位置；確認類別和 overlap 意義
+C:\Smart Maintanence\TOV1050_Analyzer\00 Reference Document\TOV1050 TL-BK No.xlsx,TKL DT,unclassified_same_location,560-Fixed;558-007,380;381,59.672,未分類標籤與其他標籤同位置；確認類別和 overlap 意義
+C:\Smart Maintanence\TOV1050_Analyzer\00 Reference Document\TOV1050 TL-BK No.xlsx,TKL DT,unclassified_same_location,554-BWA;556-001,404;405,59.448,未分類標籤與其他標籤同位置；確認類別和 overlap 意義
+C:\Smart Maintanence\TOV1050_Analyzer\00 Reference Document\TOV1050 TL-BK No.xlsx,TKL DT,unclassified_same_location,554-MPA;554-017,431;432,58.771,未分類標籤與其他標籤同位置；確認類別和 overlap 意義
+C:\Smart Maintanence\TOV1050_Analyzer\00 Reference Document\TOV1050 TL-BK No.xlsx,TKL DT,unclassified_same_location,QUB806;546-BWA,520;521,56.919,未分類標籤與其他標籤同位置；確認類別和 overlap 意義
+C:\Smart Maintanence\TOV1050_Analyzer\00 Reference Document\TOV1050 TL-BK No.xlsx,TKS UT,unclassified_multiple_locations,587-BWA,58;111,64.623;65.51,同一未分類標籤多位置；先確認是否屬 physical Bracket identity
+C:\Smart Maintanence\TOV1050_Analyzer\00 Reference Document\TOV1050 TL-BK No.xlsx,TKS DT,unclassified_multiple_locations,590-CBWA,2;70,65.284;66.392,同一未分類標籤多位置；先確認是否屬 physical Bracket identity
+C:\Smart Maintanence\TOV1050_Analyzer\00 Reference Document\TOV1050 TL-BK No.xlsx,TKS DT,unclassified_multiple_locations,590-MBWA,3;71,65.282;66.39,同一未分類標籤多位置；先確認是否屬 physical Bracket identity
+C:\Smart Maintanence\TOV1050_Analyzer\00 Reference Document\TOV1050 TL-BK No.xlsx,TKS DT,unclassified_same_location,990-LHP;902SI-LHP,23;24,66.039,未分類標籤與其他標籤同位置；確認類別和 overlap 意義
+C:\Smart Maintanence\TOV1050_Analyzer\00 Reference Document\TOV1050 TL-BK No.xlsx,TKS DT,unclassified_same_location,584-MBWA;584-CBWA,60;61,65.354,未分類標籤與其他標籤同位置；確認類別和 overlap 意義

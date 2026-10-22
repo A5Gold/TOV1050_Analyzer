@@ -9,7 +9,7 @@ from standardize_tov1050_metadata import standardize_workbook, _wide_thresholds
 from validate_tov1050_metadata_candidates import (
     _interval_report,
     _is_landmark,
-    _is_suspected_bracket_variant,
+    _is_bracket_variant,
     _mapping_rows,
     _provenance_check,
     _threshold_check,
@@ -129,10 +129,15 @@ def test_interval_report_lists_ambiguous_overlap_source_rows():
         "label": "Tangent",
         "previous_source_row": 2,
         "current_source_row": 3,
+        "previous_start": 48.0,
+        "previous_end": 49.0,
+        "current_start": 48.5,
+        "current_end": 49.5,
         "overlap_m": 500.0,
         "previous_length_m": 1000.0,
         "current_length_m": 1000.0,
     }]
+    assert report["overlap_examples_complete"] is True
 
 
 def test_mapping_marker_and_duplicate_identity_are_review_diagnostics():
@@ -169,14 +174,19 @@ def test_bracket_format_and_landmarks_are_classified_separately():
     assert _is_landmark("211-1A") is False
     assert _is_landmark("364A-001") is False
     assert _is_landmark("CR185A-01") is False
-    assert _is_suspected_bracket_variant("211-1A") is True
-    assert _is_suspected_bracket_variant("364A-001") is True
-    assert _is_suspected_bracket_variant("CR185A-01") is True
-    assert _is_suspected_bracket_variant("CR186-10A") is True
-    assert _is_suspected_bracket_variant("POA804-01") is False
+    assert _is_bracket_variant("211-1A") is True
+    assert _is_bracket_variant("364A-001") is True
+    assert _is_bracket_variant("CR185A-01") is True
+    assert _is_bracket_variant("CR186-10A") is True
+    assert _is_bracket_variant("001-002A") is True
+    assert _is_bracket_variant("002A-001") is True
+    assert _is_bracket_variant("002A-002A") is True
+    assert _is_bracket_variant("CR001A-002") is True
+    assert _is_bracket_variant("001-002") is False
+    assert _is_bracket_variant("POA804-01") is False
 
 
-def test_suspected_bracket_variants_are_reviewed_without_hard_conflicts():
+def test_letter_variants_are_physical_brackets_for_identity_and_overlap_checks():
     _, _, _, diagnostics = _mapping_rows(
         pd.DataFrame({
             "Location": [48.1, 48.2, 48.1, 48.1],
@@ -186,12 +196,34 @@ def test_suspected_bracket_variants_are_reviewed_without_hard_conflicts():
     )
 
     assert diagnostics["marker_row_count"] == 0
-    assert diagnostics["suspected_bracket_variant_count"] == 3
-    assert diagnostics["suspected_variant_exact_duplicate_count"] == 1
-    assert diagnostics["suspected_variant_identity_conflict_count"] == 1
-    assert diagnostics["suspected_variant_location_conflict_count"] == 1
-    assert diagnostics["location_conflict_count"] == 0
-    assert diagnostics["bracket_location_conflict_count"] == 0
+    assert diagnostics["bracket_variant_count"] == 3
+    assert diagnostics["exact_duplicate_identity_count"] == 1
+    assert diagnostics["exact_duplicate_rows"] == [{
+        "from_m": 48100.0,
+        "bracket": "211-1A",
+        "source_rows": [2, 5],
+    }]
+    assert diagnostics["bracket_location_conflict_count"] == 1
+    assert diagnostics["bracket_location_conflicts"] == [{
+        "bracket": "211-1A",
+        "from_m_values": [48100.0, 48200.0],
+        "source_rows": [2, 3, 5],
+    }]
+    assert diagnostics["same_location_bracket_overlap_count"] == 1
+    assert diagnostics["same_location_bracket_overlaps"] == [{
+        "from_m": 48100.0,
+        "brackets": ["123-01", "211-1A"],
+        "source_rows": [2, 4, 5],
+        "rows": [
+            {"source_row": 2, "bracket": "211-1A"},
+            {"source_row": 4, "bracket": "123-01"},
+            {"source_row": 5, "bracket": "211-1A"},
+        ],
+        "confirmed_variant_overlap": True,
+        "variant_brackets": ["211-1A"],
+    }]
+    assert diagnostics["confirmed_variant_overlap_count"] == 1
+    assert diagnostics["unconfirmed_same_location_overlap_count"] == 0
 
 
 def test_landmarks_do_not_create_same_location_bracket_conflicts():
@@ -204,12 +236,20 @@ def test_landmarks_do_not_create_same_location_bracket_conflicts():
     )
 
     assert diagnostics["marker_row_count"] == 2
-    assert diagnostics["location_conflict_count"] == 1
-    assert diagnostics["location_conflicts"] == [{
+    assert diagnostics["same_location_bracket_overlap_count"] == 1
+    assert diagnostics["same_location_bracket_overlaps"] == [{
         "from_m": 48200.0,
         "brackets": ["123-02", "CR283-15"],
         "source_rows": [4, 5],
+        "rows": [
+            {"source_row": 4, "bracket": "123-02"},
+            {"source_row": 5, "bracket": "CR283-15"},
+        ],
+        "confirmed_variant_overlap": False,
+        "variant_brackets": [],
     }]
+    assert diagnostics["confirmed_variant_overlap_count"] == 0
+    assert diagnostics["unconfirmed_same_location_overlap_count"] == 1
 
 
 def test_landmarks_are_excluded_from_bracket_location_uniqueness():
@@ -231,6 +271,45 @@ def test_landmark_duplicates_are_not_physical_identity_duplicates():
     )
     assert diagnostics["marker_row_count"] == 2
     assert diagnostics["exact_duplicate_identity_count"] == 0
+
+
+def test_unknown_numeric_and_composite_labels_do_not_hide_identity_risks(tmp_path):
+    frame = pd.DataFrame({
+        "Location": [48.1, 48.2, 48.1, 48.3, 48.4, 48.4, 48.5],
+        "Bracket": ["579-BWA", "579-BWA", "549-007(T)",
+                    "251-000 / 245-038", "245-038", "245-038", "SI-TIK803"],
+    })
+    _, invalid, records, diagnostics = _mapping_rows(frame, 1000.0)
+
+    assert invalid == []
+    assert len(records) == 7
+    assert _is_landmark("579-BWA") is False
+    assert _is_landmark("549-007(T)") is False
+    assert _is_landmark("251-000 / 245-038") is False
+    assert diagnostics["marker_row_count"] == 1
+    assert diagnostics["unclassified_row_count"] == 4
+    assert diagnostics["bracket_location_conflict_count"] == 0
+    assert diagnostics["exact_duplicate_identity_count"] == 1
+    assert diagnostics["unclassified_location_conflicts"] == [{
+        "bracket": "579-BWA", "from_m_values": [48100.0, 48200.0], "source_rows": [2, 3],
+    }]
+    assert diagnostics["unclassified_same_location_groups"][0]["from_m"] == 48100.0
+    component = diagnostics["unclassified_component_location_conflicts"][0]
+    assert component["possible_bracket"] == "245-038"
+    assert component["from_m_values"] == [48300.0, 48400.0]
+    assert [row["source_row"] for row in component["rows"]] == [5, 6, 7]
+
+    source_path = tmp_path / "LAR_AEL metadata.xlsx"
+    mapping_path = tmp_path / "TOV1050 TL-BK No.xlsx"
+    candidate_path = tmp_path / "LAR_AEL metadata (wide candidate).xlsx"
+    _write_source(source_path)
+    with pd.ExcelWriter(mapping_path) as writer:
+        frame.to_excel(writer, sheet_name="AEL UT", index=False)
+    standardize_workbook(source_path, mapping_path, candidate_path)
+    report = validate_workbook(source_path, candidate_path, mapping_path, "LAR_AEL")
+    assert report["status"] == "review_required"
+    assert any(item["code"] == "mapping_classification_required" for item in report["findings"])
+    assert not any(item["severity"] == "error" for item in report["findings"])
 
 
 def test_provenance_target_mismatch_is_reported():

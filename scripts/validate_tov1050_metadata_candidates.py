@@ -54,24 +54,24 @@ def _text(value: Any) -> str:
     return "" if not _present(value) else str(value).strip()
 
 
-def _is_landmark(value: Any) -> bool:
-    """Return whether a label is a landmark rather than a bracket-like value.
-
-    Landmarks such as SI, Mid Point, POA, station names, and equipment codes
-    remain in the mapping, but do not participate in physical bracket
-    identity checks. Near-match bracket variants are classified separately.
-    """
+def _is_physical_bracket(value: Any) -> bool:
     text = _text(value)
     return bool(text) and (
-        _LANDMARK_PREFIX_RE.match(text) is not None
-        or (
-            _BRACKET_ID_RE.fullmatch(text) is None
-            and _BRACKET_VARIANT_RE.fullmatch(text) is None
-        )
+        _LANDMARK_PREFIX_RE.match(text) is None
+        and _BRACKET_VARIANT_RE.fullmatch(text) is not None
     )
 
 
-def _is_suspected_bracket_variant(value: Any) -> bool:
+def _is_landmark(value: Any) -> bool:
+    """Keep known markers/text labels separate from unresolved numeric IDs."""
+    text = _text(value)
+    return bool(text) and (
+        _LANDMARK_PREFIX_RE.match(text) is not None
+        or (not re.search(r"\d|/", text) and not _is_physical_bracket(text))
+    )
+
+
+def _is_bracket_variant(value: Any) -> bool:
     text = _text(value)
     return bool(text) and (
         _LANDMARK_PREFIX_RE.match(text) is None
@@ -153,6 +153,7 @@ def _interval_report(
         "reversed_row_count": 0,
         "reversed_rows": [],
         "overlap_examples": [],
+        "overlap_examples_complete": True,
     }
     if not type_col or not start_col or not end_col:
         result["missing_required_columns"] = [
@@ -187,7 +188,14 @@ def _interval_report(
         from_m = min(start, end) * scale if result["unit"] == "km" else min(start, end)
         to_m = max(start, end) * scale if result["unit"] == "km" else max(start, end)
         result["valid_row_count"] += 1
-        rows.append({"source_row": source_row, "label": label, "from_m": from_m, "to_m": to_m})
+        rows.append({
+            "source_row": source_row,
+            "label": label,
+            "from_m": from_m,
+            "to_m": to_m,
+            "start": start,
+            "end": end,
+        })
 
     for index, current in enumerate(rows):
         for previous in rows[:index]:
@@ -198,28 +206,27 @@ def _interval_report(
                 result["overlap_count"] += 1
                 previous_length = previous["to_m"] - previous["from_m"]
                 current_length = current["to_m"] - current["from_m"]
+                example = {
+                    "label": current["label"],
+                    "previous_source_row": previous["source_row"],
+                    "current_source_row": current["source_row"],
+                    "previous_start": previous["start"],
+                    "previous_end": previous["end"],
+                    "current_start": current["start"],
+                    "current_end": current["end"],
+                    "overlap_m": round(overlap_m, 6),
+                    "previous_length_m": round(previous_length, 6),
+                    "current_length_m": round(current_length, 6),
+                }
                 if math.isclose(previous_length, current_length, rel_tol=0, abs_tol=1e-6):
                     result["ambiguous_overlap_count"] += 1
                     if len(result["ambiguous_overlap_examples"]) < 100:
-                        result["ambiguous_overlap_examples"].append({
-                            "label": current["label"],
-                            "previous_source_row": previous["source_row"],
-                            "current_source_row": current["source_row"],
-                            "overlap_m": round(overlap_m, 6),
-                            "previous_length_m": round(previous_length, 6),
-                            "current_length_m": round(current_length, 6),
-                        })
-                if len(result["overlap_examples"]) < 20:
-                    result["overlap_examples"].append({
-                        "label": current["label"],
-                        "previous_source_row": previous["source_row"],
-                        "current_source_row": current["source_row"],
-                        "overlap_m": round(overlap_m, 6),
-                        "previous_length_m": round(previous_length, 6),
-                        "current_length_m": round(current_length, 6),
-                    })
+                        result["ambiguous_overlap_examples"].append(example)
+                if len(result["overlap_examples"]) < 1000:
+                    result["overlap_examples"].append(example)
             elif math.isclose(overlap_m, 0, rel_tol=0, abs_tol=1e-6):
                 result["touching_count"] += 1
+    result["overlap_examples_complete"] = len(result["overlap_examples"]) == result["overlap_count"]
     return result
 
 
@@ -307,18 +314,22 @@ def _mapping_rows(frame: pd.DataFrame, scale: float) -> tuple[Counter, list[dict
         "marker_rows": [],
         "exact_duplicate_identity_count": 0,
         "exact_duplicate_rows": [],
-        "location_conflict_count": 0,
-        "location_conflicts": [],
+        "same_location_bracket_overlap_count": 0,
+        "same_location_bracket_overlaps": [],
+        "confirmed_variant_overlap_count": 0,
+        "confirmed_variant_overlaps": [],
+        "unconfirmed_same_location_overlap_count": 0,
+        "unconfirmed_same_location_overlaps": [],
         "bracket_location_conflict_count": 0,
         "bracket_location_conflicts": [],
-        "suspected_bracket_variant_count": 0,
-        "suspected_bracket_variant_rows": [],
-        "suspected_variant_exact_duplicate_count": 0,
-        "suspected_variant_exact_duplicates": [],
-        "suspected_variant_identity_conflict_count": 0,
-        "suspected_variant_identity_conflicts": [],
-        "suspected_variant_location_conflict_count": 0,
-        "suspected_variant_location_conflicts": [],
+        "bracket_variant_count": 0,
+        "bracket_variant_rows": [],
+        "unclassified_row_count": 0,
+        "unclassified_rows": [],
+        "unclassified_location_conflicts": [],
+        "unclassified_exact_duplicates": [],
+        "unclassified_same_location_groups": [],
+        "unclassified_component_location_conflicts": [],
     }
     location_col = _column(frame, "location")
     bracket_col = _column(frame, "bracket")
@@ -346,89 +357,115 @@ def _mapping_rows(frame: pd.DataFrame, scale: float) -> tuple[Counter, list[dict
     by_location: dict[float, list[dict[str, Any]]] = {}
     by_bracket: dict[str, list[dict[str, Any]]] = {}
     marker_rows = []
-    suspected_variant_rows = []
+    bracket_variant_rows = []
+    unclassified_rows = []
     for record in records:
         by_identity.setdefault((record["from_m"], record["bracket"]), []).append(record["source_row"])
         by_location.setdefault(record["from_m"], []).append(record)
-        if _is_suspected_bracket_variant(record["bracket"]):
-            suspected_variant_rows.append(record)
-        elif _is_landmark(record["bracket"]):
+        if _is_bracket_variant(record["bracket"]):
+            bracket_variant_rows.append(record)
+        if _is_landmark(record["bracket"]):
             marker_rows.append(record)
-        else:
+        elif _is_physical_bracket(record["bracket"]):
             by_bracket.setdefault(record["bracket"], []).append(record)
+        else:
+            unclassified_rows.append(record)
     exact_duplicates = [
         {"from_m": location, "bracket": bracket, "source_rows": rows}
         for (location, bracket), rows in by_identity.items()
-        if len(rows) > 1 and not _is_landmark(bracket) and not _is_suspected_bracket_variant(bracket)
+        if len(rows) > 1 and _is_physical_bracket(bracket)
     ]
-    location_conflicts = []
+    same_location_overlaps = []
     for location, items in by_location.items():
         physical_brackets = [
             item for item in items
-            if not _is_landmark(item["bracket"]) and not _is_suspected_bracket_variant(item["bracket"])
+            if _is_physical_bracket(item["bracket"])
         ]
         bracket_ids = sorted({item["bracket"] for item in physical_brackets})
         if len(bracket_ids) > 1:
-            location_conflicts.append({
+            variant_brackets = sorted({
+                item["bracket"] for item in physical_brackets
+                if _is_bracket_variant(item["bracket"])
+            })
+            same_location_overlaps.append({
                 "from_m": location,
                 "brackets": bracket_ids,
                 "source_rows": [item["source_row"] for item in physical_brackets],
+                "rows": [
+                    {"source_row": item["source_row"], "bracket": item["bracket"]}
+                    for item in physical_brackets
+                ],
+                "confirmed_variant_overlap": bool(variant_brackets),
+                "variant_brackets": variant_brackets,
             })
     bracket_location_conflicts = [
         {"bracket": bracket, "from_m_values": sorted({item["from_m"] for item in items}), "source_rows": [item["source_row"] for item in items]}
         for bracket, items in by_bracket.items() if len({item["from_m"] for item in items}) > 1
     ]
-    suspected_by_identity: dict[tuple[float, str], list[int]] = {}
-    suspected_by_bracket: dict[str, list[dict[str, Any]]] = {}
-    for record in suspected_variant_rows:
-        key = (record["from_m"], record["bracket"])
-        suspected_by_identity.setdefault(key, []).append(record["source_row"])
-        suspected_by_bracket.setdefault(record["bracket"], []).append(record)
-    suspected_exact_duplicates = [
+    # These labels may be equipment, station codes or composite bracket IDs.
+    # Report both the whole label and recognizable slash components without
+    # silently assigning a physical identity or changing candidate values.
+    unclassified_ids = {item["bracket"] for item in unclassified_rows}
+    unclassified_location_conflicts = [
+        {"bracket": bracket, "from_m_values": sorted({item["from_m"] for item in records if item["bracket"] == bracket}),
+         "source_rows": [item["source_row"] for item in records if item["bracket"] == bracket]}
+        for bracket in sorted(unclassified_ids)
+        if len({item["from_m"] for item in records if item["bracket"] == bracket}) > 1
+    ]
+    unclassified_exact_duplicates = [
         {"from_m": location, "bracket": bracket, "source_rows": rows}
-        for (location, bracket), rows in suspected_by_identity.items()
-        if len(rows) > 1
+        for (location, bracket), rows in by_identity.items()
+        if bracket in unclassified_ids and len(rows) > 1
     ]
-    suspected_identity_conflicts = [
-        {
-            "bracket": bracket,
-            "from_m_values": sorted({item["from_m"] for item in items}),
-            "source_rows": [item["source_row"] for item in items],
-        }
-        for bracket, items in suspected_by_bracket.items()
-        if len({item["from_m"] for item in items}) > 1
+    unclassified_same_location_groups = [
+        {"from_m": location, "rows": items}
+        for location, items in by_location.items()
+        if any(item["bracket"] in unclassified_ids for item in items)
+        and len({item["bracket"] for item in items}) > 1
     ]
-    suspected_location_conflicts = []
-    for location, items in by_location.items():
-        possible_brackets = [
-            item for item in items
-            if not _is_landmark(item["bracket"]) or _is_suspected_bracket_variant(item["bracket"])
-        ]
-        bracket_ids = sorted({item["bracket"] for item in possible_brackets})
-        if len(bracket_ids) > 1 and any(_is_suspected_bracket_variant(item["bracket"]) for item in possible_brackets):
-            suspected_location_conflicts.append({
-                "from_m": location,
-                "brackets": bracket_ids,
-                "suspected_brackets": sorted({item["bracket"] for item in possible_brackets if _is_suspected_bracket_variant(item["bracket"])}),
-                "source_rows": [item["source_row"] for item in possible_brackets],
-            })
+    components: dict[str, list[dict[str, Any]]] = {}
+    for item in records:
+        if _is_physical_bracket(item["bracket"]):
+            components.setdefault(item["bracket"], []).append(item)
+        elif item["bracket"] in unclassified_ids and "/" in item["bracket"]:
+            for component in set(part.strip() for part in item["bracket"].split("/")):
+                if _is_physical_bracket(component):
+                    components.setdefault(component, []).append(item)
+    component_conflicts = [
+        {"possible_bracket": bracket, "from_m_values": sorted({item["from_m"] for item in items}), "rows": items}
+        for bracket, items in components.items()
+        if any(item["bracket"] in unclassified_ids for item in items)
+        and len({item["from_m"] for item in items}) > 1
+    ]
     diagnostics = {
         "marker_row_count": len(marker_rows),
         "marker_rows": marker_rows[:100],
         "exact_duplicate_identity_count": len(exact_duplicates),
         "exact_duplicate_rows": exact_duplicates[:100],
-        "location_conflict_count": len(location_conflicts),
-        "location_conflicts": location_conflicts[:100],
+        "same_location_bracket_overlap_count": len(same_location_overlaps),
+        "same_location_bracket_overlaps": same_location_overlaps,
+        "confirmed_variant_overlap_count": sum(
+            item["confirmed_variant_overlap"] for item in same_location_overlaps
+        ),
+        "confirmed_variant_overlaps": [
+            item for item in same_location_overlaps if item["confirmed_variant_overlap"]
+        ],
+        "unconfirmed_same_location_overlap_count": sum(
+            not item["confirmed_variant_overlap"] for item in same_location_overlaps
+        ),
+        "unconfirmed_same_location_overlaps": [
+            item for item in same_location_overlaps if not item["confirmed_variant_overlap"]
+        ],
         "bracket_location_conflict_count": len(bracket_location_conflicts),
         "bracket_location_conflicts": bracket_location_conflicts[:100],
-        "suspected_bracket_variant_count": len(suspected_variant_rows),
-        "suspected_bracket_variant_rows": suspected_variant_rows,
-        "suspected_variant_exact_duplicate_count": len(suspected_exact_duplicates),
-        "suspected_variant_exact_duplicates": suspected_exact_duplicates,
-        "suspected_variant_identity_conflict_count": len(suspected_identity_conflicts),
-        "suspected_variant_identity_conflicts": suspected_identity_conflicts,
-        "suspected_variant_location_conflict_count": len(suspected_location_conflicts),
-        "suspected_variant_location_conflicts": suspected_location_conflicts,
+        "bracket_variant_count": len(bracket_variant_rows),
+        "bracket_variant_rows": bracket_variant_rows,
+        "unclassified_row_count": len(unclassified_rows),
+        "unclassified_rows": unclassified_rows,
+        "unclassified_location_conflicts": unclassified_location_conflicts,
+        "unclassified_exact_duplicates": unclassified_exact_duplicates,
+        "unclassified_same_location_groups": unclassified_same_location_groups,
+        "unclassified_component_location_conflicts": component_conflicts,
     }
     return expected, invalid, records, diagnostics
 
@@ -671,21 +708,13 @@ def validate_workbook(source_path: Path, candidate_path: Path, mapping_path: Pat
         if any(diagnostics.get(key, 0) for key in (
             "marker_row_count",
             "exact_duplicate_identity_count",
-            "location_conflict_count",
-            "bracket_location_conflict_count",
+            "unconfirmed_same_location_overlap_count",
         )):
             finding("mapping_identity_review", "review", {"sheet": candidate_name, "report": report})
-        if diagnostics.get("suspected_bracket_variant_count"):
-            finding("mapping_classification_review", "review", {
-                "sheet": candidate_name,
-                "suspected_bracket_variant_count": diagnostics["suspected_bracket_variant_count"],
-                "suspected_variant_exact_duplicate_count": diagnostics["suspected_variant_exact_duplicate_count"],
-                "suspected_variant_identity_conflict_count": diagnostics["suspected_variant_identity_conflict_count"],
-                "suspected_variant_location_conflict_count": diagnostics["suspected_variant_location_conflict_count"],
-                "examples": diagnostics["suspected_bracket_variant_rows"][:20],
-            })
         if diagnostics.get("bracket_location_conflict_count"):
             finding("bracket_identity_multiple_locations", "error", {"sheet": candidate_name, "report": report})
+        if diagnostics.get("unclassified_row_count"):
+            finding("mapping_classification_required", "review", {"sheet": candidate_name, "report": report})
 
     provenance = _provenance_check(source_sheets, mapping_sheets, candidate_sheets, line)
     if (
