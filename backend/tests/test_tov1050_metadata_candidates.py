@@ -9,6 +9,7 @@ from standardize_tov1050_metadata import standardize_workbook, _wide_thresholds
 from validate_tov1050_metadata_candidates import (
     _interval_report,
     _is_landmark,
+    _is_suspected_bracket_variant,
     _mapping_rows,
     _provenance_check,
     _threshold_check,
@@ -165,6 +166,32 @@ def test_bracket_format_and_landmarks_are_classified_separately():
     assert _is_landmark("Mid Point") is True
     assert _is_landmark("POA") is True
     assert _is_landmark("POA804-01") is True
+    assert _is_landmark("211-1A") is False
+    assert _is_landmark("364A-001") is False
+    assert _is_landmark("CR185A-01") is False
+    assert _is_suspected_bracket_variant("211-1A") is True
+    assert _is_suspected_bracket_variant("364A-001") is True
+    assert _is_suspected_bracket_variant("CR185A-01") is True
+    assert _is_suspected_bracket_variant("CR186-10A") is True
+    assert _is_suspected_bracket_variant("POA804-01") is False
+
+
+def test_suspected_bracket_variants_are_reviewed_without_hard_conflicts():
+    _, _, _, diagnostics = _mapping_rows(
+        pd.DataFrame({
+            "Location": [48.1, 48.2, 48.1, 48.1],
+            "Bracket": ["211-1A", "211-1A", "123-01", "211-1A"],
+        }),
+        1000.0,
+    )
+
+    assert diagnostics["marker_row_count"] == 0
+    assert diagnostics["suspected_bracket_variant_count"] == 3
+    assert diagnostics["suspected_variant_exact_duplicate_count"] == 1
+    assert diagnostics["suspected_variant_identity_conflict_count"] == 1
+    assert diagnostics["suspected_variant_location_conflict_count"] == 1
+    assert diagnostics["location_conflict_count"] == 0
+    assert diagnostics["bracket_location_conflict_count"] == 0
 
 
 def test_landmarks_do_not_create_same_location_bracket_conflicts():

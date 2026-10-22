@@ -33,6 +33,7 @@ from standardize_tov1050_metadata import (
 CHAINAGE_SCALE_M_PER_KM = 1000.0
 TRACK_DIRECTIONS = ("UT", "DT", "PL")
 _BRACKET_ID_RE = re.compile(r"^(?:\d+|[A-Z]{1,5}\d+)-\d+$", re.IGNORECASE)
+_BRACKET_VARIANT_RE = re.compile(r"^(?:\d+[A-Z]?|[A-Z]{1,5}\d+[A-Z]?)-\d+[A-Z]?$", re.IGNORECASE)
 _LANDMARK_PREFIX_RE = re.compile(r"^(?:SI|MID\s+POINT|POA)(?![A-Z])", re.IGNORECASE)
 
 
@@ -54,16 +55,28 @@ def _text(value: Any) -> str:
 
 
 def _is_landmark(value: Any) -> bool:
-    """Return whether a non-empty TL/BK label is not a physical bracket ID.
+    """Return whether a label is a landmark rather than a bracket-like value.
 
     Landmarks such as SI, Mid Point, POA, station names, and equipment codes
     remain in the mapping, but do not participate in physical bracket
-    identity checks.
+    identity checks. Near-match bracket variants are classified separately.
     """
     text = _text(value)
     return bool(text) and (
         _LANDMARK_PREFIX_RE.match(text) is not None
-        or _BRACKET_ID_RE.fullmatch(text) is None
+        or (
+            _BRACKET_ID_RE.fullmatch(text) is None
+            and _BRACKET_VARIANT_RE.fullmatch(text) is None
+        )
+    )
+
+
+def _is_suspected_bracket_variant(value: Any) -> bool:
+    text = _text(value)
+    return bool(text) and (
+        _LANDMARK_PREFIX_RE.match(text) is None
+        and _BRACKET_ID_RE.fullmatch(text) is None
+        and _BRACKET_VARIANT_RE.fullmatch(text) is not None
     )
 
 
@@ -298,6 +311,14 @@ def _mapping_rows(frame: pd.DataFrame, scale: float) -> tuple[Counter, list[dict
         "location_conflicts": [],
         "bracket_location_conflict_count": 0,
         "bracket_location_conflicts": [],
+        "suspected_bracket_variant_count": 0,
+        "suspected_bracket_variant_rows": [],
+        "suspected_variant_exact_duplicate_count": 0,
+        "suspected_variant_exact_duplicates": [],
+        "suspected_variant_identity_conflict_count": 0,
+        "suspected_variant_identity_conflicts": [],
+        "suspected_variant_location_conflict_count": 0,
+        "suspected_variant_location_conflicts": [],
     }
     location_col = _column(frame, "location")
     bracket_col = _column(frame, "bracket")
@@ -325,21 +346,27 @@ def _mapping_rows(frame: pd.DataFrame, scale: float) -> tuple[Counter, list[dict
     by_location: dict[float, list[dict[str, Any]]] = {}
     by_bracket: dict[str, list[dict[str, Any]]] = {}
     marker_rows = []
+    suspected_variant_rows = []
     for record in records:
         by_identity.setdefault((record["from_m"], record["bracket"]), []).append(record["source_row"])
         by_location.setdefault(record["from_m"], []).append(record)
-        if _is_landmark(record["bracket"]):
+        if _is_suspected_bracket_variant(record["bracket"]):
+            suspected_variant_rows.append(record)
+        elif _is_landmark(record["bracket"]):
             marker_rows.append(record)
         else:
             by_bracket.setdefault(record["bracket"], []).append(record)
     exact_duplicates = [
         {"from_m": location, "bracket": bracket, "source_rows": rows}
         for (location, bracket), rows in by_identity.items()
-        if len(rows) > 1 and not _is_landmark(bracket)
+        if len(rows) > 1 and not _is_landmark(bracket) and not _is_suspected_bracket_variant(bracket)
     ]
     location_conflicts = []
     for location, items in by_location.items():
-        physical_brackets = [item for item in items if not _is_landmark(item["bracket"])]
+        physical_brackets = [
+            item for item in items
+            if not _is_landmark(item["bracket"]) and not _is_suspected_bracket_variant(item["bracket"])
+        ]
         bracket_ids = sorted({item["bracket"] for item in physical_brackets})
         if len(bracket_ids) > 1:
             location_conflicts.append({
@@ -351,6 +378,40 @@ def _mapping_rows(frame: pd.DataFrame, scale: float) -> tuple[Counter, list[dict
         {"bracket": bracket, "from_m_values": sorted({item["from_m"] for item in items}), "source_rows": [item["source_row"] for item in items]}
         for bracket, items in by_bracket.items() if len({item["from_m"] for item in items}) > 1
     ]
+    suspected_by_identity: dict[tuple[float, str], list[int]] = {}
+    suspected_by_bracket: dict[str, list[dict[str, Any]]] = {}
+    for record in suspected_variant_rows:
+        key = (record["from_m"], record["bracket"])
+        suspected_by_identity.setdefault(key, []).append(record["source_row"])
+        suspected_by_bracket.setdefault(record["bracket"], []).append(record)
+    suspected_exact_duplicates = [
+        {"from_m": location, "bracket": bracket, "source_rows": rows}
+        for (location, bracket), rows in suspected_by_identity.items()
+        if len(rows) > 1
+    ]
+    suspected_identity_conflicts = [
+        {
+            "bracket": bracket,
+            "from_m_values": sorted({item["from_m"] for item in items}),
+            "source_rows": [item["source_row"] for item in items],
+        }
+        for bracket, items in suspected_by_bracket.items()
+        if len({item["from_m"] for item in items}) > 1
+    ]
+    suspected_location_conflicts = []
+    for location, items in by_location.items():
+        possible_brackets = [
+            item for item in items
+            if not _is_landmark(item["bracket"]) or _is_suspected_bracket_variant(item["bracket"])
+        ]
+        bracket_ids = sorted({item["bracket"] for item in possible_brackets})
+        if len(bracket_ids) > 1 and any(_is_suspected_bracket_variant(item["bracket"]) for item in possible_brackets):
+            suspected_location_conflicts.append({
+                "from_m": location,
+                "brackets": bracket_ids,
+                "suspected_brackets": sorted({item["bracket"] for item in possible_brackets if _is_suspected_bracket_variant(item["bracket"])}),
+                "source_rows": [item["source_row"] for item in possible_brackets],
+            })
     diagnostics = {
         "marker_row_count": len(marker_rows),
         "marker_rows": marker_rows[:100],
@@ -360,6 +421,14 @@ def _mapping_rows(frame: pd.DataFrame, scale: float) -> tuple[Counter, list[dict
         "location_conflicts": location_conflicts[:100],
         "bracket_location_conflict_count": len(bracket_location_conflicts),
         "bracket_location_conflicts": bracket_location_conflicts[:100],
+        "suspected_bracket_variant_count": len(suspected_variant_rows),
+        "suspected_bracket_variant_rows": suspected_variant_rows,
+        "suspected_variant_exact_duplicate_count": len(suspected_exact_duplicates),
+        "suspected_variant_exact_duplicates": suspected_exact_duplicates,
+        "suspected_variant_identity_conflict_count": len(suspected_identity_conflicts),
+        "suspected_variant_identity_conflicts": suspected_identity_conflicts,
+        "suspected_variant_location_conflict_count": len(suspected_location_conflicts),
+        "suspected_variant_location_conflicts": suspected_location_conflicts,
     }
     return expected, invalid, records, diagnostics
 
@@ -606,6 +675,15 @@ def validate_workbook(source_path: Path, candidate_path: Path, mapping_path: Pat
             "bracket_location_conflict_count",
         )):
             finding("mapping_identity_review", "review", {"sheet": candidate_name, "report": report})
+        if diagnostics.get("suspected_bracket_variant_count"):
+            finding("mapping_classification_review", "review", {
+                "sheet": candidate_name,
+                "suspected_bracket_variant_count": diagnostics["suspected_bracket_variant_count"],
+                "suspected_variant_exact_duplicate_count": diagnostics["suspected_variant_exact_duplicate_count"],
+                "suspected_variant_identity_conflict_count": diagnostics["suspected_variant_identity_conflict_count"],
+                "suspected_variant_location_conflict_count": diagnostics["suspected_variant_location_conflict_count"],
+                "examples": diagnostics["suspected_bracket_variant_rows"][:20],
+            })
         if diagnostics.get("bracket_location_conflict_count"):
             finding("bracket_identity_multiple_locations", "error", {"sheet": candidate_name, "report": report})
 
