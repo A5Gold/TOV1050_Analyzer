@@ -50,9 +50,10 @@
 5. 範例：Support 98.6430、98.6510、98.6610、98.6710 → non-support `98.6431–98.6509`、`98.6511–98.6609`、`98.6611–98.6709` km。
 6. 非有限／非數值、反向、超出四位小數格點（允許 Excel 浮點尾數噪音）、超出同 workbook `location type` 整體範圍（包含 ORCR）的 Support 另列 anchor 問題，保留原值而不參與衍生。其餘有效 Support 仍可推導；這不代表異常 anchor 已排除或核准。不能以 Curve／Tangent 的下限排除 Support，因為 ORCR 的 Support／non-support 與後續主線 Curve／Tangent 可位於接續的不同範圍；若缺少 location 範圍，則不憑猜測添加數值上限／下限。
 7. 重複或重疊 Support 不靜默合併；標記 review，該對不輸出 gap。兩側各退0.0001 km後若無可表示位置，則不輸出區間；剩一個格點可保留零跨度 non-support，不輸出反向段。
-8. **外側邊界暫行候選處理，仍待使用者決定**：首個有效 Support 之前、末個有效 Support 之後的原始 non-support 保留並另列 review，不擴張至 Curve／Tangent 的整體邊界。沒有有效 Support 時保留原 non-support 並列 review。外側原值不被視為已核准。
-9. 每個來源列的 provenance 保存原標籤、原始端點、status及實際輸出 payload。新增 `__interval_derivation__` 保存每個衍生區間、雙側 Support row／端點、四位公里值、公尺值、政策版本與 key；validator 核對 row cardinality、anchor payload、candidate parity、正向端點與政策版本。
-10. 原始 interval overlaps 留作歷史證據；人工操作表只列候選剩餘問題、異常 Support、外側邊界及未被此政策涵蓋的 location／其他類型 overlap，不把已 superseded 的 non-support 端點繼續列為待修正。
+8. **外側邊界已由使用者確認（2026-10-23）**：首個有效 Support 之前、末個有效 Support 之後的原始 non-support 保留並另列 review，不擴張至 Curve／Tangent 的整體邊界。沒有有效 Support 時保留原 non-support 並列 review。外側原值須個別審閱；使用者已確認本次ISL UT／DT row2、KTL UT row2／432及DT row2共5筆可接受。接受清單約束來源端點，並驗證與首末Support相鄰0.0001km；值或銜接改變則停止，不將舊核准套用新範圍。候選保存接受provenance及digest，validator按外部清單核對。
+9. 明確的個別人工更正須由外部 reviewed-corrections 清單提供 line／sheet／Excel row／預期標籤與原值／有效值／授權，不可從異常值猜測單位。來源已符合有效值時記為 already_applied；不符合預期或有效值時停止。產生器、validator、audit 明確使用同一清單並核對 digest；原值、更正值及授權同時記入來源 provenance、__review_corrections__ 及相關雙側 anchor。2026-10-23 已授權 ISL / DT track type / row298 Support：startKM=endKM=99126 → 99.126 km（候選99126m），只改候選，原始檔保留。
+10. 每個來源列的 provenance 保存原標籤、原始端點、status及實際輸出 payload。新增 `__interval_derivation__` 保存每個衍生區間、雙側 Support row／端點、四位公里值、公尺值、政策版本與 key；validator 核對 row cardinality、anchor payload、candidate parity、正向端點與政策版本。
+11. 原始 interval overlaps 留作歷史證據；人工操作表只列候選剩餘問題、異常 Support、外側邊界及未被此政策涵蓋的 location／其他類型 overlap，不把已 superseded 的 non-support 端點繼續列為待修正。
 
 ## 已確認的歷史資料整理
 

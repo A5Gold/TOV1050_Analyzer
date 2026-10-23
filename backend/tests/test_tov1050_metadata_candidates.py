@@ -528,6 +528,7 @@ def test_support_derivation_candidate_and_anchor_provenance_are_verified(tmp_pat
     report = validate_workbook(source_path, candidate_path, mapping_path, "LAR_AEL")
     assert not report["interval_derivations"]["rows_match"]
     assert report["status"] == "fail"
+
     # Original non-support disposition and payload must remain traceable.
     corrupted = {name: frame.copy() for name, frame in original.items()}
     provenance = corrupted["__provenance__"]
@@ -550,3 +551,128 @@ def test_support_derivation_candidate_and_anchor_provenance_are_verified(tmp_pat
     report = validate_workbook(source_path, candidate_path, mapping_path, "LAR_AEL")
     assert not report["tracks"]["LAR_AEL UT"]["intervals_match"]
     assert report["status"] == "fail"
+
+
+def _review_correction():
+    return dict(id="reviewed-ISL-DT", line="ISL", sheet="DT track type", source_row=3,
+                label="Support", expected=dict(start=99126, end=99126),
+                replacement=dict(start=99.126, end=99.126), authorization="User confirmed 99.126 km")
+
+
+def test_review_correction_is_scoped_and_rejects_stale_source():
+    import pytest
+    from copy import deepcopy
+    from tov1050_review_corrections import bind_corrections
+    from tov1050_support_intervals import reconstruct
+    frame = pd.DataFrame({"track type": ["Support"] * 3,
+                          "startKM": [99.12, 99126, 99.13], "endKM": [99.12, 99126, 99.13]})
+    frames = {"UT track type": frame.copy(), "DT track type": frame.copy()}
+    correction = _review_correction()
+    assert bind_corrections(frames, "KTL", [correction]) == []
+    assert reconstruct(frames["DT track type"], "DT track type")["sources"][1]["output"]["from_m"] == 99126000
+    applied = bind_corrections(frames, "ISL", [correction])
+    assert applied[0]["application_status"] == "applied"
+    assert reconstruct(frames["UT track type"], "UT track type")["sources"][1]["output"]["from_m"] == 99126000
+    result = reconstruct(frames["DT track type"], "DT track type", (97, 113.5))
+    assert result["sources"][1]["start"] == 99126
+    assert result["sources"][1]["output"]["from_m"] == 99126
+    assert [(r["from_km"], r["to_km"]) for r in result["derived"]] == [
+        ("99.1201", "99.1259"), ("99.1261", "99.1299")]
+    assert result["derived"][0]["anchors"][1]["correction"]["original"]["start"] == 99126
+    assert frame.loc[1, "startKM"] == 99126  # Raw cells remain untouched.
+    for mutation in (dict(source_row=40), dict(sheet="PL track type"), dict(label="non-support")):
+        with pytest.raises(ValueError):
+            bind_corrections(frames, "ISL", [{**correction, **mutation}])
+    frames["DT track type"].loc[1, "startKM"] = 99.127
+    with pytest.raises(ValueError, match="Stale"):
+        bind_corrections(frames, "ISL", [correction])
+    frames["DT track type"].loc[1, ["startKM", "endKM"]] = [99.126, 99.126]
+    assert bind_corrections(frames, "ISL", [correction])[0]["application_status"] == "already_applied"
+    duplicate = deepcopy(correction)
+    duplicate["id"] = "second-id"
+    with pytest.raises(ValueError, match="Duplicate"):
+        bind_corrections(frames, "ISL", [correction, duplicate])
+
+
+def test_reviewed_candidate_requires_external_authorization_and_intact_provenance(tmp_path):
+    import hashlib
+    source, mapping, candidate = (tmp_path / name for name in ("ISL metadata.xlsx", "mapping.xlsx", "candidate.xlsx"))
+    frames = _source_frames()
+    frames.pop("UT track type")
+    frames["location type"] = pd.DataFrame({"location type": ["ORCR"], "startKM": [97], "endKM": [113.5]})
+    frames["DT track type"] = pd.DataFrame({"track type": ["Support"] * 3,
+                                           "startKM": [99.12, 99126, 99.13], "endKM": [99.12, 99126, 99.13]})
+    with pd.ExcelWriter(source) as writer:
+        for name, frame in frames.items():
+            frame.to_excel(writer, sheet_name=name, index=False)
+    _write_mapping(mapping)
+    digest = hashlib.sha256(source.read_bytes()).hexdigest()
+    corrections = [_review_correction()]
+    standardize_workbook(source, mapping, candidate, corrections=corrections)
+    report = validate_workbook(source, candidate, mapping, "ISL", corrections=corrections)
+    assert report["status"] == "pass"
+    assert report["interval_derivations"]["expected_count"] == 2
+    assert report["review_corrections"]["rows_match"]
+    assert validate_workbook(source, candidate, mapping, "ISL")["status"] == "fail"
+    original = pd.read_excel(candidate, sheet_name=None)
+    # Each independent traceability surface must be verified, even with intact intervals.
+    for sheet, column, index in (("__review_corrections__", "correction_json", 0),
+                                  ("__provenance__", "interval_payload_json", None),
+                                  ("__interval_derivation__", "anchors_json", 0),
+                                  ("__standardization__", "review_corrections_sha256", 0)):
+        corrupted = {name: frame.copy() for name, frame in original.items()}
+        if index is None:
+            prov = corrupted[sheet]
+            index = prov.index[(prov["source_sheet"] == "DT track type") & (prov["source_row"] == 3)][0]
+        corrupted[sheet].loc[index, column] = "{}"
+        with pd.ExcelWriter(candidate) as writer:
+            for name, frame in corrupted.items():
+                frame.to_excel(writer, sheet_name=name, index=False)
+        assert validate_workbook(source, candidate, mapping, "ISL", corrections=corrections)["status"] == "fail"
+    assert hashlib.sha256(source.read_bytes()).hexdigest() == digest
+
+
+def test_accepted_outer_ranges_require_matching_source_continuity_and_provenance(tmp_path):
+    import pytest
+    from tov1050_review_corrections import bind_outer_acceptances
+    from tov1050_support_intervals import reconstruct
+    source, mapping, candidate = (tmp_path / name for name in ("ISL metadata.xlsx", "mapping.xlsx", "candidate.xlsx"))
+    frames = _source_frames()
+    frames.pop("UT track type")
+    frames["location type"] = pd.DataFrame({"location type": ["ORCR"], "startKM": [97], "endKM": [113.5]})
+    frame = pd.DataFrame({"track type": ["non-support", "Support", "Support", "non-support"],
+                          "startKM": [97, 99.12, 99.13, 99.1301], "endKM": [99.1199, 99.12, 99.13, 100]})
+    frames["DT track type"] = frame
+    accepted = [dict(id=f"edge-{row}", line="ISL", sheet="DT track type", source_row=row,
+                     label="non-support", expected=dict(start=start, end=end), authorization="User accepted continuity")
+                for row, start, end in ((2, 97, 99.1199), (5, 99.1301, 100))]
+    bind_outer_acceptances(frames, "ISL", accepted)
+    result = reconstruct(frame, "DT track type", (97, 113.5))
+    assert not result["retained_edges"]
+    assert [item["adjacent_support_row"] for item in result["accepted_edges"]] == [3, 4]
+    with pd.ExcelWriter(source) as writer:
+        for name, data in frames.items():
+            data.to_excel(writer, sheet_name=name, index=False)
+    _write_mapping(mapping)
+    standardize_workbook(source, mapping, candidate, outer_acceptances=accepted)
+    report = validate_workbook(source, candidate, mapping, "ISL", outer_acceptances=accepted)
+    assert report["status"] == "pass"
+    assert len(report["tracks"]["ISL DT"]["support_policy"]["accepted_edges"]) == 2
+    assert validate_workbook(source, candidate, mapping, "ISL")["status"] == "fail"
+    sheets = pd.read_excel(candidate, sheet_name=None)
+    sheets["__review_acceptances__"].loc[0, "record_json"] = '{}'
+    with pd.ExcelWriter(candidate) as writer:
+        for name, data in sheets.items():
+            data.to_excel(writer, sheet_name=name, index=False)
+    report = validate_workbook(source, candidate, mapping, "ISL", outer_acceptances=accepted)
+    assert report["status"] == "fail"
+    assert not report["outer_acceptances"]["rows_match"]
+    frame.loc[0, "endKM"] = 99.1198
+    with pytest.raises(ValueError, match="Stale outer"):
+        bind_outer_acceptances(frames, "ISL", accepted)
+    frame.loc[0, "endKM"] = 99.1199
+    bind_outer_acceptances(frames, "ISL", accepted)
+    # Acceptance of the range does not authorize changed adjacent Support values.
+    frame.loc[1, ["startKM", "endKM"]] = [99.121, 99.121]
+    with pytest.raises(ValueError, match="no longer connects"):
+        reconstruct(frame, "DT track type", (97, 113.5))

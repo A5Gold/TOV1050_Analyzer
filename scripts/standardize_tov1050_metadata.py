@@ -20,6 +20,7 @@ import pandas as pd
 from tov1050_mapping_rules import (
     RULES_VERSION, RULES_DOCUMENT, component_labels, expand_mapping, provenance_components,
 )
+from tov1050_review_corrections import bind_outer_acceptances, load_outer_acceptances, bind_corrections, canonical, corrections_digest, load_corrections, source_payload
 from tov1050_support_intervals import reconstruct, location_envelope, POLICY_VERSION, DERIVATION_COLUMNS
 
 
@@ -232,7 +233,7 @@ def _track_rows(
                          "Track Type ToM": item["to_m"], None: None,
                          "Bracket FromM": None, "Tension Length": None, "Bracket": None})
         for item in policy["sources"]:
-            payload = {key: item[key] for key in ("label", "start", "end", "output")}
+            payload = source_payload(item)
             provenance.append({"source_sheet": source_sheet, "source_row": item["source_row"],
                                "target_sheet": source_sheet.replace(" track type", ""), "status": item["status"],
                                "interval_policy": POLICY_VERSION,
@@ -268,10 +269,12 @@ def _track_rows(
     return rows, provenance
 
 
-def standardize_workbook(source: Path, mapping_book: Path, output: Path, scale: float = 1000.0) -> dict[str, Any]:
+def standardize_workbook(source: Path, mapping_book: Path, output: Path, scale: float = 1000.0, *, corrections=None, outer_acceptances=None) -> dict[str, Any]:
     source_sheets = pd.read_excel(source, sheet_name=None)
     mapping_sheets = pd.read_excel(mapping_book, sheet_name=None)
     line = source.stem.replace(" metadata", "")
+    applied_corrections = bind_corrections(source_sheets, line, corrections)
+    applied_acceptances = bind_outer_acceptances(source_sheets, line, outer_acceptances)
     output.parent.mkdir(parents=True, exist_ok=True)
     provenance: list[dict[str, Any]] = []
     source_digest = hashlib.sha256(source.read_bytes()).hexdigest()
@@ -285,6 +288,10 @@ def standardize_workbook(source: Path, mapping_book: Path, output: Path, scale: 
         "mapping_sha256": mapping_digest,
         "chainage_scale": scale,
         "interval_policy": POLICY_VERSION,
+        "review_corrections_sha256": corrections_digest(corrections),
+        "review_corrections": applied_corrections,
+        "outer_acceptances_sha256": corrections_digest(outer_acceptances),
+        "outer_acceptances": applied_acceptances,
         "sheets": {},
     }
     with pd.ExcelWriter(output, engine="openpyxl") as writer:
@@ -343,10 +350,16 @@ def standardize_workbook(source: Path, mapping_book: Path, output: Path, scale: 
                        "mapping_sha256": mapping_digest, "chainage_unit": "m", "chainage_scale": scale,
                        "candidate_status": "review_required", "rules_version": RULES_VERSION,
                        "interval_policy": POLICY_VERSION,
+                       "review_corrections_sha256": corrections_digest(corrections),
+                       "outer_acceptances_sha256": corrections_digest(outer_acceptances),
                        "rules_document": RULES_DOCUMENT,
                        "note": "Candidate only; review overlaps, invalid rows, and bracket prefix mapping before activation."}]).to_excel(
             writer, sheet_name="__standardization__", index=False
         )
+        pd.DataFrame({"correction_json": [canonical(item) for item in applied_corrections]}).to_excel(
+            writer, sheet_name="__review_corrections__", index=False)
+        pd.DataFrame({"record_json": [canonical(item) for item in applied_acceptances]}).to_excel(
+            writer, sheet_name="__review_acceptances__", index=False)
         pd.DataFrame(provenance).to_excel(writer, sheet_name="__provenance__", index=False)
         pd.DataFrame(derivations, columns=DERIVATION_COLUMNS).to_excel(writer, sheet_name="__interval_derivation__", index=False)
     summary["provenance_rows"] = len(provenance)
@@ -359,12 +372,16 @@ def main() -> None:
     parser.add_argument("--mapping", type=Path, default=Path("00 Reference Document/TOV1050 TL-BK No.xlsx"))
     parser.add_argument("--output-dir", type=Path, default=Path("docs/audits/standardized-metadata-candidates"))
     parser.add_argument("--lines", nargs="*", default=list(LINES), choices=LINES)
+    parser.add_argument("--review-corrections", type=Path)
+    parser.add_argument("--accepted-outer-ranges", type=Path)
     args = parser.parse_args()
+    corrections = load_corrections(args.review_corrections)
+    outer_acceptances = load_outer_acceptances(args.accepted_outer_ranges)
     summaries = []
     for line in args.lines:
         source = args.root / f"{line} metadata.xlsx"
         output = args.output_dir / f"{line} metadata (wide candidate).xlsx"
-        summaries.append(standardize_workbook(source, args.mapping, output))
+        summaries.append(standardize_workbook(source, args.mapping, output, corrections=corrections, outer_acceptances=outer_acceptances))
     args.output_dir.mkdir(parents=True, exist_ok=True)
     (args.output_dir / "manifest.json").write_text(json.dumps(summaries, indent=2, ensure_ascii=False), encoding="utf-8")
     print(json.dumps(summaries, indent=2))

@@ -51,15 +51,22 @@ def reconstruct(frame: pd.DataFrame, sheet: str, bounds: tuple[float, float] | N
     columns = {str(c).strip().casefold(): c for c in frame.columns}
     type_col = columns.get("track type", columns.get("track_type"))
     start_col, end_col = columns.get("startkm"), columns.get("endkm")
-    result = dict(active=False, intervals=[], sources=[], derived=[], issues=[], retained_edges=[])
+    result = dict(active=False, intervals=[], sources=[], derived=[], issues=[], retained_edges=[], accepted_edges=[])
     if type_col is None or start_col is None or end_col is None:
         return result
     source = []
     for index, row in frame.iterrows():
         if not any(text(v) for v in row):
             continue
-        source.append(dict(source_row=int(index) + 2, label=text(row.get(type_col)),
-                           start=numeric(row.get(start_col)), end=numeric(row.get(end_col))))
+        item = dict(source_row=int(index) + 2, label=text(row.get(type_col)),
+                    start=numeric(row.get(start_col)), end=numeric(row.get(end_col)))
+        correction = frame.attrs.get("review_corrections", {}).get(item["source_row"])
+        if correction:
+            item["correction"] = correction
+        acceptance = frame.attrs.get("outer_acceptances", {}).get(item["source_row"])
+        if acceptance:
+            item["outer_acceptance"] = acceptance
+        source.append(item)
     result["active"] = any(item["label"].casefold() in ("support", "non-support") for item in source)
     if not result["active"]:
         return result
@@ -67,7 +74,8 @@ def reconstruct(frame: pd.DataFrame, sheet: str, bounds: tuple[float, float] | N
     for item in source:
         if item["label"].casefold() != "support":
             continue
-        start, end = item["start"], item["end"]
+        effective = item.get("correction", {}).get("replacement", item)
+        start, end = effective["start"], effective["end"]
         reason = None
         if start is None or end is None:
             reason = "Support endpoint is not finite/numeric"
@@ -80,19 +88,31 @@ def reconstruct(frame: pd.DataFrame, sheet: str, bounds: tuple[float, float] | N
         if reason:
             result["issues"].append(dict(code="invalid_support_anchor", **item, reason=reason))
         else:
-            anchors.append({**item, "a": tick(start), "b": tick(end)})
+            anchors.append({**item, "start": start, "end": end, "a": tick(start), "b": tick(end)})
     anchors.sort(key=lambda x: (x["a"], x["b"], x["source_row"]))
     if not anchors:
         result["issues"].append(dict(code="no_valid_support_anchors", reason="Cannot rebuild non-support without a valid Support"))
     for item in source:
         entry = {**item, "status": "emitted", "output": None}
-        start, end = item["start"], item["end"]
+        effective = item.get("correction", {}).get("replacement", item)
+        start, end = effective["start"], effective["end"]
         is_non_support = item["label"].casefold() == "non-support"
         if is_non_support and anchors:
             outside = start is not None and end is not None and (
                 min(start, end) < float(anchors[0]["a"]) or max(start, end) > float(anchors[-1]["b"]))
             if outside:
-                result["retained_edges"].append(item)
+                if "outer_acceptance" in item:
+                    before = end < float(anchors[0]["a"])
+                    after = start > float(anchors[-1]["b"])
+                    adjacent = anchors[0] if before else anchors[-1]
+                    if end < start or not ((before and tick(end) + TICK == adjacent["a"]) or
+                                           (after and tick(start) - TICK == adjacent["b"])):
+                        raise ValueError(f"Accepted outer row {item['source_row']} no longer connects to Support")
+                    result["accepted_edges"].append({**item, "adjacent_support_row": adjacent["source_row"],
+                                                     "adjacent_support_start": adjacent["start"],
+                                                     "adjacent_support_end": adjacent["end"]})
+                else:
+                    result["retained_edges"].append(item)
             else:
                 entry["status"] = "superseded"
         if entry["status"] == "emitted":
@@ -103,6 +123,8 @@ def reconstruct(frame: pd.DataFrame, sheet: str, bounds: tuple[float, float] | N
                                        to_m=round(max(start, end) * 1000, 6))
                 result["intervals"].append(entry["output"])
         result["sources"].append(entry)
+    if {item["source_row"] for item in result["accepted_edges"]} != set(frame.attrs.get("outer_acceptances", {})):
+        raise ValueError("Accepted outer ranges no longer match the Support envelope")
     for left, right in zip(anchors, anchors[1:]):
         if right["a"] <= left["b"]:
             result["issues"].append(dict(code="overlapping_support_anchors", source_rows=[left["source_row"], right["source_row"]],
@@ -111,7 +133,12 @@ def reconstruct(frame: pd.DataFrame, sheet: str, bounds: tuple[float, float] | N
         start, end = left["b"] + TICK, right["a"] - TICK
         if start > end:
             continue  # Adjacent grid positions have no representable inner point.
-        anchors_payload = [{key: anchor[key] for key in ("source_row", "start", "end")} for anchor in (left, right)]
+        anchors_payload = []
+        for anchor in (left, right):
+            payload = {key: anchor[key] for key in ("source_row", "start", "end")}
+            if "correction" in anchor:
+                payload["correction"] = anchor["correction"]
+            anchors_payload.append(payload)
         record = dict(source_sheet=sheet, target_sheet=sheet.replace(" track type", ""),
                       policy_version=POLICY_VERSION, derived_key=f"{sheet}|{left['b']:.4f}|{right['a']:.4f}",
                       track_type="non-support", from_km=f"{start:.4f}", to_km=f"{end:.4f}",

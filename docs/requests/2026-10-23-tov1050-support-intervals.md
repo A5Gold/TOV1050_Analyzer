@@ -96,3 +96,74 @@ exit 0; 16 sheets, source digest stability asserted
 - scripts/validate_tov1050_metadata_candidates.py
 - scripts/audit_tov1050_metadata_review.py
 - backend/tests/test_tov1050_metadata_candidates.py
+
+
+## Batch-03：使用者回覆後的候選更正（實作前）
+
+- 開始 HEAD／origin/master：e8361bb850036b46d7fb1d28ecdc1ab451f25f3e；仍只有原有四份 dirty Excel。
+- 重新計算 mapping／ISL／KTL SHA-256，均與 batch-02 相同，沒有新的來源內容變更。
+- 使用者確認：首末 Support 外保留原有 non-support 範圍並另列審閱，只重建兩個 Support 之間。
+- 使用者確認 ISL metadata.xlsx / DT track type / Excel row298 的 startKM=endKM=99126，正確為99.126 km；授權候選更正並記錄原值，原始檔不寫回。
+- 設計：新增外部 reviewed-corrections JSON，包含 line／sheet／row／預期標籤及原端點／有效端點／授權原文。值不符則停止；來源已符合更正時記為 already_applied。僅按指定範圍套用，禁止一般化推斷單位。產生器、validator、audit 皆需明確輸入同一清單；candidate 另存清單摘要及逐列更正 provenance，anchor 同時保留原值與有效值。
+- 驗收：row298 輸出99126m，不再輸出99126000m；兩側衍生段採99.126km；stale／誤套、更正 provenance 或衍生 anchor 竄改必須被拒絕。重新驗證七線於新 batch-03，舊批及原始Excel保留。
+- Linear MCP 本回合實際掛載且 DAV-19／DAV-10 讀取成功；next action：同步本節後實作、測試及產生新批次。
+
+
+### Batch-03 追加確認（實作前）
+
+使用者確認 ISL／KTL 共5筆外側 non-support 及銜接的 Support 可接受，因範圍可以連續連接。設計：新增明確的外側接受清單，逐筆約束 line／sheet／row／原標籤／端點／授權；核對與首末有效Support相差0.0001km，原值或銜接不符則停止。候選保存接受紀錄與digest，validator另按外部清單核對。將這5筆改為已接受證據，不再列待人工決策，AEL／TCL location overlap仍未核准。
+Next action：同步DAV-19／DAV-10後加入接受紀錄驗證及測試，再重跑尚未交付的batch-03。
+
+
+### Batch-03 LAR 來源更新
+
+使用者通知已更新 LAR_AEL／LAR_TCL 的 location type，清除8.9m overlap。重新讀取來源、重算SHA與原始／候選overlap；不得沿用先前兩筆待辦。新增兩份使用者dirty Excel也不stage。Next action：依實際新來源重生兩線及完整七線驗證，只有實測為0才將兩筆記為已解決。
+
+
+### 最終輸出改用 batch-04
+
+重生batch-03時KTL候選發生PermissionError（無法寫入，可能正在Excel開啟）。不關閉Excel、不覆寫或刪除該候選；保留batch-03中途產物，不作最終交付或stage。所有最新來源、個別更正及5筆接受紀錄改在全新的outputs/metadata-review-2026-10-23/batch-04生成與驗證，以batch-02作前次完整審閱基準。
+
+
+## Batch-04 最終實作、測試及驗收（取代前述未回答／待辦狀態）
+
+### 實作摘要
+
+- 新增 tov1050_review_corrections.py：讀取外部人工授權更正與外側接受清單，驗證line/sheet/row/標籤/原值，記錄原值與有效值；已符合有效值則already_applied，不符合則停止。
+- 原始DataFrame儲存格不改；Support policy只在計算與候選輸出使用有效值。來源provenance及雙側anchor都包含更正授權；5筆外側接受另記範圍與相鄰Support，驗證0.0001km銜接，來源或Support銜接改變即停止。
+- standardizer／validator／audit皆明確輸入兩份清單；候選新增__review_corrections__、__review_acceptances__與清單digest。驗證不信任候選自述，獨立從外部清單核對原值、輸出、provenance與digest。
+- 正式規則集已更新外側保留、5筆個別接受及row298授權更正。audit新增location端點差異、接受範圍與Support銜接證據。
+
+### 實際命令與結果
+
+```text
+python -m pytest backend/tests/test_tov1050_metadata_candidates.py -q
+27 passed in 13.66s, exit0
+
+python scripts/standardize_tov1050_metadata.py --root "00 Reference Document/config" --mapping "00 Reference Document/TOV1050 TL-BK No.xlsx" --output-dir outputs/metadata-review-2026-10-23/batch-04/candidates --review-corrections outputs/metadata-review-2026-10-23/batch-04/reviewed-corrections.json --accepted-outer-ranges outputs/metadata-review-2026-10-23/batch-04/accepted-outer-ranges.json --lines ISL KTL LAR_AEL LAR_TCL TKL TKS TWL
+exit0，七線候選及manifest
+
+python scripts/validate_tov1050_metadata_candidates.py --source-root "00 Reference Document/config" --candidate-dir outputs/metadata-review-2026-10-23/batch-04/candidates --mapping "00 Reference Document/TOV1050 TL-BK No.xlsx" --output-dir outputs/metadata-review-2026-10-23/batch-04/validation-final --review-corrections outputs/metadata-review-2026-10-23/batch-04/reviewed-corrections.json --accepted-outer-ranges outputs/metadata-review-2026-10-23/batch-04/accepted-outer-ranges.json --lines ISL KTL LAR_AEL LAR_TCL TKL TKS TWL
+exit0，七線全部pass，findings總數0
+
+python scripts/audit_tov1050_metadata_review.py --batch-dir outputs/metadata-review-2026-10-23/batch-04 --previous-batch-dir outputs/metadata-review-2026-10-23/batch-02 --review-corrections outputs/metadata-review-2026-10-23/batch-04/reviewed-corrections.json --accepted-outer-ranges outputs/metadata-review-2026-10-23/batch-04/accepted-outer-ranges.json
+```
+
+曾有測試新增位置誤放於既有測試中段，修正後既有竄改檢查與新更正測試皆通過。batch-03重生遭KTL候選鎖定，因此不再覆寫該批，最終交付改batch-04。
+
+### 驗收結果
+
+- 七線validator技術pass；error/review findings=0。source/mapping digest、threshold/location/track/Bracket parity、衍生cardinality/anchor payload、更正及接受紀錄全部吻合；所有provenance mismatch=0。
+- ISL DT row298：來源仍99126/99126，候選99126m/99126m（有效99.126km）。雙側Support來源row296=99.116、row300=99.137；衍生99.1161–99.1259及99.1261–99.1369km。保留原始異常與授權，未寫回原始檔。
+- 內側superseded1080列；新推導1079段：ISL UT323、DT246、KTL UT214、DT296（比batch-02增加1段）。candidate各track同類別overlap=0，無異常Support。
+- 5筆外側範圍均符合0.0001km銜接且由使用者接受，已改為證據而非待決策。
+- LAR_AEL與LAR_TCL各自location type row2 endKM：28.3099→28.3009；row3 startKM=28.301，原8.9m overlap已消除。兩份source digest實際更新，其餘五線及mapping與batch-02相同。
+- 待人工逐列處理項目已清空；尚待整份candidate明確核准，沒有runtime promotion。
+- 六份使用者dirty Excel保留且不stage：共用mapping、ISL、KTL、LAR_AEL、LAR_TCL source與2026-09-23舊ISL candidate。batch-03中途產物保留且不stage；只提交程式、tests、request/rules及batch-04新產物。
+
+### Linear 與下一步
+
+DAV-19／DAV-10本工作階段實際掛載並已同步需求、兩項補充確認與來源更新；最終結果及commit/push於完成後同步。Issue維持In Progress：等使用者審閱batch-04並明確核准metadata。沒有未解資料列或環境阻塞需要使用者先處理；batch-03檔案鎖定已用新批次解決。
+
+
+Batch-04 audit實際exit0：全16 sheets診斷完成，manual-review-checklist為0列；location overlap=0、未分類=0、normal多位置/physical exact duplicate/invalid mapping=0，343組合法同位保留。來源digest穩定斷言通過；7份候選內candidate_status仍為review_required（review-only），不把validator pass當成業務核准。

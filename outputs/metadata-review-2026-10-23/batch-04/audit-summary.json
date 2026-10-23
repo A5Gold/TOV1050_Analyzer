@@ -1,0 +1,437 @@
+{
+  "rules_version": "2026-10-23",
+  "mapping_sha256": "3e7954907508ee393d8541f0bcb9dbe1a79bea36fe9ccfe540666c0fa53af056",
+  "source_digests": [
+    {
+      "workbook": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\config\\ISL metadata.xlsx",
+      "line": "ISL",
+      "sha256": "afa1b1e6246bb2d9c2096c36bb8a4cbfa16b36185bf8d357d57c6847f4e0a22f",
+      "previous_sha256": "afa1b1e6246bb2d9c2096c36bb8a4cbfa16b36185bf8d357d57c6847f4e0a22f",
+      "changed_since_previous": false
+    },
+    {
+      "workbook": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\config\\KTL metadata.xlsx",
+      "line": "KTL",
+      "sha256": "1f4f256906ccfdc934ebf4a9a4fccdf5deda8cc5b0255e67d81097688e6d99cf",
+      "previous_sha256": "1f4f256906ccfdc934ebf4a9a4fccdf5deda8cc5b0255e67d81097688e6d99cf",
+      "changed_since_previous": false
+    },
+    {
+      "workbook": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\config\\LAR_AEL metadata.xlsx",
+      "line": "LAR_AEL",
+      "sha256": "3b60ed47162f0991af36e99c37cdfedb5acea907a04e488ba3c83bdc77dd7f2d",
+      "previous_sha256": "2ea84a38e558f3bf4c5758d76879f1634fc01562375df834e3d6da1f4923b71c",
+      "changed_since_previous": true
+    },
+    {
+      "workbook": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\config\\LAR_TCL metadata.xlsx",
+      "line": "LAR_TCL",
+      "sha256": "7c7453191e082b76b1bed137459b2e05b4ce149e0e6540df7a4dc2bfe4154ae3",
+      "previous_sha256": "0f6cc87e8daf61e4ee7122c9dac06122246915b5cfaa7c64cbdb57f5536e1534",
+      "changed_since_previous": true
+    },
+    {
+      "workbook": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\config\\TKL metadata.xlsx",
+      "line": "TKL",
+      "sha256": "12632a1c2e4365a06b6587feb3e2c53d4994f4b998a1be3e794e01b93d5cd77e",
+      "previous_sha256": "12632a1c2e4365a06b6587feb3e2c53d4994f4b998a1be3e794e01b93d5cd77e",
+      "changed_since_previous": false
+    },
+    {
+      "workbook": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\config\\TKS metadata.xlsx",
+      "line": "TKS",
+      "sha256": "f5d65130b46db133db4280c67ce8d9248b033edbd32b1f5d5cede825f9e8ad69",
+      "previous_sha256": "f5d65130b46db133db4280c67ce8d9248b033edbd32b1f5d5cede825f9e8ad69",
+      "changed_since_previous": false
+    },
+    {
+      "workbook": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\config\\TWL metadata.xlsx",
+      "line": "TWL",
+      "sha256": "9de8ea8f247d16b8f0bbebeac1020db06f648a6919ee9197d7cb7eef457d4ad5",
+      "previous_sha256": "9de8ea8f247d16b8f0bbebeac1020db06f648a6919ee9197d7cb7eef457d4ad5",
+      "changed_since_previous": false
+    }
+  ],
+  "review_corrections_sha256": "857616e9f0bd82ba16fa480c78e64b7f80049e167264f7acd248f1635abaa7e8",
+  "review_corrections": [
+    {
+      "id": "ISL-DT-support-row298-2026-10-23",
+      "line": "ISL",
+      "sheet": "DT track type",
+      "source_row": 298,
+      "label": "Support",
+      "expected": {
+        "start": 99126,
+        "end": 99126
+      },
+      "replacement": {
+        "start": 99.126,
+        "end": 99.126
+      },
+      "authorization": "使用者於2026-10-23確認：正確值是 99.126 km；候選可更正並記錄原值",
+      "original": {
+        "start": 99126.0,
+        "end": 99126.0
+      },
+      "application_status": "applied"
+    }
+  ],
+  "interval_policy": "support-2026-10-23-v1",
+  "support_summary": [
+    {
+      "line": "ISL",
+      "sheet": "UT track type",
+      "superseded": 323,
+      "derived": 323,
+      "retained_edges": 0,
+      "accepted_edges": 1,
+      "issues": 0
+    },
+    {
+      "line": "ISL",
+      "sheet": "DT track type",
+      "superseded": 247,
+      "derived": 246,
+      "retained_edges": 0,
+      "accepted_edges": 1,
+      "issues": 0
+    },
+    {
+      "line": "KTL",
+      "sheet": "UT track type",
+      "superseded": 214,
+      "derived": 214,
+      "retained_edges": 0,
+      "accepted_edges": 2,
+      "issues": 0
+    },
+    {
+      "line": "KTL",
+      "sheet": "DT track type",
+      "superseded": 296,
+      "derived": 296,
+      "retained_edges": 0,
+      "accepted_edges": 1,
+      "issues": 0
+    }
+  ],
+  "accepted_outer_ranges": [
+    {
+      "workbook": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\config\\ISL metadata.xlsx",
+      "sheet": "UT track type",
+      "source_row": 2,
+      "start_km": 97.0,
+      "end_km": 97.2619,
+      "adjacent_support_row": 3,
+      "adjacent_support_start_km": 97.262,
+      "adjacent_support_end_km": 97.262,
+      "acceptance_json": "{\"authorization\":\"使用者確認：ISL／KTL 共5筆外側 non-support 及銜接Support因可連續連接，所以可以接受\",\"expected\":{\"end\":97.2619,\"start\":97},\"id\":\"ISL-UT-outer-row2-2026-10-23\",\"label\":\"non-support\",\"line\":\"ISL\",\"sheet\":\"UT track type\",\"source_row\":2}"
+    },
+    {
+      "workbook": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\config\\ISL metadata.xlsx",
+      "sheet": "DT track type",
+      "source_row": 2,
+      "start_km": 97.0,
+      "end_km": 97.7809,
+      "adjacent_support_row": 3,
+      "adjacent_support_start_km": 97.781,
+      "adjacent_support_end_km": 97.781,
+      "acceptance_json": "{\"authorization\":\"使用者確認：ISL／KTL 共5筆外側 non-support 及銜接Support因可連續連接，所以可以接受\",\"expected\":{\"end\":97.7809,\"start\":97},\"id\":\"ISL-DT-outer-row2-2026-10-23\",\"label\":\"non-support\",\"line\":\"ISL\",\"sheet\":\"DT track type\",\"source_row\":2}"
+    },
+    {
+      "workbook": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\config\\KTL metadata.xlsx",
+      "sheet": "UT track type",
+      "source_row": 2,
+      "start_km": 97.0,
+      "end_km": 98.0519,
+      "adjacent_support_row": 3,
+      "adjacent_support_start_km": 98.052,
+      "adjacent_support_end_km": 98.052,
+      "acceptance_json": "{\"authorization\":\"使用者確認：ISL／KTL 共5筆外側 non-support 及銜接Support因可連續連接，所以可以接受\",\"expected\":{\"end\":98.0519,\"start\":97},\"id\":\"KTL-UT-outer-row2-2026-10-23\",\"label\":\"non-support\",\"line\":\"KTL\",\"sheet\":\"UT track type\",\"source_row\":2}"
+    },
+    {
+      "workbook": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\config\\KTL metadata.xlsx",
+      "sheet": "UT track type",
+      "source_row": 432,
+      "start_km": 99.8771,
+      "end_km": 99.942,
+      "adjacent_support_row": 431,
+      "adjacent_support_start_km": 99.877,
+      "adjacent_support_end_km": 99.877,
+      "acceptance_json": "{\"authorization\":\"使用者確認：ISL／KTL 共5筆外側 non-support 及銜接Support因可連續連接，所以可以接受\",\"expected\":{\"end\":99.942,\"start\":99.8771},\"id\":\"KTL-UT-outer-row432-2026-10-23\",\"label\":\"non-support\",\"line\":\"KTL\",\"sheet\":\"UT track type\",\"source_row\":432}"
+    },
+    {
+      "workbook": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\config\\KTL metadata.xlsx",
+      "sheet": "DT track type",
+      "source_row": 2,
+      "start_km": 97.0,
+      "end_km": 97.4099,
+      "adjacent_support_row": 3,
+      "adjacent_support_start_km": 97.41,
+      "adjacent_support_end_km": 97.41,
+      "acceptance_json": "{\"authorization\":\"使用者確認：ISL／KTL 共5筆外側 non-support 及銜接Support因可連續連接，所以可以接受\",\"expected\":{\"end\":97.4099,\"start\":97},\"id\":\"KTL-DT-outer-row2-2026-10-23\",\"label\":\"non-support\",\"line\":\"KTL\",\"sheet\":\"DT track type\",\"source_row\":2}"
+    }
+  ],
+  "location_changes": [
+    {
+      "workbook": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\config\\LAR_AEL metadata.xlsx",
+      "sheet": "location type",
+      "excel_row": 2,
+      "column": "endKM",
+      "previous_km": 28.3099,
+      "current_km": 28.3009
+    },
+    {
+      "workbook": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\config\\LAR_TCL metadata.xlsx",
+      "sheet": "location type",
+      "excel_row": 2,
+      "column": "endKM",
+      "previous_km": 28.3099,
+      "current_km": 28.3009
+    }
+  ],
+  "outer_acceptances_sha256": "a6186817ac7e34b3a816cdfd00f08cf84e5a111cd1d9717f6dee9144a29e31cf",
+  "manual_review_count": 0,
+  "previous_mapping_sha256": "3e7954907508ee393d8541f0bcb9dbe1a79bea36fe9ccfe540666c0fa53af056",
+  "previous_review_mapping_record_changes": 0,
+  "drl_record_changes_since_previous": 0,
+  "historical_record_changes": {
+    "dbce953": 87,
+    "9742a50": 161
+  },
+  "mapping_sheets": [
+    {
+      "sheet": "AEL UT",
+      "source_rows": 1422,
+      "component_rows": 1422,
+      "invalid": 0,
+      "normal_multiple_locations": 0,
+      "exact_duplicates": 0,
+      "accepted_overlaps": 59,
+      "unclassified": 0,
+      "termination_rows": 0,
+      "termination_renamed": 0
+    },
+    {
+      "sheet": "AEL DT",
+      "source_rows": 1449,
+      "component_rows": 1449,
+      "invalid": 0,
+      "normal_multiple_locations": 0,
+      "exact_duplicates": 0,
+      "accepted_overlaps": 53,
+      "unclassified": 0,
+      "termination_rows": 0,
+      "termination_renamed": 0
+    },
+    {
+      "sheet": "TCL UT",
+      "source_rows": 1242,
+      "component_rows": 1242,
+      "invalid": 0,
+      "normal_multiple_locations": 0,
+      "exact_duplicates": 0,
+      "accepted_overlaps": 34,
+      "unclassified": 0,
+      "termination_rows": 0,
+      "termination_renamed": 0
+    },
+    {
+      "sheet": "TCL DT",
+      "source_rows": 1247,
+      "component_rows": 1247,
+      "invalid": 0,
+      "normal_multiple_locations": 0,
+      "exact_duplicates": 0,
+      "accepted_overlaps": 21,
+      "unclassified": 0,
+      "termination_rows": 0,
+      "termination_renamed": 0
+    },
+    {
+      "sheet": "DRL UT",
+      "source_rows": 214,
+      "component_rows": 214,
+      "invalid": 0,
+      "normal_multiple_locations": 0,
+      "exact_duplicates": 0,
+      "accepted_overlaps": 4,
+      "unclassified": 0,
+      "termination_rows": 1,
+      "termination_renamed": 0
+    },
+    {
+      "sheet": "DRL PL",
+      "source_rows": 80,
+      "component_rows": 80,
+      "invalid": 0,
+      "normal_multiple_locations": 0,
+      "exact_duplicates": 0,
+      "accepted_overlaps": 5,
+      "unclassified": 0,
+      "termination_rows": 0,
+      "termination_renamed": 0
+    },
+    {
+      "sheet": "TWL UT",
+      "source_rows": 1176,
+      "component_rows": 1176,
+      "invalid": 0,
+      "normal_multiple_locations": 0,
+      "exact_duplicates": 0,
+      "accepted_overlaps": 15,
+      "unclassified": 0,
+      "termination_rows": 0,
+      "termination_renamed": 0
+    },
+    {
+      "sheet": "TWL DT",
+      "source_rows": 1192,
+      "component_rows": 1192,
+      "invalid": 0,
+      "normal_multiple_locations": 0,
+      "exact_duplicates": 0,
+      "accepted_overlaps": 16,
+      "unclassified": 0,
+      "termination_rows": 0,
+      "termination_renamed": 0
+    },
+    {
+      "sheet": "KTL UT",
+      "source_rows": 1583,
+      "component_rows": 1583,
+      "invalid": 0,
+      "normal_multiple_locations": 0,
+      "exact_duplicates": 0,
+      "accepted_overlaps": 21,
+      "unclassified": 0,
+      "termination_rows": 0,
+      "termination_renamed": 0
+    },
+    {
+      "sheet": "KTL DT",
+      "source_rows": 1650,
+      "component_rows": 1678,
+      "invalid": 0,
+      "normal_multiple_locations": 0,
+      "exact_duplicates": 0,
+      "accepted_overlaps": 38,
+      "unclassified": 0,
+      "termination_rows": 4,
+      "termination_renamed": 0
+    },
+    {
+      "sheet": "ISL UT",
+      "source_rows": 672,
+      "component_rows": 678,
+      "invalid": 0,
+      "normal_multiple_locations": 0,
+      "exact_duplicates": 0,
+      "accepted_overlaps": 29,
+      "unclassified": 0,
+      "termination_rows": 0,
+      "termination_renamed": 0
+    },
+    {
+      "sheet": "ISL DT",
+      "source_rows": 820,
+      "component_rows": 830,
+      "invalid": 0,
+      "normal_multiple_locations": 0,
+      "exact_duplicates": 0,
+      "accepted_overlaps": 34,
+      "unclassified": 0,
+      "termination_rows": 0,
+      "termination_renamed": 0
+    },
+    {
+      "sheet": "TKL UT",
+      "source_rows": 639,
+      "component_rows": 639,
+      "invalid": 0,
+      "normal_multiple_locations": 0,
+      "exact_duplicates": 0,
+      "accepted_overlaps": 2,
+      "unclassified": 0,
+      "termination_rows": 37,
+      "termination_renamed": 11
+    },
+    {
+      "sheet": "TKL DT",
+      "source_rows": 657,
+      "component_rows": 657,
+      "invalid": 0,
+      "normal_multiple_locations": 0,
+      "exact_duplicates": 0,
+      "accepted_overlaps": 8,
+      "unclassified": 0,
+      "termination_rows": 39,
+      "termination_renamed": 8
+    },
+    {
+      "sheet": "TKS UT",
+      "source_rows": 170,
+      "component_rows": 170,
+      "invalid": 0,
+      "normal_multiple_locations": 0,
+      "exact_duplicates": 0,
+      "accepted_overlaps": 2,
+      "unclassified": 0,
+      "termination_rows": 7,
+      "termination_renamed": 2
+    },
+    {
+      "sheet": "TKS DT",
+      "source_rows": 180,
+      "component_rows": 180,
+      "invalid": 0,
+      "normal_multiple_locations": 0,
+      "exact_duplicates": 0,
+      "accepted_overlaps": 2,
+      "unclassified": 0,
+      "termination_rows": 12,
+      "termination_renamed": 4
+    }
+  ],
+  "statuses": {
+    "ISL": "pass",
+    "KTL": "pass",
+    "LAR_AEL": "pass",
+    "LAR_TCL": "pass",
+    "TKL": "pass",
+    "TKS": "pass",
+    "TWL": "pass"
+  },
+  "unclassified_rows": 0,
+  "accepted_same_location_groups": 343,
+  "interval_overlap_pairs": 0,
+  "priority_review_rows": [],
+  "split_source_rows": 40,
+  "extra_split_rows": 44,
+  "termination_renamed_rows": 25,
+  "resolved_checks": {
+    "AEL_DT_350_001_to_042_each_retained_once": true,
+    "TWL_DT_row_46": [
+      0.4,
+      "2-045"
+    ],
+    "KTL_DT_CR186_06": [
+      [
+        98.368,
+        [
+          158
+        ]
+      ]
+    ],
+    "KTL_DT_CR186_08": [
+      [
+        98.382,
+        [
+          160
+        ]
+      ]
+    ],
+    "ISL_DT_mapping_CN_nonempty": 0,
+    "reversed_interval_rows": 0
+  }
+}

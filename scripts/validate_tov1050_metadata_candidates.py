@@ -23,6 +23,7 @@ import pandas as pd
 from tov1050_mapping_rules import (
     RULES_VERSION, classify, component_labels, expand_mapping, provenance_components,
 )
+from tov1050_review_corrections import bind_outer_acceptances, load_outer_acceptances, review_records_check, bind_corrections, canonical, corrections_digest, load_corrections, source_payload
 from tov1050_support_intervals import reconstruct, location_envelope, POLICY_VERSION, DERIVATION_COLUMNS
 
 from standardize_tov1050_metadata import (
@@ -612,9 +613,7 @@ def _provenance_check(source_sheets: dict[str, pd.DataFrame], mapping_sheets: di
             if policy["active"]:
                 for item in policy["sources"]:
                     expected[(source_name, item["source_row"])] = (item["status"], direction)
-                    expected_intervals[(source_name, item["source_row"])] = {
-                        key: item[key] for key in ("label", "start", "end", "output")
-                    }
+                    expected_intervals[(source_name, item["source_row"])] = source_payload(item)
         mapping_name = f"{MAPPING_LINE_ALIASES.get(line, line)} {direction}"
         mapping_frame = mapping_sheets.get(mapping_name)
         if mapping_frame is not None:
@@ -732,8 +731,10 @@ def _derivation_check(source_sheets, candidate_sheets):
                 rows_match=expected == actual, diff=_counter_diff(expected, actual))
 
 
-def validate_workbook(source_path: Path, candidate_path: Path, mapping_path: Path, line: str) -> dict[str, Any]:
+def validate_workbook(source_path: Path, candidate_path: Path, mapping_path: Path, line: str, *, corrections=None, outer_acceptances=None) -> dict[str, Any]:
     source_sheets = _load(source_path)
+    applied_corrections = bind_corrections(source_sheets, line, corrections)
+    applied_acceptances = bind_outer_acceptances(source_sheets, line, outer_acceptances)
     candidate_sheets = _load(candidate_path)
     mapping_sheets = _load(mapping_path)
     findings: list[dict[str, Any]] = []
@@ -860,6 +861,30 @@ def validate_workbook(source_path: Path, candidate_path: Path, mapping_path: Pat
     ):
         finding("candidate_metadata_provenance", "error", metadata_check)
 
+    correction_frame = candidate_sheets.get("__review_corrections__")
+    expected_corrections = Counter(canonical(item) for item in applied_corrections)
+    actual_corrections = Counter()
+    if correction_frame is not None and "correction_json" in correction_frame:
+        for value in correction_frame["correction_json"].dropna():
+            try:
+                actual_corrections[canonical(json.loads(value))] += 1
+            except (ValueError, TypeError):
+                actual_corrections["invalid JSON"] += 1
+    correction_check = dict(
+        sheet_present=correction_frame is not None,
+        rows_match=expected_corrections == actual_corrections,
+        digest_match=metadata.get("review_corrections_sha256") == corrections_digest(corrections),
+        applied=applied_corrections,
+    )
+    if not all(correction_check[k] for k in ("sheet_present", "rows_match", "digest_match")):
+        finding("review_corrections_provenance", "error", correction_check)
+
+    acceptance_check = review_records_check(
+        candidate_sheets.get("__review_acceptances__"), applied_acceptances, outer_acceptances,
+        metadata.get("outer_acceptances_sha256"))
+    if not all(acceptance_check[k] for k in ("sheet_present", "rows_match", "digest_match")):
+        finding("outer_acceptances_provenance", "error", acceptance_check)
+
     status = "fail" if any(item["severity"] == "error" for item in findings) else (
         "review_required" if findings else "pass"
     )
@@ -882,6 +907,8 @@ def validate_workbook(source_path: Path, candidate_path: Path, mapping_path: Pat
         "tracks": track_reports,
         "provenance": provenance,
         "candidate_metadata": metadata_check,
+        "review_corrections": correction_check,
+        "outer_acceptances": acceptance_check,
         "findings": findings,
     }
 
@@ -935,7 +962,11 @@ def main() -> int:
     parser.add_argument("--mapping", type=Path, default=Path("00 Reference Document/TOV1050 TL-BK No.xlsx"))
     parser.add_argument("--output-dir", type=Path, default=Path("docs/audits"))
     parser.add_argument("--lines", nargs="*", default=list(LINES), choices=LINES)
+    parser.add_argument("--review-corrections", type=Path)
+    parser.add_argument("--accepted-outer-ranges", type=Path)
     args = parser.parse_args()
+    corrections = load_corrections(args.review_corrections)
+    outer_acceptances = load_outer_acceptances(args.accepted_outer_ranges)
     reports = []
     for line in args.lines:
         source = args.source_root / f"{line} metadata.xlsx"
@@ -943,7 +974,7 @@ def main() -> int:
         if not source.exists() or not candidate.exists() or not args.mapping.exists():
             reports.append({"line": line, "status": "fail", "findings": [{"code": "input_missing", "severity": "error", "detail": {"source": str(source), "candidate": str(candidate), "mapping": str(args.mapping)}}], "intervals": {}, "tracks": {}, "provenance": {"missing_source_row_count": 0}})
             continue
-        reports.append(validate_workbook(source, candidate, args.mapping, line))
+        reports.append(validate_workbook(source, candidate, args.mapping, line, corrections=corrections, outer_acceptances=outer_acceptances))
 
     output_dir = args.output_dir
     output_dir.mkdir(parents=True, exist_ok=True)

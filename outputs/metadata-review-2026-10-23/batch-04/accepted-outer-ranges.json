@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ISL-UT-outer-row2-2026-10-23",
+    "line": "ISL",
+    "sheet": "UT track type",
+    "source_row": 2,
+    "label": "non-support",
+    "expected": {
+      "start": 97,
+      "end": 97.2619
+    },
+    "authorization": "使用者確認：ISL／KTL 共5筆外側 non-support 及銜接Support因可連續連接，所以可以接受"
+  },
+  {
+    "id": "ISL-DT-outer-row2-2026-10-23",
+    "line": "ISL",
+    "sheet": "DT track type",
+    "source_row": 2,
+    "label": "non-support",
+    "expected": {
+      "start": 97,
+      "end": 97.7809
+    },
+    "authorization": "使用者確認：ISL／KTL 共5筆外側 non-support 及銜接Support因可連續連接，所以可以接受"
+  },
+  {
+    "id": "KTL-UT-outer-row2-2026-10-23",
+    "line": "KTL",
+    "sheet": "UT track type",
+    "source_row": 2,
+    "label": "non-support",
+    "expected": {
+      "start": 97,
+      "end": 98.0519
+    },
+    "authorization": "使用者確認：ISL／KTL 共5筆外側 non-support 及銜接Support因可連續連接，所以可以接受"
+  },
+  {
+    "id": "KTL-UT-outer-row432-2026-10-23",
+    "line": "KTL",
+    "sheet": "UT track type",
+    "source_row": 432,
+    "label": "non-support",
+    "expected": {
+      "start": 99.8771,
+      "end": 99.942
+    },
+    "authorization": "使用者確認：ISL／KTL 共5筆外側 non-support 及銜接Support因可連續連接，所以可以接受"
+  },
+  {
+    "id": "KTL-DT-outer-row2-2026-10-23",
+    "line": "KTL",
+    "sheet": "DT track type",
+    "source_row": 2,
+    "label": "non-support",
+    "expected": {
+      "start": 97,
+      "end": 97.4099
+    },
+    "authorization": "使用者確認：ISL／KTL 共5筆外側 non-support 及銜接Support因可連續連接，所以可以接受"
+  }
+]
