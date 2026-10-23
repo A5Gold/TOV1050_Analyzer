@@ -1,0 +1,4 @@
+﻿workbook,sheet,excel_rows,columns,original_value,issue,decision,priority
+C:\Smart Maintanence\TOV1050_Analyzer\00 Reference Document\TOV1050 TL-BK No.xlsx,TKL UT,578,A:Location / B:Bracket,55.958 km / 545-BWA-M,未確認命名格式,確認連字號 subtype -M/-C 是否等同 _M/_C；或提供正確類別／值,優先
+C:\Smart Maintanence\TOV1050_Analyzer\00 Reference Document\TOV1050 TL-BK No.xlsx,TKL UT,579,A:Location / B:Bracket,55.956 km / 545-BWA-C,未確認命名格式,確認連字號 subtype -M/-C 是否等同 _M/_C；或提供正確類別／值,優先
+C:\Smart Maintanence\TOV1050_Analyzer\00 Reference Document\TOV1050 TL-BK No.xlsx,TKS UT,2,A:Location / B:Bracket,66.604 km / 595-BMA_C,未確認命名格式,確認 BMA_C 是獨立類型或 BWA_C 的輸入錯誤；提供分類或正確值,優先

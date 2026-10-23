@@ -17,6 +17,10 @@ from typing import Any
 
 import pandas as pd
 
+from tov1050_mapping_rules import (
+    RULES_VERSION, RULES_DOCUMENT, component_labels, expand_mapping, provenance_components,
+)
+
 
 LINES = ("ISL", "KTL", "LAR_AEL", "LAR_TCL", "TKL", "TKS", "TWL")
 MAPPING_LINE_ALIASES = {"LAR_AEL": "AEL", "LAR_TCL": "TCL"}
@@ -161,6 +165,7 @@ def _bracket_rows(
     provenance: list[dict[str, Any]] = []
     location_col = "Location" if "Location" in mapping.columns else mapping.columns[0]
     bracket_col = "Bracket" if "Bracket" in mapping.columns else mapping.columns[1]
+    valid_records = []
     for source_row, row in mapping.iterrows():
         location = _number(row.get(location_col))
         bracket = row.get(bracket_col)
@@ -178,12 +183,28 @@ def _bracket_rows(
             provenance.append({**base_provenance, "status": "invalid", "reason": "Bracket is blank"})
             continue
         bracket_text = str(bracket).strip()
-        tl = bracket_text.split("-", 1)[0] if "-" in bracket_text else bracket_text
+        if not all(component_labels(bracket_text)):
+            provenance.append({**base_provenance, "status": "invalid", "reason": "Empty slash component"})
+            continue
+        valid_records.append({"source_row": int(source_row) + 2,
+                              "from_m": round(location * scale, 6), "bracket": bracket_text})
+    expanded = expand_mapping(valid_records)
+    by_source = {}
+    for item in expanded:
+        by_source.setdefault(item["source_row"], []).append(item)
+        bracket_text = item["candidate_bracket"]
+        tl = item["bracket"].split("-", 1)[0]
         rows.append({"Track Type": None, "Track Type FromM": None, "Track Type ToM": None,
-                     None: None, "Bracket FromM": location * scale,
+                     None: None, "Bracket FromM": item["from_m"],
                      "Tension Length": tl, "Bracket": bracket_text})
-        provenance.append({**base_provenance, "status": "emitted",
-                           "transform": "Location km -> Bracket FromM m; bracket prefix -> Tension Length"})
+    for source_row, items in by_source.items():
+        provenance.append({"source_sheet": source_sheet, "source_row": source_row,
+                           "target_sheet": target_sheet, "status": "emitted",
+                           "source_bracket": items[0]["source_bracket"],
+                           "component_count": len(items),
+                           "components_json": json.dumps(provenance_components(items), ensure_ascii=False),
+                           "rules_version": RULES_VERSION,
+                           "transform": "Location km -> m; slash expansion; repeated termination -> @position suffix"})
     return rows, provenance
 
 
@@ -298,7 +319,8 @@ def standardize_workbook(source: Path, mapping_book: Path, output: Path, scale: 
         pd.DataFrame([{"generated_at": datetime.now(timezone.utc).isoformat(), "source_workbook": str(source),
                        "source_sha256": source_digest, "mapping_workbook": str(mapping_book),
                        "mapping_sha256": mapping_digest, "chainage_unit": "m", "chainage_scale": scale,
-                       "candidate_status": "review_required",
+                       "candidate_status": "review_required", "rules_version": RULES_VERSION,
+                       "rules_document": RULES_DOCUMENT,
                        "note": "Candidate only; review overlaps, invalid rows, and bracket prefix mapping before activation."}]).to_excel(
             writer, sheet_name="__standardization__", index=False
         )

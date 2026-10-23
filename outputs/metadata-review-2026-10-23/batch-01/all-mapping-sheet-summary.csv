@@ -1,0 +1,17 @@
+﻿sheet,source_rows,component_rows,invalid,normal_multiple_locations,exact_duplicates,accepted_overlaps,unclassified,termination_rows,termination_renamed
+AEL UT,1422,1422,0,0,0,59,0,0,0
+AEL DT,1449,1449,0,0,0,53,0,0,0
+TCL UT,1242,1242,0,0,0,34,0,0,0
+TCL DT,1247,1247,0,0,0,21,0,0,0
+DRL UT,214,214,0,0,0,4,0,1,0
+DRL PL,80,80,0,0,0,5,0,0,0
+TWL UT,1176,1176,0,0,0,15,0,0,0
+TWL DT,1192,1192,0,0,0,16,0,0,0
+KTL UT,1583,1583,0,0,0,21,0,0,0
+KTL DT,1650,1678,0,0,0,38,0,4,0
+ISL UT,672,678,0,0,0,29,0,0,0
+ISL DT,820,830,0,0,0,34,0,0,0
+TKL UT,639,639,0,0,0,2,2,35,11
+TKL DT,657,657,0,0,0,8,0,39,8
+TKS UT,170,170,0,0,0,2,1,6,2
+TKS DT,180,180,0,0,0,2,0,12,4

@@ -249,7 +249,8 @@ def test_landmarks_do_not_create_same_location_bracket_conflicts():
         "variant_brackets": [],
     }]
     assert diagnostics["confirmed_variant_overlap_count"] == 0
-    assert diagnostics["unconfirmed_same_location_overlap_count"] == 1
+    assert diagnostics["unconfirmed_same_location_overlap_count"] == 0
+    assert diagnostics["accepted_same_location_overlap_count"] == 1
 
 
 def test_landmarks_are_excluded_from_bracket_location_uniqueness():
@@ -273,43 +274,100 @@ def test_landmark_duplicates_are_not_physical_identity_duplicates():
     assert diagnostics["exact_duplicate_identity_count"] == 0
 
 
-def test_unknown_numeric_and_composite_labels_do_not_hide_identity_risks(tmp_path):
+def test_unknown_labels_remain_reviewable_and_slash_conflicts_are_not_hidden():
     frame = pd.DataFrame({
-        "Location": [48.1, 48.2, 48.1, 48.3, 48.4, 48.4, 48.5],
-        "Bracket": ["579-BWA", "579-BWA", "549-007(T)",
-                    "251-000 / 245-038", "245-038", "245-038", "SI-TIK803"],
+        "Location": [48.1, 48.2, 48.3, 48.4, 48.4],
+        "Bracket": ["579-XYZ", "579-XYZ", "251-000 / 245-038", "245-038", "245-038"],
     })
     _, invalid, records, diagnostics = _mapping_rows(frame, 1000.0)
-
     assert invalid == []
-    assert len(records) == 7
-    assert _is_landmark("579-BWA") is False
-    assert _is_landmark("549-007(T)") is False
-    assert _is_landmark("251-000 / 245-038") is False
-    assert diagnostics["marker_row_count"] == 1
-    assert diagnostics["unclassified_row_count"] == 4
-    assert diagnostics["bracket_location_conflict_count"] == 0
-    assert diagnostics["exact_duplicate_identity_count"] == 1
-    assert diagnostics["unclassified_location_conflicts"] == [{
-        "bracket": "579-BWA", "from_m_values": [48100.0, 48200.0], "source_rows": [2, 3],
+    assert len(records) == 6
+    assert diagnostics["unclassified_row_count"] == 2
+    assert diagnostics["unclassified_location_conflicts"][0]["source_rows"] == [2, 3]
+    assert diagnostics["bracket_location_conflicts"] == [{
+        "bracket": "245-038", "from_m_values": [48300.0, 48400.0], "source_rows": [4, 5, 6],
     }]
-    assert diagnostics["unclassified_same_location_groups"][0]["from_m"] == 48100.0
-    component = diagnostics["unclassified_component_location_conflicts"][0]
-    assert component["possible_bracket"] == "245-038"
-    assert component["from_m_values"] == [48300.0, 48400.0]
-    assert [row["source_row"] for row in component["rows"]] == [5, 6, 7]
+    assert diagnostics["exact_duplicate_identity_count"] == 1
 
+
+def test_confirmed_mapping_rules_and_unconfirmed_formats():
+    from tov1050_mapping_rules import classify
+    for label in ["123-001", "211-1", "123A-001A", "481-A01", "481A-A02",
+                  "CR272-001", "CR186-022", "CR001A-002", "211-3B", "549-007(T)"]:
+        assert classify(label) == "normal"
+    for label in ["487-BWA", "148-BWA_UP", "581-BWA_M", "547-Fixed_C", "549-Spring"]:
+        assert classify(label) == "termination"
+    for label in ["HAH885", "TIS901", "QUB807", "SI-NOP801", "SI-CR186", "SI-211", "POA804-01"]:
+        assert classify(label) == "landmark"
+    for label in ["595-BMA_C", "545-BWA-M", "155-XXX", "582", "549-007(Z)"]:
+        assert classify(label) == "unclassified"
+
+
+def test_slash_termination_endpoints_and_provenance_tampering(tmp_path):
+    import json
+    from standardize_tov1050_metadata import _bracket_rows
+    frame = pd.DataFrame({
+        "Location": [48.1, 48.2, 48.1],
+        "Bracket": ["148-BWA_UP / 152-011 / 154-004", "148-BWA_UP", "549-007(T)"],
+    })
     source_path = tmp_path / "LAR_AEL metadata.xlsx"
-    mapping_path = tmp_path / "TOV1050 TL-BK No.xlsx"
-    candidate_path = tmp_path / "LAR_AEL metadata (wide candidate).xlsx"
+    mapping_path = tmp_path / "mapping.xlsx"
+    candidate_path = tmp_path / "candidate.xlsx"
     _write_source(source_path)
     with pd.ExcelWriter(mapping_path) as writer:
         frame.to_excel(writer, sheet_name="AEL UT", index=False)
     standardize_workbook(source_path, mapping_path, candidate_path)
+    sheets = pd.read_excel(candidate_path, sheet_name=None)
+    assert sheets["LAR_AEL UT"]["Bracket"].dropna().tolist() == [
+        "148-BWA_UP@48100m", "152-011", "154-004", "148-BWA_UP@48200m", "549-007(T)",
+    ]
     report = validate_workbook(source_path, candidate_path, mapping_path, "LAR_AEL")
-    assert report["status"] == "review_required"
-    assert any(item["code"] == "mapping_classification_required" for item in report["findings"])
-    assert not any(item["severity"] == "error" for item in report["findings"])
+    assert not [x for x in report["findings"] if x["severity"] == "error"]
+    assert report["provenance"]["component_mismatch_count"] == 0
+    assert report["tracks"]["LAR_AEL UT"]["mapping_diagnostics"]["bracket_location_conflict_count"] == 0
+    # Stable endpoint suffixes when source rows are reordered.
+    rows, _ = _bracket_rows(frame.iloc[::-1].reset_index(drop=True), "AEL UT", "UT", 1000)
+    assert {x["Bracket"] for x in rows} == set(sheets["LAR_AEL UT"]["Bracket"].dropna())
+    provenance = sheets["__provenance__"]
+    idx = provenance.index[provenance["source_sheet"] == "AEL UT"][0]
+    components = json.loads(provenance.loc[idx, "components_json"])
+    assert len(components) == 3
+    components.pop()
+    provenance.loc[idx, "components_json"] = json.dumps(components)
+    # Missing/altered component metadata is an error even if candidate parity is intact.
+    with pd.ExcelWriter(candidate_path) as writer:
+        for name, data in sheets.items():
+            data.to_excel(writer, sheet_name=name, index=False)
+    report = validate_workbook(source_path, candidate_path, mapping_path, "LAR_AEL")
+    assert report["status"] == "fail"
+    assert report["provenance"]["component_mismatch_count"] == 1
+    # Removing a split candidate component is independently caught by parity.
+    sheets["LAR_AEL UT"] = sheets["LAR_AEL UT"].query("Bracket != '152-011'")
+    with pd.ExcelWriter(candidate_path) as writer:
+        for name, data in sheets.items():
+            data.to_excel(writer, sheet_name=name, index=False)
+    report = validate_workbook(source_path, candidate_path, mapping_path, "LAR_AEL")
+    assert report["tracks"]["LAR_AEL UT"]["bracket_diff"]["missing_count"] == 1
+
+
+def test_empty_and_duplicate_slash_components_are_not_discarded():
+    from standardize_tov1050_metadata import _bracket_rows
+    frame = pd.DataFrame({"Location": [48.1, 48.2], "Bracket": ["123-01 / / 124-01", "125-01 / 125-01"]})
+    rows, provenance = _bracket_rows(frame, "AEL UT", "UT", 1000)
+    assert len(rows) == 2
+    assert provenance[0]["status"] == "invalid"
+    _, invalid, _, diagnostics = _mapping_rows(frame, 1000)
+    assert len(invalid) == 1
+    assert diagnostics["exact_duplicate_identity_count"] == 1
+
+
+def test_termination_suffix_collision_fails_closed():
+    import pytest
+    from standardize_tov1050_metadata import _bracket_rows
+    frame = pd.DataFrame({"Location": [48.1, 48.2, 48.3],
+                          "Bracket": ["579-BWA", "579-BWA", "579-BWA@48100m"]})
+    with pytest.raises(ValueError, match="collides"):
+        _bracket_rows(frame, "AEL UT", "UT", 1000)
 
 
 def test_provenance_target_mismatch_is_reported():

@@ -20,6 +20,10 @@ from typing import Any, Iterable
 
 import pandas as pd
 
+from tov1050_mapping_rules import (
+    RULES_VERSION, classify, component_labels, expand_mapping, provenance_components,
+)
+
 from standardize_tov1050_metadata import (
     LINES,
     MAPPING_LINE_ALIASES,
@@ -55,20 +59,12 @@ def _text(value: Any) -> str:
 
 
 def _is_physical_bracket(value: Any) -> bool:
-    text = _text(value)
-    return bool(text) and (
-        _LANDMARK_PREFIX_RE.match(text) is None
-        and _BRACKET_VARIANT_RE.fullmatch(text) is not None
-    )
+    return classify(_text(value)) in ("normal", "termination")
 
 
 def _is_landmark(value: Any) -> bool:
     """Keep known markers/text labels separate from unresolved numeric IDs."""
-    text = _text(value)
-    return bool(text) and (
-        _LANDMARK_PREFIX_RE.match(text) is not None
-        or (not re.search(r"\d|/", text) and not _is_physical_bracket(text))
-    )
+    return classify(_text(value)) == "landmark"
 
 
 def _is_bracket_variant(value: Any) -> bool:
@@ -330,6 +326,10 @@ def _mapping_rows(frame: pd.DataFrame, scale: float) -> tuple[Counter, list[dict
         "unclassified_exact_duplicates": [],
         "unclassified_same_location_groups": [],
         "unclassified_component_location_conflicts": [],
+        "accepted_same_location_overlap_count": 0,
+        "accepted_same_location_overlaps": [],
+        "termination_row_count": 0,
+        "termination_renamed_rows": [],
     }
     location_col = _column(frame, "location")
     bracket_col = _column(frame, "bracket")
@@ -341,7 +341,7 @@ def _mapping_rows(frame: pd.DataFrame, scale: float) -> tuple[Counter, list[dict
     for source_row, row in _non_empty_rows(frame):
         location = _number(row.get(location_col))
         bracket = _text(row.get(bracket_col))
-        if location is None or not bracket:
+        if location is None or not bracket or not all(component_labels(bracket)):
             invalid.append({
                 "source_row": source_row,
                 "location": row.get(location_col),
@@ -349,10 +349,13 @@ def _mapping_rows(frame: pd.DataFrame, scale: float) -> tuple[Counter, list[dict
                 "reason": "Location must be numeric and Bracket must be non-empty",
             })
             continue
-        tension_length = bracket.split("-", 1)[0]
-        item = (round(location * scale, 6), tension_length, bracket)
+        records.append({"source_row": source_row, "from_m": round(location * scale, 6), "bracket": bracket})
+    records = expand_mapping(records)
+    for record in records:
+        tension_length = record["bracket"].split("-", 1)[0]
+        record["tension_length"] = tension_length
+        item = (record["from_m"], tension_length, record["candidate_bracket"])
         expected[item] += 1
-        records.append({"source_row": source_row, "from_m": item[0], "tension_length": tension_length, "bracket": bracket})
     by_identity: dict[tuple[float, str], list[int]] = {}
     by_location: dict[float, list[dict[str, Any]]] = {}
     by_bracket: dict[str, list[dict[str, Any]]] = {}
@@ -366,8 +369,10 @@ def _mapping_rows(frame: pd.DataFrame, scale: float) -> tuple[Counter, list[dict
             bracket_variant_rows.append(record)
         if _is_landmark(record["bracket"]):
             marker_rows.append(record)
-        elif _is_physical_bracket(record["bracket"]):
+        elif classify(record["bracket"]) == "normal":
             by_bracket.setdefault(record["bracket"], []).append(record)
+        elif classify(record["bracket"]) == "termination":
+            pass
         else:
             unclassified_rows.append(record)
     exact_duplicates = [
@@ -450,12 +455,12 @@ def _mapping_rows(frame: pd.DataFrame, scale: float) -> tuple[Counter, list[dict
         "confirmed_variant_overlaps": [
             item for item in same_location_overlaps if item["confirmed_variant_overlap"]
         ],
-        "unconfirmed_same_location_overlap_count": sum(
-            not item["confirmed_variant_overlap"] for item in same_location_overlaps
-        ),
-        "unconfirmed_same_location_overlaps": [
-            item for item in same_location_overlaps if not item["confirmed_variant_overlap"]
-        ],
+        "accepted_same_location_overlap_count": len(same_location_overlaps),
+        "accepted_same_location_overlaps": same_location_overlaps,
+        "unconfirmed_same_location_overlap_count": 0,
+        "unconfirmed_same_location_overlaps": [],
+        "termination_row_count": sum(item["classification"] == "termination" for item in records),
+        "termination_renamed_rows": [item for item in records if item["bracket"] != item["candidate_bracket"]],
         "bracket_location_conflict_count": len(bracket_location_conflicts),
         "bracket_location_conflicts": bracket_location_conflicts[:100],
         "bracket_variant_count": len(bracket_variant_rows),
@@ -551,6 +556,7 @@ def _track_check(
 def _provenance_check(source_sheets: dict[str, pd.DataFrame], mapping_sheets: dict[str, pd.DataFrame], candidate_sheets: dict[str, pd.DataFrame], line: str) -> dict[str, Any]:
     provenance = candidate_sheets.get("__provenance__")
     expected: dict[tuple[str, int], tuple[str, str]] = {}
+    expected_components = {}
 
     def add_source(sheet_name: str, frame: pd.DataFrame, target_sheet: str, status_resolver):
         for source_row, row in _non_empty_rows(frame):
@@ -598,11 +604,20 @@ def _provenance_check(source_sheets: dict[str, pd.DataFrame], mapping_sheets: di
             location_col, bracket_col = _column(mapping_frame, "location"), _column(mapping_frame, "bracket")
             add_source(
                 mapping_name, mapping_frame, direction,
-                lambda row, l=location_col, b=bracket_col: "invalid" if _number(row.get(l)) is None or not _text(row.get(b)) else "emitted",
+                lambda row, l=location_col, b=bracket_col: "invalid" if _number(row.get(l)) is None or not _text(row.get(b)) or not all(component_labels(_text(row.get(b)))) else "emitted",
             )
+            _, _, records, _ = _mapping_rows(mapping_frame, CHAINAGE_SCALE_M_PER_KM)
+            grouped = {}
+            for item in records:
+                grouped.setdefault(item["source_row"], []).append(item)
+            for source_row, items in grouped.items():
+                expected_components[(mapping_name, source_row)] = (
+                    items[0]["source_bracket"], provenance_components(items),
+                )
 
     actual: dict[tuple[str, int], list[tuple[str, str]]] = {}
     required_columns_missing: list[str] = []
+    component_mismatch = []
     if provenance is not None:
         source_col, row_col = _column(provenance, "source_sheet"), _column(provenance, "source_row")
         status_col, target_col = _column(provenance, "status"), _column(provenance, "target_sheet")
@@ -614,6 +629,18 @@ def _provenance_check(source_sheets: dict[str, pd.DataFrame], mapping_sheets: di
                 except (TypeError, ValueError):
                     continue
                 actual.setdefault((_text(row.get(source_col)), source_row), []).append((_text(row.get(status_col)), _text(row.get(target_col))))
+                key = (_text(row.get(source_col)), source_row)
+                if key in expected_components:
+                    original, components = expected_components[key]
+                    try:
+                        actual_components = json.loads(_text(row.get("components_json")))
+                    except (ValueError, TypeError):
+                        actual_components = None
+                    if (actual_components != components
+                        or _text(row.get("source_bracket")) != original
+                        or _number(row.get("component_count")) != len(components)
+                        or _text(row.get("rules_version")) != RULES_VERSION):
+                        component_mismatch.append({"source_sheet": key[0], "source_row": key[1]})
 
     missing = sorted(set(expected).difference(actual))
     unexpected = sorted(set(actual).difference(expected))
@@ -628,6 +655,8 @@ def _provenance_check(source_sheets: dict[str, pd.DataFrame], mapping_sheets: di
     )
     return {
         "sheet_present": provenance is not None,
+        "component_mismatch_count": len(component_mismatch),
+        "component_mismatch": component_mismatch,
         "required_columns_missing": required_columns_missing,
         "expected_source_rows": len(expected),
         "provenance_rows": len(actual),
@@ -706,7 +735,6 @@ def validate_workbook(source_path: Path, candidate_path: Path, mapping_path: Pat
             finding("track_or_mapping_invalid_rows", "review", {"sheet": candidate_name, "report": report})
         diagnostics = report.get("mapping_diagnostics") or {}
         if any(diagnostics.get(key, 0) for key in (
-            "marker_row_count",
             "exact_duplicate_identity_count",
             "unconfirmed_same_location_overlap_count",
         )):
@@ -726,6 +754,7 @@ def validate_workbook(source_path: Path, candidate_path: Path, mapping_path: Pat
         or provenance["status_mismatch_count"]
         or provenance["target_mismatch_count"]
         or provenance["invalid_status_mismatch_count"]
+        or provenance["component_mismatch_count"]
     ):
         finding("provenance_incomplete", "error", provenance)
 
@@ -734,6 +763,7 @@ def validate_workbook(source_path: Path, candidate_path: Path, mapping_path: Pat
     metadata_check = {
         "sheet_present": not standardization.empty,
         "chainage_unit": metadata.get("chainage_unit"),
+        "rules_version": metadata.get("rules_version"),
         "chainage_scale": _number(metadata.get("chainage_scale")),
         "source_sha256": metadata.get("source_sha256"),
         "mapping_sha256": metadata.get("mapping_sha256"),
@@ -742,6 +772,7 @@ def validate_workbook(source_path: Path, candidate_path: Path, mapping_path: Pat
     }
     if (
         metadata_check["chainage_unit"] != "m"
+        or metadata_check["rules_version"] != RULES_VERSION
         or metadata_check["chainage_scale"] != CHAINAGE_SCALE_M_PER_KM
         or not metadata_check["source_sha256_match"]
         or not metadata_check["mapping_sha256_match"]
