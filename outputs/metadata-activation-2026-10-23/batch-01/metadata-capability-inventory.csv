@@ -1,0 +1,15 @@
+﻿identity,sheet,point_rows,physical_point_rows,landmark_point_rows,physical_tl_count,single_position_physical_tl_count,has_explicit_overlap_columns,has_explicit_landmark_columns
+ISL,ISL UT,678,677,1,19,1,False,False
+ISL,ISL DT,830,828,2,28,1,False,False
+KTL,KTL UT,1583,1579,4,27,0,False,False
+KTL,KTL DT,1678,1677,1,30,0,False,False
+LAR_AEL,LAR_AEL UT,1422,1422,0,47,0,False,False
+LAR_AEL,LAR_AEL DT,1449,1449,0,49,0,False,False
+LAR_TCL,LAR_TCL UT,1242,1242,0,41,0,False,False
+LAR_TCL,LAR_TCL DT,1247,1247,0,42,0,False,False
+TKL,TKL UT,639,617,22,19,0,False,False
+TKL,TKL DT,657,638,19,19,0,False,False
+TKS,TKS UT,170,169,1,4,0,False,False
+TKS,TKS DT,180,175,5,4,0,False,False
+TWL,TWL UT,1176,1176,0,22,0,False,False
+TWL,TWL DT,1192,1192,0,22,0,False,False

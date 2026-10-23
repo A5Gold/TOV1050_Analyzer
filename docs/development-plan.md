@@ -1,5 +1,7 @@
 # TOV1050 Analyzer Development Plan
 
+> 2026-10-23 更新：下一階段執行順序、當前驗證證據及發版門檻，以 [最新分階段計畫](plans/2026-10-23-tov1050-next-stage.md) 為準。以下 WP 為整體範圍，不代表各項尚未實作。
+
 ## 1. Objective
 
 將目前複製自 TOV640 Analyzer 的 Windows Electron desktop analyzer 收斂為完整的 TOV1050 模式：
@@ -12,7 +14,7 @@ TOV640 專案只作為演算法規格與回歸參考，絕不修改 `C:\Smart Ma
 
 - 所有 TOV640 演算法相關變更前，先閱讀來源專案的 `docs/architecture.md`、TOV1050 migration Background、mapping workbook、Raw data 與 config。
 - TOV1050 專案所有修改只發生在 `C:\Smart Maintanence\TOV1050_Analyzer`。
-- `Km` 直接成為 `Chainage`，不合併 `KM`/`LOCATION`。
+- `Km * 1000 -> Chainage`（公尺），不合併 `KM`/`LOCATION`；保留 source_chainage_km。
 - `HeightWire1..4`、`StaggerWire1..4`、`WearWire1..4` 必須轉成 canonical columns。
 - `1.#IO` 轉成 NaN 並忽略；原始前 100 rows 與後 100 rows 忽略。
 - Height 不套用 TOV640 的 `+5300` 修正。
@@ -52,7 +54,7 @@ TOV640 專案只作為演算法規格與回歸參考，絕不修改 `C:\Smart Ma
 | TKL / Mainline | `TKL metadata.xlsx` |
 | TKL / TKS | `TKS metadata.xlsx` |
 
-TOV1050 workbook sheets are discovered from the workbook. Typical sheets are `threshold`, `UT track type`, `DT track type`, optional `PL track type`, and `location type`.
+Approved runtime wide workbooks use `threshold`, `Exception Boundarys`, `<workbook identity> UT/DT`, and internal provenance/review sheets. The adapter also supports legacy long `location type`, `UT/DT track type`, and DRL `PL track type`. Wide FromM/ToM are metres; long startKM/endKM are kilometres.
 
 ### TOV1050 與 TOV640 差異
 
@@ -62,7 +64,7 @@ TOV1050 workbook sheets are discovered from the workbook. Typical sheets are `th
 |---|---|---|---|
 | 原始檔案格式 | `.datac`，通常以分號 `;` 分隔 | `.csv`，通常以逗號 `,` 分隔 | TOV1050 上傳、拖放、Electron file dialog 與提示文字使用 CSV |
 | 資料規模 | 約 50,000 rows、約 10 MB | 約 900,000 rows、約 150 MB | 使用 chunk processing，避免多次完整 DataFrame 複製 |
-| Chainage 來源 | 由 `KM` 與 `LOCATION` 組合或換算 | `Km` 已是 Chainage | 直接映射 `Km -> Chainage`，不得合併 `KM`/`LOCATION` |
+| Chainage 來源 | 由 `KM` 與 `LOCATION` 組合或換算 | `Km` 是公里位置 | `Km * 1000 -> Chainage_m`，不得合併 `KM`/`LOCATION` |
 | Height 欄位 | `WHGT1c..4` | `HeightWire1..4` | 轉為 canonical `height1..4` |
 | Height 修正 | 需要套用 `+5300` | 已是實際值 | TOV1050 不得套用 `+5300` |
 | Stagger 欄位 | `STG1c..4` | `StaggerWire1..4` | 轉為 canonical `stagger1..4` |
@@ -75,9 +77,9 @@ TOV1050 workbook sheets are discovered from the workbook. Typical sheets are `th
 | Session / section | `Mainline`、`RAC`、`LOW S1`、`LMC` 等 TOV640 分類 | AEL/TCL/ISL/KTL/TWL: `Mainline`；DRL: `Mainline`/`PL`；TKL: `Mainline`/`TKS` | session 由 line 動態限制；`TKS` 使用 TKS metadata |
 | SHO_AWE | 不作為 TOV640 session 概念 | 代表 station start 到 station end | 應放在檔名與 task context 的 station range，不得當 session |
 | Metadata workbook | `EAL metadata.xlsx`、`TML metadata.xlsx` | `LAR_AEL metadata.xlsx`、`LAR_TCL metadata.xlsx`、DRL/ISL/KTL/TKL/TKS/TWL workbooks | 由 line + session 明確 mapping；不可 fallback 到 EAL/TML workbook |
-| Metadata sheets | 常見 `Exception Boundarys`、`EAL UP`、`EAL DN`、`LMC UP` 等固定 sheet | `threshold`、`UT track type`、`DT track type`、`PL track type`、`location type` | 先讀取實際 workbook sheet/header，再渲染或解析 |
-| Threshold schema | 以 `Class` 及多個 `... L1/L2/L3` wide 欄位為主 | `Location Type`、`Track Type`、`Exc Type`、`min`、`max`、`remark` long form | TOV1050 editor 保留 long form；adapter 只在 detector boundary 做 normalization |
-| Location mapping | 以 TOV640 boundary/class interval 對應 | `location type` sheet 的 `startKM`/`endKM` 對應 location class | 無法唯一解析、缺 sheet 或 interval 重疊時 fail closed |
+| Metadata sheets | 常見 `Exception Boundarys`、`EAL UP`、`EAL DN`、`LMC UP` 等固定 sheet | 核准 wide：`threshold`、`Exception Boundarys`、`<identity> UT/DT`；仍支援舊 long/PL | 先讀取實際 workbook sheet/header，再渲染或解析 |
+| Threshold schema | 以 `Class` 及多個 `... L1/L2/L3` wide 欄位為主 | 核准 wide `Class`、`Track Type`、`Exc Type`、`... L1/L2/L3`；仍支援舊 long | editor 保留實際 schema；拒絕混合 long/wide threshold |
+| Location mapping | 以 TOV640 boundary/class interval 對應 | wide `Exception Boundarys` 公尺欄位，或舊 `location type` 公里欄位 | 缺欄位／錯 line 必須診斷；合法 overlap 保留，無效衝突須阻擋 |
 | Detector | Height/Wear/Stagger aggregate、threshold gate、L1/L2/L3、consecutive grouping、最嚴重點選取等 | 使用相同 exception algorithm contract | 重用判定核心；差異只放在輸入 adapter 與 metadata adapter |
 | 輸出檔名 | 舊格式可能只含 line/track/section 或 task/station | `YYYYMMDD_LINE_TRACK_SESSION_STATION_START_STATION_END_ARTIFACT.ext` | 所有 TOV1050 report/raw/repeated export 都帶 session 與 station range |
 | Database Record 預置資料 | 可包含 EAL/TML 一年期 seed | TOV1050 fresh database 應為空 | EAL/TML seed 只能顯式 opt-in 給 legacy regression，不可在產品啟動自動載入 |
@@ -87,7 +89,7 @@ TOV1050 workbook sheets are discovered from the workbook. Typical sheets are `th
 
 - **可以重用**：TOV640 的 threshold gate、aggregate 規則、L1/L2/L3 分級、consecutive-mask grouping、每組最嚴重點選取、exception ID 與 report 欄位語意。
 - **必須改寫或包裝**：CSV loader、canonical column mapping、缺測值處理、前後 100 rows trim、row lineage、TOV1050 metadata workbook/sheet mapping、session/direction validation、輸出命名與 packaged config。
-- **不可直接移植**：`+5300` Height 修正、KM/LOCATION 合併、EAL/TML 選單、固定 `Exception Boundarys`/`EAL UP`/`TML UP` sheet 假設，以及 EAL/TML built-in database seed。
+- **不可直接移植**：`+5300` Height 修正、KM/LOCATION 合併、EAL/TML 選單、固定 EAL/TML sheet/line 假設（Exception Boundarys 名稱可共用，但欄位與方向需明確轉接），以及 EAL/TML built-in database seed。
 
 ## 4. Work Packages
 
@@ -146,10 +148,10 @@ Exit criteria: a user can complete CSV upload and report export without seeing E
 
 1. List only TOV1050 workbooks.
 2. Discover sheets from the selected workbook.
-3. Render TOV1050 `threshold` rows using `Location Type`, `Track Type`, `Exc Type`, `min`, `max`, and `remark`.
+3. Render the actual approved wide threshold schema; retain legacy long schema only for workbooks that still use it.
 4. Render direction/location interval sheets using their actual workbook headers, not `Exception Boundarys`, `EAL UP`, or `LOW S1` assumptions.
 5. Save only the selected sheet, preserving all other sheets and creating a backup.
-6. Keep validation appropriate to the TOV1050 long-form threshold schema.
+6. Validate the actual wide/long schema, preserve internal provenance, and record edited-workbook digest changes.
 
 Exit criteria: every shipped workbook can be opened, inspected, edited, saved, reloaded, and backed up without schema loss.
 
@@ -170,7 +172,7 @@ Exit criteria: `npm run dev` starts frontend, Electron, and backend; packaged re
 - Header canonicalization and numeric cleaning.
 - `1.#IO` handling and ignored-row counts.
 - First/last 100 raw rows removal.
-- Km-to-Chainage identity and no Height offset.
+- Km-to-metres conversion exactly once and no Height offset.
 - Filename parse/build and session validation.
 - Workbook/session/sheet mapping.
 - TOV1050 threshold normalization.
@@ -188,7 +190,7 @@ Exit criteria: `npm run dev` starts frontend, Electron, and backend; packaged re
 
 - Analyze one fixture per line/session/direction where metadata exists.
 - Export names include session and station range.
-- Invalid metadata, missing sheet, overlapping interval, and missing chainage fail closed.
+- Invalid metadata, missing sheet, conflicting class intervals, and missing chainage fail closed; legal physical bracket overlaps remain valid.
 - Imported records round-trip through SQLite and report export.
 
 ### Performance tests

@@ -1,6 +1,7 @@
 from pathlib import Path
 
 import pandas as pd
+import pytest
 
 from app.core.tov1050_contract import (
     build_output_filename,
@@ -175,3 +176,90 @@ def test_metadata_adapter_normalizes_case_and_numeric_commas(tmp_path):
     assert frame.loc[0, "Class"] == "Open"
     assert frame.loc[0, "Track Type"] == "Tangent"
     assert frame.loc[0, "Low Height L1"] == 4500
+
+
+def _write_wide_intervals(path, identity="LAR_AEL", defect=None):
+    boundaries = pd.DataFrame({
+        "Line": [identity], "Class": ["Tunnel"],
+        "UP Track FromM": [98150.2], "UP Track ToM": [98200.0],
+        "DN Track FromM": [98300.0], "DN Track ToM": [98400.0],
+    })
+    intervals = pd.DataFrame({
+        "Track Type": ["Curve", None],
+        "Track Type FromM": [98150.2, None], "Track Type ToM": [98200.0, None],
+        "Bracket FromM": [None, 98170.0], "Bracket": [None, "211-1A"],
+    })
+    if defect == "invalid":
+        intervals["Track Type ToM"] = intervals["Track Type ToM"].astype(object)
+        intervals.loc[0, "Track Type ToM"] = "bad"
+    if defect == "missing":
+        intervals = intervals.drop(columns="Track Type ToM")
+    with pd.ExcelWriter(path) as writer:
+        boundaries.to_excel(writer, sheet_name="Exception Boundarys", index=False)
+        intervals.to_excel(writer, sheet_name=f"{identity} UT", index=False)
+        if defect == "mixed":
+            pd.DataFrame({"location type": ["Open"]}).to_excel(
+                writer, sheet_name="location type", index=False,
+            )
+
+
+def test_wide_direction_units_and_sparse_bracket_rows(tmp_path):
+    workbook = tmp_path / "wide.xlsx"
+    _write_wide_intervals(workbook)
+    manager = TOV1050MetadataManager(workbook)
+    up = manager.get_exception_boundaries("AEL", "UT", "Mainline")
+    down = manager.get_boundaries_for_plot("AEL", "DT", "Mainline")
+    tracks = manager.get_track_type_intervals("AEL", "Mainline", "UT")
+    assert up.index[0] == pd.Interval(98150.2, 98200, closed="both")
+    assert down.loc[0, "FromM"] == 98300
+    assert down.loc[0, "ToM"] == 98400
+    assert len(tracks) == 1  # Bracket points are not Track Type intervals.
+    assert tracks.index[0].left == 98150.2
+    assert tracks.iloc[0]["Track Type"] == "Curve"
+    with pytest.raises(ValueError, match="no rows for KTL"):
+        manager.get_exception_boundaries("KTL", "UT", "Mainline")
+    with pytest.raises(ValueError, match="not found"):
+        manager.get_track_type_intervals("AEL", "Mainline", "DT")
+    with pytest.raises(ValueError, match="direction"):
+        manager.get_exception_boundaries("AEL", "UP", "Mainline")
+
+
+@pytest.mark.parametrize("defect", ["invalid", "missing", "mixed"])
+def test_wide_intervals_reject_malformed_or_ambiguous_schema(tmp_path, defect):
+    workbook = tmp_path / "invalid.xlsx"
+    _write_wide_intervals(workbook, defect=defect)
+    with pytest.raises(ValueError):
+        TOV1050MetadataManager(workbook).get_track_type_intervals("AEL", "Mainline", "UT")
+
+
+def test_long_drl_passing_loop_still_uses_kilometres(tmp_path):
+    workbook = tmp_path / "DRL metadata.xlsx"
+    with pd.ExcelWriter(workbook) as writer:
+        pd.DataFrame({"track type": ["Curve"], "startKM": [1.2], "endKM": [1.3]}).to_excel(
+            writer, sheet_name="PL track type", index=False,
+        )
+    intervals = TOV1050MetadataManager(workbook).get_track_type_intervals("DRL", "PL", "UT")
+    assert intervals.index[0] == pd.Interval(1200, 1300, closed="both")
+
+
+@pytest.mark.parametrize(("line", "session", "identity"), [
+    ("AEL", "Mainline", "LAR_AEL"), ("TCL", "Mainline", "LAR_TCL"),
+    ("ISL", "Mainline", "ISL"), ("KTL", "Mainline", "KTL"),
+    ("TKL", "Mainline", "TKL"), ("TKL", "TKS", "TKS"), ("TWL", "Mainline", "TWL"),
+])
+@pytest.mark.parametrize("track", ["UT", "DT"])
+def test_shipped_wide_workbooks_match_runtime_contract(line, session, identity, track):
+    config = Path(__file__).resolve().parents[2] / "config"
+    workbook = metadata_workbook_for(line, session, config)
+    manager = TOV1050MetadataManager(workbook)
+    assert manager._uses_wide_intervals()
+    boundary = manager.get_exception_boundaries(line, track, session)
+    tracks = manager.get_track_type_intervals(line, session, track)
+    plot = manager.get_boundaries_for_plot(line, track, session)
+    thresholds = manager.get_all_thresholds()
+    expected = manager._load_sheet(f"{identity} {track}")["Track Type FromM"].dropna()
+    assert not boundary.empty and not tracks.empty and not thresholds.empty
+    assert tracks.index.left.min() == pytest.approx(expected.min())
+    assert tracks.index.right.max() < 200000  # Never scale metres again.
+    assert plot["FromM"].tolist() == boundary.index.left.tolist()
+    assert plot["ToM"].tolist() == boundary.index.right.tolist()

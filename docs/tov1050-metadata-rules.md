@@ -36,7 +36,7 @@
 - 同位置 Bracket overlap 的規則不直接核准 track／location interval overlap。Support／non-support 採下節新政策；Curve／Tangent 與 location type 仍分別審閱。
 - 每個來源列保留一筆 provenance；mapping provenance 另含完整原值及 JSON component 陣列，記錄每個輸出 identity、分類與公尺位置，允許一來源對多輸出。Validator 必須核對陣列、count 及輸出 parity。
 - 每批記錄 source／mapping SHA-256、規則版本與 candidate digest。新 candidate／audit 使用新日期／批次目錄；保留原始 workbook、歷史產物和人工修改。
-- 候選始終 review-only；validator 成功不等於 metadata 已核准，不得自行 promotion 至 runtime。
+- 候選 artifact 保持 review-only；validator 成功不等於 metadata 已核准。只有使用者明確批准的批次可另行啟用至 runtime，並記錄批准、來源／目的 SHA 與舊版備份；不改寫歷史候選狀態。本次使用者已明確批准 2026-10-23 batch-04 七份成為 config，啟用記錄見 `config/tov1050-metadata-release.json` 與 `outputs/metadata-activation-2026-10-23/batch-01/promotion-manifest.json`。此批准不自動涵蓋日後更改或 DRL。
 - Chart downsampling 僅作用於 chart payload；detector、threshold crossing、overshoot、peak 與 export 使用完整 raw data。
 
 ## Support 與 non-support 重建政策（2026-10-23 補充）

@@ -1,0 +1,53 @@
+{
+  "config_dir": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config",
+  "source": "C:\\Smart Maintanence\\TOV1050_Analyzer\\docs\\TOV1050_Migration\\Raw data\\AEL\\20260822_AEL_UT_SHO_AWE.csv",
+  "source_sha256": "6bea775cc19eb19a9d2124cff5a828d15879c431e90f1933689d914dfedeff93",
+  "api_status": 200,
+  "cleaning_summary": {
+    "raw_row_count": 476,
+    "retained_row_count": 276,
+    "trimmed_leading_count": 100,
+    "trimmed_trailing_count": 100,
+    "io_value_count": 3309,
+    "invalid_chainage_count": 0,
+    "no_valid_measurement_count": 0,
+    "delimiter": ",",
+    "chunk_size": 50000,
+    "chainage_unit": "m",
+    "chainage_scale": 1000.0
+  },
+  "exception_counts": {
+    "Low Height": 0,
+    "High Height": 0,
+    "Wire Wear": 0,
+    "Stagger Left": 0,
+    "Stagger Right": 0
+  },
+  "class_counts": {
+    "Open": 276
+  },
+  "track_type_counts": {
+    "Curve": 276
+  },
+  "report_status": 200,
+  "report_sheets": {
+    "Summary": 0,
+    "Low Height": 0,
+    "High Height": 0,
+    "Wire Wear": 0,
+    "Stagger Left": 0,
+    "Stagger Right": 0,
+    "ChartData": 276
+  },
+  "report_filename": "attachment; filename=\"20260822_AEL_UT_MAINLINE_SHO_AWE_Exception_Report.xlsx\"; filename*=utf-8''20260822_AEL_UT_MAINLINE_SHO_AWE_Exception_Report.xlsx",
+  "raw_status": 200,
+  "raw_rows": 276,
+  "raw_filename": "attachment; filename=\"20260822_AEL_UT_MAINLINE_SHO_AWE_Catenary_Report.csv\"; filename*=utf-8''20260822_AEL_UT_MAINLINE_SHO_AWE_Catenary_Report.csv",
+  "raw_verified_columns": [
+    "Chainage",
+    "height1",
+    "source_row_number"
+  ],
+  "raw_export_uses_session_full_data_despite_one_row_chart_payload": true,
+  "limitations": "AEL UT representative smoke only; not all-lines golden parity or portable release verification."
+}

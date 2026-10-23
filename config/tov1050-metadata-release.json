@@ -1,0 +1,157 @@
+{
+  "release": "2026-10-23-batch-04",
+  "status": "activated",
+  "approved_at": "2026-10-23T05:45:20.834375+00:00",
+  "authorization": "User: the new metadata will be the config file for the program, you can replace those in config folder.",
+  "candidate_artifacts_unchanged": true,
+  "candidate_internal_review_status": "Historical review-only status retained; runtime approval is recorded by this release manifest.",
+  "validation_report": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\metadata-activation-2026-10-23\\batch-01\\validation\\2026-10-23-tov1050-metadata-candidate-validation.json",
+  "chainage_unit": "m",
+  "files": [
+    {
+      "identity": "ISL",
+      "source": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\metadata-review-2026-10-23\\batch-04\\candidates\\ISL metadata (wide candidate).xlsx",
+      "destination": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\ISL metadata.xlsx",
+      "previous_sha256": "b2cc62f45846af81a874204fc09b039597467a2ec78fe8c715f0de536c313f97",
+      "approved_sha256": "c55332cd30d8d0d68c8c656af727a86fc510064502cc0f0a8123ce6303cdea6b",
+      "runtime_preflight": {
+        "UT": {
+          "boundaries": 3,
+          "track_intervals": 697,
+          "thresholds": 30
+        },
+        "DT": {
+          "boundaries": 3,
+          "track_intervals": 542,
+          "thresholds": 30
+        }
+      },
+      "backup": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\backups\\2026-10-23-batch-04-activation-01\\ISL metadata.xlsx"
+    },
+    {
+      "identity": "KTL",
+      "source": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\metadata-review-2026-10-23\\batch-04\\candidates\\KTL metadata (wide candidate).xlsx",
+      "destination": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\KTL metadata.xlsx",
+      "previous_sha256": "e1d49d23615c678b82b1c22e90ed5d4241607c29ddbf076cbffb51fa0d0e938d",
+      "approved_sha256": "441a91e9619c7582589759cc780ec1145089c9f10fa7ea4ae96bf09f19f153fa",
+      "runtime_preflight": {
+        "UT": {
+          "boundaries": 6,
+          "track_intervals": 495,
+          "thresholds": 38
+        },
+        "DT": {
+          "boundaries": 6,
+          "track_intervals": 654,
+          "thresholds": 38
+        }
+      },
+      "backup": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\backups\\2026-10-23-batch-04-activation-01\\KTL metadata.xlsx"
+    },
+    {
+      "identity": "LAR_AEL",
+      "source": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\metadata-review-2026-10-23\\batch-04\\candidates\\LAR_AEL metadata (wide candidate).xlsx",
+      "destination": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\LAR_AEL metadata.xlsx",
+      "previous_sha256": "ba7ef17c9e8e32331a949a5e91f681ba3574175938e63b145907d2815e0b4c9f",
+      "approved_sha256": "e462ea9cf72620846be28a390091c3433a6bf91c77d28f70aef00e14848b67b7",
+      "runtime_preflight": {
+        "UT": {
+          "boundaries": 6,
+          "track_intervals": 77,
+          "thresholds": 30
+        },
+        "DT": {
+          "boundaries": 6,
+          "track_intervals": 81,
+          "thresholds": 30
+        }
+      },
+      "backup": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\backups\\2026-10-23-batch-04-activation-01\\LAR_AEL metadata.xlsx"
+    },
+    {
+      "identity": "LAR_TCL",
+      "source": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\metadata-review-2026-10-23\\batch-04\\candidates\\LAR_TCL metadata (wide candidate).xlsx",
+      "destination": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\LAR_TCL metadata.xlsx",
+      "previous_sha256": "0f6cc87e8daf61e4ee7122c9dac06122246915b5cfaa7c64cbdb57f5536e1534",
+      "approved_sha256": "690d5a133601bf717c014b6c70ab4e9a0dd221aa862b964318e607e1212f916a",
+      "runtime_preflight": {
+        "UT": {
+          "boundaries": 6,
+          "track_intervals": 77,
+          "thresholds": 30
+        },
+        "DT": {
+          "boundaries": 6,
+          "track_intervals": 81,
+          "thresholds": 30
+        }
+      },
+      "backup": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\backups\\2026-10-23-batch-04-activation-01\\LAR_TCL metadata.xlsx"
+    },
+    {
+      "identity": "TKL",
+      "source": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\metadata-review-2026-10-23\\batch-04\\candidates\\TKL metadata (wide candidate).xlsx",
+      "destination": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\TKL metadata.xlsx",
+      "previous_sha256": "12632a1c2e4365a06b6587feb3e2c53d4994f4b998a1be3e794e01b93d5cd77e",
+      "approved_sha256": "0ed287f48438c7b2ad60baab81e19597163b6c54e326115c17af6fef833fe4b4",
+      "runtime_preflight": {
+        "UT": {
+          "boundaries": 1,
+          "track_intervals": 36,
+          "thresholds": 30
+        },
+        "DT": {
+          "boundaries": 1,
+          "track_intervals": 27,
+          "thresholds": 30
+        }
+      },
+      "backup": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\backups\\2026-10-23-batch-04-activation-01\\TKL metadata.xlsx"
+    },
+    {
+      "identity": "TKS",
+      "source": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\metadata-review-2026-10-23\\batch-04\\candidates\\TKS metadata (wide candidate).xlsx",
+      "destination": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\TKS metadata.xlsx",
+      "previous_sha256": "f5d65130b46db133db4280c67ce8d9248b033edbd32b1f5d5cede825f9e8ad69",
+      "approved_sha256": "40a6979ed72c99fa5582d574e99f0c75f17f92bc9e07705989084ec5c69f5f6e",
+      "runtime_preflight": {
+        "UT": {
+          "boundaries": 1,
+          "track_intervals": 13,
+          "thresholds": 30
+        },
+        "DT": {
+          "boundaries": 1,
+          "track_intervals": 12,
+          "thresholds": 30
+        }
+      },
+      "backup": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\backups\\2026-10-23-batch-04-activation-01\\TKS metadata.xlsx"
+    },
+    {
+      "identity": "TWL",
+      "source": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\metadata-review-2026-10-23\\batch-04\\candidates\\TWL metadata (wide candidate).xlsx",
+      "destination": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\TWL metadata.xlsx",
+      "previous_sha256": "9de8ea8f247d16b8f0bbebeac1020db06f648a6919ee9197d7cb7eef457d4ad5",
+      "approved_sha256": "ac96e8d32b2ac7ccc3aea8c5bea68e450355fe4fb285febd43f43356c020d2ab",
+      "runtime_preflight": {
+        "UT": {
+          "boundaries": 5,
+          "track_intervals": 83,
+          "thresholds": 30
+        },
+        "DT": {
+          "boundaries": 5,
+          "track_intervals": 67,
+          "thresholds": 30
+        }
+      },
+      "backup": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\backups\\2026-10-23-batch-04-activation-01\\TWL metadata.xlsx"
+    }
+  ],
+  "excluded": [
+    "DRL metadata.xlsx: no approved batch-04 candidate",
+    "EAL metadata.xlsx",
+    "TML metadata.xlsx"
+  ]
+}

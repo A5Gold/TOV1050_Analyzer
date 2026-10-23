@@ -8,7 +8,7 @@ import numpy as np
 import pandas as pd
 
 from .metadata import MetadataManager
-from .tov1050_contract import metadata_track_sheet
+from .tov1050_contract import metadata_track_sheet, metadata_workbook_for
 
 
 CHAINAGE_SCALE_M_PER_KM = 1000.0
@@ -17,6 +17,72 @@ CHAINAGE_SCALE_M_PER_KM = 1000.0
 class TOV1050MetadataManager(MetadataManager):
     """Expose TOV1050 metadata through the TOV640 detector contract."""
 
+    def _uses_wide_intervals(self) -> bool:
+        if not hasattr(self, "_interval_sheet_names"):
+            with pd.ExcelFile(self.config_path) as workbook:
+                self._interval_sheet_names = set(workbook.sheet_names)
+        sheets = self._interval_sheet_names
+        if {"Exception Boundarys", "location type"}.issubset(sheets):
+            raise ValueError("TOV1050 workbook mixes wide and long boundary sheets")
+        return "Exception Boundarys" in sheets
+
+    @staticmethod
+    def _wide_context(line: str, section: str, track: str) -> tuple[str, str]:
+        # Reuse the public logical line/session contract; workbook labels are
+        # different for AEL/TCL and for the TKL TKS session.
+        workbook = metadata_workbook_for(line, section, Path("."))
+        direction = str(track).strip().upper()
+        if direction not in {"UT", "DT"}:
+            raise ValueError(f"Unsupported TOV1050 direction: {track}")
+        return workbook.name.removesuffix(" metadata.xlsx"), direction
+
+    @staticmethod
+    def _wide_intervals(
+        frame: pd.DataFrame, sheet: str, start: str, end: str, value: str,
+    ) -> pd.DataFrame:
+        required = {start, end, value}
+        missing = sorted(required.difference(frame.columns))
+        if missing:
+            raise ValueError(f"TOV1050 {sheet} sheet missing columns: {', '.join(missing)}")
+        # A wide direction sheet also contains independent bracket point rows.
+        # Ignore those rows, but never silently discard a malformed interval.
+        labels = frame[value].astype("string").str.strip()
+        active = frame[start].notna() | frame[end].notna() | (
+            labels.notna() & ~labels.str.lower().isin(["", "nan", "none"])
+        )
+        data = frame.loc[active, [start, end, value]].copy()
+        for column in (start, end):
+            data[column] = pd.to_numeric(
+                data[column].astype("string").str.replace(",", "", regex=False).str.strip(),
+                errors="coerce",
+            )
+        data[value] = labels.loc[active]
+        invalid = (
+            ~np.isfinite(data[start].to_numpy(dtype=float, na_value=np.nan))
+            | ~np.isfinite(data[end].to_numpy(dtype=float, na_value=np.nan))
+            | (data[start] > data[end]).fillna(True).to_numpy(dtype=bool)
+            | data[value].fillna("").str.lower().isin(["", "nan", "none"]).to_numpy()
+        )
+        if data.empty or invalid.any():
+            raise ValueError(f"TOV1050 {sheet} has no valid intervals or contains invalid interval rows")
+        data.index = pd.IntervalIndex.from_arrays(
+            data[start].to_numpy(dtype=float), data[end].to_numpy(dtype=float), closed="both",
+        )
+        return data[[value]]
+
+    def _wide_boundaries(self, line: str, track: str, section: str) -> pd.DataFrame:
+        identity, direction = self._wide_context(line, section, track)
+        frame = self._load_sheet("Exception Boundarys")
+        if "Line" not in frame:
+            raise ValueError("TOV1050 Exception Boundarys sheet missing columns: Line")
+        frame = frame.loc[frame["Line"].astype(str).str.strip().str.upper() == identity.upper()]
+        if frame.empty:
+            raise ValueError(f"TOV1050 Exception Boundarys has no rows for {identity}")
+        prefix = "UP" if direction == "UT" else "DN"
+        return self._wide_intervals(
+            frame, "Exception Boundarys", f"{prefix} Track FromM", f"{prefix} Track ToM", "Class",
+        )
+
     def _get_direction_sheet(self, section: str, track: str) -> str:
         # DRL Passing Loop uses its dedicated PL sheet; other sessions use UT/DT.
         if str(section).strip().upper() in {"PL", "PASSING LOOP"}:
@@ -24,6 +90,8 @@ class TOV1050MetadataManager(MetadataManager):
         return metadata_track_sheet(section, track)
 
     def get_exception_boundaries(self, line: str, track: str, selected_section: str) -> pd.DataFrame:
+        if self._uses_wide_intervals():
+            return self._wide_boundaries(line, track, selected_section)
         frame = self._load_sheet("location type")
         required = {"location type", "startKM", "endKM"}
         if not required.issubset(frame.columns):
@@ -49,6 +117,12 @@ class TOV1050MetadataManager(MetadataManager):
         return frame[["Class"]]
 
     def get_boundaries_for_plot(self, line: str, track: str, selected_section: str) -> pd.DataFrame:
+        if self._uses_wide_intervals():
+            intervals = self._wide_boundaries(line, track, selected_section)
+            return pd.DataFrame({
+                "Class": intervals["Class"].to_numpy(),
+                "FromM": intervals.index.left, "ToM": intervals.index.right,
+            })
         frame = self._load_sheet("location type")
         required = {"location type", "startKM", "endKM"}
         if not required.issubset(frame.columns):
@@ -68,6 +142,13 @@ class TOV1050MetadataManager(MetadataManager):
         )
 
     def get_track_type_intervals(self, line: str, section: str, track: str) -> pd.DataFrame:
+        if self._uses_wide_intervals():
+            identity, direction = self._wide_context(line, section, track)
+            sheet = f"{identity} {direction}"
+            return self._wide_intervals(
+                self._load_sheet(sheet), sheet,
+                "Track Type FromM", "Track Type ToM", "Track Type",
+            )
         sheet = self._get_direction_sheet(section, track)
         result = self._extract_interval_data(sheet, "startKM", "endKM", ["track type"])
         if not result.empty:
