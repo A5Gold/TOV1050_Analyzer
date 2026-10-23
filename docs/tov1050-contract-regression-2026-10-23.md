@@ -6,6 +6,10 @@
 
 TOV640 固定 commit：`cbca528f090152ec2c776ee04a4c30f0d371810f`。執行前驗證 HEAD 與實際載入的 analyzers、metadata、data_ingestion、exporter 四個 core 檔案等於固定版本（容許 CRLF 差異）；其他並行工作修改保留，本次沒有寫入 TOV640。
 
+結束前另比對 EAL metadata workbook 與固定 git blob 完全相同；四個 core／workbook 及 canonical metadata SHA 證據位於 `batch-02/reference-final-audit.json`。
+
+最終收尾偵測到 TOV640 並行 annual-wear 工作提交後，HEAD 已推進至 `33e77ab3c7afc72d0dd531d2b660baf08cf8fd63`；沒有回退或修改它。本次實際比較的四個core及EAL metadata SHA仍與保存的固定基線完全相同，已記錄final_reference_head與逐檔證據。比較結果仍針對原固定輸入，未驗收新的annual-wear功能。主比較CLI嚴格要求HEAD固定，日後重跑須提供獨立固定ref checkout，不可直接回退此共用TOV640工作目錄。
+
 `tov1050_contract_worker.py` 分程序只載入一個 repo，以相同 canonical 量測、metadata workbook、context 執行 detector 及實際 Excel exporter。比較每個 exception type 的全部欄位、列順序／grouping、level、FromM／ToM、maxValue／peak、ID、boundaries 及全部 report sheets／ChartData。數值 `atol=1e-9, rtol=0`；字串、ID、欄序精確。證據以無損 `.json.gz` 保存。
 
 | 測例 | 實際結果 | 證據限制 |
@@ -29,7 +33,9 @@ TOV640 固定 commit：`cbca528f090152ec2c776ee04a4c30f0d371810f`。執行前驗
 | KTL/Mainline/UT | 863,661 | 830,606 | Low Height 99、High Height 5、Stagger Right 56（160） |
 | TKL/Mainline/DT | 502,022 | 501,211 | Low Height 19、Wire Wear 1、Stagger Right 49（69） |
 
-最終 API／report／raw export 結果：待 batch-05 完成後填寫。
+batch-05 最終三組全部通過：API／report／raw export 均 HTTP200，AEL／KTL／TKL 分別276／830,606／501,211筆 ChartData逐列值、raw共有數值欄及0／160／69筆Summary核對通過。`real-results.json` 保存來源及匯出SHA／bytes、筆數與capability snapshot；`real-fixture-coverage.csv` 為最終矩陣：18組context有3組已驗證，15組缺已指派真fixture，另DRL來源檔context未確認而unassigned。
+
+TKL raw reader有 DtypeWarning（第10欄）；已核對來源為 `Last Pole Code [---]`，同時含數字及 `554-38` 等文字杆號，來源112,030列非純數字。這是reader型別推斷警告，沒有轉換杆號或推導TL；診斷見 `reader-diagnostics.json`。raw驗收範圍為全部共有數值欄，未宣稱全部object欄位的CSV roundtrip。
 
 檢查方式：送出僅一列 chart payload 但以 session raw frame 產生匯出，驗證未使用畫面 downsampling。ChartData 以 read-only reader 逐列／逐欄核對全部數值與字串，Summary 與 API 全部 exception records 逐值核對；raw CSV 全部共有數值欄與清洗 frame 核對，`atol=1e-9, rtol=0`。大型匯出完整驗證後只保存 byte count、SHA256、Summary、golden 與 checkpoint，不提交巨大產生檔或原始使用者 CSV。
 
@@ -72,6 +78,12 @@ python scripts/audit_tov1050_real_fixtures.py --output outputs/contract-regressi
 python scripts/review_tov1050_capabilities.py --output outputs/metadata-capabilities-2026-10-23/batch-02
 python scripts/validate_tov1050_review_workbooks.py outputs/metadata-capabilities-2026-10-23/batch-02
 git diff --check
+```
+
+最終真CSV批次的實際啟動命令（PowerShell、repo根目錄）：
+
+```powershell
+python -c "import sys,json; from pathlib import Path; sys.path.insert(0,'scripts'); from verify_tov1050_contracts import run_real_csv; p=Path('outputs/contract-regression-2026-10-23/batch-05'); p.mkdir(); r=run_real_csv(p); (p/'real-results.json').write_text(json.dumps(r,ensure_ascii=False,indent=2),encoding='utf-8'); print([(x['context']['line'],x['raw_rows'],x['exception_counts']) for x in r['real_runs']])"
 ```
 
 batch-02 是舊 writer 基線；大檔後續新增後，batch-03 的 KTL 匯出超過十分鐘、觀察到該測試程序 private memory 超過8GB，停止該測試程序。此觀察沒有正式 RSS benchmark 或 SLA 意義。batch-04 確認 BytesIO 逐行交付引發大量 thread-pool handoff，再停止該測試程序並保留中途產物。TOV1050 report/raw 改64KiB分塊、測試位元組一致後，以 batch-05 重跑真資料。沒有停止使用者的 TOV640 uvicorn 程序。CLI 重跑需使用新的 output 目錄，避免覆寫歷史證據。

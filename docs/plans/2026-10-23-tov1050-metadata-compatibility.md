@@ -95,3 +95,10 @@ native TOV1050 workbook 保留目前 Track Type + Bracket 欄位。若要提供�
 ## 下一步
 
 DAV-21 先實作點／區間分離與 capabilities，再將 observed envelope 補為可操作的 TL 邊界審閱表（含 termination 及來源 row）。確認有效邊界政策後才產生新的 review candidate 及 sweep-derived overlap，通過 validator/parity 再正式啟用。DAV-20 可先並行建立 detection canonical 基線；涉及 TL/wear 的完整驗收依賴 DAV-21，不將缺失資料當已相容。
+
+
+## 本次執行結果（2026-10-23）
+
+程式及可用fixture驗收已完成：能力v1、點/區間分離、來源lineage、wear缺核准TL回422、review-only相容候選及完整大檔匯出。131項相關backend測試、tsc及七份validator通過；三組canonical加真EAL的固定TOV640契約比較與streaming parity通過。batch-05真CSV AEL UT/KTL UT/TKL DT的API/report/raw全200，完整ChartData、Summary及raw數值逐值核對通過。
+
+驗收與限制：`docs/tov1050-contract-regression-2026-10-23.md`；需求：`docs/requests/2026-10-23-tov1050-contract-and-capabilities.md`。18組context僅3組有已驗證真fixture，其餘15組、DRL context、TML datac仍缺；373組TL物理邊界及scope尚未批准，候選未啟用、sweep未接runtime。DAV-20/21維持In Progress；下一步為補真fixture及審閱TL批准資料，不宣稱全線/wear parity或portable完成。

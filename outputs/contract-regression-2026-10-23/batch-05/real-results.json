@@ -1,0 +1,621 @@
+{
+  "matrix": [
+    {
+      "line": "AEL",
+      "session": "Mainline",
+      "direction": "UT",
+      "fixture_count": 1,
+      "status": "pass",
+      "fixtures": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\Raw data\\AEL\\20260822_AEL_UT_SHO_AWE.csv"
+    },
+    {
+      "line": "AEL",
+      "session": "Mainline",
+      "direction": "DT",
+      "fixture_count": 0,
+      "status": "blocked_missing_real_fixture",
+      "fixtures": ""
+    },
+    {
+      "line": "TCL",
+      "session": "Mainline",
+      "direction": "UT",
+      "fixture_count": 0,
+      "status": "blocked_missing_real_fixture",
+      "fixtures": ""
+    },
+    {
+      "line": "TCL",
+      "session": "Mainline",
+      "direction": "DT",
+      "fixture_count": 0,
+      "status": "blocked_missing_real_fixture",
+      "fixtures": ""
+    },
+    {
+      "line": "DRL",
+      "session": "Mainline",
+      "direction": "UT",
+      "fixture_count": 0,
+      "status": "blocked_missing_real_fixture",
+      "fixtures": ""
+    },
+    {
+      "line": "DRL",
+      "session": "Mainline",
+      "direction": "DT",
+      "fixture_count": 0,
+      "status": "blocked_missing_real_fixture",
+      "fixtures": ""
+    },
+    {
+      "line": "DRL",
+      "session": "PL",
+      "direction": "UT",
+      "fixture_count": 0,
+      "status": "blocked_missing_real_fixture",
+      "fixtures": ""
+    },
+    {
+      "line": "DRL",
+      "session": "PL",
+      "direction": "DT",
+      "fixture_count": 0,
+      "status": "blocked_missing_real_fixture",
+      "fixtures": ""
+    },
+    {
+      "line": "ISL",
+      "session": "Mainline",
+      "direction": "UT",
+      "fixture_count": 0,
+      "status": "blocked_missing_real_fixture",
+      "fixtures": ""
+    },
+    {
+      "line": "ISL",
+      "session": "Mainline",
+      "direction": "DT",
+      "fixture_count": 0,
+      "status": "blocked_missing_real_fixture",
+      "fixtures": ""
+    },
+    {
+      "line": "KTL",
+      "session": "Mainline",
+      "direction": "UT",
+      "fixture_count": 1,
+      "status": "pass",
+      "fixtures": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\Raw data\\KTL\\20260825_KTL_UT.csv"
+    },
+    {
+      "line": "KTL",
+      "session": "Mainline",
+      "direction": "DT",
+      "fixture_count": 0,
+      "status": "blocked_missing_real_fixture",
+      "fixtures": ""
+    },
+    {
+      "line": "TKL",
+      "session": "Mainline",
+      "direction": "UT",
+      "fixture_count": 0,
+      "status": "blocked_missing_real_fixture",
+      "fixtures": ""
+    },
+    {
+      "line": "TKL",
+      "session": "Mainline",
+      "direction": "DT",
+      "fixture_count": 1,
+      "status": "pass",
+      "fixtures": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\Raw data\\TKL\\20260708_TKL_DT.csv"
+    },
+    {
+      "line": "TKL",
+      "session": "TKS",
+      "direction": "UT",
+      "fixture_count": 0,
+      "status": "blocked_missing_real_fixture",
+      "fixtures": ""
+    },
+    {
+      "line": "TKL",
+      "session": "TKS",
+      "direction": "DT",
+      "fixture_count": 0,
+      "status": "blocked_missing_real_fixture",
+      "fixtures": ""
+    },
+    {
+      "line": "TWL",
+      "session": "Mainline",
+      "direction": "UT",
+      "fixture_count": 0,
+      "status": "blocked_missing_real_fixture",
+      "fixtures": ""
+    },
+    {
+      "line": "TWL",
+      "session": "Mainline",
+      "direction": "DT",
+      "fixture_count": 0,
+      "status": "blocked_missing_real_fixture",
+      "fixtures": ""
+    }
+  ],
+  "real_runs": [
+    {
+      "path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\Raw data\\AEL\\20260822_AEL_UT_SHO_AWE.csv",
+      "sha256": "6bea775cc19eb19a9d2124cff5a828d15879c431e90f1933689d914dfedeff93",
+      "context": {
+        "file_path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\Raw data\\AEL\\20260822_AEL_UT_SHO_AWE.csv",
+        "line": "AEL",
+        "track": "UT",
+        "session": "Mainline",
+        "section": "Mainline",
+        "date_str": "20260822",
+        "station_start": "SHO",
+        "station_end": "AWE",
+        "client_session_id": "regression-AEL-Mainline-UT-0"
+      },
+      "cleaning": {
+        "raw_row_count": 476,
+        "retained_row_count": 276,
+        "trimmed_leading_count": 100,
+        "trimmed_trailing_count": 100,
+        "io_value_count": 3309,
+        "invalid_chainage_count": 0,
+        "no_valid_measurement_count": 0,
+        "delimiter": ",",
+        "chunk_size": 50000,
+        "chainage_unit": "m",
+        "chainage_scale": 1000.0
+      },
+      "exception_counts": {
+        "Low Height": 0,
+        "High Height": 0,
+        "Wire Wear": 0,
+        "Stagger Left": 0,
+        "Stagger Right": 0
+      },
+      "api_status": 200,
+      "report_status": 200,
+      "raw_status": 200,
+      "raw_rows": 276,
+      "verified_columns": [
+        "Chainage",
+        "height1",
+        "height2",
+        "height3",
+        "height4",
+        "stagger1",
+        "stagger2",
+        "stagger3",
+        "stagger4",
+        "wear1",
+        "wear2",
+        "wear3",
+        "wear4",
+        "source_row_number",
+        "source_chainage_km",
+        "height_min",
+        "height_max",
+        "wear_min",
+        "wear_max",
+        "stg_max",
+        "stg_min"
+      ],
+      "report_sha256": "898b0ebde2d6d27cd3f5c8ab2763097de7842251e7922eefacc500338db3b011",
+      "raw_sha256": "d46f935d4bd557b01933ed8be6476eec720883a924fab7946a32ddaa642bd026",
+      "report_bytes": 42758,
+      "raw_bytes": 57982,
+      "chart_rows_verified": 276,
+      "chart_columns_verified": [
+        "task_run_date",
+        "line",
+        "track",
+        "Section",
+        "task_no",
+        "station_start",
+        "station_end",
+        "Chainage",
+        "height1",
+        "height2",
+        "height3",
+        "height4",
+        "stagger1",
+        "stagger2",
+        "stagger3",
+        "stagger4",
+        "wear1",
+        "wear2",
+        "wear3",
+        "wear4",
+        "Track Type",
+        "Overlap",
+        "Tension Length",
+        "Landmark",
+        "Class",
+        "height_min",
+        "height_max",
+        "wear_min",
+        "wear_max",
+        "stg_max",
+        "stg_min"
+      ],
+      "summary_rows_verified": 0,
+      "station_context": "source filename",
+      "metadata_capabilities": {
+        "schema_version": "tov1050-metadata-capabilities-v1",
+        "workbook": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\LAR_AEL metadata.xlsx",
+        "workbook_sha256": "e462ea9cf72620846be28a390091c3433a6bf91c77d28f70aef00e14848b67b7",
+        "line": "AEL",
+        "session": "Mainline",
+        "direction": "UT",
+        "chainage_unit": "m",
+        "enrichment_version": "tov640-first-nonempty-v1",
+        "overlap_state": "unknown",
+        "capabilities": {
+          "thresholds": {
+            "status": "available",
+            "count": 30,
+            "reason": ""
+          },
+          "class_intervals": {
+            "status": "available",
+            "count": 6,
+            "reason": ""
+          },
+          "track_intervals": {
+            "status": "available",
+            "count": 77,
+            "reason": ""
+          },
+          "bracket_points": {
+            "status": "available",
+            "count": 1422,
+            "reason": ""
+          },
+          "landmark_points": {
+            "status": "unavailable",
+            "count": 0,
+            "reason": "No classified point records"
+          },
+          "tension_length_intervals": {
+            "status": "unavailable",
+            "count": 0,
+            "reason": "No approved physical interval source; observed bracket envelopes and landmark points are not intervals"
+          },
+          "overlap_intervals": {
+            "status": "unavailable",
+            "count": 0,
+            "reason": "No approved physical interval source; observed bracket envelopes and landmark points are not intervals"
+          },
+          "landmark_intervals": {
+            "status": "unavailable",
+            "count": 0,
+            "reason": "No approved physical interval source; observed bracket envelopes and landmark points are not intervals"
+          }
+        }
+      },
+      "limitation": "Zero-exception fixture cannot establish real peak/level/ID acceptance"
+    },
+    {
+      "path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\Raw data\\KTL\\20260825_KTL_UT.csv",
+      "sha256": "c684b7879304ed4b5ae9a51bcd2a37da0703a405fe14138021df030eacca0d3b",
+      "context": {
+        "file_path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\Raw data\\KTL\\20260825_KTL_UT.csv",
+        "line": "KTL",
+        "track": "UT",
+        "session": "Mainline",
+        "section": "Mainline",
+        "date_str": "20260825",
+        "station_start": "NOT_PROVIDED",
+        "station_end": "NOT_PROVIDED",
+        "client_session_id": "regression-KTL-Mainline-UT-0"
+      },
+      "cleaning": {
+        "raw_row_count": 863661,
+        "retained_row_count": 830606,
+        "trimmed_leading_count": 100,
+        "trimmed_trailing_count": 100,
+        "io_value_count": 5802450,
+        "invalid_chainage_count": 0,
+        "no_valid_measurement_count": 32855,
+        "delimiter": ",",
+        "chunk_size": 50000,
+        "chainage_unit": "m",
+        "chainage_scale": 1000.0
+      },
+      "exception_counts": {
+        "Low Height": 99,
+        "High Height": 5,
+        "Wire Wear": 0,
+        "Stagger Left": 0,
+        "Stagger Right": 56
+      },
+      "api_status": 200,
+      "report_status": 200,
+      "raw_status": 200,
+      "raw_rows": 830606,
+      "verified_columns": [
+        "Chainage",
+        "height1",
+        "height2",
+        "height3",
+        "height4",
+        "stagger1",
+        "stagger2",
+        "stagger3",
+        "stagger4",
+        "wear1",
+        "wear2",
+        "wear3",
+        "wear4",
+        "source_row_number",
+        "source_chainage_km",
+        "height_min",
+        "height_max",
+        "wear_min",
+        "wear_max",
+        "stg_max",
+        "stg_min"
+      ],
+      "report_sha256": "e0cd7ccebaf9f03f409eee978c7060e0d01f0292b24059dcdb55c12cc88cff6e",
+      "raw_sha256": "55631e7d79e2b2e8b58598369a0b37a2feb1fd8f3542c142af8c5481dd67a60e",
+      "report_bytes": 74372002,
+      "raw_bytes": 204630995,
+      "chart_rows_verified": 830606,
+      "chart_columns_verified": [
+        "task_run_date",
+        "line",
+        "track",
+        "Section",
+        "task_no",
+        "station_start",
+        "station_end",
+        "Chainage",
+        "height1",
+        "height2",
+        "height3",
+        "height4",
+        "stagger1",
+        "stagger2",
+        "stagger3",
+        "stagger4",
+        "wear1",
+        "wear2",
+        "wear3",
+        "wear4",
+        "Track Type",
+        "Overlap",
+        "Tension Length",
+        "Landmark",
+        "Class",
+        "height_min",
+        "height_max",
+        "wear_min",
+        "wear_max",
+        "stg_max",
+        "stg_min"
+      ],
+      "summary_rows_verified": 160,
+      "station_context": "not supplied in source filename; NOT_PROVIDED is an export test label",
+      "metadata_capabilities": {
+        "schema_version": "tov1050-metadata-capabilities-v1",
+        "workbook": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\KTL metadata.xlsx",
+        "workbook_sha256": "441a91e9619c7582589759cc780ec1145089c9f10fa7ea4ae96bf09f19f153fa",
+        "line": "KTL",
+        "session": "Mainline",
+        "direction": "UT",
+        "chainage_unit": "m",
+        "enrichment_version": "tov640-first-nonempty-v1",
+        "overlap_state": "unknown",
+        "capabilities": {
+          "thresholds": {
+            "status": "available",
+            "count": 38,
+            "reason": ""
+          },
+          "class_intervals": {
+            "status": "available",
+            "count": 6,
+            "reason": ""
+          },
+          "track_intervals": {
+            "status": "available",
+            "count": 495,
+            "reason": ""
+          },
+          "bracket_points": {
+            "status": "available",
+            "count": 1579,
+            "reason": ""
+          },
+          "landmark_points": {
+            "status": "available",
+            "count": 4,
+            "reason": ""
+          },
+          "tension_length_intervals": {
+            "status": "unavailable",
+            "count": 0,
+            "reason": "No approved physical interval source; observed bracket envelopes and landmark points are not intervals"
+          },
+          "overlap_intervals": {
+            "status": "unavailable",
+            "count": 0,
+            "reason": "No approved physical interval source; observed bracket envelopes and landmark points are not intervals"
+          },
+          "landmark_intervals": {
+            "status": "unavailable",
+            "count": 0,
+            "reason": "No approved physical interval source; observed bracket envelopes and landmark points are not intervals"
+          }
+        }
+      },
+      "limitation": "Actual exceptions exercised"
+    },
+    {
+      "path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\Raw data\\TKL\\20260708_TKL_DT.csv",
+      "sha256": "477e8de2b6c9052323e40cf5105ec487059afde432cec455efb33c01874c2040",
+      "context": {
+        "file_path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\Raw data\\TKL\\20260708_TKL_DT.csv",
+        "line": "TKL",
+        "track": "DT",
+        "session": "Mainline",
+        "section": "Mainline",
+        "date_str": "20260708",
+        "station_start": "NOT_PROVIDED",
+        "station_end": "NOT_PROVIDED",
+        "client_session_id": "regression-TKL-Mainline-DT-0"
+      },
+      "cleaning": {
+        "raw_row_count": 502022,
+        "retained_row_count": 501211,
+        "trimmed_leading_count": 100,
+        "trimmed_trailing_count": 100,
+        "io_value_count": 2987751,
+        "invalid_chainage_count": 0,
+        "no_valid_measurement_count": 611,
+        "delimiter": ",",
+        "chunk_size": 50000,
+        "chainage_unit": "m",
+        "chainage_scale": 1000.0
+      },
+      "exception_counts": {
+        "Low Height": 19,
+        "High Height": 0,
+        "Wire Wear": 1,
+        "Stagger Left": 0,
+        "Stagger Right": 49
+      },
+      "api_status": 200,
+      "report_status": 200,
+      "raw_status": 200,
+      "raw_rows": 501211,
+      "verified_columns": [
+        "Chainage",
+        "height1",
+        "height2",
+        "height3",
+        "height4",
+        "stagger1",
+        "stagger2",
+        "stagger3",
+        "stagger4",
+        "wear1",
+        "wear2",
+        "wear3",
+        "wear4",
+        "source_row_number",
+        "source_chainage_km",
+        "height_min",
+        "height_max",
+        "wear_min",
+        "wear_max",
+        "stg_max",
+        "stg_min"
+      ],
+      "report_sha256": "94b06eecda9db299d45334ac3ebaa4bcaa32c4be8537cbf1992c7a3059dcae45",
+      "raw_sha256": "652c645fa8e5d46dfd4323e78404ffbace638d77682bf7ba15771c13b06ef8b8",
+      "report_bytes": 46718501,
+      "raw_bytes": 124645814,
+      "chart_rows_verified": 501211,
+      "chart_columns_verified": [
+        "task_run_date",
+        "line",
+        "track",
+        "Section",
+        "task_no",
+        "station_start",
+        "station_end",
+        "Chainage",
+        "height1",
+        "height2",
+        "height3",
+        "height4",
+        "stagger1",
+        "stagger2",
+        "stagger3",
+        "stagger4",
+        "wear1",
+        "wear2",
+        "wear3",
+        "wear4",
+        "Track Type",
+        "Overlap",
+        "Tension Length",
+        "Landmark",
+        "Class",
+        "height_min",
+        "height_max",
+        "wear_min",
+        "wear_max",
+        "stg_max",
+        "stg_min"
+      ],
+      "summary_rows_verified": 69,
+      "station_context": "not supplied in source filename; NOT_PROVIDED is an export test label",
+      "metadata_capabilities": {
+        "schema_version": "tov1050-metadata-capabilities-v1",
+        "workbook": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\TKL metadata.xlsx",
+        "workbook_sha256": "0ed287f48438c7b2ad60baab81e19597163b6c54e326115c17af6fef833fe4b4",
+        "line": "TKL",
+        "session": "Mainline",
+        "direction": "DT",
+        "chainage_unit": "m",
+        "enrichment_version": "tov640-first-nonempty-v1",
+        "overlap_state": "unknown",
+        "capabilities": {
+          "thresholds": {
+            "status": "available",
+            "count": 30,
+            "reason": ""
+          },
+          "class_intervals": {
+            "status": "available",
+            "count": 1,
+            "reason": ""
+          },
+          "track_intervals": {
+            "status": "available",
+            "count": 27,
+            "reason": ""
+          },
+          "bracket_points": {
+            "status": "available",
+            "count": 638,
+            "reason": ""
+          },
+          "landmark_points": {
+            "status": "available",
+            "count": 19,
+            "reason": ""
+          },
+          "tension_length_intervals": {
+            "status": "unavailable",
+            "count": 0,
+            "reason": "No approved physical interval source; observed bracket envelopes and landmark points are not intervals"
+          },
+          "overlap_intervals": {
+            "status": "unavailable",
+            "count": 0,
+            "reason": "No approved physical interval source; observed bracket envelopes and landmark points are not intervals"
+          },
+          "landmark_intervals": {
+            "status": "unavailable",
+            "count": 0,
+            "reason": "No approved physical interval source; observed bracket envelopes and landmark points are not intervals"
+          }
+        }
+      },
+      "limitation": "Actual exceptions exercised"
+    }
+  ],
+  "unassigned_fixtures": [
+    "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\Raw data\\DRL\\20260817_022959_olpar.csv"
+  ]
+}

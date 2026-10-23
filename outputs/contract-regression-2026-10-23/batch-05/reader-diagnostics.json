@@ -1,0 +1,11 @@
+{
+  "fixture": "00 Reference Document/Raw data/TKL/20260708_TKL_DT.csv",
+  "warning": "pandas DtypeWarning: Columns (10) have mixed types while reading generated raw CSV",
+  "zero_based_column": 10,
+  "source_column": "Last Pole Code [---]",
+  "source_inspection": "Read source column as text; pole codes contain numeric and hyphenated identities",
+  "source_nonnumeric_rows": 112030,
+  "source_examples": ["554-38", "554-37", "554-36", "554-35", "554-34", "554-33", "554-32", "554-31", "554-30", "554-29", "554-28", "554-27"],
+  "interpretation": "Reader dtype inference warning on a source pole-code column; no numeric conversion or physical bracket/TL inference applied to it",
+  "validation_scope": "All shared numeric raw columns and every ChartData cell are checked separately; this diagnostic does not claim an all-object-column CSV roundtrip"
+}

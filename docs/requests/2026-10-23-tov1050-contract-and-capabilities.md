@@ -4,7 +4,7 @@
 - Linear project：TOV1050_Analyzer
 - Linear issue：DAV-20、DAV-21；關聯 DAV-10、DAV-19
 - 負責人：Codex
-- 狀態：In Progress
+- 狀態：本次實作與可用fixture驗收完成；業務資料缺口待補，DAV-20／DAV-21維持In Progress
 
 ## 需求與目的
 
@@ -66,13 +66,13 @@ batch-04 又發現直接傳 BytesIO 給 StreamingResponse 會按 newline 逐段�
 
 ### 驗收結果
 
-能力契約／點資料及lineage／wear缺口明確拒絕／候選資料保留已通過驗證。373組 physical TL observed envelope 僅供審閱，沒有生成或啟用核准 interval。三份真資料完整 detection goldens：AEL 276 rows／0 exceptions、KTL 830,606 rows／160 exceptions、TKL 501,211 rows／69 exceptions；class/track uncovered rows均0。大型真CSV完整 report/raw batch-05仍在驗證，完成後回填，不沿用早期小樣本作全線驗收。
+能力契約／點資料及lineage／wear缺口明確拒絕／候選資料保留已通過驗證。373組 physical TL observed envelope 僅供審閱，沒有生成或啟用核准 interval。三份真資料完整 detection goldens：AEL 276 rows／0 exceptions、KTL 830,606 rows／160 exceptions、TKL 501,211 rows／69 exceptions；class/track uncovered rows均0。最終batch-05三組API/report/raw全部HTTP200，完整ChartData逐列／逐值、Summary逐值、raw共有數值欄全部通過。18 context中3組有已驗證真fixture，15組缺資料；DRL檔context未確認列unassigned。AEL零異常不作peak/level/ID現場證據。TKL raw reader的mixed-type警告已定位來源杆號欄，診斷及驗收範圍另記於成果報告。
 
 ## Linear 同步
 
 - 本工作階段 Linear MCP 實際掛載，四個 issue 已讀並成功留言承接。
 - DAV-19 維持 Done；DAV-10 In Progress；DAV-20/DAV-21 開始實作。
-- Next action：完成batch-05真CSV匯出核對；業務資料負責人審閱373組TL邊界／scope及DRL Mainline/PL、UT/DT；開發端取得明確核准後接入interval與wear，並補其餘真fixture／TML datac。DAV-20／21維持In Progress，不宣稱全線或TL/wear parity完成。
+- Next action：業務資料負責人審閱373組TL邊界／scope及DRL Mainline/PL、UT/DT；開發端取得明確核准後接入interval與wear，並補其餘15組真fixture／TML datac。DAV-20／21維持In Progress，不宣稱全線或TL/wear parity完成。batch-05已完成，最終實測及阻塞同步Linear。
 - 阻塞／需要決策：核准物理 TL 邊界及未具備的真 fixture，不阻擋能力/回歸基礎實作。
 
 ## 相關檔案
@@ -84,4 +84,6 @@ batch-04 又發現直接傳 BytesIO 給 StreamingResponse 會按 newline 逐段�
 - outputs/metadata-capabilities-2026-10-23/batch-02/（能力矩陣、TL審閱表與七份review-only候選）
 - outputs/contract-regression-2026-10-23/（固定基線、goldens、streaming parity與最終batch-05）
 - 保留未提交使用者修改：五份reference Excel、一份9月候選及既有未追蹤metadata batch-03；TOV640並行工作修改不碰。
-- 本次產生的草稿batch-01／中途中止batch-03、preview／inspect／runtime／可重產layout payload留在本機，不納入提交；metadata batch-01僅提交正式validation證據。
+- 本次產生的草稿batch-01／中途中止batch-03、batch-04、preview／inspect／runtime／可重產layout payload留在本機，不納入提交；metadata batch-01僅提交正式validation證據。
+- 程式／基線提交：51888008f29879714e9942b5864db485ec18169a；最終batch-05證據與驗收另提交，一併push origin/master。
+- 最終TOV640 HEAD由並行annual-wear工作推進至33e77ab3c7afc72d0dd531d2b660baf08cf8fd63；四個比較core與EAL metadata仍等於保存的固定基線，SHA重新核對通過。沒有回退或更改其工作目錄；後續CLI重跑需獨立固定ref checkout。

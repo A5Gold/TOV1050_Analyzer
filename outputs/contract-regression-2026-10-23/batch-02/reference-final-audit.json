@@ -1,0 +1,40 @@
+{
+  "reference_commit": "cbca528f090152ec2c776ee04a4c30f0d371810f",
+  "audit": "Final read-only check; CRLF-normalized for Python only",
+  "files": [
+    {
+      "path": "backend/app/core/analyzers.py",
+      "working_sha256": "06b2014471904a3487c41d07815565230cfa84bf930ec586d445bcc222838b90",
+      "git_blob_bytes_sha256": "06b2014471904a3487c41d07815565230cfa84bf930ec586d445bcc222838b90",
+      "matches_pin": true
+    },
+    {
+      "path": "backend/app/core/metadata.py",
+      "working_sha256": "e5d6f39739d44eecd9d7188657df29dc4a2af5a9a827faae88d493170fd2f8f2",
+      "git_blob_bytes_sha256": "176fdd4a4a49f840ec83185faae0ae4832142f1fc066273364d2868e3b83f8c4",
+      "matches_pin": true
+    },
+    {
+      "path": "backend/app/core/data_ingestion.py",
+      "working_sha256": "db36a0ff09d3cb3bcbbe8b4dcfe9ed604bbd011f0faed8a1d40cde4aa6fafa85",
+      "git_blob_bytes_sha256": "4bb6ca710d912eaabde678a85dd7c30a1ebc2ca2c973eef6a670a9b63b729545",
+      "matches_pin": true
+    },
+    {
+      "path": "backend/app/core/exporter.py",
+      "working_sha256": "0088833cbe52c7a213eaab57fc5d808063df948c5b0f92dee15bfb0af7b2c643",
+      "git_blob_bytes_sha256": "cbc967c070a6282c58dd90446a6b3a4f99e8a9b4976616490c3e85e5b74b21aa",
+      "matches_pin": true
+    },
+    {
+      "path": "config/EAL metadata.xlsx",
+      "working_sha256": "089a5d26698bc93f78999b7bbe50bff4d3f583c231b8932f034c7ca74a866c77",
+      "git_blob_bytes_sha256": "089a5d26698bc93f78999b7bbe50bff4d3f583c231b8932f034c7ca74a866c77",
+      "matches_pin": true
+    }
+  ],
+  "canonical_metadata_sha256": "831fe6c0b6c21428e77a269870c5a7f36d89fbb1bd756b4bf1096b778f21580c",
+  "final_reference_head": "33e77ab3c7afc72d0dd531d2b660baf08cf8fd63",
+  "head_drift": "External parallel annual-wear commit after baseline execution; preserved read-only",
+  "imported_files_still_match_saved_working_sha256": true
+}
