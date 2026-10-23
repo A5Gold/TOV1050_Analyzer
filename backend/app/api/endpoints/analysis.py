@@ -234,6 +234,7 @@ async def analyze_data(request: AnalyzeRequest):
     if not data_path.exists():
         raise HTTPException(status_code=404, detail=f"Data file not found: {request.file_path}")
     
+    request = request.model_copy(update={"line": request.line.strip().upper(), "track": request.track.strip().upper()})
     is_tov1050 = request.line.strip().upper() in {"AEL", "TCL", "DRL", "ISL", "KTL", "TKL", "TWL"}
     try:
         if is_tov1050:
@@ -277,7 +278,7 @@ async def analyze_data(request: AnalyzeRequest):
 
     try:
         # 2. Initialize Components
-        loader = TOV1050DataLoader() if is_tov1050 else DataLoader()
+        loader = TOV1050DataLoader() if is_tov1050 and data_path.suffix.lower() != ".datac" else DataLoader()
         meta_mgr = TOV1050MetadataManager(metadata_file) if is_tov1050 else MetadataManager(metadata_file)
         detector = ExceptionDetector(meta_mgr)
 
@@ -298,10 +299,16 @@ async def analyze_data(request: AnalyzeRequest):
                     raise HTTPException(status_code=400, detail=f"The data file is missing required columns: {', '.join(missing_cols)}")
             raise HTTPException(status_code=400, detail="The data file has no valid Km values for Chainage.")
 
-        # TOV1050 has no Track column in the raw CSV; preserve the selected
-        # direction as context for the copied detector/exporter contract.
-        if is_tov1050:
-            df['Track'] = request.track
+        # Form context is authoritative for both CSV and datac. Keep source
+        # labels for diagnostics; they must never select metadata or reports.
+        for column, selected, source in (
+            ("Line", request.line, "source_line"),
+            ("Track", request.track, "source_track"),
+        ):
+            if column in df.columns:
+                df[source] = df[column].copy()
+            df[column] = selected
+            df[column.lower()] = selected
 
         metadata_capabilities = (
             meta_mgr.get_capabilities(request.line, session, request.track)
@@ -340,8 +347,7 @@ async def analyze_data(request: AnalyzeRequest):
             'station_end': station_end,
         }
         for col, val in task_run_cols.items():
-            if col not in df.columns:
-                df[col] = val
+            df[col] = val
         
         # Cache results for export
         source_path = str(data_path.resolve())

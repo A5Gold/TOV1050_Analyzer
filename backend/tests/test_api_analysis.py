@@ -242,3 +242,60 @@ def test_tov1050_rejects_invalid_session_or_direction(monkeypatch, field, value)
     response = client.post("/api/analyze", json=payload)
 
     assert response.status_code == 400
+
+
+@pytest.mark.parametrize("suffix", [".csv", ".datac"])
+def test_selected_context_overrides_source_labels_in_analysis_and_all_exports(tmp_path, suffix):
+    """Real parsers/detector/exporters must use form context, never file labels."""
+    import io
+    from openpyxl import load_workbook
+    path = tmp_path / ("operational" + suffix)
+    if suffix == ".csv":
+        source = pd.read_csv(REFERENCE_SAMPLE)
+        source["Line"] = "ORANGE LINE"
+        source["HeightWire1 [mm]"] = 3500.123456
+        source.to_csv(path, index=False)
+    else:
+        pd.DataFrame({
+            "LINE": ["GREEN LINE"] * 80, "TRACK": ["DN"] * 80,
+            "KM": [48] * 80, "LOCATION": [430.2 + i * .1 for i in range(80)],
+            "WHGT1c": [-1799.876544] * 80, "STG1c": [0] * 80, "RWH1mm": [10] * 80,
+        }).to_csv(path, index=False, sep=";")
+    session_id = "context-override" + suffix
+    response = client.post("/api/analyze", json={
+        "file_path": str(path), "line": " ael ", "section": "Mainline", "track": "ut",
+        "date_str": "20261023", "station_start": "SHO", "station_end": "AWE",
+        "client_session_id": session_id,
+    })
+    assert response.status_code == 200, response.text
+    payload = response.json()
+    assert payload["params"]["line"] == "AEL" and payload["params"]["track"] == "UT"
+    exceptions = [row for rows in payload["exceptions"].values() for row in rows]
+    assert exceptions
+    assert all(row["line"] == "AEL" and row["track"] == "UT" for row in exceptions)
+    frame = analysis_endpoint.ANALYSIS_SESSIONS[session_id]["raw_df"]
+    assert set(frame.Line) == set(frame.line) == {"AEL"}
+    assert set(frame.Track) == set(frame.track) == {"UT"}
+    assert set(frame.source_line) == {"ORANGE LINE" if suffix == ".csv" else "GREEN LINE"}
+    if suffix == ".datac":
+        assert set(frame.source_track) == {"DN"}
+    export_payload = dict(params=payload["params"], exceptions=payload["exceptions"],
+                          chart_data={}, client_session_id=session_id)
+    for report in (client.get("/api/export/report"), client.post("/api/export/report/generate", json=export_payload)):
+        assert report.status_code == 200, report.text
+        assert "AEL_UT_" in report.headers["content-disposition"]
+        book = load_workbook(io.BytesIO(report.content), read_only=True)
+        for sheet in book:
+            if sheet.title == "_Metadata":
+                continue
+            rows = iter(sheet.values)
+            headers = next(rows)
+            for row in rows:
+                assert row[headers.index("line" if sheet.title == "ChartData" else "Line")] == "AEL"
+                assert row[headers.index("track" if sheet.title == "ChartData" else "Track")] == "UT"
+        book.close()
+    raw = client.post("/api/export/raw/generate", json=export_payload)
+    assert raw.status_code == 200
+    exported = pd.read_csv(io.BytesIO(raw.content))
+    assert set(exported.line) == {"AEL"} and set(exported.track) == {"UT"}
+    pd.testing.assert_series_equal(exported.height1, frame.height1, check_names=False, atol=1e-9, rtol=0)

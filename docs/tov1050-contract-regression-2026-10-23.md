@@ -137,3 +137,17 @@ python scripts/audit_tov1050_real_fixtures.py --output outputs/contract-regressi
 ## Linear 同步狀態
 
 本輪Linear MCP工具曾回覆Authentication required，需求記錄已標Linear sync blocked。依repo流程執行OAuth後CLI回報登入成功，但目前Codex session需重新開啟或新建local task，現session不得宣稱已同步本輪進度。下一次MCP恢復後先將batch-10至batch-14證據、140 tests、TML/TKS/TCL與DRL candidate結果同步DAV-20/21；DAV-20/21維持In Progress。
+
+
+## 上傳 context 與4位精度增量（batch-15／16）
+
+使用者指定CSV/datac的Line/Track由上傳表單提供，取代原始色名及TRACK。API統一覆寫Line/Track及line/track，source_line/source_track保存來源，原檔不改；UI匯出使用成功分析snapshot。desktop file dialog加入datac。資料parser依格式，metadata仍依邏輯context。wide metadata改4位公尺小數（原順序先驗證）；TOV1050 Excel顯示0.####，完整量測值及raw精度保留。detector及enrichment未改。
+
+145 backend tests passed in37.60s；完整命令見 docs/requests/2026-10-23-tov1050-upload-context-and-precision.md。TypeScript noEmit exit0。
+
+batch-15重跑正式TKS DT：131222→130825筆，1 Stagger Right，API/report/raw全200；完整ChartData130825筆、Summary1筆、raw共有數值欄逐值核對。此輪沒有宣稱其他context的大檔完整匯出重跑。
+
+batch-16 updated-boundary-review.json：根ISL/AEL/TCL使用者修改逐格與HEAD比較，記錄新SHA及18處Exception Boundarys端點變化。TCL真CSV 601804→598044筆，UT/DT假設均class/track缺口0，先前100筆Class缺口已補；方向仍未指定，沒有推斷UT/DT、不列正式fixture pass。根config三份有使用者修改，release舊SHA不可再當現況無漂移證據，workbook未stage。TL/Overlap/wear批准缺口仍保持。
+
+
+batch-16另重跑三組canonical（ascending/default ID、descending/custom ID、isolated levels），TOV640/1050分程序detector與全部report sheet值、欄序、ID相符，atol1e-9/rtol0；固定pin cbca528f與現TOV640 HEAD33e77ab3四核心normalized內容相同。TOV640未改。這是synthetic契約驗證，未宣稱新增現場coverage。前端5 tests passed（25.88s），既有MUI Tabs act warning保留記錄。

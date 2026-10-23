@@ -1,0 +1,77 @@
+{
+  "reference_pin": "cbca528f090152ec2c776ee04a4c30f0d371810f",
+  "reference_head": "33e77ab3c7afc72d0dd531d2b660baf08cf8fd63",
+  "reference_core": [
+    {
+      "path": "backend/app/core/analyzers.py",
+      "pinned_sha256": "06b2014471904a3487c41d07815565230cfa84bf930ec586d445bcc222838b90",
+      "current_equal": true
+    },
+    {
+      "path": "backend/app/core/metadata.py",
+      "pinned_sha256": "176fdd4a4a49f840ec83185faae0ae4832142f1fc066273364d2868e3b83f8c4",
+      "current_equal": true
+    },
+    {
+      "path": "backend/app/core/exporter.py",
+      "pinned_sha256": "cbc967c070a6282c58dd90446a6b3a4f99e8a9b4976616490c3e85e5b74b21aa",
+      "current_equal": true
+    },
+    {
+      "path": "backend/app/core/data_ingestion.py",
+      "pinned_sha256": "4bb6ca710d912eaabde678a85dd7c30a1ebc2ca2c973eef6a670a9b63b729545",
+      "current_equal": true
+    }
+  ],
+  "tolerance": {
+    "atol": 1e-09,
+    "rtol": 0,
+    "strings_ids_columns": "exact"
+  },
+  "cases": [
+    {
+      "name": "canonical-asc-default",
+      "status": "pass",
+      "counts": {
+        "Low Height": 1,
+        "High Height": 1,
+        "Wire Wear": 6,
+        "Stagger Left": 4,
+        "Stagger Right": 3
+      },
+      "comparison": "detector all fields and report all sheets/cells",
+      "input_sha256": "e5dee8f580f30fb20d56d6a20fb1cb29d0df0b12d485ab57d24032dd934e971e"
+    },
+    {
+      "name": "canonical-desc-custom",
+      "status": "pass",
+      "counts": {
+        "Low Height": 1,
+        "High Height": 1,
+        "Wire Wear": 6,
+        "Stagger Left": 4,
+        "Stagger Right": 3
+      },
+      "comparison": "detector all fields and report all sheets/cells",
+      "input_sha256": "36700eb3dada37049f76feca8182cb2e40fc9fb124cdb5eac91d733ba3bd897b"
+    },
+    {
+      "name": "canonical-isolated-levels",
+      "status": "pass",
+      "counts": {
+        "Low Height": 1,
+        "High Height": 1,
+        "Wire Wear": 1,
+        "Stagger Left": 3,
+        "Stagger Right": 3
+      },
+      "comparison": "detector all fields and report all sheets/cells",
+      "input_sha256": "b41a600a5de086b9db903d38f3b7a95cee984fd5ce1086f29f907a0b68435d5c"
+    }
+  ],
+  "limits": [
+    "synthetic canonical contract only; no new field acceptance",
+    "No TOV640 files modified or reset",
+    "Report display styles are intentionally different; values/order compared"
+  ]
+}

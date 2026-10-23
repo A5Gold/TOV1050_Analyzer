@@ -1,3 +1,4 @@
+import pytest
 from openpyxl import load_workbook
 import pandas as pd
 from app.core.exporter import ExcelExporter
@@ -53,3 +54,19 @@ def test_tov1050_download_chunks_preserve_binary_and_csv_bytes():
     for line in ("EAL","TML"):
         stream=io.BytesIO(b"legacy\n")
         assert _download_body(stream,line) is stream
+
+
+@pytest.mark.parametrize("streamed", [False, True])
+def test_report_four_decimal_display_preserves_full_measurement_values(streamed):
+    value = 48430.1234567
+    frame = pd.DataFrame({"Chainage": [value], "height1": [3500.1234567]})
+    results = {"Low Height": pd.DataFrame([{"FromM": value, "maxValue": 3500.1234567}])}
+    output = export_tov1050_report(results, frame) if streamed else export_analysis_report(results, frame, line="AEL")
+    book = load_workbook(output, read_only=True)
+    for sheet_name, header, expected in (("ChartData", "Chainage", value), ("Summary", "FromM", value),
+                                         ("Low Height", "MaxValue", 3500.1234567)):
+        rows = list(book[sheet_name].rows)
+        cell = rows[1][[c.value for c in rows[0]].index(header)]
+        assert cell.number_format == "0.####"
+        assert cell.value == expected
+    book.close()

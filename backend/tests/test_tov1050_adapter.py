@@ -62,10 +62,10 @@ def test_decimal_km_boundary_converts_without_binary_float_underflow(tmp_path):
     assert match.iloc[0].Chainage == 32431.0
 
 
-def test_wide_interval_normalizes_only_sub_tolerance_excel_float_noise():
+def test_wide_interval_rounds_metres_to_four_decimal_places():
     intervals = TOV1050MetadataManager._wide_intervals(
         pd.DataFrame({
-            "FromM": [64522.00000000001, 65000.00000001],
+            "FromM": [64522.00000000001, 65000.00016],
             "ToM": [64913.9, 65100],
             "Track": ["Tangent", "Curve"],
         }),
@@ -77,7 +77,7 @@ def test_wide_interval_normalizes_only_sub_tolerance_excel_float_noise():
 
     assert intervals.index[0].left == 64522.0
     assert intervals.index[0].left <= 64522.0 <= intervals.index[0].right
-    assert intervals.index[1].left == 65000.00000001
+    assert intervals.index[1].left == 65000.0002
 
 
 def test_reference_sample_has_expected_trimmed_rows():
@@ -295,3 +295,11 @@ def test_shipped_wide_workbooks_match_runtime_contract(line, session, identity, 
     assert tracks.index.right.max() < 200000  # Never scale metres again.
     assert plot["FromM"].tolist() == boundary.index.left.tolist()
     assert plot["ToM"].tolist() == boundary.index.right.tolist()
+
+
+def test_four_decimal_rounding_does_not_hide_reversed_endpoints():
+    with pytest.raises(ValueError, match="invalid interval"):
+        TOV1050MetadataManager._wide_intervals(
+            pd.DataFrame({"FromM": [1.00002], "ToM": [1.00001], "Track": ["Curve"]}),
+            "test", "FromM", "ToM", "Track",
+        )

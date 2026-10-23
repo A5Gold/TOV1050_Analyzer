@@ -29,7 +29,7 @@
 
 分析入口對 thresholds/class/track unavailable 回 HTTP 400，避免 detector 的歷史 catch/fallback 掩蓋必要資料缺失。既有 optional enrichment 的空值欄位仍保留，API/report 能力用於揭露其 unknown 語意，不把空白轉成 N。
 
-TOV1050 CSV 的 Km 由原始十進位字串先以 Decimal 乘1000一次，再轉成 canonical float metres，避免32.431乘1000出現32430.999999999996。Wide Excel interval端點讀取後依契約 atol=1e-9m、rtol=0 正規化至9位小數；只消除小於1e-9m的儲存浮點噪音，不擴物理區間，來源workbook不改。大於容差的差異保持不變。
+TOV1050 CSV 的 Km 由原始十進位字串先以 Decimal 乘1000一次，再轉成 canonical float metres，避免32.431乘1000出現32430.999999999996。依2026-10-23使用者新指示，wide Excel interval端點讀取後正規化至4位公尺小數（取代先前9位政策）；先驗證原始起迄順序，避免四捨五入掩蓋反向區間。此為讀入解析度，來源workbook不改。TOV1050 Exception Report 的量測/位置欄使用 `0.####` 顯示，Excel實存與raw CSV保留完整量測值；跨程序數值回歸容差仍為atol=1e-9、rtol=0，不能把4位解析度當作任意放寬回歸。
 
 ### 實際量測覆蓋 preflight
 
@@ -64,3 +64,8 @@ TOV1050 report/raw 下載以64KiB分塊，避免 `BytesIO` 預設逐行迭代造
 相容候選保留 threshold/boundaries，方向頁使用 TOV640 欄組，另以 `<identity> UT/DT Brackets` 保存全部原生點及 lineage。未核准 TL/Overlap/Landmark 欄組留空，Capabilities 首頁明確標記 unknown/unavailable、review-only。它們只有版面／資料保留用途，**不能當已完成 TL 功能的 runtime 替代品，也沒有 promotion**。
 
 TL 審閱 CSV 每組列觀察首末位置、首末 Bracket、所有來源 Excel rows、termination 原值／位置／來源、runtime rows，並留下獨立空白 approved_from_m/approved_to_m/approved_by。需確認 mapping 完整連續、真正 termination 邊界、中斷拆段、單點政策及閉合精度後，才能生成核准區間。
+
+
+## 上傳表單 context（2026-10-23 更新）
+
+CSV 的 `Line=ORANGE LINE/GREEN LINE` 及 datac 的 `LINE/TRACK` 僅作來源標籤。`/analyze` 使用表單 `line/track/session` 選 metadata 與 detector context；Line/Track 與 line/track 統一為表單值，來源另留source_line/source_track。原始檔不改。TOV1050 line 搭 `.datac` 使用既有 DataLoader（含既有trim20/20、高度+5300），其他TOV1050 CSV使用既有TOV1050DataLoader（trim100/100、Decimal Km*1000）；不混用兩種格式的單位與清洗規則。EAL/TML保留既有datac路徑及report格式。UI匯出傳送成功分析的params snapshot，不將尚未重新分析的表單值套上舊結果。

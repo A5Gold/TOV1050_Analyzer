@@ -1,7 +1,9 @@
 import React from 'react';
-import { render, screen, fireEvent, within } from '@testing-library/react';
+import { render, screen, fireEvent, within, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { vi } from 'vitest';
+import apiClient from '../../api/client';
+vi.mock('../../api/client', () => ({ default: { post: vi.fn() } }));
 import ExceptionGeneratorView from '../ExceptionGeneratorView';
 import { useAnalysisStore } from '../../store/useAnalysisStore';
 
@@ -82,4 +84,22 @@ describe('ExceptionGeneratorView Multi-Tab', () => {
     // or just assume the click on the icon wrapper works.
     // In real testing we might add data-testid to the close button.
   });
+});
+
+
+test('sends manually selected context for datac without reading header labels', async () => {
+  useAnalysisStore.getState().resetAnalysisSessions();
+  useAnalysisStore.getState().addAnalysisSession({
+    id: 'manual-datac', label: 'Data.datac', filePath: 'C:/Test/Data.datac',
+    line: 'TCL', track: 'DT', section: 'Mainline', dateStr: '20261023',
+    stationStart: 'TUC', stationEnd: 'SUN', result: null, loading: false,
+    error: null, viewMode: 'graph', selectedExceptionId: null,
+  });
+  vi.mocked(apiClient.post).mockResolvedValueOnce({ data: null });
+  render(<ExceptionGeneratorView />);
+  expect(screen.getByText(/分析及 Exception Report 使用下方選擇值/)).toBeInTheDocument();
+  fireEvent.click(screen.getByRole('button', { name: 'Start Analysis' }));
+  await waitFor(() => expect(apiClient.post).toHaveBeenCalledWith('/analyze', expect.objectContaining({
+    file_path: 'C:/Test/Data.datac', line: 'TCL', track: 'DT', section: 'Mainline',
+  })));
 });

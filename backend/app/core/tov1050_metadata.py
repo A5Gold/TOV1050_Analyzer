@@ -13,8 +13,8 @@ from .tov1050_contract import metadata_track_sheet, metadata_workbook_for
 
 
 CHAINAGE_SCALE_M_PER_KM = 1000.0
-INTERVAL_FLOAT_TOLERANCE_M = 1e-9
-INTERVAL_FLOAT_DECIMALS = 9
+INTERVAL_FLOAT_TOLERANCE_M = 1e-4
+INTERVAL_FLOAT_DECIMALS = 4
 
 
 class TOV1050MetadataManager(TOV1050CapabilitiesMixin, MetadataManager):
@@ -59,11 +59,6 @@ class TOV1050MetadataManager(TOV1050CapabilitiesMixin, MetadataManager):
                 data[column].astype("string").str.replace(",", "", regex=False).str.strip(),
                 errors="coerce",
             )
-            # Excel may persist decimal metre endpoints with binary noise.
-            # Normalize only below the contract's 1e-9 m comparison tolerance.
-            data[column] = np.round(
-                data[column].to_numpy(dtype=float), decimals=INTERVAL_FLOAT_DECIMALS,
-            )
         data[value] = labels.loc[active]
         invalid = (
             ~np.isfinite(data[start].to_numpy(dtype=float, na_value=np.nan))
@@ -73,6 +68,9 @@ class TOV1050MetadataManager(TOV1050CapabilitiesMixin, MetadataManager):
         )
         if data.empty or invalid.any():
             raise ValueError(f"TOV1050 {sheet} has no valid intervals or contains invalid interval rows")
+        # Validate original ordering first so rounding cannot hide reversed bounds.
+        for column in (start, end):
+            data[column] = np.round(data[column].to_numpy(dtype=float), decimals=INTERVAL_FLOAT_DECIMALS)
         data.index = pd.IntervalIndex.from_arrays(
             data[start].to_numpy(dtype=float), data[end].to_numpy(dtype=float), closed="both",
         )

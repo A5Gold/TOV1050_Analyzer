@@ -10,6 +10,12 @@ import pandas as pd
 from .exporter import ExcelExporter
 from .tov1050_contract import LINE_WORKBOOKS
 
+REPORT_NUMERIC_FORMAT = "0.####"
+REPORT_NUMERIC_COLUMNS = {
+    "Chainage", "stg_max", "stg_min", "height_min", "height_max", "wear_min", "wear_max",
+    *[f"{kind}{index}" for kind in ("height", "wear", "stagger") for index in range(1, 5)],
+}
+
 
 def _excel_value(value):
     if value is None or value is pd.NA or value is pd.NaT:
@@ -25,7 +31,7 @@ def export_tov1050_report(results, chart_df=None, metadata=None):
     This function does not map metadata, aggregate exceptions, or downsample.
     The small legacy workbook provides exact headers/order and formatting.
     """
-    small = ExcelExporter.export_report(results, chart_df=None)
+    small = ExcelExporter.export_report(results, chart_df=None, numeric_format=REPORT_NUMERIC_FORMAT)
     source = load_workbook(small, read_only=True)
     target = Workbook(write_only=True)
     header_style = source["Summary"]["A1"]
@@ -47,13 +53,24 @@ def export_tov1050_report(results, chart_df=None, metadata=None):
             if index == 0:
                 header(sheet,[cell.value for cell in row])
             else:
-                sheet.append([cell.value for cell in row])
+                cells = []
+                for original_cell in row:
+                    cell = WriteOnlyCell(sheet, value=original_cell.value)
+                    cell.number_format = original_cell.number_format
+                    cells.append(cell)
+                sheet.append(cells)
     if chart_df is not None and not chart_df.empty:
         columns=[c for c in ExcelExporter.CATENARY_COLUMNS if c in chart_df.columns]
         sheet=target.create_sheet("ChartData")
         header(sheet,columns)
         for row in chart_df[columns].itertuples(index=False,name=None):
-            sheet.append([_excel_value(value) for value in row])
+            cells = []
+            for column, value in zip(columns, row):
+                cell = WriteOnlyCell(sheet, value=_excel_value(value))
+                if column in REPORT_NUMERIC_COLUMNS:
+                    cell.number_format = REPORT_NUMERIC_FORMAT
+                cells.append(cell)
+            sheet.append(cells)
     if metadata:
         sheet=target.create_sheet("_Metadata")
         sheet.sheet_state="hidden"
@@ -70,4 +87,7 @@ def export_tov1050_report(results, chart_df=None, metadata=None):
 def export_analysis_report(results, chart_df=None, metadata=None, line=""):
     if str(line).strip().upper() in LINE_WORKBOOKS and chart_df is not None and len(chart_df)>50_000:
         return export_tov1050_report(results,chart_df,metadata)
+    if str(line).strip().upper() in LINE_WORKBOOKS:
+        return ExcelExporter.export_report(results, chart_df=chart_df, metadata=metadata,
+                                           numeric_format=REPORT_NUMERIC_FORMAT)
     return ExcelExporter.export_report(results,chart_df=chart_df,metadata=metadata)

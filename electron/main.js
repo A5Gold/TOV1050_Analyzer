@@ -218,7 +218,7 @@ app.on('activate', function () {
 ipcMain.handle('dialog:openFile', async () => {
   const { canceled, filePaths } = await dialog.showOpenDialog({
     properties: ['openFile'],
-    filters: [{ name: 'TOV1050 Data Files', extensions: ['csv', 'txt', 'xlsx'] }]
+    filters: [{ name: 'Raw Measurement Files', extensions: ['csv', 'datac'] }]
   });
   if (canceled) {
     return null;

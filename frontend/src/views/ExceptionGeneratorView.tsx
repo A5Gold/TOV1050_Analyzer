@@ -230,15 +230,7 @@ const ExceptionGeneratorView = () => {
                 }
                 const payload = {
                     chart_data: activeSession.result.chart_data,
-                    params: {
-                        date_str: activeSession.dateStr,
-                        line: activeSession.line,
-                        track: activeSession.track,
-                        section: activeSession.section,
-                        task_no: activeSession.taskNo,
-                        station_start: activeSession.stationStart,
-                        station_end: activeSession.stationEnd
-                    },
+                    params: activeSession.result.params,
                     client_session_id: activeSession.id
                 };
                 response = await apiClient.post('/export/raw/generate', payload, { responseType: 'blob' });
@@ -581,11 +573,14 @@ const ExceptionGeneratorView = () => {
                                 </Box>
                                 {!activeSession.filePath && (
                                     <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 0.5, textAlign: 'center' }}>
-                                        Drop TOV1050 .csv file here or click Browse
+                                        Drop .csv or .datac file here or click Browse
                                     </Typography>
                                 )}
                             </Box>
 
+                            <Alert severity="info">
+                                請確認 Line／Track／Section。分析及 Exception Report 使用下方選擇值，覆蓋原檔的路線與方向標籤。
+                            </Alert>
                             {/* Parameters */}
                             <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 2 }}>
                                 <FormControl fullWidth size="small">

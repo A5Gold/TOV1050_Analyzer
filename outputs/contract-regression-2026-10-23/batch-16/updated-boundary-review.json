@@ -1,0 +1,204 @@
+{
+  "scope": "read_only_updated_metadata_and_unassigned_TCL_diagnostic",
+  "workbooks": [
+    {
+      "workbook": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\ISL metadata.xlsx",
+      "sha256": "9545824187e6ed88fb2a43d56bd40e9371f62bd532a4193332ef4bd34c83aaf2",
+      "changes": [
+        {
+          "sheet": "Exception Boundarys",
+          "excel_row": 4,
+          "column": 5,
+          "before": 100241,
+          "after": 100241.9
+        },
+        {
+          "sheet": "Exception Boundarys",
+          "excel_row": 4,
+          "column": 7,
+          "before": 100241,
+          "after": 100241.9
+        }
+      ]
+    },
+    {
+      "workbook": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\LAR_AEL metadata.xlsx",
+      "sha256": "bb917e1952dfc94b1af340bd2aa01caff053341bf3835178f7d40ff203ffb6c7",
+      "changes": [
+        {
+          "sheet": "Exception Boundarys",
+          "excel_row": 3,
+          "column": 5,
+          "before": 33198.89999999999,
+          "after": 33199.9
+        },
+        {
+          "sheet": "Exception Boundarys",
+          "excel_row": 3,
+          "column": 7,
+          "before": 33198.89999999999,
+          "after": 33199.9
+        },
+        {
+          "sheet": "Exception Boundarys",
+          "excel_row": 4,
+          "column": 5,
+          "before": 33444.89999999999,
+          "after": 33445.9
+        },
+        {
+          "sheet": "Exception Boundarys",
+          "excel_row": 4,
+          "column": 7,
+          "before": 33444.89999999999,
+          "after": 33445.9
+        },
+        {
+          "sheet": "Exception Boundarys",
+          "excel_row": 5,
+          "column": 5,
+          "before": 36604.89999999999,
+          "after": 36605.9
+        },
+        {
+          "sheet": "Exception Boundarys",
+          "excel_row": 5,
+          "column": 7,
+          "before": 36604.89999999999,
+          "after": 36605.9
+        },
+        {
+          "sheet": "Exception Boundarys",
+          "excel_row": 6,
+          "column": 5,
+          "before": 43167.89999999999,
+          "after": 43168.9
+        },
+        {
+          "sheet": "Exception Boundarys",
+          "excel_row": 6,
+          "column": 7,
+          "before": 43167.89999999999,
+          "after": 43168.9
+        }
+      ]
+    },
+    {
+      "workbook": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\LAR_TCL metadata.xlsx",
+      "sha256": "c5c7ed7d5fedbd2d3aeccb27a98cdc9b405fc32c6c7fd49d411dc2a35c19a362",
+      "changes": [
+        {
+          "sheet": "Exception Boundarys",
+          "excel_row": 3,
+          "column": 5,
+          "before": 33198.89999999999,
+          "after": 33199.9
+        },
+        {
+          "sheet": "Exception Boundarys",
+          "excel_row": 3,
+          "column": 7,
+          "before": 33198.89999999999,
+          "after": 33199.9
+        },
+        {
+          "sheet": "Exception Boundarys",
+          "excel_row": 4,
+          "column": 5,
+          "before": 33444.89999999999,
+          "after": 33445.9
+        },
+        {
+          "sheet": "Exception Boundarys",
+          "excel_row": 4,
+          "column": 7,
+          "before": 33444.89999999999,
+          "after": 33445.9
+        },
+        {
+          "sheet": "Exception Boundarys",
+          "excel_row": 5,
+          "column": 5,
+          "before": 36604.89999999999,
+          "after": 36605.9
+        },
+        {
+          "sheet": "Exception Boundarys",
+          "excel_row": 5,
+          "column": 7,
+          "before": 36604.89999999999,
+          "after": 36605.9
+        },
+        {
+          "sheet": "Exception Boundarys",
+          "excel_row": 6,
+          "column": 5,
+          "before": 43167.89999999999,
+          "after": 43168.9
+        },
+        {
+          "sheet": "Exception Boundarys",
+          "excel_row": 6,
+          "column": 7,
+          "before": 43167.89999999999,
+          "after": 43168.9
+        }
+      ]
+    }
+  ],
+  "source": {
+    "path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\Raw data\\TCL\\20260618_032025_olpar.csv",
+    "sha256": "13efae7caa2e22b066d33f72c3b0bf1ad94a8436820ce3b182d52fa4157d51bc"
+  },
+  "cleaning": {
+    "raw_row_count": 601804,
+    "retained_row_count": 598044,
+    "trimmed_leading_count": 100,
+    "trimmed_trailing_count": 100,
+    "io_value_count": 3685467,
+    "invalid_chainage_count": 0,
+    "no_valid_measurement_count": 3560,
+    "delimiter": ",",
+    "chunk_size": 50000,
+    "chainage_unit": "m",
+    "chainage_scale": 1000.0
+  },
+  "hypothetical_directions": {
+    "UT": {
+      "class_intervals": {
+        "sheet": "Exception Boundarys",
+        "total_rows": 598044,
+        "uncovered_rows": 0,
+        "first_uncovered_chainages_m": []
+      },
+      "track_intervals": {
+        "sheet": "LAR_TCL UT",
+        "total_rows": 598044,
+        "uncovered_rows": 0,
+        "first_uncovered_chainages_m": []
+      }
+    },
+    "DT": {
+      "class_intervals": {
+        "sheet": "Exception Boundarys",
+        "total_rows": 598044,
+        "uncovered_rows": 0,
+        "first_uncovered_chainages_m": []
+      },
+      "track_intervals": {
+        "sheet": "LAR_TCL DT",
+        "total_rows": 598044,
+        "uncovered_rows": 0,
+        "first_uncovered_chainages_m": []
+      }
+    }
+  },
+  "acceptance_status": "direction_unconfirmed_not_runtime_fixture_pass",
+  "limits": [
+    "No source workbook edited or staged",
+    "No direction inferred from coverage",
+    "No TL or overlap approval",
+    "No API/detector/report run for unassigned TCL"
+  ],
+  "metadata_interval_decimal_places": 4
+}

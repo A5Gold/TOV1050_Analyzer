@@ -129,7 +129,8 @@ class ExcelExporter:
     def export_report(
         results: Dict[str, Any], 
         chart_df: pd.DataFrame = None,
-        metadata: Optional[Dict[str, Any]] = None
+        metadata: Optional[Dict[str, Any]] = None,
+        numeric_format: Optional[str] = None,
     ) -> io.BytesIO:
         """
         Export analysis results to an Excel file.
@@ -210,6 +211,18 @@ class ExcelExporter:
                     writer, sheet_name='ChartData', index=False
                 )
             
+            if numeric_format:
+                numeric_columns = {
+                    "FromM", "ToM", "Length", "MaxValue", "MaxLocation", "Threshold Value",
+                    "Chainage", "stg_max", "stg_min", "height_min", "height_max", "wear_min", "wear_max",
+                    *[f"{kind}{index}" for kind in ("height", "wear", "stagger") for index in range(1, 5)],
+                }
+                for sheet in writer.sheets.values():
+                    for column in sheet.iter_cols():
+                        if column[0].value in numeric_columns:
+                            for cell in column[1:]:
+                                cell.number_format = numeric_format
+
             # Write hidden _Metadata sheet if metadata provided
             if metadata:
                 ExcelExporter._write_metadata_sheet(writer, metadata)
