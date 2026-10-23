@@ -1,0 +1,9 @@
+﻿workbook,sheet,excel_rows,columns,original_value,issue,decision,priority
+C:\Smart Maintanence\TOV1050_Analyzer\00 Reference Document\config\ISL metadata.xlsx,UT track type,2,startKM / endKM,97.0 → 97.2619 km,外側 non-support 暫保留,決定首末 Support 外的邊界政策；目前保留原範圍，未自動擴張,業務政策確認
+C:\Smart Maintanence\TOV1050_Analyzer\00 Reference Document\config\ISL metadata.xlsx,DT track type,298,track type / startKM / endKM,"{""code"": ""invalid_support_anchor"", ""source_row"": 298, ""label"": ""Support"", ""start"": 99126.0, ""end"": 99126.0, ""reason"": ""Support is outside the source location envelope (including ORCR); check units/value""}",Support 基準異常,確認 Support 基準值；不能按舊 non-support 端點推斷正確值,優先
+C:\Smart Maintanence\TOV1050_Analyzer\00 Reference Document\config\ISL metadata.xlsx,DT track type,2,startKM / endKM,97.0 → 97.7809 km,外側 non-support 暫保留,決定首末 Support 外的邊界政策；目前保留原範圍，未自動擴張,業務政策確認
+C:\Smart Maintanence\TOV1050_Analyzer\00 Reference Document\config\KTL metadata.xlsx,UT track type,2,startKM / endKM,97.0 → 98.0519 km,外側 non-support 暫保留,決定首末 Support 外的邊界政策；目前保留原範圍，未自動擴張,業務政策確認
+C:\Smart Maintanence\TOV1050_Analyzer\00 Reference Document\config\KTL metadata.xlsx,UT track type,432,startKM / endKM,99.8771 → 99.942 km,外側 non-support 暫保留,決定首末 Support 外的邊界政策；目前保留原範圍，未自動擴張,業務政策確認
+C:\Smart Maintanence\TOV1050_Analyzer\00 Reference Document\config\KTL metadata.xlsx,DT track type,2,startKM / endKM,97.0 → 97.4099 km,外側 non-support 暫保留,決定首末 Support 外的邊界政策；目前保留原範圍，未自動擴張,業務政策確認
+C:\Smart Maintanence\TOV1050_Analyzer\00 Reference Document\config\LAR_AEL metadata.xlsx,location type,2;3,startKM / endKM,24.0 → 28.3099 / 28.301 → 33.198899999999995 km,interval overlap 8.9 m,確認兩列端點是否正確；若保留 overlap，確認 interval 範圍／解析優先政策,業務政策確認
+C:\Smart Maintanence\TOV1050_Analyzer\00 Reference Document\config\LAR_TCL metadata.xlsx,location type,2;3,startKM / endKM,24.0 → 28.3099 / 28.301 → 33.198899999999995 km,interval overlap 8.9 m,確認兩列端點是否正確；若保留 overlap，確認 interval 範圍／解析優先政策,業務政策確認

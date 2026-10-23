@@ -23,6 +23,7 @@ import pandas as pd
 from tov1050_mapping_rules import (
     RULES_VERSION, classify, component_labels, expand_mapping, provenance_components,
 )
+from tov1050_support_intervals import reconstruct, location_envelope, POLICY_VERSION, DERIVATION_COLUMNS
 
 from standardize_tov1050_metadata import (
     LINES,
@@ -498,13 +499,15 @@ def _track_check(
     *,
     source_sheet: str,
     mapping_sheet: str | None,
+    location_bounds: tuple[float, float] | None = None,
 ) -> dict[str, Any]:
     source_type = _column(source, "track type", "track_type")
     source_start = _column(source, "startKM", "start_m")
     source_end = _column(source, "endKM", "end_m")
     expected_intervals: Counter = Counter()
     invalid_rows: list[dict[str, Any]] = []
-    for source_row, row in _non_empty_rows(source):
+    policy = reconstruct(source, source_sheet, location_bounds)
+    for source_row, row in ([] if policy["active"] else _non_empty_rows(source)):
         start = _number(row.get(source_start)) if source_start else None
         end = _number(row.get(source_end)) if source_end else None
         if start is None or end is None:
@@ -517,6 +520,9 @@ def _track_check(
             continue
         expected_intervals[(_text(row.get(source_type)), round(min(start, end) * CHAINAGE_SCALE_M_PER_KM, 6), round(max(start, end) * CHAINAGE_SCALE_M_PER_KM, 6))] += 1
 
+    if policy["active"]:
+        expected_intervals.update((item["label"], item["from_m"], item["to_m"]) for item in policy["intervals"])
+
     candidate_type = _column(candidate, "track type")
     candidate_start = _column(candidate, "track type fromm")
     candidate_end = _column(candidate, "track type tom")
@@ -525,7 +531,7 @@ def _track_check(
         for _, row in _non_empty_rows(candidate):
             start, end = _number(row.get(candidate_start)), _number(row.get(candidate_end))
             if start is not None and end is not None and _text(row.get(candidate_type)):
-                actual_intervals[(_text(row.get(candidate_type)), round(min(start, end), 6), round(max(start, end), 6))] += 1
+                actual_intervals[(_text(row.get(candidate_type)), round(start, 6), round(end, 6))] += 1
 
     expected_brackets: Counter = Counter()
     mapping_invalid: list[dict[str, Any]] = []
@@ -537,9 +543,12 @@ def _track_check(
         "source_sheet": source_sheet,
         "mapping_sheet": mapping_sheet,
         "source_interval_rows": sum(expected_intervals.values()),
+        "raw_source_interval_rows": sum(1 for _ in _non_empty_rows(source)),
+        "expected_interval_rows_after_policy": sum(expected_intervals.values()),
         "candidate_interval_rows": sum(actual_intervals.values()),
         "interval_diff": _counter_diff(expected_intervals, actual_intervals),
         "intervals_match": expected_intervals == actual_intervals,
+        "support_policy": policy,
         "source_invalid_rows": invalid_rows,
         "mapping_invalid_rows": mapping_invalid,
         "mapping_diagnostics": mapping_diagnostics,
@@ -557,6 +566,7 @@ def _provenance_check(source_sheets: dict[str, pd.DataFrame], mapping_sheets: di
     provenance = candidate_sheets.get("__provenance__")
     expected: dict[tuple[str, int], tuple[str, str]] = {}
     expected_components = {}
+    expected_intervals = {}
 
     def add_source(sheet_name: str, frame: pd.DataFrame, target_sheet: str, status_resolver):
         for source_row, row in _non_empty_rows(frame):
@@ -598,6 +608,13 @@ def _provenance_check(source_sheets: dict[str, pd.DataFrame], mapping_sheets: di
                 source_name, frame, direction,
                 lambda row, s=start_col, e=end_col: "invalid" if _number(row.get(s)) is None or _number(row.get(e)) is None else "emitted",
             )
+            policy = reconstruct(frame, source_name, location_envelope(source_sheets))
+            if policy["active"]:
+                for item in policy["sources"]:
+                    expected[(source_name, item["source_row"])] = (item["status"], direction)
+                    expected_intervals[(source_name, item["source_row"])] = {
+                        key: item[key] for key in ("label", "start", "end", "output")
+                    }
         mapping_name = f"{MAPPING_LINE_ALIASES.get(line, line)} {direction}"
         mapping_frame = mapping_sheets.get(mapping_name)
         if mapping_frame is not None:
@@ -618,6 +635,7 @@ def _provenance_check(source_sheets: dict[str, pd.DataFrame], mapping_sheets: di
     actual: dict[tuple[str, int], list[tuple[str, str]]] = {}
     required_columns_missing: list[str] = []
     component_mismatch = []
+    interval_mismatch = []
     if provenance is not None:
         source_col, row_col = _column(provenance, "source_sheet"), _column(provenance, "source_row")
         status_col, target_col = _column(provenance, "status"), _column(provenance, "target_sheet")
@@ -630,6 +648,13 @@ def _provenance_check(source_sheets: dict[str, pd.DataFrame], mapping_sheets: di
                     continue
                 actual.setdefault((_text(row.get(source_col)), source_row), []).append((_text(row.get(status_col)), _text(row.get(target_col))))
                 key = (_text(row.get(source_col)), source_row)
+                if key in expected_intervals:
+                    try:
+                        payload = json.loads(_text(row.get("interval_payload_json")))
+                    except (ValueError, TypeError):
+                        payload = None
+                    if payload != expected_intervals[key] or _text(row.get("interval_policy")) != POLICY_VERSION:
+                        interval_mismatch.append({"source_sheet": key[0], "source_row": key[1]})
                 if key in expected_components:
                     original, components = expected_components[key]
                     try:
@@ -656,6 +681,8 @@ def _provenance_check(source_sheets: dict[str, pd.DataFrame], mapping_sheets: di
     return {
         "sheet_present": provenance is not None,
         "component_mismatch_count": len(component_mismatch),
+        "interval_mismatch_count": len(interval_mismatch),
+        "interval_mismatch": interval_mismatch,
         "component_mismatch": component_mismatch,
         "required_columns_missing": required_columns_missing,
         "expected_source_rows": len(expected),
@@ -673,6 +700,36 @@ def _provenance_check(source_sheets: dict[str, pd.DataFrame], mapping_sheets: di
         "invalid_status_mismatch": [{"source_sheet": sheet, "source_row": row} for sheet, row in status_mismatch[:100] if expected[(sheet, row)][0] == "invalid"],
         "invalid_status_mismatch_count": sum(expected[key][0] == "invalid" for key in status_mismatch),
     }
+
+
+def _derivation_check(source_sheets, candidate_sheets):
+    expected = Counter()
+    actual = Counter()
+
+    def signature(item, anchors):
+        return (_text(item.get("source_sheet")), _text(item.get("target_sheet")),
+                _text(item.get("policy_version")), _text(item.get("derived_key")), _text(item.get("track_type")),
+                _number(item.get("from_km")), _number(item.get("to_km")),
+                _number(item.get("from_m")), _number(item.get("to_m")),
+                json.dumps(anchors, sort_keys=True, ensure_ascii=False))
+
+    for name, frame in source_sheets.items():
+        if name.endswith("track type"):
+            for item in reconstruct(frame, name, location_envelope(source_sheets))["derived"]:
+                expected[signature(item, item["anchors"])] += 1
+    frame = candidate_sheets.get("__interval_derivation__")
+    missing_columns = []
+    if frame is not None:
+        missing_columns = [name for name in DERIVATION_COLUMNS if name not in frame.columns]
+        for _, row in _non_empty_rows(frame):
+            try:
+                anchors = json.loads(_text(row.get("anchors_json")))
+            except (ValueError, TypeError):
+                anchors = None
+            actual[signature(row, anchors)] += 1
+    return dict(sheet_present=frame is not None, missing_columns=missing_columns,
+                expected_count=sum(expected.values()), actual_count=sum(actual.values()),
+                rows_match=expected == actual, diff=_counter_diff(expected, actual))
 
 
 def validate_workbook(source_path: Path, candidate_path: Path, mapping_path: Path, line: str) -> dict[str, Any]:
@@ -702,6 +759,9 @@ def validate_workbook(source_path: Path, candidate_path: Path, mapping_path: Pat
     for name, report in interval_reports.items():
         if report.get("missing_required_columns"):
             finding("source_interval_schema", "error", {"sheet": name, "report": report})
+        if name.endswith("track type") and reconstruct(source_sheets[name], name, location_envelope(source_sheets))["active"]:
+            # Superseded non-support endpoints are historical evidence only.
+            continue
         if report.get("invalid_rows") or report.get("overlap_count"):
             finding("source_interval_review", "review", {"sheet": name, "report": report})
         if report.get("ambiguous_overlap_count"):
@@ -727,6 +787,7 @@ def validate_workbook(source_path: Path, candidate_path: Path, mapping_path: Pat
             mapping_sheets.get(mapping_name),
             source_sheet=source_name,
             mapping_sheet=mapping_name if mapping_name in mapping_sheets else None,
+            location_bounds=location_envelope(source_sheets),
         )
         report = track_reports[candidate_name]
         if not report["intervals_match"] or not report["brackets_match"]:
@@ -734,6 +795,11 @@ def validate_workbook(source_path: Path, candidate_path: Path, mapping_path: Pat
         if report["source_invalid_rows"] or report["mapping_invalid_rows"]:
             finding("track_or_mapping_invalid_rows", "review", {"sheet": candidate_name, "report": report})
         diagnostics = report.get("mapping_diagnostics") or {}
+        policy = report["support_policy"]
+        if policy["issues"]:
+            finding("support_anchor_review", "review", {"sheet": source_name, "issues": policy["issues"]})
+        if policy["retained_edges"]:
+            finding("outer_non_support_review", "review", {"sheet": source_name, "rows": policy["retained_edges"]})
         if any(diagnostics.get(key, 0) for key in (
             "exact_duplicate_identity_count",
             "unconfirmed_same_location_overlap_count",
@@ -755,8 +821,21 @@ def validate_workbook(source_path: Path, candidate_path: Path, mapping_path: Pat
         or provenance["target_mismatch_count"]
         or provenance["invalid_status_mismatch_count"]
         or provenance["component_mismatch_count"]
+        or provenance["interval_mismatch_count"]
     ):
         finding("provenance_incomplete", "error", provenance)
+
+    derivations = _derivation_check(source_sheets, candidate_sheets)
+    if not derivations["sheet_present"] or derivations["missing_columns"] or not derivations["rows_match"]:
+        finding("interval_derivation_provenance", "error", derivations)
+    effective_intervals = {}
+    for name, track in track_reports.items():
+        frame = candidate_sheets[name]
+        frame = frame.loc[frame["Track Type"].notna()]
+        effective_intervals[name] = _interval_report(frame, name, scale=1.0, group_by_track=True)
+        effective_intervals[name]["row_reference"] = "candidate_excel_row"
+        if effective_intervals[name]["overlap_count"]:
+            finding("effective_interval_overlap", "review", {"sheet": name, "report": effective_intervals[name]})
 
     standardization = candidate_sheets.get("__standardization__", pd.DataFrame())
     metadata = standardization.iloc[0].to_dict() if not standardization.empty else {}
@@ -764,6 +843,7 @@ def validate_workbook(source_path: Path, candidate_path: Path, mapping_path: Pat
         "sheet_present": not standardization.empty,
         "chainage_unit": metadata.get("chainage_unit"),
         "rules_version": metadata.get("rules_version"),
+        "interval_policy": metadata.get("interval_policy"),
         "chainage_scale": _number(metadata.get("chainage_scale")),
         "source_sha256": metadata.get("source_sha256"),
         "mapping_sha256": metadata.get("mapping_sha256"),
@@ -773,6 +853,7 @@ def validate_workbook(source_path: Path, candidate_path: Path, mapping_path: Pat
     if (
         metadata_check["chainage_unit"] != "m"
         or metadata_check["rules_version"] != RULES_VERSION
+        or metadata_check["interval_policy"] != POLICY_VERSION
         or metadata_check["chainage_scale"] != CHAINAGE_SCALE_M_PER_KM
         or not metadata_check["source_sha256_match"]
         or not metadata_check["mapping_sha256_match"]
@@ -796,6 +877,8 @@ def validate_workbook(source_path: Path, candidate_path: Path, mapping_path: Pat
         "threshold": threshold,
         "location": location,
         "intervals": interval_reports,
+        "effective_intervals": effective_intervals,
+        "interval_derivations": derivations,
         "tracks": track_reports,
         "provenance": provenance,
         "candidate_metadata": metadata_check,
@@ -813,14 +896,17 @@ def _markdown(report: dict[str, Any]) -> str:
         "",
         "## Summary",
         "",
-        "| Line | Status | Findings | Same-track overlaps | Invalid source rows | Provenance missing |",
-        "|---|---|---:|---:|---:|---:|",
+        "- Raw source overlaps include superseded non-support intervals; candidate track overlaps describe the regenerated output.",
+        "",
+        "| Line | Status | Findings | Raw source overlaps | Candidate track overlaps | Invalid source rows | Provenance missing |",
+        "|---|---|---:|---:|---:|---:|---:|",
     ]
     for item in report["workbooks"]:
         overlap = sum(value.get("overlap_count", 0) for value in item.get("intervals", {}).values())
         invalid = sum(len(value.get("invalid_rows", [])) for value in item.get("intervals", {}).values())
         invalid += sum(len(value.get("source_invalid_rows", [])) + len(value.get("mapping_invalid_rows", [])) for value in item.get("tracks", {}).values())
-        lines.append(f"| {item['line']} | {item['status']} | {len(item['findings'])} | {overlap} | {invalid} | {item['provenance']['missing_source_row_count']} |")
+        effective_overlap = sum(value.get("overlap_count", 0) for value in item.get("effective_intervals", {}).values())
+        lines.append(f"| {item['line']} | {item['status']} | {len(item['findings'])} | {overlap} | {effective_overlap} | {invalid} | {item['provenance']['missing_source_row_count']} |")
     lines.extend(["", "## Findings", ""])
     for item in report["workbooks"]:
         lines.append(f"### {item['line']} ({item['status']})")

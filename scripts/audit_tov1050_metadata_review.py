@@ -14,6 +14,7 @@ import pandas as pd
 
 from standardize_tov1050_metadata import MAPPING_LINE_ALIASES
 from tov1050_mapping_rules import RULES_VERSION
+from tov1050_support_intervals import reconstruct, location_envelope, POLICY_VERSION
 from validate_tov1050_metadata_candidates import _mapping_rows, _number, _sha256, _text
 
 
@@ -78,7 +79,14 @@ def main():
     # Recover the exact 14-sheet Location/Bracket baseline from those immutable
     # candidates and their source-row provenance, rather than comparing shifted rows.
     old_mapping = {}
-    for item in old_manifest:
+    snapshot = previous / "mapping-source-records.csv"
+    if snapshot.exists():
+        with snapshot.open(encoding="utf-8-sig", newline="") as handle:
+            for row in csv.DictReader(handle):
+                location = _number(row["location_km"])
+                location = round(location, 9) if location is not None else None
+                old_mapping.setdefault(row["sheet"], defaultdict(list))[(location, row["bracket"])].append(int(row["excel_row"]))
+    for item in ([] if snapshot.exists() else old_manifest):
         old = pd.read_excel(previous / "candidates" / Path(item["output"]).name, sheet_name=None)
         provenance = old["__provenance__"]
         for direction in ("UT", "DT", "PL"):
@@ -109,6 +117,7 @@ def main():
             drl_changes = [item for item in diff if item["sheet"].startswith("DRL ")]
 
     sheets, components, unknown, accepted, intervals, manual = [], [], [], [], [], []
+    support_summary, derivations, dispositions = [], [], []
     for sheet, frame in frames.items():
         _, invalid, records, diag = _mapping_rows(frame, 1000)
         sheets.append(dict(sheet=sheet, source_rows=sum(map(len, raw_records(frame).values())), component_rows=len(records),
@@ -135,8 +144,35 @@ def main():
                                columns="Location / Bracket", original_value=json.dumps(item, ensure_ascii=False, default=str),
                                issue="invalid mapping", decision="補正來源值或提供有理由的排除決定", priority="優先"))
     for book in report["workbooks"]:
-        assert not [item for item in book["findings"] if item["severity"] == "error"]
+        source_book = root / book["source"]
+        source_frames = pd.read_excel(source_book, sheet_name=None)
+        for sheet, frame in source_frames.items():
+            if not sheet.endswith("track type"):
+                continue
+            policy = reconstruct(frame, sheet, location_envelope(source_frames))
+            if not policy["active"]:
+                continue
+            support_summary.append(dict(line=book["line"], sheet=sheet,
+                                        superseded=sum(x["status"] == "superseded" for x in policy["sources"]),
+                                        derived=len(policy["derived"]), retained_edges=len(policy["retained_edges"]),
+                                        issues=len(policy["issues"])))
+            for item in policy["derived"]:
+                derivations.append(dict(workbook=str(source_book), **{k: v for k, v in item.items() if k != "anchors"},
+                                        anchors_json=json.dumps(item["anchors"], ensure_ascii=False)))
+            for item in policy["sources"]:
+                dispositions.append(dict(workbook=str(source_book), sheet=sheet, **item))
+            for item in policy["issues"]:
+                manual.append(dict(workbook=str(source_book), sheet=sheet,
+                                   excel_rows=str(item.get("source_row", item.get("source_rows", ""))),
+                                   columns="track type / startKM / endKM", original_value=json.dumps(item, ensure_ascii=False),
+                                   issue="Support 基準異常", decision="確認 Support 基準值；不能按舊 non-support 端點推斷正確值", priority="優先"))
+            for item in policy["retained_edges"]:
+                manual.append(dict(workbook=str(source_book), sheet=sheet, excel_rows=str(item["source_row"]),
+                                   columns="startKM / endKM", original_value=f"{item['start']} → {item['end']} km",
+                                   issue="外側 non-support 暫保留", decision="決定首末 Support 外的邊界政策；目前保留原範圍，未自動擴張", priority="業務政策確認"))
         for sheet, info in book["intervals"].items():
+            if sheet.endswith("track type") and reconstruct(source_frames[sheet], sheet, location_envelope(source_frames))["active"]:
+                continue
             assert info["overlap_examples_complete"]
             ambiguous = {(item["previous_source_row"], item["current_source_row"]) for item in info["ambiguous_overlap_examples"]}
             for item in info["overlap_examples"]:
@@ -154,12 +190,15 @@ def main():
     write_csv(out / "manual-review-checklist.csv", manual, manual_fields)
     write_csv(out / "unclassified-mapping-rows.csv", unknown, manual_fields)
     write_csv(out / "accepted-same-location-overlaps.csv", accepted, list(accepted[0]))
-    write_csv(out / "interval-overlaps.csv", intervals, list(intervals[0]))
+    write_csv(out / "interval-overlaps.csv", intervals, list(intervals[0]) if intervals else manual_fields)
+    write_csv(out / "support-derived-intervals.csv", derivations, list(derivations[0]) if derivations else ["workbook"])
+    write_csv(out / "support-source-disposition.csv", dispositions, list(dispositions[0]) if dispositions else ["workbook"])
     # Store the raw source pair snapshot for a future review, including multiplicity.
     raw_snapshot = [dict(sheet=sheet, excel_row=row, location_km=location, bracket=bracket)
                     for sheet, pairs in current.items() for (location, bracket), rows in pairs.items() for row in rows]
     write_csv(out / "mapping-source-records.csv", raw_snapshot, ["sheet", "excel_row", "location_km", "bracket"])
     summary = dict(rules_version=RULES_VERSION, mapping_sha256=mapping_digest, source_digests=source_digests,
+                   interval_policy=POLICY_VERSION, support_summary=support_summary,
                    previous_mapping_sha256=old_manifest[0]["mapping_sha256"],
                    previous_review_mapping_record_changes=len(changes), drl_record_changes_since_previous=len(drl_changes),
                    historical_record_changes=historical_counts, mapping_sheets=sheets,
@@ -183,47 +222,56 @@ def main():
     def link(label, path):
         return f"[{label}](<{Path(path).resolve().as_posix()}>)"
 
-    md = ["# TOV1050 metadata 審閱：2026-10-23 batch-01", "",
+    md = [f"# TOV1050 metadata 審閱：2026-10-23 {out.name}", "",
           "本批以目前實際來源重新產生七線候選，規則版本 2026-10-23。候選全部維持 review-only，沒有 runtime promotion；技術 pass 不代表 metadata 核准。", "",
           "## Git 與實際來源", "",
-          "- 開始時 master；HEAD／origin/master 均為 4c12e8d4e004c004c07b21394028beac88ebf75d。",
+          "- 開始時 master；HEAD／origin/master 均為 483b8e7a3883391f62e02ab19e501c852ca39713。",
           "- 使用者原有四份 dirty Excel（mapping、ISL、KTL、2026-09-23 舊 ISL candidate）均保留，不納入本次 commit。",
-          f"- Mapping SHA-256：`{mapping_digest}`；前次 batch-03：`{summary['previous_mapping_sha256']}`。",
-          "- 七份 metadata source digest 全部與昨日 batch-03 相同；ISL／KTL 自該次審閱後沒有新內容變更，與 Git HEAD 的差異仍存在。",
+          f"- Mapping SHA-256：`{mapping_digest}`；前批：`{summary['previous_mapping_sha256']}`。",
+          f"- 相較前批，metadata source digest 改變 {sum(x['changed_since_previous'] for x in source_digests)} 份；各檔完整 digest 見 audit-summary.json。",
           "- 共用 mapping 全 16 sheets 核對；七線覆蓋 14 sheets，DRL UT／PL 另作唯讀診斷，未建立沒有 source 的 DRL candidate。", "",
           "## 實際資料差異", "",
-          f"相較昨日 batch-03 的 14 sheets，Location／Bracket 多重集合差異 {len(changes)} 筆（刪除和新增分別列一筆，不能當作相同數量的錯誤）。以前次 candidate 配對 provenance 重建來源 row，按 canonical 精度排除 Excel 浮點尾數噪音；非單純比較移列後的 row。DRL 依前次已核實的歷史 mapping 比較，變更 {len(drl_changes)} 筆。",
+          f"相較前批 {previous.name}，Location／Bracket 多重集合差異 {len(changes)} 筆（刪除和新增分別列一筆，不代表相同數量的錯誤）；使用前批原始記錄快照，避免拆分、suffix 或移列影響。",
           link("與上次審閱的完整差異", out / "mapping-diff-since-previous-review.csv"), "",
-          "本次變更包括 SI 補編號、BWA／Fixed subtype、TKS isolator 格式、TKL DT／TKS DT 刪除或整理列；已重新核對剩餘 identity，不以刪列數推論整段 tension length 消失。",
+          "本次來源更動詳上述 CSV；先前三列未分類命名已由使用者更新原檔並重新分類。候選另依 Support 政策重建 non-support；原始 metadata 未被流程寫回。",
           "較早的刪除決策另以 9742a50 比較；2026-09-23 審閱檔以 dbce953 比較，完整 CSV 保留各歷史基準，不能把今日 HEAD 當作 9 月更新前版本。", "",
           "## 已解決與已接受規則", "",
           f"- 不同 physical Bracket 同位置：共 {len(accepted)} 組已依使用者規則接受，不再要求逐組確認；資料全保留。",
           f"- Slash 複合 mapping：{summary['split_source_rows']} 個來源列拆分，增加 {summary['extra_split_rows']} 個輸出列；provenance 保留原串、各 component、位置及分類。",
           f"- 合法同名 termination：{summary['termination_renamed_rows']} 列候選加位置 suffix；未改來源。",
           "- 全 16 sheets 的 normal 同名多位置、physical exact duplicate 與 invalid mapping 皆為 0。",
-          f"- 所有 source reversed interval 共 {resolved['reversed_interval_rows']} 列；ISL DT row 387 仍為 99.5361 → 99.5369 km。",
+          f"- 所有 source reversed interval 共 {resolved['reversed_interval_rows']} 列。舊內側 non-support 已 superseded，不再要求逐列確認其端點。",
           "- AEL DT 350-001～350-042 各保留一次；KTL DT CR186-06／08 分別只在 98.368／98.382 km；TWL DT row 46 為 0.4 km／2-045；ISL DT C:N 輔助欄無非空值。", "",
+          "## Support 推導政策與結果", "",
+          f"政策 `{POLICY_VERSION}`：Support 按位置排序，每對有效 anchor 建立 `[左Support.endKM+0.0001, 右Support.startKM-0.0001]` km，十進位計算並保留四位；canonical仍為m。Support、Curve／Tangent及location type不套用non-support重建。",
+          "首末 Support 外的原始 non-support 暫保留並列 review。異常 Support 原值保留、不自行更改單位或小數點，亦不參與推導；其餘有效 Support 仍推導。異常基準未處理前不得視為 metadata 核准。", "",
+          "| Line／source sheet | 舊內側 non-support superseded | 新衍生段 | 外側保留 | Anchor 問題 |",
+          "|---|---:|---:|---:|---:|"]
+    for item in support_summary:
+        md.append(f"| {item['line']} / {item['sheet']} | {item['superseded']} | {item['derived']} | {item['retained_edges']} | {item['issues']} |")
+    md.extend(["", link("每段雙側 Support 原始 row、端點及四位公里值", out / "support-derived-intervals.csv"),
+               link("來源列處置與原值", out / "support-source-disposition.csv"), "",
           "## 優先人工操作表", "",
           "| Workbook（完整路徑） | Sheet／Excel row | 欄位與原始值 | 問題／需要決策 |",
-          "|---|---|---|---|"]
+          "|---|---|---|---|"])
     for row in summary["priority_review_rows"]:
         md.append(f"| {link(Path(row['workbook']).name, row['workbook'])} | {row['sheet']} / {row['excel_rows']} | {row['columns']}：{row['original_value']} | {row['issue']}；{row['decision']} |")
-    md.extend(["", f"另有 {len(intervals)} 組 interval overlaps（包含上述兩組等長 overlap），完整操作表保留每組 workbook／sheet／row／端點與決策。Bracket 同位合法規則不直接核准 interval 的範圍／解析優先政策。",
+    md.extend(["", f"操作表另列外側 non-support 邊界政策及剩餘 {len(intervals)} 組非重建範圍的 interval overlap。原始146組overlap仍保存在validator原始intervals證據；其中舊non-support端點不再列為修正待辦。候選有效interval另有effective_intervals檢查。",
                link("完整人工操作表", out / "manual-review-checklist.csv"), "",
                "## 實際驗證與候選", "",
-               "18 targeted metadata tests passed；standardizer exit 0；validator exit 0，沒有 error finding。各候選 threshold／location／interval／Bracket parity、source／mapping digest、provenance source-row 及 component payload 核對全部吻合。", "",
+               "實際測試命令與數目見當日 request。Standardizer、validator結果與各候選parity／digest／provenance見JSON；source-to-candidate interval比對已納入Support推導政策，另核對anchor payload與衍生段數量。", "",
                "| Line | Validator status | 新候選（全為 review-only） |",
                "|---|---|---|"])
     for item in manifest:
         md.append(f"| {item['line']} | {summary['statuses'][item['line']]} | {link(Path(item['output']).name, root / item['output'])} |")
     md.extend(["", "## 產物與 Linear", "",
                link("規則集", root / "docs/tov1050-metadata-rules.md"),
-               link("需求與實際執行命令", root / "docs/requests/2026-10-23-tov1050-metadata-review.md"),
+               link("需求與實際執行命令", root / "docs/requests/2026-10-23-tov1050-support-intervals.md"),
                link("Validator JSON", next((out / "validation-final").glob("*.json"))),
                link("16 sheets 摘要", out / "all-mapping-sheet-summary.csv"),
                link("Mapping 原始記錄快照", out / "mapping-source-records.csv"),
                link("拆分及 termination 對照", out / "mapping-components.csv"), "",
-               "本工作階段 Linear MCP 實際掛載且成功讀取 DAV-19／DAV-10；實作前需求與設計已同步。結果與 commit／push 狀態由當日 request 及 Linear 最終進度記錄。Next action：使用者確認三列未分類命名與 interval 端點／政策，之後依決策重新產生；未取得明確核准不得 promotion。", ""])
+               "本工作階段 Linear MCP 實際掛載且成功讀取 DAV-19／DAV-10；實作前需求與設計已同步。結果與commit／push由當日request及Linear記錄。Next action：處理操作表的異常Support、外側邊界及location overlap；尚未取得metadata核准，不promotion。", ""])
     (out / "metadata-review-audit.md").write_text("\n".join(md), encoding="utf-8")
     (out / "audit-summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
     assert _sha256(mapping) == mapping_digest

@@ -428,3 +428,125 @@ def test_candidate_digest_mismatch_is_reported(tmp_path):
     report = validate_workbook(source_path, candidate_path, mapping_path, "LAR_AEL")
     assert report["candidate_metadata"]["source_sha256_match"] is False
     assert any(item["code"] == "candidate_metadata_provenance" for item in report["findings"])
+
+
+def test_support_policy_uses_sorted_anchors_not_untrusted_non_support():
+    from tov1050_support_intervals import reconstruct
+    frame = pd.DataFrame({
+        "track type": ["Support", "non-support", "Support", "Support", "Support"],
+        "startKM": [98.671, 98.668, 98.643, 98.661, 98.651],
+        "endKM": [98.671, 98.644, 98.643, 98.661, 98.651],
+    })
+    result = reconstruct(frame, "DT track type")
+    assert [(r["from_km"], r["to_km"]) for r in result["derived"]] == [
+        ("98.6431", "98.6509"), ("98.6511", "98.6609"), ("98.6611", "98.6709"),
+    ]
+    assert result["sources"][1]["status"] == "superseded"
+    assert result["derived"][0]["anchors"] == [
+        {"source_row": 4, "start": 98.643, "end": 98.643},
+        {"source_row": 6, "start": 98.651, "end": 98.651},
+    ]
+
+
+def test_support_policy_handles_extended_supports_and_retains_outer_bounds():
+    from tov1050_support_intervals import reconstruct
+    frame = pd.DataFrame({
+        "track type": ["non-support", "Support", "Support", "non-support"],
+        "startKM": [98.0, 98.643, 98.651, 98.6531],
+        "endKM": [98.6429, 98.645, 98.653, 99.0],
+    })
+    result = reconstruct(frame, "UT track type")
+    assert [(r["from_km"], r["to_km"]) for r in result["derived"]] == [("98.6451", "98.6509")]
+    assert [r["source_row"] for r in result["retained_edges"]] == [2, 5]
+    assert len(result["intervals"]) == 5
+
+
+def test_support_policy_reports_bad_anchors_and_does_not_derive_huge_gap():
+    from tov1050_support_intervals import reconstruct
+    frame = pd.DataFrame({
+        "track type": ["Support", "Support", "Support", "Tangent"],
+        "startKM": [99.12, 99126, 99.13, 97],
+        "endKM": [99.12, 99126, 99.13, 113.5],
+    })
+    result = reconstruct(frame, "DT track type", bounds=(97, 113.5))
+    assert result["issues"][0]["source_row"] == 3
+    assert result["issues"][0]["code"] == "invalid_support_anchor"
+    assert [(r["from_km"], r["to_km"]) for r in result["derived"]] == [("99.1201", "99.1299")]
+    # Source anomaly stays visible; it is never divided by 1000 silently.
+    assert result["sources"][1]["output"]["from_m"] == 99126000
+
+
+def test_support_policy_gap_precision_and_overlap_edges():
+    from tov1050_support_intervals import reconstruct
+    frame = pd.DataFrame({"track type": ["Support"] * 5,
+                          "startKM": [1.0000, 1.0001, 1.0003, 1.0003, 1.00031],
+                          "endKM": [1.0000, 1.0001, 1.0003, 1.0003, 1.00031]})
+    result = reconstruct(frame, "UT track type")
+    assert [(r["from_km"], r["to_km"]) for r in result["derived"]] == [("1.0002", "1.0002")]
+    assert {r["code"] for r in result["issues"]} == {"overlapping_support_anchors", "invalid_support_anchor"}
+    no_support = reconstruct(pd.DataFrame({"track type": ["non-support"], "startKM": [1.0], "endKM": [2.0]}), "UT track type")
+    assert no_support["derived"] == []
+    assert no_support["sources"][0]["status"] == "emitted"
+    assert no_support["issues"][0]["code"] == "no_valid_support_anchors"
+
+
+def test_orcr_supports_before_mainline_curve_range_remain_valid():
+    from tov1050_support_intervals import reconstruct, location_envelope
+    locations = pd.DataFrame({"location type": ["ORCR", "Tunnel"],
+                              "startKM": [97, 100.242], "endKM": [100.241, 113.5]})
+    frame = pd.DataFrame({"track type": ["Support", "Support", "Curve"],
+                          "startKM": [97.781, 97.785, 100.2411], "endKM": [97.781, 97.785, 113.5]})
+    result = reconstruct(frame, "DT track type", location_envelope({"location type": locations}))
+    assert result["issues"] == []
+    assert [(r["from_km"], r["to_km"]) for r in result["derived"]] == [("97.7811", "97.7849")]
+
+
+def test_support_derivation_candidate_and_anchor_provenance_are_verified(tmp_path):
+    source_path, mapping_path, candidate_path = (tmp_path / name for name in ("LAR_AEL metadata.xlsx", "mapping.xlsx", "candidate.xlsx"))
+    frames = _source_frames()
+    frames["UT track type"] = pd.DataFrame({
+        "track type": ["Support", "non-support", "Support"],
+        "startKM": [48.1, 48.13, 48.2], "endKM": [48.1, 48.12, 48.2],
+    })
+    with pd.ExcelWriter(source_path) as writer:
+        for name, frame in frames.items():
+            frame.to_excel(writer, sheet_name=name, index=False)
+    _write_mapping(mapping_path)
+    standardize_workbook(source_path, mapping_path, candidate_path)
+    report = validate_workbook(source_path, candidate_path, mapping_path, "LAR_AEL")
+    assert report["tracks"]["LAR_AEL UT"]["intervals_match"]
+    assert report["interval_derivations"]["rows_match"]
+    assert not [r for r in report["findings"] if r["severity"] == "error"]
+    original = pd.read_excel(candidate_path, sheet_name=None)
+    assert original["LAR_AEL UT"].loc[original["LAR_AEL UT"]["Track Type"] == "non-support", "Track Type FromM"].tolist() == [48100.1]
+    # An incorrect anchor source row cannot be accepted even with valid output.
+    corrupted = {name: frame.copy() for name, frame in original.items()}
+    corrupted["__interval_derivation__"].loc[0, "anchors_json"] = '[]'
+    with pd.ExcelWriter(candidate_path) as writer:
+        for name, frame in corrupted.items():
+            frame.to_excel(writer, sheet_name=name, index=False)
+    report = validate_workbook(source_path, candidate_path, mapping_path, "LAR_AEL")
+    assert not report["interval_derivations"]["rows_match"]
+    assert report["status"] == "fail"
+    # Original non-support disposition and payload must remain traceable.
+    corrupted = {name: frame.copy() for name, frame in original.items()}
+    provenance = corrupted["__provenance__"]
+    idx = provenance.index[(provenance["source_sheet"] == "UT track type") & (provenance["status"] == "superseded")][0]
+    provenance.loc[idx, "interval_payload_json"] = '{}'
+    with pd.ExcelWriter(candidate_path) as writer:
+        for name, frame in corrupted.items():
+            frame.to_excel(writer, sheet_name=name, index=False)
+    report = validate_workbook(source_path, candidate_path, mapping_path, "LAR_AEL")
+    assert report["provenance"]["interval_mismatch_count"] == 1
+    assert report["status"] == "fail"
+    # Reversing the derived endpoints must fail, even though min/max is equal.
+    corrupted = {name: frame.copy() for name, frame in original.items()}
+    track = corrupted["LAR_AEL UT"]
+    idx = track.index[track["Track Type"] == "non-support"][0]
+    track.loc[idx, ["Track Type FromM", "Track Type ToM"]] = [48199.9, 48100.1]
+    with pd.ExcelWriter(candidate_path) as writer:
+        for name, frame in corrupted.items():
+            frame.to_excel(writer, sheet_name=name, index=False)
+    report = validate_workbook(source_path, candidate_path, mapping_path, "LAR_AEL")
+    assert not report["tracks"]["LAR_AEL UT"]["intervals_match"]
+    assert report["status"] == "fail"

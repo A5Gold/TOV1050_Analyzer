@@ -20,6 +20,7 @@ import pandas as pd
 from tov1050_mapping_rules import (
     RULES_VERSION, RULES_DOCUMENT, component_labels, expand_mapping, provenance_components,
 )
+from tov1050_support_intervals import reconstruct, location_envelope, POLICY_VERSION, DERIVATION_COLUMNS
 
 
 LINES = ("ISL", "KTL", "LAR_AEL", "LAR_TCL", "TKL", "TKS", "TWL")
@@ -214,6 +215,7 @@ def _track_rows(
     source_sheet: str,
     mapping_source_sheet: str | None,
     scale: float,
+    location_bounds: tuple[float, float] | None = None,
 ) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
     columns = {str(c).strip().lower(): c for c in frame.columns}
     type_col = columns.get("track type") or columns.get("track_type") or columns.get("track type ")
@@ -223,7 +225,20 @@ def _track_rows(
         raise ValueError(f"{source_sheet} is missing track type/startKM/endKM")
     rows: list[dict[str, Any]] = []
     provenance: list[dict[str, Any]] = []
-    for source_row, row in frame.iterrows():
+    policy = reconstruct(frame, source_sheet, location_bounds)
+    if policy["active"]:
+        for item in policy["intervals"]:
+            rows.append({"Track Type": item["label"], "Track Type FromM": item["from_m"],
+                         "Track Type ToM": item["to_m"], None: None,
+                         "Bracket FromM": None, "Tension Length": None, "Bracket": None})
+        for item in policy["sources"]:
+            payload = {key: item[key] for key in ("label", "start", "end", "output")}
+            provenance.append({"source_sheet": source_sheet, "source_row": item["source_row"],
+                               "target_sheet": source_sheet.replace(" track type", ""), "status": item["status"],
+                               "interval_policy": POLICY_VERSION,
+                               "interval_payload_json": json.dumps(payload, ensure_ascii=False),
+                               "transform": "Support-based reconstruction; interior non-support superseded; outer non-support retained for review"})
+    for source_row, row in ([] if policy["active"] else frame.iterrows()):
         start, end = _number(row.get(start_col)), _number(row.get(end_col))
         if start is None and end is None and not str(row.get(type_col, "")).strip():
             continue
@@ -269,9 +284,11 @@ def standardize_workbook(source: Path, mapping_book: Path, output: Path, scale: 
         "source_sha256": source_digest,
         "mapping_sha256": mapping_digest,
         "chainage_scale": scale,
+        "interval_policy": POLICY_VERSION,
         "sheets": {},
     }
     with pd.ExcelWriter(output, engine="openpyxl") as writer:
+        derivations = []
         threshold = _wide_thresholds(source_sheets["threshold"])
         threshold.to_excel(writer, sheet_name="threshold", index=False)
         provenance.extend(_threshold_provenance(source_sheets["threshold"]))
@@ -311,20 +328,27 @@ def standardize_workbook(source: Path, mapping_book: Path, output: Path, scale: 
             rows, rows_provenance = _track_rows(
                 source_sheets[source_name], mapping, source_name,
                 mapping_sheet if mapping is not None else None, scale,
+                location_envelope(source_sheets),
             )
             pd.DataFrame(rows, columns=TRACK_COLUMNS).to_excel(writer, sheet_name=f"{line} {direction}", index=False)
             provenance.extend(rows_provenance)
+            policy = reconstruct(source_sheets[source_name], source_name, location_envelope(source_sheets))
+            for item in policy["derived"]:
+                derivations.append({**{k: v for k, v in item.items() if k != "anchors"},
+                                    "anchors_json": json.dumps(item["anchors"], ensure_ascii=False)})
             summary["sheets"][f"{line} {direction}"] = {"rows": len(rows), "schema": "wide+bracket"}
 
         pd.DataFrame([{"generated_at": datetime.now(timezone.utc).isoformat(), "source_workbook": str(source),
                        "source_sha256": source_digest, "mapping_workbook": str(mapping_book),
                        "mapping_sha256": mapping_digest, "chainage_unit": "m", "chainage_scale": scale,
                        "candidate_status": "review_required", "rules_version": RULES_VERSION,
+                       "interval_policy": POLICY_VERSION,
                        "rules_document": RULES_DOCUMENT,
                        "note": "Candidate only; review overlaps, invalid rows, and bracket prefix mapping before activation."}]).to_excel(
             writer, sheet_name="__standardization__", index=False
         )
         pd.DataFrame(provenance).to_excel(writer, sheet_name="__provenance__", index=False)
+        pd.DataFrame(derivations, columns=DERIVATION_COLUMNS).to_excel(writer, sheet_name="__interval_derivation__", index=False)
     summary["provenance_rows"] = len(provenance)
     return summary
 
