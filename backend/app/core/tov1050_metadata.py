@@ -13,6 +13,8 @@ from .tov1050_contract import metadata_track_sheet, metadata_workbook_for
 
 
 CHAINAGE_SCALE_M_PER_KM = 1000.0
+INTERVAL_FLOAT_TOLERANCE_M = 1e-9
+INTERVAL_FLOAT_DECIMALS = 9
 
 
 class TOV1050MetadataManager(TOV1050CapabilitiesMixin, MetadataManager):
@@ -56,6 +58,11 @@ class TOV1050MetadataManager(TOV1050CapabilitiesMixin, MetadataManager):
             data[column] = pd.to_numeric(
                 data[column].astype("string").str.replace(",", "", regex=False).str.strip(),
                 errors="coerce",
+            )
+            # Excel may persist decimal metre endpoints with binary noise.
+            # Normalize only below the contract's 1e-9 m comparison tolerance.
+            data[column] = np.round(
+                data[column].to_numpy(dtype=float), decimals=INTERVAL_FLOAT_DECIMALS,
             )
         data[value] = labels.loc[active]
         invalid = (

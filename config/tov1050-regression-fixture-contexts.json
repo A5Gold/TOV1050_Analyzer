@@ -10,5 +10,17 @@
     "confirmed_by": "User reply: DRL／PL／UT",
     "confirmation_date": "2026-10-23",
     "scope": "This source file context only; not approval of physical TL intervals or PL metadata for every direction"
+  },
+  "00 Reference Document/Raw data/TKS/20260902_TKS_DT.csv": {
+    "line": "TKL",
+    "session": "TKS",
+    "track": "DT",
+    "date_str": "20260902",
+    "station_start": "NOT_PROVIDED",
+    "station_end": "NOT_PROVIDED",
+    "source_sha256": "9263b95b8fdf705a805fc7d196943b83c61f7e58d4b31881509c8e0cdfae7d11",
+    "confirmed_by": "Filename 20260902_TKS_DT.csv plus existing product contract: TKS is a TKL session",
+    "confirmation_date": "2026-10-23",
+    "scope": "This source file context only; station range not supplied; not approval of TL intervals"
   }
 }

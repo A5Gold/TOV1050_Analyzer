@@ -1,0 +1,275 @@
+{
+  "TKS": {
+    "source_sha256": "9263b95b8fdf705a805fc7d196943b83c61f7e58d4b31881509c8e0cdfae7d11",
+    "metadata_sha256": "40a6979ed72c99fa5582d574e99f0c75f17f92bc9e07705989084ec5c69f5f6e",
+    "rows": 130825,
+    "exceptions": {
+      "Low Height": 0,
+      "High Height": 0,
+      "Wire Wear": 0,
+      "Stagger Left": 0,
+      "Stagger Right": 1
+    },
+    "api_report_raw": [
+      200,
+      200,
+      200
+    ],
+    "mapping_coverage": {
+      "class": {
+        "uncovered_rows": 0,
+        "first_uncovered_chainages_m": []
+      },
+      "track": {
+        "uncovered_rows": 0,
+        "first_uncovered_chainages_m": []
+      }
+    },
+    "status": "pass"
+  },
+  "TCL": {
+    "source_sha256": "13efae7caa2e22b066d33f72c3b0bf1ad94a8436820ce3b182d52fa4157d51bc",
+    "retained_rows": 598044,
+    "context": "unassigned; no detector run",
+    "UT_uncovered": {
+      "class": 100,
+      "track": 0
+    },
+    "DT_uncovered": {
+      "class": 100,
+      "track": 0
+    },
+    "class_gap_review_rows": 200,
+    "status": "blocked_context_and_class_coverage"
+  },
+  "TML": {
+    "reference_head": "33e77ab3c7afc72d0dd531d2b660baf08cf8fd63",
+    "baseline_pin": "cbca528f090152ec2c776ee04a4c30f0d371810f",
+    "core_audit": [
+      {
+        "file": "backend/app/core/analyzers.py",
+        "pinned_sha256": "06b2014471904a3487c41d07815565230cfa84bf930ec586d445bcc222838b90",
+        "current_sha256": "06b2014471904a3487c41d07815565230cfa84bf930ec586d445bcc222838b90",
+        "matches_pin_normalized": true
+      },
+      {
+        "file": "backend/app/core/metadata.py",
+        "pinned_sha256": "176fdd4a4a49f840ec83185faae0ae4832142f1fc066273364d2868e3b83f8c4",
+        "current_sha256": "e5d6f39739d44eecd9d7188657df29dc4a2af5a9a827faae88d493170fd2f8f2",
+        "matches_pin_normalized": true
+      },
+      {
+        "file": "backend/app/core/data_ingestion.py",
+        "pinned_sha256": "4bb6ca710d912eaabde678a85dd7c30a1ebc2ca2c973eef6a670a9b63b729545",
+        "current_sha256": "db36a0ff09d3cb3bcbbe8b4dcfe9ed604bbd011f0faed8a1d40cde4aa6fafa85",
+        "matches_pin_normalized": true
+      },
+      {
+        "file": "backend/app/core/exporter.py",
+        "pinned_sha256": "cbc967c070a6282c58dd90446a6b3a4f99e8a9b4976616490c3e85e5b74b21aa",
+        "current_sha256": "0088833cbe52c7a213eaab57fc5d808063df948c5b0f92dee15bfb0af7b2c643",
+        "matches_pin_normalized": true
+      }
+    ],
+    "TML_metadata_sha256": "4529134e1b95fb614e5f72faaf0e40bf4483f8196de78d54e076cd615a49e1b5",
+    "source": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\Raw data\\TML\\TML_D1_260410.datac",
+    "source_sha256": "da226284648bbec7c9e16c2d5d709aa6a39fb96fc6059c0ae88e9d85a54f48e0",
+    "rows": 41138,
+    "exception_counts": {
+      "Low Height": 0,
+      "High Height": 0,
+      "Wire Wear": 86,
+      "Stagger Left": 20,
+      "Stagger Right": 43
+    },
+    "report_sheets": {
+      "Summary": {
+        "rows": 149,
+        "columns": [
+          "Run Date",
+          "Line",
+          "Track",
+          "Section",
+          "Task No",
+          "St. Start",
+          "St. End",
+          "ID",
+          "FromM",
+          "ToM",
+          "Length",
+          "Exception Type",
+          "MaxValue",
+          "MaxLocation",
+          "Overlap",
+          "Tension Length",
+          "Track Type",
+          "Level",
+          "Landmark",
+          "Class",
+          "Threshold Value"
+        ]
+      },
+      "Low Height": {
+        "rows": 0,
+        "columns": [
+          "Run Date",
+          "Line",
+          "Track",
+          "Section",
+          "Task No",
+          "St. Start",
+          "St. End",
+          "ID",
+          "FromM",
+          "ToM",
+          "Length",
+          "Exception Type",
+          "MaxValue",
+          "MaxLocation",
+          "Overlap",
+          "Tension Length",
+          "Track Type",
+          "Level",
+          "Landmark",
+          "Class",
+          "Threshold Value"
+        ]
+      },
+      "High Height": {
+        "rows": 0,
+        "columns": [
+          "Run Date",
+          "Line",
+          "Track",
+          "Section",
+          "Task No",
+          "St. Start",
+          "St. End",
+          "ID",
+          "FromM",
+          "ToM",
+          "Length",
+          "Exception Type",
+          "MaxValue",
+          "MaxLocation",
+          "Overlap",
+          "Tension Length",
+          "Track Type",
+          "Level",
+          "Landmark",
+          "Class",
+          "Threshold Value"
+        ]
+      },
+      "Wire Wear": {
+        "rows": 86,
+        "columns": [
+          "Run Date",
+          "Line",
+          "Track",
+          "Section",
+          "Task No",
+          "St. Start",
+          "St. End",
+          "ID",
+          "FromM",
+          "ToM",
+          "Length",
+          "Exception Type",
+          "MaxValue",
+          "MaxLocation",
+          "Overlap",
+          "Tension Length",
+          "Track Type",
+          "Level",
+          "Landmark",
+          "Class",
+          "Threshold Value"
+        ]
+      },
+      "Stagger Left": {
+        "rows": 20,
+        "columns": [
+          "Run Date",
+          "Line",
+          "Track",
+          "Section",
+          "Task No",
+          "St. Start",
+          "St. End",
+          "ID",
+          "FromM",
+          "ToM",
+          "Length",
+          "Exception Type",
+          "MaxValue",
+          "MaxLocation",
+          "Overlap",
+          "Tension Length",
+          "Track Type",
+          "Level",
+          "Landmark",
+          "Class",
+          "Threshold Value"
+        ]
+      },
+      "Stagger Right": {
+        "rows": 43,
+        "columns": [
+          "Run Date",
+          "Line",
+          "Track",
+          "Section",
+          "Task No",
+          "St. Start",
+          "St. End",
+          "ID",
+          "FromM",
+          "ToM",
+          "Length",
+          "Exception Type",
+          "MaxValue",
+          "MaxLocation",
+          "Overlap",
+          "Tension Length",
+          "Track Type",
+          "Level",
+          "Landmark",
+          "Class",
+          "Threshold Value"
+        ]
+      },
+      "ChartData": {
+        "rows": 41138,
+        "columns": [
+          "Chainage",
+          "height1",
+          "height2",
+          "height3",
+          "height4",
+          "stagger1",
+          "stagger2",
+          "stagger3",
+          "stagger4",
+          "wear1",
+          "wear2",
+          "wear3",
+          "wear4",
+          "Track Type",
+          "Overlap",
+          "Tension Length",
+          "Landmark",
+          "Class",
+          "height_min",
+          "height_max",
+          "wear_min",
+          "wear_max",
+          "stg_max",
+          "stg_min"
+        ]
+      }
+    },
+    "compare": "TOV640 and TOV1050 subprocess payloads exactly equal including detector rows/IDs and all report sheet columns/data; numeric comparator atol 1e-9 rtol 0",
+    "status": "pass"
+  }
+}

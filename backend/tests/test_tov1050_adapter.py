@@ -48,6 +48,38 @@ def test_loader_trims_io_and_preserves_source_rows(tmp_path):
     assert loader.last_cleaning_summary["io_value_count"] > 0
 
 
+def test_decimal_km_boundary_converts_without_binary_float_underflow(tmp_path):
+    path = tmp_path / "20260822_AEL_UT_SHO_AWE.csv"
+    _write_csv(path)
+    frame = pd.read_csv(path, dtype=str)
+    frame.loc[102, "Km"] = "32.431"
+    frame.to_csv(path, index=False)
+
+    loaded = TOV1050DataLoader().load_data(path)
+    match = loaded.loc[loaded.source_chainage_km == 32.431]
+
+    assert len(match) == 1
+    assert match.iloc[0].Chainage == 32431.0
+
+
+def test_wide_interval_normalizes_only_sub_tolerance_excel_float_noise():
+    intervals = TOV1050MetadataManager._wide_intervals(
+        pd.DataFrame({
+            "FromM": [64522.00000000001, 65000.00000001],
+            "ToM": [64913.9, 65100],
+            "Track": ["Tangent", "Curve"],
+        }),
+        "test",
+        "FromM",
+        "ToM",
+        "Track",
+    )
+
+    assert intervals.index[0].left == 64522.0
+    assert intervals.index[0].left <= 64522.0 <= intervals.index[0].right
+    assert intervals.index[1].left == 65000.00000001
+
+
 def test_reference_sample_has_expected_trimmed_rows():
     path = REFERENCE_ROOT / "Raw data" / "AEL" / "20260822_AEL_UT_SHO_AWE.csv"
     loader = TOV1050DataLoader(chunk_size=100)

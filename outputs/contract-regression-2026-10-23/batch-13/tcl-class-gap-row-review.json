@@ -1,0 +1,4402 @@
+[
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 146009,
+    "Chainage_m": 33445.8,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "UP Track FromM": 33446,
+        "UP Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 146010,
+    "Chainage_m": 33445.8,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "UP Track FromM": 33446,
+        "UP Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 146011,
+    "Chainage_m": 33445.8,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "UP Track FromM": 33446,
+        "UP Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 146012,
+    "Chainage_m": 33445.8,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "UP Track FromM": 33446,
+        "UP Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 146013,
+    "Chainage_m": 33445.8,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "UP Track FromM": 33446,
+        "UP Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 146014,
+    "Chainage_m": 33445.8,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "UP Track FromM": 33446,
+        "UP Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 146015,
+    "Chainage_m": 33445.8,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "UP Track FromM": 33446,
+        "UP Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 146016,
+    "Chainage_m": 33445.8,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "UP Track FromM": 33446,
+        "UP Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 146017,
+    "Chainage_m": 33445.8,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "UP Track FromM": 33446,
+        "UP Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 146018,
+    "Chainage_m": 33445.8,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "UP Track FromM": 33446,
+        "UP Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 146019,
+    "Chainage_m": 33445.6,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "UP Track FromM": 33446,
+        "UP Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 146020,
+    "Chainage_m": 33445.6,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "UP Track FromM": 33446,
+        "UP Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 146021,
+    "Chainage_m": 33445.6,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "UP Track FromM": 33446,
+        "UP Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 146022,
+    "Chainage_m": 33445.6,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "UP Track FromM": 33446,
+        "UP Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 146023,
+    "Chainage_m": 33445.6,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "UP Track FromM": 33446,
+        "UP Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 146024,
+    "Chainage_m": 33445.6,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "UP Track FromM": 33446,
+        "UP Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 146025,
+    "Chainage_m": 33445.6,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "UP Track FromM": 33446,
+        "UP Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 146026,
+    "Chainage_m": 33445.6,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "UP Track FromM": 33446,
+        "UP Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 146027,
+    "Chainage_m": 33445.6,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "UP Track FromM": 33446,
+        "UP Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 146028,
+    "Chainage_m": 33445.6,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "UP Track FromM": 33446,
+        "UP Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 146029,
+    "Chainage_m": 33445.4,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "UP Track FromM": 33446,
+        "UP Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 146030,
+    "Chainage_m": 33445.4,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "UP Track FromM": 33446,
+        "UP Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 146031,
+    "Chainage_m": 33445.4,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "UP Track FromM": 33446,
+        "UP Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 146032,
+    "Chainage_m": 33445.4,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "UP Track FromM": 33446,
+        "UP Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 146033,
+    "Chainage_m": 33445.4,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "UP Track FromM": 33446,
+        "UP Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 146034,
+    "Chainage_m": 33445.4,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "UP Track FromM": 33446,
+        "UP Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 146035,
+    "Chainage_m": 33445.4,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "UP Track FromM": 33446,
+        "UP Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 146036,
+    "Chainage_m": 33445.4,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "UP Track FromM": 33446,
+        "UP Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 146037,
+    "Chainage_m": 33445.4,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "UP Track FromM": 33446,
+        "UP Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 146038,
+    "Chainage_m": 33445.4,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "UP Track FromM": 33446,
+        "UP Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 146039,
+    "Chainage_m": 33445.2,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "UP Track FromM": 33446,
+        "UP Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 146040,
+    "Chainage_m": 33445.2,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "UP Track FromM": 33446,
+        "UP Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 146041,
+    "Chainage_m": 33445.2,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "UP Track FromM": 33446,
+        "UP Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 146042,
+    "Chainage_m": 33445.2,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "UP Track FromM": 33446,
+        "UP Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 146043,
+    "Chainage_m": 33445.2,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "UP Track FromM": 33446,
+        "UP Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 146044,
+    "Chainage_m": 33445.2,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "UP Track FromM": 33446,
+        "UP Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 146045,
+    "Chainage_m": 33445.2,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "UP Track FromM": 33446,
+        "UP Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 146046,
+    "Chainage_m": 33445.2,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "UP Track FromM": 33446,
+        "UP Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 146047,
+    "Chainage_m": 33445.2,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "UP Track FromM": 33446,
+        "UP Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 146048,
+    "Chainage_m": 33445.2,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "UP Track FromM": 33446,
+        "UP Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 146049,
+    "Chainage_m": 33445.0,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "UP Track FromM": 33446,
+        "UP Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 146050,
+    "Chainage_m": 33445.0,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "UP Track FromM": 33446,
+        "UP Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 146051,
+    "Chainage_m": 33445.0,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "UP Track FromM": 33446,
+        "UP Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 146052,
+    "Chainage_m": 33445.0,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "UP Track FromM": 33446,
+        "UP Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 146053,
+    "Chainage_m": 33445.0,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "UP Track FromM": 33446,
+        "UP Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 146054,
+    "Chainage_m": 33445.0,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "UP Track FromM": 33446,
+        "UP Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 146055,
+    "Chainage_m": 33445.0,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "UP Track FromM": 33446,
+        "UP Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 146056,
+    "Chainage_m": 33445.0,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "UP Track FromM": 33446,
+        "UP Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 146057,
+    "Chainage_m": 33445.0,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "UP Track FromM": 33446,
+        "UP Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 146058,
+    "Chainage_m": 33445.0,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "UP Track FromM": 33446,
+        "UP Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 158309,
+    "Chainage_m": 33199.8,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "UP Track FromM": 28301,
+        "UP Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 158310,
+    "Chainage_m": 33199.8,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "UP Track FromM": 28301,
+        "UP Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 158311,
+    "Chainage_m": 33199.8,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "UP Track FromM": 28301,
+        "UP Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 158312,
+    "Chainage_m": 33199.8,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "UP Track FromM": 28301,
+        "UP Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 158313,
+    "Chainage_m": 33199.8,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "UP Track FromM": 28301,
+        "UP Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 158314,
+    "Chainage_m": 33199.8,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "UP Track FromM": 28301,
+        "UP Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 158315,
+    "Chainage_m": 33199.8,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "UP Track FromM": 28301,
+        "UP Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 158316,
+    "Chainage_m": 33199.8,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "UP Track FromM": 28301,
+        "UP Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 158317,
+    "Chainage_m": 33199.8,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "UP Track FromM": 28301,
+        "UP Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 158318,
+    "Chainage_m": 33199.8,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "UP Track FromM": 28301,
+        "UP Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 158319,
+    "Chainage_m": 33199.6,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "UP Track FromM": 28301,
+        "UP Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 158320,
+    "Chainage_m": 33199.6,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "UP Track FromM": 28301,
+        "UP Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 158321,
+    "Chainage_m": 33199.6,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "UP Track FromM": 28301,
+        "UP Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 158322,
+    "Chainage_m": 33199.6,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "UP Track FromM": 28301,
+        "UP Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 158323,
+    "Chainage_m": 33199.6,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "UP Track FromM": 28301,
+        "UP Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 158324,
+    "Chainage_m": 33199.6,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "UP Track FromM": 28301,
+        "UP Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 158325,
+    "Chainage_m": 33199.6,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "UP Track FromM": 28301,
+        "UP Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 158326,
+    "Chainage_m": 33199.6,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "UP Track FromM": 28301,
+        "UP Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 158327,
+    "Chainage_m": 33199.6,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "UP Track FromM": 28301,
+        "UP Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 158328,
+    "Chainage_m": 33199.6,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "UP Track FromM": 28301,
+        "UP Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 158329,
+    "Chainage_m": 33199.4,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "UP Track FromM": 28301,
+        "UP Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 158330,
+    "Chainage_m": 33199.4,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "UP Track FromM": 28301,
+        "UP Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 158331,
+    "Chainage_m": 33199.4,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "UP Track FromM": 28301,
+        "UP Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 158332,
+    "Chainage_m": 33199.4,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "UP Track FromM": 28301,
+        "UP Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 158333,
+    "Chainage_m": 33199.4,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "UP Track FromM": 28301,
+        "UP Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 158334,
+    "Chainage_m": 33199.4,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "UP Track FromM": 28301,
+        "UP Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 158335,
+    "Chainage_m": 33199.4,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "UP Track FromM": 28301,
+        "UP Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 158336,
+    "Chainage_m": 33199.4,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "UP Track FromM": 28301,
+        "UP Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 158337,
+    "Chainage_m": 33199.4,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "UP Track FromM": 28301,
+        "UP Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 158338,
+    "Chainage_m": 33199.4,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "UP Track FromM": 28301,
+        "UP Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 158339,
+    "Chainage_m": 33199.2,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "UP Track FromM": 28301,
+        "UP Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 158340,
+    "Chainage_m": 33199.2,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "UP Track FromM": 28301,
+        "UP Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 158341,
+    "Chainage_m": 33199.2,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "UP Track FromM": 28301,
+        "UP Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 158342,
+    "Chainage_m": 33199.2,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "UP Track FromM": 28301,
+        "UP Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 158343,
+    "Chainage_m": 33199.2,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "UP Track FromM": 28301,
+        "UP Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 158344,
+    "Chainage_m": 33199.2,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "UP Track FromM": 28301,
+        "UP Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 158345,
+    "Chainage_m": 33199.2,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "UP Track FromM": 28301,
+        "UP Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 158346,
+    "Chainage_m": 33199.2,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "UP Track FromM": 28301,
+        "UP Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 158347,
+    "Chainage_m": 33199.2,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "UP Track FromM": 28301,
+        "UP Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 158348,
+    "Chainage_m": 33199.2,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "UP Track FromM": 28301,
+        "UP Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 158349,
+    "Chainage_m": 33199.0,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "UP Track FromM": 28301,
+        "UP Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 158350,
+    "Chainage_m": 33199.0,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "UP Track FromM": 28301,
+        "UP Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 158351,
+    "Chainage_m": 33199.0,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "UP Track FromM": 28301,
+        "UP Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 158352,
+    "Chainage_m": 33199.0,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "UP Track FromM": 28301,
+        "UP Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 158353,
+    "Chainage_m": 33199.0,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "UP Track FromM": 28301,
+        "UP Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 158354,
+    "Chainage_m": 33199.0,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "UP Track FromM": 28301,
+        "UP Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 158355,
+    "Chainage_m": 33199.0,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "UP Track FromM": 28301,
+        "UP Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 158356,
+    "Chainage_m": 33199.0,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "UP Track FromM": 28301,
+        "UP Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 158357,
+    "Chainage_m": 33199.0,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "UP Track FromM": 28301,
+        "UP Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "UT",
+    "csv_source_row": 158358,
+    "Chainage_m": 33199.0,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "UP Track FromM": 28301,
+        "UP Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "UP Track FromM": 33200,
+        "UP Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 146009,
+    "Chainage_m": 33445.8,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "DN Track FromM": 33446,
+        "DN Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 146010,
+    "Chainage_m": 33445.8,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "DN Track FromM": 33446,
+        "DN Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 146011,
+    "Chainage_m": 33445.8,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "DN Track FromM": 33446,
+        "DN Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 146012,
+    "Chainage_m": 33445.8,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "DN Track FromM": 33446,
+        "DN Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 146013,
+    "Chainage_m": 33445.8,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "DN Track FromM": 33446,
+        "DN Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 146014,
+    "Chainage_m": 33445.8,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "DN Track FromM": 33446,
+        "DN Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 146015,
+    "Chainage_m": 33445.8,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "DN Track FromM": 33446,
+        "DN Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 146016,
+    "Chainage_m": 33445.8,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "DN Track FromM": 33446,
+        "DN Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 146017,
+    "Chainage_m": 33445.8,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "DN Track FromM": 33446,
+        "DN Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 146018,
+    "Chainage_m": 33445.8,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "DN Track FromM": 33446,
+        "DN Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 146019,
+    "Chainage_m": 33445.6,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "DN Track FromM": 33446,
+        "DN Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 146020,
+    "Chainage_m": 33445.6,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "DN Track FromM": 33446,
+        "DN Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 146021,
+    "Chainage_m": 33445.6,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "DN Track FromM": 33446,
+        "DN Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 146022,
+    "Chainage_m": 33445.6,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "DN Track FromM": 33446,
+        "DN Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 146023,
+    "Chainage_m": 33445.6,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "DN Track FromM": 33446,
+        "DN Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 146024,
+    "Chainage_m": 33445.6,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "DN Track FromM": 33446,
+        "DN Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 146025,
+    "Chainage_m": 33445.6,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "DN Track FromM": 33446,
+        "DN Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 146026,
+    "Chainage_m": 33445.6,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "DN Track FromM": 33446,
+        "DN Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 146027,
+    "Chainage_m": 33445.6,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "DN Track FromM": 33446,
+        "DN Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 146028,
+    "Chainage_m": 33445.6,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "DN Track FromM": 33446,
+        "DN Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 146029,
+    "Chainage_m": 33445.4,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "DN Track FromM": 33446,
+        "DN Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 146030,
+    "Chainage_m": 33445.4,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "DN Track FromM": 33446,
+        "DN Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 146031,
+    "Chainage_m": 33445.4,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "DN Track FromM": 33446,
+        "DN Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 146032,
+    "Chainage_m": 33445.4,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "DN Track FromM": 33446,
+        "DN Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 146033,
+    "Chainage_m": 33445.4,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "DN Track FromM": 33446,
+        "DN Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 146034,
+    "Chainage_m": 33445.4,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "DN Track FromM": 33446,
+        "DN Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 146035,
+    "Chainage_m": 33445.4,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "DN Track FromM": 33446,
+        "DN Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 146036,
+    "Chainage_m": 33445.4,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "DN Track FromM": 33446,
+        "DN Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 146037,
+    "Chainage_m": 33445.4,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "DN Track FromM": 33446,
+        "DN Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 146038,
+    "Chainage_m": 33445.4,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "DN Track FromM": 33446,
+        "DN Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 146039,
+    "Chainage_m": 33445.2,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "DN Track FromM": 33446,
+        "DN Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 146040,
+    "Chainage_m": 33445.2,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "DN Track FromM": 33446,
+        "DN Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 146041,
+    "Chainage_m": 33445.2,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "DN Track FromM": 33446,
+        "DN Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 146042,
+    "Chainage_m": 33445.2,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "DN Track FromM": 33446,
+        "DN Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 146043,
+    "Chainage_m": 33445.2,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "DN Track FromM": 33446,
+        "DN Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 146044,
+    "Chainage_m": 33445.2,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "DN Track FromM": 33446,
+        "DN Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 146045,
+    "Chainage_m": 33445.2,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "DN Track FromM": 33446,
+        "DN Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 146046,
+    "Chainage_m": 33445.2,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "DN Track FromM": 33446,
+        "DN Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 146047,
+    "Chainage_m": 33445.2,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "DN Track FromM": 33446,
+        "DN Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 146048,
+    "Chainage_m": 33445.2,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "DN Track FromM": 33446,
+        "DN Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 146049,
+    "Chainage_m": 33445.0,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "DN Track FromM": 33446,
+        "DN Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 146050,
+    "Chainage_m": 33445.0,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "DN Track FromM": 33446,
+        "DN Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 146051,
+    "Chainage_m": 33445.0,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "DN Track FromM": 33446,
+        "DN Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 146052,
+    "Chainage_m": 33445.0,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "DN Track FromM": 33446,
+        "DN Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 146053,
+    "Chainage_m": 33445.0,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "DN Track FromM": 33446,
+        "DN Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 146054,
+    "Chainage_m": 33445.0,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "DN Track FromM": 33446,
+        "DN Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 146055,
+    "Chainage_m": 33445.0,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "DN Track FromM": 33446,
+        "DN Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 146056,
+    "Chainage_m": 33445.0,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "DN Track FromM": 33446,
+        "DN Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 146057,
+    "Chainage_m": 33445.0,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "DN Track FromM": 33446,
+        "DN Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 146058,
+    "Chainage_m": 33445.0,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 5,
+        "Class": "Open",
+        "DN Track FromM": 33446,
+        "DN Track ToM": 36604.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 158309,
+    "Chainage_m": 33199.8,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "DN Track FromM": 28301,
+        "DN Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 158310,
+    "Chainage_m": 33199.8,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "DN Track FromM": 28301,
+        "DN Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 158311,
+    "Chainage_m": 33199.8,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "DN Track FromM": 28301,
+        "DN Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 158312,
+    "Chainage_m": 33199.8,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "DN Track FromM": 28301,
+        "DN Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 158313,
+    "Chainage_m": 33199.8,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "DN Track FromM": 28301,
+        "DN Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 158314,
+    "Chainage_m": 33199.8,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "DN Track FromM": 28301,
+        "DN Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 158315,
+    "Chainage_m": 33199.8,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "DN Track FromM": 28301,
+        "DN Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 158316,
+    "Chainage_m": 33199.8,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "DN Track FromM": 28301,
+        "DN Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 158317,
+    "Chainage_m": 33199.8,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "DN Track FromM": 28301,
+        "DN Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 158318,
+    "Chainage_m": 33199.8,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "DN Track FromM": 28301,
+        "DN Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 158319,
+    "Chainage_m": 33199.6,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "DN Track FromM": 28301,
+        "DN Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 158320,
+    "Chainage_m": 33199.6,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "DN Track FromM": 28301,
+        "DN Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 158321,
+    "Chainage_m": 33199.6,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "DN Track FromM": 28301,
+        "DN Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 158322,
+    "Chainage_m": 33199.6,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "DN Track FromM": 28301,
+        "DN Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 158323,
+    "Chainage_m": 33199.6,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "DN Track FromM": 28301,
+        "DN Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 158324,
+    "Chainage_m": 33199.6,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "DN Track FromM": 28301,
+        "DN Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 158325,
+    "Chainage_m": 33199.6,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "DN Track FromM": 28301,
+        "DN Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 158326,
+    "Chainage_m": 33199.6,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "DN Track FromM": 28301,
+        "DN Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 158327,
+    "Chainage_m": 33199.6,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "DN Track FromM": 28301,
+        "DN Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 158328,
+    "Chainage_m": 33199.6,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "DN Track FromM": 28301,
+        "DN Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 158329,
+    "Chainage_m": 33199.4,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "DN Track FromM": 28301,
+        "DN Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 158330,
+    "Chainage_m": 33199.4,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "DN Track FromM": 28301,
+        "DN Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 158331,
+    "Chainage_m": 33199.4,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "DN Track FromM": 28301,
+        "DN Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 158332,
+    "Chainage_m": 33199.4,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "DN Track FromM": 28301,
+        "DN Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 158333,
+    "Chainage_m": 33199.4,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "DN Track FromM": 28301,
+        "DN Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 158334,
+    "Chainage_m": 33199.4,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "DN Track FromM": 28301,
+        "DN Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 158335,
+    "Chainage_m": 33199.4,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "DN Track FromM": 28301,
+        "DN Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 158336,
+    "Chainage_m": 33199.4,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "DN Track FromM": 28301,
+        "DN Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 158337,
+    "Chainage_m": 33199.4,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "DN Track FromM": 28301,
+        "DN Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 158338,
+    "Chainage_m": 33199.4,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "DN Track FromM": 28301,
+        "DN Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 158339,
+    "Chainage_m": 33199.2,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "DN Track FromM": 28301,
+        "DN Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 158340,
+    "Chainage_m": 33199.2,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "DN Track FromM": 28301,
+        "DN Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 158341,
+    "Chainage_m": 33199.2,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "DN Track FromM": 28301,
+        "DN Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 158342,
+    "Chainage_m": 33199.2,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "DN Track FromM": 28301,
+        "DN Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 158343,
+    "Chainage_m": 33199.2,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "DN Track FromM": 28301,
+        "DN Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 158344,
+    "Chainage_m": 33199.2,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "DN Track FromM": 28301,
+        "DN Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 158345,
+    "Chainage_m": 33199.2,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "DN Track FromM": 28301,
+        "DN Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 158346,
+    "Chainage_m": 33199.2,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "DN Track FromM": 28301,
+        "DN Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 158347,
+    "Chainage_m": 33199.2,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "DN Track FromM": 28301,
+        "DN Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 158348,
+    "Chainage_m": 33199.2,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "DN Track FromM": 28301,
+        "DN Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 158349,
+    "Chainage_m": 33199.0,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "DN Track FromM": 28301,
+        "DN Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 158350,
+    "Chainage_m": 33199.0,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "DN Track FromM": 28301,
+        "DN Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 158351,
+    "Chainage_m": 33199.0,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "DN Track FromM": 28301,
+        "DN Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 158352,
+    "Chainage_m": 33199.0,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "DN Track FromM": 28301,
+        "DN Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 158353,
+    "Chainage_m": 33199.0,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "DN Track FromM": 28301,
+        "DN Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 158354,
+    "Chainage_m": 33199.0,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "DN Track FromM": 28301,
+        "DN Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 158355,
+    "Chainage_m": 33199.0,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "DN Track FromM": 28301,
+        "DN Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 158356,
+    "Chainage_m": 33199.0,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "DN Track FromM": 28301,
+        "DN Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 158357,
+    "Chainage_m": 33199.0,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "DN Track FromM": 28301,
+        "DN Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ]
+  },
+  {
+    "direction_hypothesis_only": "DT",
+    "csv_source_row": 158358,
+    "Chainage_m": 33199.0,
+    "metadata_sheet": "Exception Boundarys",
+    "previous_interval": [
+      {
+        "excel_row": 3,
+        "Class": "Open",
+        "DN Track FromM": 28301,
+        "DN Track ToM": 33198.89999999999
+      }
+    ],
+    "next_interval": [
+      {
+        "excel_row": 4,
+        "Class": "Tunnel",
+        "DN Track FromM": 33200,
+        "DN Track ToM": 33444.89999999999
+      }
+    ]
+  }
+]

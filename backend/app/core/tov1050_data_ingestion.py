@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import csv
+from decimal import Decimal, InvalidOperation
 from pathlib import Path
 from typing import Any, Dict, Iterator, Optional
 
@@ -33,6 +34,22 @@ MEASUREMENT_COLUMNS = [
     "wear1", "wear2", "wear3", "wear4",
 ]
 CHAINAGE_SCALE_M_PER_KM = 1000.0
+
+
+def _chainage_metres_from_km(values: pd.Series) -> pd.Series:
+    """Scale source decimal tokens before binary float conversion."""
+    scale = Decimal(str(CHAINAGE_SCALE_M_PER_KM))
+
+    def convert(value: Any) -> float:
+        if value is None or pd.isna(value):
+            return np.nan
+        try:
+            result = float(Decimal(str(value).strip()) * scale)
+        except (InvalidOperation, ValueError, OverflowError):
+            return np.nan
+        return result if np.isfinite(result) else np.nan
+
+    return values.map(convert)
 
 
 class TOV1050DataLoader:
@@ -117,12 +134,13 @@ class TOV1050DataLoader:
                 continue
             chunk = chunk.iloc[keep_start:keep_end].copy()
             source_chainage_km = pd.to_numeric(chunk["Km"], errors="coerce")
+            chainage_metres = _chainage_metres_from_km(chunk["Km"])
             chunk = chunk.rename(columns=RAW_TO_CANONICAL)
             chunk["source_chainage_km"] = source_chainage_km.to_numpy()
-            for column in ["Chainage", *MEASUREMENT_COLUMNS]:
+            for column in MEASUREMENT_COLUMNS:
                 chunk[column] = pd.to_numeric(chunk[column], errors="coerce")
-            # TOV1050 files expose Km; the detector/export contract is metres.
-            chunk["Chainage"] = chunk["Chainage"] * CHAINAGE_SCALE_M_PER_KM
+            # Scale the source decimal token once, before binary float conversion.
+            chunk["Chainage"] = chainage_metres.to_numpy()
             invalid_chainage_count += int(chunk["Chainage"].isna().sum())
             chunk = chunk.dropna(subset=["Chainage"])
             valid_measurement = chunk[MEASUREMENT_COLUMNS].notna().any(axis=1)

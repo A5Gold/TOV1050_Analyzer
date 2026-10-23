@@ -1,0 +1,14 @@
+{
+  "workbook": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\TKS metadata.xlsx",
+  "sha256": "40a6979ed72c99fa5582d574e99f0c75f17f92bc9e07705989084ec5c69f5f6e",
+  "sheet": "TKS DT",
+  "excel_row": 5,
+  "track_type": "Tangent",
+  "from_m_stored": 64522.00000000001,
+  "normalized_from_m": 64522.0,
+  "delta_m": -7.275957614183426e-12,
+  "measurement_chainage_m": 64522.0,
+  "comparison_tolerance_m": 1e-09,
+  "policy": "round stored binary endpoint noise to 9 decimal places on interval load only; source workbook remains unchanged",
+  "status": "sample fully covered after tolerance normalization"
+}

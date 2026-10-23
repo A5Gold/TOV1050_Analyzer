@@ -29,6 +29,8 @@
 
 分析入口對 thresholds/class/track unavailable 回 HTTP 400，避免 detector 的歷史 catch/fallback 掩蓋必要資料缺失。既有 optional enrichment 的空值欄位仍保留，API/report 能力用於揭露其 unknown 語意，不把空白轉成 N。
 
+TOV1050 CSV 的 Km 由原始十進位字串先以 Decimal 乘1000一次，再轉成 canonical float metres，避免32.431乘1000出現32430.999999999996。Wide Excel interval端點讀取後依契約 atol=1e-9m、rtol=0 正規化至9位小數；只消除小於1e-9m的儲存浮點噪音，不擴物理區間，來源workbook不改。大於容差的差異保持不變。
+
 ### 實際量測覆蓋 preflight
 
 `get_measurement_coverage`／`require_measurement_coverage` 在 detector 前逐筆核對全部清洗保留 Chainage 的 Class 與 Track Type 區間，不使用圖表抽樣。即使 sheet 能力為 available，任一筆未覆蓋仍回 HTTP400，列 workbook/context、sheet、缺少筆數與前20個公尺位置；不執行 detector、不覆寫上次成功分析。端點沿用既有 closed-both 政策及 detector 的重疊解法，本次不變更判定核心或 EAL/TML 入口。

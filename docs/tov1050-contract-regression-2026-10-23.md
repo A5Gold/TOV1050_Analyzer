@@ -117,3 +117,23 @@ python scripts/audit_tov1050_real_fixtures.py --output outputs/contract-regressi
 ```
 
 測試命令與上節相同11個test files。新CLI的`--real-only`明確不執行TOV640 parity；替代metadata必須指定單context，程序退出後還原CONFIG_DIR。隔離成功在CSV及JSON均使用獨立status，不得列為runtime正式驗收。
+
+
+## 新增 TML/TCL/TKS 原始資料（2026-10-23）
+
+使用者更新 Raw data 後盤點三個來源。摘要與SHA見 outputs/contract-regression-2026-10-23/batch-13/updated-source-rollup.json。
+
+- TML TML_D1_260410.datac：SHA da226284648bbec7c9e16c2d5d709aa6a39fb96fc6059c0ae88e9d85a54f48e0；源資料TRACK=DN、41,138 rows。TOV640 Mainline metadata SHA與四個比較core都經核對等於固定pin cbca528f090152ec2c776ee04a4c30f0d371810f；目前TOV640 HEAD雖為33e77ab3c7afc72d0dd531d2b660baf08cf8fd63，沒有變更的核心檔仍與pin相同。TOV640/TOV1050各在獨立程序讀同一datac與metadata，detector及完整Excel report逐欄／逐值一致；比較容差數值atol1e-9、rtol0，字串/ID/欄序精確。例外共149（Wear86、Stagger Left20、Stagger Right43），Summary149列。TOV640專案未修改，見batch-10/tml-readonly-parity.json。
+- TKS 20260902_TKS_DT.csv SHA 9263b95b8fdf705a805fc7d196943b83c61f7e58d4b31881509c8e0cdfae7d11；既有產品契約指定line TKL/session TKS，檔名指定DT。精確十進位Km轉換及端點容差修正後以batch-13重跑：131,222→130,825 rows（trim100/100、invalid chainage0、無有效量測197），Stagger Right 1；API/report/raw全200，ChartData130,825逐列、raw共有21數值欄及Summary逐值驗證通過。Class/Track coverage均0缺口。TKS Excel row5起點原存64522.00000000001m，按1e-9m容差只消除7.28e-12m表達噪音；原始workbook未改。初次batch-10 pass是CSV乘法與Excel端點的浮點表示剛好相等、掩蓋精度問題；batch-11阻擋才揭露端點儲存噪音；兩者均由batch-13最終驗收取代。詳細見batch-13/tks-interval-tolerance-review.json及batch-13/real-results.json。
+- TCL 20260618_032025_olpar.csv SHA 13efae7caa2e22b066d33f72c3b0bf1ad94a8436820ce3b182d52fa4157d51bc；601,804 raw、598,044 rows保留、3,560無有效量測。folder及ORANGE LINE指向TCL，但檔名及資料不能確認direction。UT/DT只作診斷：十進位轉換後兩者track均全覆蓋（先前32431m pseudo-gap已消失）；兩者class都缺100 rows，metadata來源為Excel row4到row5間約1.1m缺口，逐列審閱見batch-13/tcl-class-gap-row-review.json。因此不執行detector/API，不標pass；尚待確認方向且需審閱Class缺口。
+- 最新18組矩陣：4組正式完整匯出通過（原3組＋TKS）、1組DRL isolated-reference通過、13組缺fixture；TCL未指派方向不新增為pass。見batch-13/combined-fixture-coverage.csv。DRL仍未promotion；TML不是TOV1050 line/session matrix項目，另以TOV640相容比較保存。
+- 精度修正測試：decimal 32.431km→32431.0m；wide端點在1e-9m內正規化、超過容差保留。相關adapter/capability測試40 passed；完整相關suite 140 passed in32.27s。更早precision-only整體suite 139 passed，現以140項最終結果為準。 batch-14對三份舊golden重跑：detector例外欄位、ID、level、grouping、清洗、mapping及能力結構/文字完全相同；最大數值表示差2.91e-11（atol1e-9/rtol0）。KTL/TKL圖表envelope只因Chainage精確表示變更，returned chart points分別-1/+1；完整raw detector/export未抽樣。比較見batch-14/comparison.json。
+- TOV640唯讀比較固定pin已驗證四檔內容一致，雖HEAD不同；僅有frontend/index.html及docs/TOV1050_Migration未提交，均保留。
+
+## DRL 標準化審閱候選
+
+只讀取reference 00 Reference Document/config/DRL metadata.xlsx（SHA a386100bb6f47ab9d2a61e7e80c40ad5e87a91cc614e1659584ea41a0161ecff），在 outputs/metadata-review-2026-10-23/batch-05-drl-source/ 建立具來源workbook/sheet/Excel row provenance的間隔候選19列、threshold讀回20列及Bracket單位審閱304點。row11 DRL UT 44887–45500m只標為該確認sample使用依據；不認定全PL sheet路由。Bracket候選Chainage_m保持空白，因原值約41–45但header為FromM，單位未確認；沒有生成TL/Overlap/Landmark interval。DRL PL獨立頁、DN Class反向端點原樣保存。只有CSV/JSON review-only產物，沒有覆寫原workbook或runtime七份config。
+
+## Linear 同步狀態
+
+本輪Linear MCP工具曾回覆Authentication required，需求記錄已標Linear sync blocked。依repo流程執行OAuth後CLI回報登入成功，但目前Codex session需重新開啟或新建local task，現session不得宣稱已同步本輪進度。下一次MCP恢復後先將batch-10至batch-14證據、140 tests、TML/TKS/TCL與DRL candidate結果同步DAV-20/21；DAV-20/21維持In Progress。

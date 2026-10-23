@@ -1,0 +1,68 @@
+{
+  "source_workbook": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\config\\DRL metadata.xlsx",
+  "source_sha256": "a386100bb6f47ab9d2a61e7e80c40ad5e87a91cc614e1659584ea41a0161ecff",
+  "review_only": true,
+  "promotion_authorized": false,
+  "tables": {
+    "threshold": {
+      "data_rows": 20,
+      "header": [
+        "Class",
+        "Track Type",
+        "Exc Type",
+        "Stagger L1",
+        "Stagger L2",
+        "Stagger L3",
+        "Wire Wear L1",
+        "Wire Wear L2",
+        "High Height L1",
+        "High Height L2",
+        "Low Height L2",
+        "Low Height L1",
+        "Wire Wear L3",
+        "High Height L3",
+        "Low Height L3"
+      ]
+    },
+    "Exception Boundarys": {
+      "data_rows": 1,
+      "header": [
+        "Line",
+        "Class",
+        "C/R",
+        "UP Track FromM",
+        "UP Track ToM",
+        "DN Track FromM",
+        "DN Track ToM"
+      ]
+    },
+    "DRL UT": {
+      "data_rows": 218,
+      "header": [
+        "Track Type",
+        "Track Type FromM",
+        "Track Type ToM",
+        "",
+        "Bracket FromM",
+        "Tension Length",
+        "Bracket"
+      ]
+    },
+    "DRL PL": {
+      "data_rows": 86,
+      "header": [
+        "Track Type",
+        "Track Type FromM",
+        "Track Type ToM",
+        "",
+        "Bracket FromM",
+        "Tension Length",
+        "Bracket"
+      ]
+    }
+  },
+  "interval_candidate_rows": 19,
+  "bracket_review_rows": 304,
+  "threshold_rows": 20,
+  "candidate_scope": "provenance-preserving normalized review tables only. Physical points remain unit-unresolved; no TL/Overlap/Landmark interval emitted."
+}

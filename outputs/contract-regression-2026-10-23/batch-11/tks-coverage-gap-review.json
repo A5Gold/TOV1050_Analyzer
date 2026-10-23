@@ -1,0 +1,234 @@
+{
+  "source_sha256": "9263b95b8fdf705a805fc7d196943b83c61f7e58d4b31881509c8e0cdfae7d11",
+  "metadata_sha256": "40a6979ed72c99fa5582d574e99f0c75f17f92bc9e07705989084ec5c69f5f6e",
+  "raw_rows": 131222,
+  "retained_rows": 130825,
+  "uncovered_rows": 10,
+  "uncovered_chainages_m": [
+    64522.0
+  ],
+  "review": [
+    {
+      "csv_source_row": 67387,
+      "source_km": 64.522,
+      "Chainage_m": 64522.0,
+      "track_sheet": "TKS DT",
+      "previous_interval": [
+        {
+          "excel_row": 4,
+          "Track Type": "Curve",
+          "Track Type FromM": 63731.0,
+          "Track Type ToM": 64521.9
+        }
+      ],
+      "next_interval": [
+        {
+          "excel_row": 5,
+          "Track Type": "Tangent",
+          "Track Type FromM": 64522.00000000001,
+          "Track Type ToM": 64913.9
+        }
+      ]
+    },
+    {
+      "csv_source_row": 67388,
+      "source_km": 64.522,
+      "Chainage_m": 64522.0,
+      "track_sheet": "TKS DT",
+      "previous_interval": [
+        {
+          "excel_row": 4,
+          "Track Type": "Curve",
+          "Track Type FromM": 63731.0,
+          "Track Type ToM": 64521.9
+        }
+      ],
+      "next_interval": [
+        {
+          "excel_row": 5,
+          "Track Type": "Tangent",
+          "Track Type FromM": 64522.00000000001,
+          "Track Type ToM": 64913.9
+        }
+      ]
+    },
+    {
+      "csv_source_row": 67389,
+      "source_km": 64.522,
+      "Chainage_m": 64522.0,
+      "track_sheet": "TKS DT",
+      "previous_interval": [
+        {
+          "excel_row": 4,
+          "Track Type": "Curve",
+          "Track Type FromM": 63731.0,
+          "Track Type ToM": 64521.9
+        }
+      ],
+      "next_interval": [
+        {
+          "excel_row": 5,
+          "Track Type": "Tangent",
+          "Track Type FromM": 64522.00000000001,
+          "Track Type ToM": 64913.9
+        }
+      ]
+    },
+    {
+      "csv_source_row": 67390,
+      "source_km": 64.522,
+      "Chainage_m": 64522.0,
+      "track_sheet": "TKS DT",
+      "previous_interval": [
+        {
+          "excel_row": 4,
+          "Track Type": "Curve",
+          "Track Type FromM": 63731.0,
+          "Track Type ToM": 64521.9
+        }
+      ],
+      "next_interval": [
+        {
+          "excel_row": 5,
+          "Track Type": "Tangent",
+          "Track Type FromM": 64522.00000000001,
+          "Track Type ToM": 64913.9
+        }
+      ]
+    },
+    {
+      "csv_source_row": 67391,
+      "source_km": 64.522,
+      "Chainage_m": 64522.0,
+      "track_sheet": "TKS DT",
+      "previous_interval": [
+        {
+          "excel_row": 4,
+          "Track Type": "Curve",
+          "Track Type FromM": 63731.0,
+          "Track Type ToM": 64521.9
+        }
+      ],
+      "next_interval": [
+        {
+          "excel_row": 5,
+          "Track Type": "Tangent",
+          "Track Type FromM": 64522.00000000001,
+          "Track Type ToM": 64913.9
+        }
+      ]
+    },
+    {
+      "csv_source_row": 67392,
+      "source_km": 64.522,
+      "Chainage_m": 64522.0,
+      "track_sheet": "TKS DT",
+      "previous_interval": [
+        {
+          "excel_row": 4,
+          "Track Type": "Curve",
+          "Track Type FromM": 63731.0,
+          "Track Type ToM": 64521.9
+        }
+      ],
+      "next_interval": [
+        {
+          "excel_row": 5,
+          "Track Type": "Tangent",
+          "Track Type FromM": 64522.00000000001,
+          "Track Type ToM": 64913.9
+        }
+      ]
+    },
+    {
+      "csv_source_row": 67393,
+      "source_km": 64.522,
+      "Chainage_m": 64522.0,
+      "track_sheet": "TKS DT",
+      "previous_interval": [
+        {
+          "excel_row": 4,
+          "Track Type": "Curve",
+          "Track Type FromM": 63731.0,
+          "Track Type ToM": 64521.9
+        }
+      ],
+      "next_interval": [
+        {
+          "excel_row": 5,
+          "Track Type": "Tangent",
+          "Track Type FromM": 64522.00000000001,
+          "Track Type ToM": 64913.9
+        }
+      ]
+    },
+    {
+      "csv_source_row": 67394,
+      "source_km": 64.522,
+      "Chainage_m": 64522.0,
+      "track_sheet": "TKS DT",
+      "previous_interval": [
+        {
+          "excel_row": 4,
+          "Track Type": "Curve",
+          "Track Type FromM": 63731.0,
+          "Track Type ToM": 64521.9
+        }
+      ],
+      "next_interval": [
+        {
+          "excel_row": 5,
+          "Track Type": "Tangent",
+          "Track Type FromM": 64522.00000000001,
+          "Track Type ToM": 64913.9
+        }
+      ]
+    },
+    {
+      "csv_source_row": 67395,
+      "source_km": 64.522,
+      "Chainage_m": 64522.0,
+      "track_sheet": "TKS DT",
+      "previous_interval": [
+        {
+          "excel_row": 4,
+          "Track Type": "Curve",
+          "Track Type FromM": 63731.0,
+          "Track Type ToM": 64521.9
+        }
+      ],
+      "next_interval": [
+        {
+          "excel_row": 5,
+          "Track Type": "Tangent",
+          "Track Type FromM": 64522.00000000001,
+          "Track Type ToM": 64913.9
+        }
+      ]
+    },
+    {
+      "csv_source_row": 67396,
+      "source_km": 64.522,
+      "Chainage_m": 64522.0,
+      "track_sheet": "TKS DT",
+      "previous_interval": [
+        {
+          "excel_row": 4,
+          "Track Type": "Curve",
+          "Track Type FromM": 63731.0,
+          "Track Type ToM": 64521.9
+        }
+      ],
+      "next_interval": [
+        {
+          "excel_row": 5,
+          "Track Type": "Tangent",
+          "Track Type FromM": 64522.00000000001,
+          "Track Type ToM": 64913.9
+        }
+      ]
+    }
+  ],
+  "status": "blocked_metadata_coverage",
+  "supersedes_batch10": "batch-10 TKS status pass was generated before exact decimal conversion; use this corrected batch-11 result"
+}

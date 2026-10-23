@@ -1,0 +1,68 @@
+[
+  {
+    "line": "AEL",
+    "track": "UT",
+    "rows": 276,
+    "exceptions": {
+      "Low Height": 0,
+      "High Height": 0,
+      "Wire Wear": 0,
+      "Stagger Left": 0,
+      "Stagger Right": 0
+    },
+    "mapping_coverage": {
+      "class": {
+        "uncovered_rows": 0,
+        "first_uncovered_chainages_m": []
+      },
+      "track": {
+        "uncovered_rows": 0,
+        "first_uncovered_chainages_m": []
+      }
+    }
+  },
+  {
+    "line": "KTL",
+    "track": "UT",
+    "rows": 830606,
+    "exceptions": {
+      "Low Height": 99,
+      "High Height": 5,
+      "Wire Wear": 0,
+      "Stagger Left": 0,
+      "Stagger Right": 56
+    },
+    "mapping_coverage": {
+      "class": {
+        "uncovered_rows": 0,
+        "first_uncovered_chainages_m": []
+      },
+      "track": {
+        "uncovered_rows": 0,
+        "first_uncovered_chainages_m": []
+      }
+    }
+  },
+  {
+    "line": "TKL",
+    "track": "DT",
+    "rows": 501211,
+    "exceptions": {
+      "Low Height": 19,
+      "High Height": 0,
+      "Wire Wear": 1,
+      "Stagger Left": 0,
+      "Stagger Right": 49
+    },
+    "mapping_coverage": {
+      "class": {
+        "uncovered_rows": 0,
+        "first_uncovered_chainages_m": []
+      },
+      "track": {
+        "uncovered_rows": 0,
+        "first_uncovered_chainages_m": []
+      }
+    }
+  }
+]

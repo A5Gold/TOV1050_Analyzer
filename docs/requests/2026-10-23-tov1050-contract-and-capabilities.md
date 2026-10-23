@@ -110,3 +110,15 @@ batch-06發現真實metadata缺口：252→52 rows，class覆蓋全、track覆�
 - runtime七份SHA與release批准SHA全部相同；TOV640 HEAD仍33e77ab3c7afc72d0dd531d2b660baf08cf8fd63，本輪未修改。batch-08保留本機為隔離流程初稿，正式採用batch-09。batch-06僅作舊fallback錯誤成功的診斷證據。
 - 下一個可執行工作：產出DRL來源標準化候選與來源稽核，釐清DRL UT／獨立DRL PL頁的session選擇、Bracket混合單位、DN反向邊界後提出明確啟用範圍；不再向使用者重索已存在row11區間。TL邊界373組及scope仍需核准，14組真fixture及TML datac仍待補。DAV-20/21維持In Progress。
 - Linear MCP本輪可用，已同步使用者兩次確認、版本差異、實作與驗收；commit/push後再附實際SHA。所有原始Excel、歷史候選、使用者DB、未提交修改及新出現未追蹤Raw data目錄均保留，不納入本次提交。
+
+
+### 新增原始資料承接（2026-10-23）
+
+使用者通知 Raw data 新增 TML/TCL/TKS；三份來源 SHA/size 分別記於 outputs/contract-regression-2026-10-23/batch-10。
+
+- TKS 檔名 `20260902_TKS_DT.csv` 可辨識 DT；產品契約確認 TKS 為 TKL session。已建立只適用該檔案的 SHA registry context，再跑真CSV清洗→API→detector→report/raw。
+- TML `.datac` 內容 TRACK=DN、TOV640 Mainline流程；需用TOV640固定核心唯讀執行並與TOV1050相同legacy路徑比較，不修改TOV640。
+- TCL OLPAR filename及`ORANGE LINE`不能辨識direction/session；只做清洗與UT/DT假設的區間coverage診斷，不以coverage推斷業務context、不執行detector或列正式通過。
+- TCL實測CSV token `Km=32.431` 經二進位float×1000產生`Chainage=32430.999999999996`，而metadata track start為32431m，形成浮點假性缺口。設計修正：依原始十進位token使用Decimal乘1000一次，輸出float canonical metres；不調整metadata邊界、不四捨五入物理測值。另TKS Excel端點實存64522.00000000001m，按明訂atol=1e-9m僅正規化低於容差的二進位表示誤差；大於容差的差異原樣保留。加入來源與metadata端點回歸及重跑TKS/TCL和既有真資料goldens。
+
+Linear MCP工具可見，但本輪同步回覆`Authentication required`。標記 `Linear sync blocked`：影響新fixture進度與本次精度修正尚不能同步DAV-20/21；重新登入並在新session驗證Linear MCP後，第一步補同步本request、batch-10結果、差異及commit/push。

@@ -1,0 +1,33 @@
+{
+  "status": "pass",
+  "fixtures": [
+    {
+      "fixture": "AEL-UT-golden.json",
+      "baseline_sha256": "d72dd0fea38d6a354a6303fbd8624ef623334e37d3fde37110146f390aba7628",
+      "current_sha256": "d72dd0fea38d6a354a6303fbd8624ef623334e37d3fde37110146f390aba7628",
+      "max_numeric_delta": 0.0,
+      "chart_returned_points_delta": 0,
+      "checks": "exact structure/strings/IDs/counts; numeric abs tolerance <=1e-9, rel=0",
+      "status": "pass"
+    },
+    {
+      "fixture": "KTL-UT-golden.json",
+      "baseline_sha256": "2a2b9bae34ab0691f79d663df7676f71c88a0185b011ac8968599b53a93e63ee",
+      "current_sha256": "0fbe05fcd7ef7c808cbb224a705876c13bc8ae41649b740ea400f4e88ab21e0f",
+      "max_numeric_delta": 2.9103830456733704e-11,
+      "chart_returned_points_delta": -1,
+      "checks": "exact structure/strings/IDs/counts; numeric abs tolerance <=1e-9, rel=0",
+      "status": "pass"
+    },
+    {
+      "fixture": "TKL-DT-golden.json",
+      "baseline_sha256": "471f76a85b28de2faef1fa410f2ee4db96719d35332893e6cbc234d05a69b8be",
+      "current_sha256": "eebc29b6e3846d7966d74a7d6d098b4ad470dac0762e41841aa8aa68113750e3",
+      "max_numeric_delta": 1.4551915228366852e-11,
+      "chart_returned_points_delta": 1,
+      "checks": "exact structure/strings/IDs/counts; numeric abs tolerance <=1e-9, rel=0",
+      "status": "pass"
+    }
+  ],
+  "note": "Decimal Km conversion fixes binary representation. Exception detections and all IDs/levels/grouping match within tolerance. Chart-only envelope counts change by at most one point per dataset; detector/report/raw still use full raw measurements."
+}
