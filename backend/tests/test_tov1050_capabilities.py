@@ -88,3 +88,36 @@ def test_required_drl_missing_direction_stops_before_detector(monkeypatch):
     assert response.status_code == 400
     assert "DRL metadata.xlsx/DRL/Mainline/DT" in response.json()["detail"]
     assert "track_intervals" in response.json()["detail"]
+
+
+def test_measurement_coverage_rejects_partial_track_and_class_gaps():
+    import pandas as pd
+    manager=TOV1050MetadataManager(CONFIG / "DRL metadata.xlsx")
+    assert manager.require_measurement_coverage(pd.Series([42000.0]),"DRL","PL","UT")["track_intervals"]["uncovered_rows"]==0
+    with pytest.raises(MetadataCapabilityError,match="2/3 uncovered rows"):
+        manager.require_measurement_coverage(pd.Series([42000.0,44500.0,45389.0]),"DRL","PL","UT")
+    with pytest.raises(MetadataCapabilityError,match="class_intervals sheet=location type"):
+        manager.require_measurement_coverage(pd.Series([47000.0]),"DRL","PL","UT")
+
+
+def test_confirmed_drl_pl_ut_fixture_gap_stops_before_detector(monkeypatch):
+    import pandas as pd
+    from fastapi import FastAPI
+    from fastapi.testclient import TestClient
+    from app.api.endpoints import analysis
+    monkeypatch.setattr(analysis,"CONFIG_DIR",CONFIG)
+    def forbidden(*args,**kwargs):
+        raise AssertionError("Detector must not run outside required metadata intervals")
+    monkeypatch.setattr(analysis.ExceptionDetector,"analyze",forbidden)
+    previous=pd.DataFrame({"Chainage":[123.0]})
+    monkeypatch.setattr(analysis,"LAST_RAW_DF",previous)
+    app=FastAPI()
+    app.include_router(analysis.router)
+    sample=CONFIG.parent / "00 Reference Document/Raw data/DRL/20260817_022959_olpar.csv"
+    response=TestClient(app).post("/analyze",json=dict(file_path=str(sample),line="DRL",track="UT",section="PL",session="PL",date_str="20260817"))
+    assert response.status_code==400
+    detail=response.json()["detail"]
+    assert "DRL metadata.xlsx/DRL/PL/UT" in detail
+    assert "track_intervals sheet=PL track type: 52/52 uncovered rows" in detail
+    assert "Chainage_m=" in detail
+    assert analysis.LAST_RAW_DF is previous

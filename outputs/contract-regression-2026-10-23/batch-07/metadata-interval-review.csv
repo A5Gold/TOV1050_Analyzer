@@ -1,0 +1,9 @@
+﻿workbook,sheet,excel_row,location type,startKM,endKM,FromM,ToM,track type
+C:\Smart Maintanence\TOV1050_Analyzer\config\DRL metadata.xlsx,location type,2,Tunnel,40.0,46.0,40000.0,46000.0,
+C:\Smart Maintanence\TOV1050_Analyzer\config\DRL metadata.xlsx,PL track type,2,,42.0,42.78789999999999,42000.0,42787.899999999994,Curve
+C:\Smart Maintanence\TOV1050_Analyzer\config\DRL metadata.xlsx,PL track type,3,,42.788,42.8469,42788.0,42846.9,Tangent
+C:\Smart Maintanence\TOV1050_Analyzer\config\DRL metadata.xlsx,PL track type,4,,42.847,42.896899999999995,42847.0,42896.899999999994,Curve
+C:\Smart Maintanence\TOV1050_Analyzer\config\DRL metadata.xlsx,PL track type,5,,42.897,42.914899999999996,42897.0,42914.899999999994,Tangent
+C:\Smart Maintanence\TOV1050_Analyzer\config\DRL metadata.xlsx,PL track type,6,,42.915,43.47389999999999,42915.0,43473.899999999994,Curve
+C:\Smart Maintanence\TOV1050_Analyzer\config\DRL metadata.xlsx,PL track type,7,,43.474,43.5239,43474.0,43523.899999999994,Tangent
+C:\Smart Maintanence\TOV1050_Analyzer\config\DRL metadata.xlsx,PL track type,8,,43.524,44.0,43524.0,44000.0,Curve

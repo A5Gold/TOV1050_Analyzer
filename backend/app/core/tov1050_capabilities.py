@@ -173,6 +173,35 @@ class TOV1050CapabilitiesMixin:
             "cannot authorize wear lookup. Supply reviewed physical boundaries and approval provenance."
         )
 
+    def get_measurement_coverage(self, chainages, line, section, track):
+        """Audit actual retained measurements, independently of sheet availability."""
+        positions = pd.Series(chainages, dtype=float)
+        wide = self._uses_wide_intervals()
+        track_sheet = (" ".join(self._wide_context(line, section, track)) if wide
+                       else self._get_direction_sheet(section, track))
+        audit = {}
+        for name, sheet, intervals in (
+            ("class_intervals", "Exception Boundarys" if wide else "location type",
+             self.get_exception_boundaries(line, track, section)),
+            ("track_intervals", track_sheet, self.get_track_type_intervals(line, section, track)),
+        ):
+            _, missing = intervals.index.get_indexer_non_unique(positions)
+            audit[name] = dict(sheet=sheet, total_rows=len(positions), uncovered_rows=len(missing),
+                               first_uncovered_chainages_m=positions.iloc[missing[:20]].tolist())
+        return audit
+
+    def require_measurement_coverage(self, chainages, line, section, track):
+        audit = self.get_measurement_coverage(chainages, line, section, track)
+        gaps = [f"{name} sheet={value['sheet']}: {value['uncovered_rows']}/{value['total_rows']} "
+                f"uncovered rows; Chainage_m={value['first_uncovered_chainages_m']}"
+                for name, value in audit.items() if value['uncovered_rows']]
+        if gaps:
+            raise MetadataCapabilityError(
+                f"{self.config_path.name}/{line}/{section}/{track}: metadata coverage incomplete; "
+                + "; ".join(gaps) + ". Supply reviewed intervals; detector fallback is not permitted."
+            )
+        return audit
+
     def get_tension_length_lookup(self, line, track, section):
         self.require_tension_length_intervals(line, track, section)
 

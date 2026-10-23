@@ -1,0 +1,12 @@
+﻿workbook,sheet,excel_row,Line,Class,C/R,UP Track FromM,UP Track ToM,DN Track FromM,DN Track ToM,FromM,ToM,Track Type,Track Type FromM,Track Type ToM,Unnamed: 3,Bracket FromM,Tension Length,Bracket
+C:\Smart Maintanence\TOV1050_Analyzer\00 Reference Document\config\DRL metadata.xlsx,Exception Boundarys,2,DRL,Tunnel,OCS,40000.0,46000.0,46000.0,40000.0,40000.0,46000.0,,,,,,,
+C:\Smart Maintanence\TOV1050_Analyzer\00 Reference Document\config\DRL metadata.xlsx,DRL UT,2,,,,,,,,41000.0,41756.899999999994,Tangent,41000.0,41756.899999999994,,41.485,481.0,481-001
+C:\Smart Maintanence\TOV1050_Analyzer\00 Reference Document\config\DRL metadata.xlsx,DRL UT,3,,,,,,,,41757.0,42118.899999999994,Curve,41757.0,42118.899999999994,,41.519,481.0,481-002
+C:\Smart Maintanence\TOV1050_Analyzer\00 Reference Document\config\DRL metadata.xlsx,DRL UT,4,,,,,,,,42119.0,42287.899999999994,Tangent,42119.0,42287.899999999994,,41.553,481.0,481-003
+C:\Smart Maintanence\TOV1050_Analyzer\00 Reference Document\config\DRL metadata.xlsx,DRL UT,5,,,,,,,,42288.0,42715.899999999994,Curve,42288.0,42715.899999999994,,41.598,481.0,481-004
+C:\Smart Maintanence\TOV1050_Analyzer\00 Reference Document\config\DRL metadata.xlsx,DRL UT,6,,,,,,,,42716.0,42914.899999999994,Tangent,42716.0,42914.899999999994,,41.632,481.0,481-005
+C:\Smart Maintanence\TOV1050_Analyzer\00 Reference Document\config\DRL metadata.xlsx,DRL UT,7,,,,,,,,42915.0,43491.899999999994,Curve,42915.0,43491.899999999994,,41.666,481.0,481-006
+C:\Smart Maintanence\TOV1050_Analyzer\00 Reference Document\config\DRL metadata.xlsx,DRL UT,8,,,,,,,,43492.0,43746.899999999994,Tangent,43492.0,43746.899999999994,,41.7,481.0,481-007
+C:\Smart Maintanence\TOV1050_Analyzer\00 Reference Document\config\DRL metadata.xlsx,DRL UT,9,,,,,,,,43747.0,44699.9,Curve,43747.0,44699.9,,41.725,481.0,481-008
+C:\Smart Maintanence\TOV1050_Analyzer\00 Reference Document\config\DRL metadata.xlsx,DRL UT,10,,,,,,,,44700.0,44886.899999999994,Tangent,44700.0,44886.899999999994,,41.755,481.0,481-009
+C:\Smart Maintanence\TOV1050_Analyzer\00 Reference Document\config\DRL metadata.xlsx,DRL UT,11,,,,,,,,44887.0,45500.0,Curve,44887.0,45500.0,,41.785,481.0,481-010

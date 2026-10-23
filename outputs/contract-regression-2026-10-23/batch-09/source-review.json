@@ -1,0 +1,57 @@
+{
+  "validation_scope": "Confirmed sample only; isolated reference config; not runtime promotion",
+  "reference_workbook": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\config\\DRL metadata.xlsx",
+  "reference_sha256": "a386100bb6f47ab9d2a61e7e80c40ad5e87a91cc614e1659584ea41a0161ecff",
+  "runtime_workbook": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\DRL metadata.xlsx",
+  "runtime_sha256": "641477e23e3f9afae7b4d63a4829286f2f93680153d077f987b538367a4902cc",
+  "user_evidence": "User explicitly pointed to DRL UT Excel row11 Curve 44887–45500m after confirming DRL/PL/UT sample",
+  "track_interval": {
+    "sheet": "DRL UT",
+    "excel_row": 11,
+    "track_type": "Curve",
+    "from_m": 44887,
+    "to_m": 45500
+  },
+  "class_interval": {
+    "sheet": "Exception Boundarys",
+    "excel_row": 2,
+    "Class": "Tunnel",
+    "from_m": 40000,
+    "to_m": 46000
+  },
+  "retained_rows": 52,
+  "chainage_min_m": 45388.2,
+  "chainage_max_m": 45389.2,
+  "track_counts": {
+    "Curve": 52
+  },
+  "class_counts": {
+    "Tunnel": 52
+  },
+  "units": "CSV Km multiplied by1000 once; wide Track Type FromM/ToM and class bounds used directly as metres",
+  "point_inventory": [
+    {
+      "sheet": "DRL UT",
+      "point_rows": 218,
+      "raw_bracket_min": 41.455,
+      "raw_bracket_max": 44.925,
+      "status": "unreviewed_mixed_units; do not promote or infer TL"
+    },
+    {
+      "sheet": "DRL PL",
+      "point_rows": 86,
+      "raw_bracket_min": 41.455,
+      "raw_bracket_max": 43.609,
+      "status": "unreviewed_mixed_units; do not promote or infer TL"
+    }
+  ],
+  "limitations": [
+    "Root runtime PL track sheet still ends44000m; guarded analysis remains HTTP400",
+    "Reference has distinct DRL PL sheet ending44000m; DRL UT use is confirmed only for this sample, not a universal PL routing policy",
+    "Reference bracket values appear kilometres despite FromM label; no point conversion/classification or TL geometry approval",
+    "DN class range is reversed46000→40000; not validated or repaired in this UT run",
+    "Zero exceptions: not field peak/level/ID parity evidence",
+    "Station labels NOT_PROVIDED are export test labels"
+  ],
+  "next_action": "Review DRL track sheet/session selection and mixed units; produce normalized candidate with provenance for targeted activation review; leave seven approved configs unchanged"
+}

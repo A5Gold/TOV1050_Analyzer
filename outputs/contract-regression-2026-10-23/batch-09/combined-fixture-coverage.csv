@@ -1,0 +1,19 @@
+﻿line,session,direction,fixture_count,status,fixtures,evidence_batch,validation_scope
+AEL,Mainline,UT,1,pass,C:\Smart Maintanence\TOV1050_Analyzer\00 Reference Document\Raw data\AEL\20260822_AEL_UT_SHO_AWE.csv,batch-05,previous_full_export_snapshot; source and metadata digests rechecked
+AEL,Mainline,DT,0,blocked_missing_real_fixture,,batch-05,previous_full_export_snapshot; source and metadata digests rechecked
+TCL,Mainline,UT,0,blocked_missing_real_fixture,,batch-05,previous_full_export_snapshot; source and metadata digests rechecked
+TCL,Mainline,DT,0,blocked_missing_real_fixture,,batch-05,previous_full_export_snapshot; source and metadata digests rechecked
+DRL,Mainline,UT,0,blocked_missing_real_fixture,,batch-05,previous_full_export_snapshot; source and metadata digests rechecked
+DRL,Mainline,DT,0,blocked_missing_real_fixture,,batch-05,previous_full_export_snapshot; source and metadata digests rechecked
+DRL,PL,UT,1,pass_isolated_reference_only,C:\Smart Maintanence\TOV1050_Analyzer\00 Reference Document\Raw data\DRL\20260817_022959_olpar.csv,batch-09,isolated_reference_only; complete exports verified; runtime remains blocked
+DRL,PL,DT,0,blocked_missing_real_fixture,,batch-05,previous_full_export_snapshot; source and metadata digests rechecked
+ISL,Mainline,UT,0,blocked_missing_real_fixture,,batch-05,previous_full_export_snapshot; source and metadata digests rechecked
+ISL,Mainline,DT,0,blocked_missing_real_fixture,,batch-05,previous_full_export_snapshot; source and metadata digests rechecked
+KTL,Mainline,UT,1,pass,C:\Smart Maintanence\TOV1050_Analyzer\00 Reference Document\Raw data\KTL\20260825_KTL_UT.csv,batch-05,previous_full_export_snapshot; source and metadata digests rechecked
+KTL,Mainline,DT,0,blocked_missing_real_fixture,,batch-05,previous_full_export_snapshot; source and metadata digests rechecked
+TKL,Mainline,UT,0,blocked_missing_real_fixture,,batch-05,previous_full_export_snapshot; source and metadata digests rechecked
+TKL,Mainline,DT,1,pass,C:\Smart Maintanence\TOV1050_Analyzer\00 Reference Document\Raw data\TKL\20260708_TKL_DT.csv,batch-05,previous_full_export_snapshot; source and metadata digests rechecked
+TKL,TKS,UT,0,blocked_missing_real_fixture,,batch-05,previous_full_export_snapshot; source and metadata digests rechecked
+TKL,TKS,DT,0,blocked_missing_real_fixture,,batch-05,previous_full_export_snapshot; source and metadata digests rechecked
+TWL,Mainline,UT,0,blocked_missing_real_fixture,,batch-05,previous_full_export_snapshot; source and metadata digests rechecked
+TWL,Mainline,DT,0,blocked_missing_real_fixture,,batch-05,previous_full_export_snapshot; source and metadata digests rechecked

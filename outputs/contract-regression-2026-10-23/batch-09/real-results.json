@@ -1,0 +1,187 @@
+{
+  "matrix": [
+    {
+      "line": "DRL",
+      "session": "PL",
+      "direction": "UT",
+      "fixture_count": 1,
+      "status": "pass_isolated_reference_only",
+      "fixtures": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\Raw data\\DRL\\20260817_022959_olpar.csv"
+    }
+  ],
+  "real_runs": [
+    {
+      "path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\Raw data\\DRL\\20260817_022959_olpar.csv",
+      "sha256": "616f2853e14c109c64dac26ebb2a5f3578fce423769e714cd993fd662d6c6db2",
+      "context": {
+        "file_path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\Raw data\\DRL\\20260817_022959_olpar.csv",
+        "line": "DRL",
+        "track": "UT",
+        "session": "PL",
+        "section": "PL",
+        "date_str": "20260817",
+        "station_start": "NOT_PROVIDED",
+        "station_end": "NOT_PROVIDED",
+        "client_session_id": "regression-DRL-PL-UT-0"
+      },
+      "cleaning": {
+        "raw_row_count": 252,
+        "retained_row_count": 52,
+        "trimmed_leading_count": 100,
+        "trimmed_trailing_count": 100,
+        "io_value_count": 1512,
+        "invalid_chainage_count": 0,
+        "no_valid_measurement_count": 0,
+        "delimiter": ",",
+        "chunk_size": 50000,
+        "chainage_unit": "m",
+        "chainage_scale": 1000.0
+      },
+      "exception_counts": {
+        "Low Height": 0,
+        "High Height": 0,
+        "Wire Wear": 0,
+        "Stagger Left": 0,
+        "Stagger Right": 0
+      },
+      "api_status": 200,
+      "report_status": 200,
+      "raw_status": 200,
+      "raw_rows": 52,
+      "verified_columns": [
+        "Chainage",
+        "height1",
+        "height2",
+        "height3",
+        "height4",
+        "stagger1",
+        "stagger2",
+        "stagger3",
+        "stagger4",
+        "wear1",
+        "wear2",
+        "wear3",
+        "wear4",
+        "source_row_number",
+        "source_chainage_km",
+        "height_min",
+        "height_max",
+        "wear_min",
+        "wear_max",
+        "stg_max",
+        "stg_min"
+      ],
+      "report_sha256": "b707216e954baef4925771bc402adea68f4fd21ee6a42a6e7908106922c10b87",
+      "raw_sha256": "dd2a3cbafbcc9aac1ec7a6d50e2088ec012321fe072fa5431a5d6ab38abafc69",
+      "report_bytes": 16726,
+      "raw_bytes": 12359,
+      "chart_rows_verified": 52,
+      "chart_columns_verified": [
+        "task_run_date",
+        "line",
+        "track",
+        "Section",
+        "task_no",
+        "station_start",
+        "station_end",
+        "Chainage",
+        "height1",
+        "height2",
+        "height3",
+        "height4",
+        "stagger1",
+        "stagger2",
+        "stagger3",
+        "stagger4",
+        "wear1",
+        "wear2",
+        "wear3",
+        "wear4",
+        "Track Type",
+        "Overlap",
+        "Tension Length",
+        "Landmark",
+        "Class",
+        "height_min",
+        "height_max",
+        "wear_min",
+        "wear_max",
+        "stg_max",
+        "stg_min"
+      ],
+      "summary_rows_verified": 0,
+      "station_context": "not supplied in source filename; NOT_PROVIDED is an export test label",
+      "metadata_capabilities": {
+        "schema_version": "tov1050-metadata-capabilities-v1",
+        "workbook": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\config\\DRL metadata.xlsx",
+        "workbook_sha256": "a386100bb6f47ab9d2a61e7e80c40ad5e87a91cc614e1659584ea41a0161ecff",
+        "line": "DRL",
+        "session": "PL",
+        "direction": "UT",
+        "chainage_unit": "m",
+        "enrichment_version": "tov640-first-nonempty-v1",
+        "overlap_state": "unknown",
+        "capabilities": {
+          "thresholds": {
+            "status": "available",
+            "count": 20,
+            "reason": ""
+          },
+          "class_intervals": {
+            "status": "available",
+            "count": 1,
+            "reason": ""
+          },
+          "track_intervals": {
+            "status": "available",
+            "count": 10,
+            "reason": ""
+          },
+          "bracket_points": {
+            "status": "partial",
+            "count": 0,
+            "reason": "218 points lack classification provenance"
+          },
+          "landmark_points": {
+            "status": "partial",
+            "count": 0,
+            "reason": "218 points lack classification provenance"
+          },
+          "tension_length_intervals": {
+            "status": "unavailable",
+            "count": 0,
+            "reason": "No approved physical interval source; observed bracket envelopes and landmark points are not intervals"
+          },
+          "overlap_intervals": {
+            "status": "unavailable",
+            "count": 0,
+            "reason": "No approved physical interval source; observed bracket envelopes and landmark points are not intervals"
+          },
+          "landmark_intervals": {
+            "status": "unavailable",
+            "count": 0,
+            "reason": "No approved physical interval source; observed bracket envelopes and landmark points are not intervals"
+          }
+        }
+      },
+      "mapping_coverage": {
+        "class": {
+          "uncovered_rows": 0,
+          "first_uncovered_chainages_m": []
+        },
+        "track": {
+          "uncovered_rows": 0,
+          "first_uncovered_chainages_m": []
+        }
+      },
+      "fixture_context_confirmation": "User reply: DRL／PL／UT",
+      "limitation": "Zero-exception fixture cannot establish real peak/level/ID acceptance",
+      "validation_scope": "isolated_reference_only; not runtime promotion"
+    }
+  ],
+  "unassigned_fixtures": [
+    "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\Raw data\\TCL\\20260618_032025_olpar.csv",
+    "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\Raw data\\TKS\\20260902_TKS_DT.csv"
+  ],
+  "validation_scope": "isolated_reference_only; not runtime promotion"
+}

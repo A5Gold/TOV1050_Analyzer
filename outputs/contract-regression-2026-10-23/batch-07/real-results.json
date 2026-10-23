@@ -1,0 +1,140 @@
+{
+  "matrix": [
+    {
+      "line": "DRL",
+      "session": "PL",
+      "direction": "UT",
+      "fixture_count": 1,
+      "status": "blocked_metadata_coverage",
+      "fixtures": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\Raw data\\DRL\\20260817_022959_olpar.csv"
+    }
+  ],
+  "real_runs": [
+    {
+      "path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\Raw data\\DRL\\20260817_022959_olpar.csv",
+      "sha256": "616f2853e14c109c64dac26ebb2a5f3578fce423769e714cd993fd662d6c6db2",
+      "context": {
+        "file_path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\Raw data\\DRL\\20260817_022959_olpar.csv",
+        "line": "DRL",
+        "track": "UT",
+        "session": "PL",
+        "section": "PL",
+        "date_str": "20260817",
+        "station_start": "NOT_PROVIDED",
+        "station_end": "NOT_PROVIDED",
+        "client_session_id": "regression-DRL-PL-UT-0"
+      },
+      "api_status": 400,
+      "report_status": "not_run",
+      "raw_status": "not_run",
+      "error": "DRL metadata.xlsx/DRL/PL/UT: metadata coverage incomplete; track_intervals sheet=PL track type: 52/52 uncovered rows; Chainage_m=[45389.200000000004, 45389.200000000004, 45389.200000000004, 45389.200000000004, 45389.200000000004, 45389.200000000004, 45389.200000000004, 45389.200000000004, 45389.200000000004, 45389.0, 45389.0, 45389.0, 45389.0, 45389.0, 45389.0, 45389.0, 45389.0, 45389.0, 45389.0, 45388.8]. Supply reviewed intervals; detector fallback is not permitted.",
+      "acceptance_status": "blocked_metadata_coverage",
+      "cleaning": {
+        "raw_row_count": 252,
+        "retained_row_count": 52,
+        "trimmed_leading_count": 100,
+        "trimmed_trailing_count": 100,
+        "io_value_count": 1512,
+        "invalid_chainage_count": 0,
+        "no_valid_measurement_count": 0,
+        "delimiter": ",",
+        "chunk_size": 50000,
+        "chainage_unit": "m",
+        "chainage_scale": 1000.0
+      },
+      "mapping_coverage": {
+        "class_intervals": {
+          "sheet": "location type",
+          "total_rows": 52,
+          "uncovered_rows": 0,
+          "first_uncovered_chainages_m": []
+        },
+        "track_intervals": {
+          "sheet": "PL track type",
+          "total_rows": 52,
+          "uncovered_rows": 52,
+          "first_uncovered_chainages_m": [
+            45389.200000000004,
+            45389.200000000004,
+            45389.200000000004,
+            45389.200000000004,
+            45389.200000000004,
+            45389.200000000004,
+            45389.200000000004,
+            45389.200000000004,
+            45389.200000000004,
+            45389.0,
+            45389.0,
+            45389.0,
+            45389.0,
+            45389.0,
+            45389.0,
+            45389.0,
+            45389.0,
+            45389.0,
+            45389.0,
+            45388.8
+          ]
+        }
+      },
+      "metadata_capabilities": {
+        "schema_version": "tov1050-metadata-capabilities-v1",
+        "workbook": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\DRL metadata.xlsx",
+        "workbook_sha256": "641477e23e3f9afae7b4d63a4829286f2f93680153d077f987b538367a4902cc",
+        "line": "DRL",
+        "session": "PL",
+        "direction": "UT",
+        "chainage_unit": "m",
+        "enrichment_version": "tov640-first-nonempty-v1",
+        "overlap_state": "unknown",
+        "capabilities": {
+          "thresholds": {
+            "status": "available",
+            "count": 40,
+            "reason": ""
+          },
+          "class_intervals": {
+            "status": "available",
+            "count": 1,
+            "reason": ""
+          },
+          "track_intervals": {
+            "status": "available",
+            "count": 7,
+            "reason": ""
+          },
+          "bracket_points": {
+            "status": "unavailable",
+            "count": 0,
+            "reason": "No classified point records"
+          },
+          "landmark_points": {
+            "status": "unavailable",
+            "count": 0,
+            "reason": "No classified point records"
+          },
+          "tension_length_intervals": {
+            "status": "unavailable",
+            "count": 0,
+            "reason": "No approved physical interval source; observed bracket envelopes and landmark points are not intervals"
+          },
+          "overlap_intervals": {
+            "status": "unavailable",
+            "count": 0,
+            "reason": "No approved physical interval source; observed bracket envelopes and landmark points are not intervals"
+          },
+          "landmark_intervals": {
+            "status": "unavailable",
+            "count": 0,
+            "reason": "No approved physical interval source; observed bracket envelopes and landmark points are not intervals"
+          }
+        }
+      },
+      "fixture_context_confirmation": "User reply: DRL／PL／UT"
+    }
+  ],
+  "unassigned_fixtures": [
+    "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\Raw data\\TCL\\20260618_032025_olpar.csv",
+    "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\Raw data\\TKS\\20260902_TKS_DT.csv"
+  ]
+}

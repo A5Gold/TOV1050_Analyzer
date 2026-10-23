@@ -29,6 +29,12 @@
 
 分析入口對 thresholds/class/track unavailable 回 HTTP 400，避免 detector 的歷史 catch/fallback 掩蓋必要資料缺失。既有 optional enrichment 的空值欄位仍保留，API/report 能力用於揭露其 unknown 語意，不把空白轉成 N。
 
+### 實際量測覆蓋 preflight
+
+`get_measurement_coverage`／`require_measurement_coverage` 在 detector 前逐筆核對全部清洗保留 Chainage 的 Class 與 Track Type 區間，不使用圖表抽樣。即使 sheet 能力為 available，任一筆未覆蓋仍回 HTTP400，列 workbook/context、sheet、缺少筆數與前20個公尺位置；不執行 detector、不覆寫上次成功分析。端點沿用既有 closed-both 政策及 detector 的重疊解法，本次不變更判定核心或 EAL/TML 入口。
+
+真 DRL/PL/UT sample 暴露根 config 舊 long PL sheet 到44000m的缺口（52筆全部在45388.2–45389.2m）。使用者後續指定 reference wide `DRL UT` row11 Curve44887–45500m，隔離回歸已覆蓋全部52筆且匯出通過；這是版本／sheet選擇差異，不是所有來源都缺區間。該reference仍有獨立DRL PL頁、Bracket疑似公里及反向DN邊界，未整份promotion。詳見 regression batch-07（runtime阻擋）與batch-09（isolated reference成功）。
+
 ## 核准區間 sweep 的邊界
 
 輸入為 closed-both TL interval。輸出將每個端點獨立為 `[x,x]` atom，相鄰端點間則為 open `(x,y)` atom；不設定尚未核准的 0.1m 或其他格點。每個 atom 保存所有 active TL：多 TL=`overlap`，單 TL=`known_non_overlap`，範圍內無 active TL=`unknown`。輸入範圍外仍未知；同一 TL 多筆不重複計數，但來源證據保留。

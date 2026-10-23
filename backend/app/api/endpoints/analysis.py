@@ -313,6 +313,7 @@ async def analyze_data(request: AnalyzeRequest):
             if missing_required:
                 raise ValueError(f"{metadata_file.name}/{request.line}/{session}/{request.track}: "
                                  f"required metadata unavailable: {', '.join(missing_required)}")
+            meta_mgr.require_measurement_coverage(df['Chainage'], request.line, session, request.track)
         
         # 4. Run Analysis
         results, boundary_df = detector.analyze(

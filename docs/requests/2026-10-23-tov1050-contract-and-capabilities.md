@@ -77,6 +77,12 @@ batch-04 又發現直接傳 BytesIO 給 StreamingResponse 會按 newline 逐段�
 
 ## 相關檔案
 
+### 承接補充：DRL fixture context確認
+
+使用者已明確回覆 `20260817_022959_olpar.csv` = DRL／PL／UT。範圍：加入有來源SHA與確認依據的fixture context registry，以新batch-06只重跑該context的清洗→API→detector→完整report/raw核對及mapping coverage；合併coverage時保留batch-05三組歷史驗證來源，不宣稱它們本次重跑。驗收需記錄實際筆數、異常及mapping缺口。此次確認只適用該檔案context，不擴大為PL雙方向metadata、TL物理邊界或scope核准；不改runtime Excel。實作前Linear DAV-20／21同步此承接與next action。
+
+batch-06發現真實metadata缺口：252→52 rows，class覆蓋全、track覆蓋0；PL track type只有42,000–44,000m，sample約45,388–45,389.2m。歷史API fallback仍回200／零異常，不能驗收。必要修正範圍：TOV1050分析入口在detector前核對全部retained chainage的class/track interval coverage；缺少時HTTP400附workbook、sheet、缺少筆數與公尺位置，EAL/TML路徑及detector核心不變。驗證需包含真DRL fixture fail-closed、缺口審閱表與七份核准metadata/既有fixture相容性。不得延伸PL範圍來讓測試通過。
+
 - docs/plans/2026-10-23-tov1050-next-stage.md
 - docs/plans/2026-10-23-tov1050-metadata-compatibility.md
 - docs/tov1050-contract-regression-2026-10-23.md（實測命令、成果及限制）
@@ -87,3 +93,20 @@ batch-04 又發現直接傳 BytesIO 給 StreamingResponse 會按 newline 逐段�
 - 本次產生的草稿batch-01／中途中止batch-03、batch-04、preview／inspect／runtime／可重產layout payload留在本機，不納入提交；metadata batch-01僅提交正式validation證據。
 - 程式／基線提交：51888008f29879714e9942b5864db485ec18169a；最終batch-05證據與驗收另提交，一併push origin/master。
 - 最終TOV640 HEAD由並行annual-wear工作推進至33e77ab3c7afc72d0dd531d2b660baf08cf8fd63；四個比較core與EAL metadata仍等於保存的固定基線，SHA重新核對通過。沒有回退或更改其工作目錄；後續CLI重跑需獨立固定ref checkout。
+
+### 使用者指定 DRL UT row11 的來源核對與隔離驗證設計
+
+已唯讀核實 reference `00 Reference Document/config/DRL metadata.xlsx`（SHA a386100bb6f47ab9d2a61e7e80c40ad5e87a91cc614e1659584ea41a0161ecff）`DRL UT` Excel row11 = Curve 44887–45500m。根 config 是舊 long workbook，PL sheet 到44000m；不得繼續說所有來源皆缺該段資料。使用者指定 DRL UT row11 適用本 sample，允許以此來源做隔離回歸，不擴大為整份DRL promotion。
+
+實作前範圍：回歸CLI新增 real-only/context/metadata-dir，僅顯式單context允許替代metadata目錄，程序內還原CONFIG_DIR，保留來源SHA及能力snapshot。以reference wide既有adapter讀DRL UT，核對52筆Class/Curve、API與完整report/raw；輸出標示 isolated_reference_only，不合併成正式runtime pass。另盤點DRL PL頁、Bracket疑似公里與DN反向邊界；不推定全PL方向對應、不修原workbook、不批准TL或point分類。舊runtime coverage guard及HTTP400證據保留。
+
+### 本輪實作與驗收收尾
+
+- 新增實際保留量測的Class/Track覆蓋guard及兩項測試，包含真DRL阻擋、detector不得執行、上次成功state保留。缺口回具體HTTP400；detector、EAL/TML與report enrichment不改。
+- context registry鎖定DRL sample SHA；回歸CLI支援單context、隔離metadata與blocked診斷，成功隔離狀態不混入runtime pass。新增唯讀逐列／來源interval及歷史證據digest合併工具。
+- batch-07確認root舊PL資料52/52未覆蓋，HTTP400且不匯出。batch-09使用指定reference DRL UT row11：252→52筆，Tunnel／Curve全覆蓋，API/report/raw200，完整52筆ChartData與raw21個數值欄核對通過；0例外不能當現場peak/level/ID證據。原workbook與七份正式config沒有改動。
+- 最新18組矩陣：3 runtime已驗證（batch-05完整匯出SHA重查）、1 isolated reference通過（batch-09）、14缺fixture。root DRL正式分析仍blocked，尚未promotion。
+- 完整相關11檔backend suite重跑：133 passed in38.42s。`coverage-preflight-goldens`重跑AEL/KTL/TKL完整清洗/API/detector，來源SHA、清洗、mapping、所有exceptions/ID/peak/level、能力與chart resolution同原golden完全一致，JSON SHA也相同；沒有再次跑大型匯出或跨程序TOV640比較。命令及限制列於成果文件。
+- runtime七份SHA與release批准SHA全部相同；TOV640 HEAD仍33e77ab3c7afc72d0dd531d2b660baf08cf8fd63，本輪未修改。batch-08保留本機為隔離流程初稿，正式採用batch-09。batch-06僅作舊fallback錯誤成功的診斷證據。
+- 下一個可執行工作：產出DRL來源標準化候選與來源稽核，釐清DRL UT／獨立DRL PL頁的session選擇、Bracket混合單位、DN反向邊界後提出明確啟用範圍；不再向使用者重索已存在row11區間。TL邊界373組及scope仍需核准，14組真fixture及TML datac仍待補。DAV-20/21維持In Progress。
+- Linear MCP本輪可用，已同步使用者兩次確認、版本差異、實作與驗收；commit/push後再附實際SHA。所有原始Excel、歷史候選、使用者DB、未提交修改及新出現未追蹤Raw data目錄均保留，不納入本次提交。

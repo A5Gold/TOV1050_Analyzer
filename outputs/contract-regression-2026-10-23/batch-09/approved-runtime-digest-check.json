@@ -1,0 +1,44 @@
+[
+  {
+    "file": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\ISL metadata.xlsx",
+    "actual_sha256": "c55332cd30d8d0d68c8c656af727a86fc510064502cc0f0a8123ce6303cdea6b",
+    "approved_sha256": "c55332cd30d8d0d68c8c656af727a86fc510064502cc0f0a8123ce6303cdea6b",
+    "status": "unchanged"
+  },
+  {
+    "file": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\KTL metadata.xlsx",
+    "actual_sha256": "441a91e9619c7582589759cc780ec1145089c9f10fa7ea4ae96bf09f19f153fa",
+    "approved_sha256": "441a91e9619c7582589759cc780ec1145089c9f10fa7ea4ae96bf09f19f153fa",
+    "status": "unchanged"
+  },
+  {
+    "file": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\LAR_AEL metadata.xlsx",
+    "actual_sha256": "e462ea9cf72620846be28a390091c3433a6bf91c77d28f70aef00e14848b67b7",
+    "approved_sha256": "e462ea9cf72620846be28a390091c3433a6bf91c77d28f70aef00e14848b67b7",
+    "status": "unchanged"
+  },
+  {
+    "file": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\LAR_TCL metadata.xlsx",
+    "actual_sha256": "690d5a133601bf717c014b6c70ab4e9a0dd221aa862b964318e607e1212f916a",
+    "approved_sha256": "690d5a133601bf717c014b6c70ab4e9a0dd221aa862b964318e607e1212f916a",
+    "status": "unchanged"
+  },
+  {
+    "file": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\TKL metadata.xlsx",
+    "actual_sha256": "0ed287f48438c7b2ad60baab81e19597163b6c54e326115c17af6fef833fe4b4",
+    "approved_sha256": "0ed287f48438c7b2ad60baab81e19597163b6c54e326115c17af6fef833fe4b4",
+    "status": "unchanged"
+  },
+  {
+    "file": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\TKS metadata.xlsx",
+    "actual_sha256": "40a6979ed72c99fa5582d574e99f0c75f17f92bc9e07705989084ec5c69f5f6e",
+    "approved_sha256": "40a6979ed72c99fa5582d574e99f0c75f17f92bc9e07705989084ec5c69f5f6e",
+    "status": "unchanged"
+  },
+  {
+    "file": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\TWL metadata.xlsx",
+    "actual_sha256": "ac96e8d32b2ac7ccc3aea8c5bea68e450355fe4fb285febd43f43356c020d2ab",
+    "approved_sha256": "ac96e8d32b2ac7ccc3aea8c5bea68e450355fe4fb285febd43f43356c020d2ab",
+    "status": "unchanged"
+  }
+]

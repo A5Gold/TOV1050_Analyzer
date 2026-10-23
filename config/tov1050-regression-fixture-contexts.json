@@ -1,0 +1,14 @@
+{
+  "00 Reference Document/Raw data/DRL/20260817_022959_olpar.csv": {
+    "line": "DRL",
+    "session": "PL",
+    "track": "UT",
+    "date_str": "20260817",
+    "station_start": "NOT_PROVIDED",
+    "station_end": "NOT_PROVIDED",
+    "source_sha256": "616f2853e14c109c64dac26ebb2a5f3578fce423769e714cd993fd662d6c6db2",
+    "confirmed_by": "User reply: DRL／PL／UT",
+    "confirmation_date": "2026-10-23",
+    "scope": "This source file context only; not approval of physical TL intervals or PL metadata for every direction"
+  }
+}

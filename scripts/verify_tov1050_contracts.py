@@ -107,12 +107,32 @@ def canonical_cases():
     yield "canonical-isolated-levels", json.loads(isolated.to_json(orient="records")), dict(line="EAL",section="Mainline",track="UP",date_str="20261023")
 
 
-def run_real_csv(output):
+def run_real_csv(output, only_context=None, metadata_dir=None):
+    from unittest.mock import patch
+    from app.api.endpoints import analysis
+    if metadata_dir is not None and only_context is None:
+        raise ValueError("Isolated metadata review requires one explicit context")
+    directory = Path(metadata_dir).resolve() if metadata_dir is not None else analysis.CONFIG_DIR
+    with patch.object(analysis, "CONFIG_DIR", directory):
+        result = _run_real_csv(output, only_context, directory)
+    if metadata_dir is not None:
+        for row in result["matrix"]:
+            if row["status"] == "pass":
+                row["status"] = "pass_isolated_reference_only"
+        for run in result["real_runs"]:
+            run["validation_scope"] = "isolated_reference_only; not runtime promotion"
+        pd.DataFrame(result["matrix"]).to_csv(output / "real-fixture-coverage.csv", index=False, encoding="utf-8-sig")
+        dump(output / "real-run-checkpoint.json", result["real_runs"])
+    return result
+
+
+def _run_real_csv(output, only_context, metadata_dir):
     from fastapi import FastAPI
     from fastapi.testclient import TestClient
     from app.api.endpoints import analysis
-    from app.core.tov1050_contract import LINE_SESSIONS, parse_input_filename
+    from app.core.tov1050_contract import LINE_SESSIONS, parse_input_filename, metadata_workbook_for
     from app.core.tov1050_data_ingestion import TOV1050DataLoader
+    from app.core.tov1050_metadata import TOV1050MetadataManager
     app = FastAPI()
     app.include_router(analysis.router, prefix="/api")
     client = TestClient(app)
@@ -137,13 +157,18 @@ def run_real_csv(output):
                 inventory.append((path,SimpleNamespace(line=line,track=track,date_str=date,
                                   station_start="NOT_PROVIDED",station_end="NOT_PROVIDED",session="Mainline")))
             elif str(path.relative_to(ROOT)).replace("\\","/") in contexts:
-                inventory.append((path,SimpleNamespace(**contexts[str(path.relative_to(ROOT)).replace("\\","/")])))
+                confirmed = contexts[str(path.relative_to(ROOT)).replace("\\","/")]
+                if confirmed.get("source_sha256") and confirmed["source_sha256"] != digest:
+                    raise ValueError(f"Confirmed fixture digest drift: {path}")
+                inventory.append((path,SimpleNamespace(**confirmed)))
             else:
                 inventory.append((path, None))
     rows, evidence = [], []
     for line, sessions in LINE_SESSIONS.items():
         for session in sorted(sessions):
             for direction in ("UT", "DT"):
+                if only_context and (line, session, direction) != tuple(only_context):
+                    continue
                 matches = [(p, c) for p, c in inventory if c and c.line == line and c.track == direction and session == getattr(c,"session","Mainline")]
                 row = dict(line=line, session=session, direction=direction, fixture_count=len(matches),
                            status="blocked_missing_real_fixture" if not matches else "pass", fixtures=";".join(str(p) for p, _ in matches))
@@ -155,10 +180,36 @@ def run_real_csv(output):
                                   station_end=context.station_end, client_session_id=session_id)
                     response = client.post("/api/analyze", json=params)
                     if response.status_code != 200:
+                        detail = response.json().get("detail", "")
+                        if response.status_code == 400 and isinstance(detail,str) and (
+                            "metadata coverage incomplete" in detail or "required metadata unavailable" in detail
+                        ):
+                            loader = TOV1050DataLoader()
+                            retained = loader.load_data(path)
+                            manager = TOV1050MetadataManager(metadata_workbook_for(line,session,metadata_dir))
+                            row["status"] = "blocked_metadata_coverage"
+                            evidence.append(dict(path=str(path),sha256=sha(path),context=params,
+                                api_status=400,report_status="not_run",raw_status="not_run",error=detail,
+                                acceptance_status="blocked_metadata_coverage",cleaning=loader.last_cleaning_summary,
+                                mapping_coverage=manager.get_measurement_coverage(retained.Chainage,line,session,direction),
+                                metadata_capabilities=manager.get_capabilities(line,session,direction),
+                                fixture_context_confirmation=getattr(context,"confirmed_by",None)))
+                            dump(output / "real-run-checkpoint.json",evidence)
+                            print(f"Blocked {line}/{session}/{direction}: {detail}",flush=True)
+                            continue
                         raise AssertionError(f"{path}: {response.status_code} {response.text}")
                     payload = response.json()
                     print(f"Analyzed {line}/{session}/{direction}: {payload['cleaning_summary']['retained_row_count']} rows",flush=True)
                     frame = analysis.ANALYSIS_SESSIONS[session_id]["raw_df"]
+                    manager = TOV1050MetadataManager(payload["metadata_capabilities"]["workbook"])
+                    mapping_coverage = {}
+                    for label, intervals in (("class",manager.get_exception_boundaries(line,direction,session)),
+                                             ("track",manager.get_track_type_intervals(line,session,direction))):
+                        _, missing = intervals.index.get_indexer_non_unique(frame.Chainage)
+                        mapping_coverage[label] = dict(uncovered_rows=len(missing),
+                            first_uncovered_chainages_m=frame.iloc[missing[:20]].Chainage.tolist())
+                    if any(value["uncovered_rows"] for value in mapping_coverage.values()):
+                        row["status"] = "blocked_metadata_coverage"
                     tiny_chart = {k: v[:1] for k, v in payload["chart_data"].items()}
                     report = client.post("/api/export/report/generate", json=dict(params=payload["params"], exceptions=payload["exceptions"], chart_data=tiny_chart, client_session_id=session_id))
                     raw = client.post("/api/export/raw/generate", json=dict(params=payload["params"], chart_data=tiny_chart, client_session_id=session_id))
@@ -203,6 +254,8 @@ def run_real_csv(output):
                                          chart_rows_verified=chart_count,chart_columns_verified=chart_columns,summary_rows_verified=len(summary),
                                          station_context="not supplied in source filename; NOT_PROVIDED is an export test label" if context.station_start=="NOT_PROVIDED" else "source filename",
                                          metadata_capabilities=payload["metadata_capabilities"],
+                                         mapping_coverage=mapping_coverage,
+                                         fixture_context_confirmation=getattr(context,"confirmed_by",None),
                                          limitation="Zero-exception fixture cannot establish real peak/level/ID acceptance" if not any(payload["exceptions"].values()) else "Actual exceptions exercised"))
                     dump(output / "real-run-checkpoint.json", evidence)
                     analysis.ANALYSIS_SESSIONS.clear()
@@ -216,7 +269,19 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--reference", type=Path, default=ROOT.parent / "TOV640_Analyzer")
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--real-only", action="store_true", help="Incremental CSV verification; no TOV640 parity claim")
+    parser.add_argument("--context", nargs=3, metavar=("LINE", "SESSION", "DIRECTION"))
+    parser.add_argument("--metadata-dir", type=Path, help="Isolated review only; never promotes workbooks")
     args = parser.parse_args()
+    if args.real_only:
+        args.output.mkdir(parents=True, exist_ok=False)
+        result = run_real_csv(args.output.resolve(), args.context, args.metadata_dir)
+        result["validation_scope"] = "isolated_reference_only; not runtime promotion" if args.metadata_dir else "runtime_config_incremental"
+        dump(args.output / "real-results.json", result)
+        print(json.dumps(dict(output=str(args.output), scope=result["validation_scope"], matrix=result["matrix"])))
+        return
+    if args.context or args.metadata_dir:
+        parser.error("--context and --metadata-dir require --real-only")
     reference = args.reference.resolve()
     head = subprocess.check_output(["git", "-C", str(reference), "rev-parse", "HEAD"], text=True).strip()
     if head != PIN:

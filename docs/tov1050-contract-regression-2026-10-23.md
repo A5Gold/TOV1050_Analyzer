@@ -90,7 +90,30 @@ batch-02 是舊 writer 基線；大檔後續新增後，batch-03 的 KTL 匯出�
 
 ## 未完成與下一個 action
 
-1. 業務資料負責人確認 DRL CSV 的 Mainline/PL、UT/DT 及 PL scope，並補必要 track sheet；開發端將確認值納入明確 fixture context，再跑回歸。
+1. DRL CSV 已由使用者確認 PL/UT；reference DRL UT row11 已隔離驗證（見下）。下一步為 DRL 來源標準化候選與 session/sheet、Bracket單位、DN邊界審閱，再決定正式啟用範圍。
 2. 補足其餘 line/session/direction 真 fixture 與 TML 真 datac，不能以 synthetic 測例替代。
 3. 審閱373組 TL 的 termination、缺列／中斷／單點與真正物理邊界；填入 approved boundaries、approval、scope 及閉合政策後，開發端才接入已測試的 interval sweep／wear lookup。
 4. DAV-20／DAV-21 維持 In Progress；不宣稱全線契約、TL/wear parity 或 portable 已完成。
+
+## DRL 確認與覆蓋檢查增量（2026-10-23）
+
+以上 batch-05 的15缺fixture／DRL未指派描述為歷史快照。使用者現已確認 `20260817_022959_olpar.csv` = DRL/PL/UT，加入含SHA的 `config/tov1050-regression-fixture-contexts.json`。
+
+- batch-06：舊入口對root long metadata未覆蓋的52筆仍回HTTP200／0 exceptions，僅保留為發現問題的診斷證據，不作detector驗收。
+- batch-07：加入實際量測coverage guard後，同一root config回HTTP400，report/raw未執行；52筆來源CSV row102–153的缺口及舊PL sheet逐列列出。
+- 使用者指定的新版來源已核實：`00 Reference Document/config/DRL metadata.xlsx` SHA `a386100bb6f47ab9d2a61e7e80c40ad5e87a91cc614e1659584ea41a0161ecff`，`DRL UT` Excel row11 Curve44887–45500m。先前缺口僅指root舊PL sheet，不再要求提供已存在的區間。
+- 正式增量證據 batch-09：隔離reference目錄，252→52筆、45388.2–45389.2m，全部Tunnel／Curve；Class/Track uncovered均0。API/report/raw均HTTP200，52筆完整ChartData與raw共有21個數值欄逐值通過，Summary0筆。零異常不能作現場peak/level/ID證據。batch-08是同一隔離流程的初次診斷，不採用為正式矩陣。
+- 最新 `batch-09/combined-fixture-coverage.csv`：18 contexts = 3組既有正式runtime完整匯出證據＋1組 `pass_isolated_reference_only`＋14組缺fixture。這1組**沒有成為runtime pass**，根DRL config仍由guard阻擋；3組歷史完整匯出來源及metadata SHA重查相同，沒有宣稱本輪重跑其大型匯出。
+- 新來源仍有獨立`DRL PL`頁到44000m；DRL UT的218點及DRL PL的86點Bracket FromM原值約41–45，與Track Type公尺欄混用單位；DN Class邊界為46000→40000。僅本sample採用使用者指定DRL UT，不擴大為全PL方向映射、point分類、核准TL或整份DRL啟用。來源審閱：`batch-09/source-review.json`。
+- 133項相關backend tests通過（38.42s）。三份真資料重新執行完整清洗/API/detector：AEL276／0、KTL830606／160、TKL501211／69；`coverage-preflight-goldens/comparison.json`核對清洗、來源SHA、mapping、全部exceptions/peak/level/ID、capabilities、chart resolution均與原golden完全一致，三份JSON的SHA也完全相同。未改detector或report enrichment。
+- 七份正式config SHA再核對release全部相同，見`batch-09/approved-runtime-digest-check.json`；沒有重建或覆寫workbook。TOV640 HEAD仍為33e77ab3c7afc72d0dd531d2b660baf08cf8fd63，未修改其repo；本輪未重跑跨程序TOV640比較，固定基線證據沿用先前已提交批次。
+
+本輪實際命令（使用新的output避免覆寫）：
+
+```powershell
+python scripts/verify_tov1050_contracts.py --real-only --context DRL PL UT --metadata-dir '00 Reference Document/config' --output outputs/contract-regression-2026-10-23/batch-09
+python scripts/review_tov1050_confirmed_fixture.py --fixture '00 Reference Document/Raw data/DRL/20260817_022959_olpar.csv' --output outputs/contract-regression-2026-10-23/batch-09 --previous outputs/contract-regression-2026-10-23/batch-05 --metadata-dir '00 Reference Document/config'
+python scripts/audit_tov1050_real_fixtures.py --output outputs/contract-regression-2026-10-23/coverage-preflight-goldens
+```
+
+測試命令與上節相同11個test files。新CLI的`--real-only`明確不執行TOV640 parity；替代metadata必須指定單context，程序退出後還原CONFIG_DIR。隔離成功在CSV及JSON均使用獨立status，不得列為runtime正式驗收。

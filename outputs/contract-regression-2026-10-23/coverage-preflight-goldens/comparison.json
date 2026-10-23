@@ -1,0 +1,60 @@
+{
+  "validation_scope": "Full retained-data detection/API re-run with coverage preflight; previous batch-05 full exports not regenerated",
+  "comparison": "exact JSON values, including all exceptions/IDs/peaks/levels; stricter than atol=1e-9",
+  "fixtures": [
+    {
+      "fixture": "AEL-UT-golden.json",
+      "baseline": "outputs\\contract-regression-2026-10-23\\fixture-goldens\\AEL-UT-golden.json",
+      "current": "outputs\\contract-regression-2026-10-23\\coverage-preflight-goldens\\AEL-UT-golden.json",
+      "baseline_sha256": "d72dd0fea38d6a354a6303fbd8624ef623334e37d3fde37110146f390aba7628",
+      "current_sha256": "d72dd0fea38d6a354a6303fbd8624ef623334e37d3fde37110146f390aba7628",
+      "checks": {
+        "source_sha256": true,
+        "cleaning": true,
+        "class_counts": true,
+        "track_type_counts": true,
+        "mapping_coverage": true,
+        "exceptions": true,
+        "metadata_capabilities": true,
+        "chart_resolution": true
+      },
+      "status": "pass"
+    },
+    {
+      "fixture": "KTL-UT-golden.json",
+      "baseline": "outputs\\contract-regression-2026-10-23\\fixture-goldens\\KTL-UT-golden.json",
+      "current": "outputs\\contract-regression-2026-10-23\\coverage-preflight-goldens\\KTL-UT-golden.json",
+      "baseline_sha256": "2a2b9bae34ab0691f79d663df7676f71c88a0185b011ac8968599b53a93e63ee",
+      "current_sha256": "2a2b9bae34ab0691f79d663df7676f71c88a0185b011ac8968599b53a93e63ee",
+      "checks": {
+        "source_sha256": true,
+        "cleaning": true,
+        "class_counts": true,
+        "track_type_counts": true,
+        "mapping_coverage": true,
+        "exceptions": true,
+        "metadata_capabilities": true,
+        "chart_resolution": true
+      },
+      "status": "pass"
+    },
+    {
+      "fixture": "TKL-DT-golden.json",
+      "baseline": "outputs\\contract-regression-2026-10-23\\fixture-goldens\\TKL-DT-golden.json",
+      "current": "outputs\\contract-regression-2026-10-23\\coverage-preflight-goldens\\TKL-DT-golden.json",
+      "baseline_sha256": "471f76a85b28de2faef1fa410f2ee4db96719d35332893e6cbc234d05a69b8be",
+      "current_sha256": "471f76a85b28de2faef1fa410f2ee4db96719d35332893e6cbc234d05a69b8be",
+      "checks": {
+        "source_sha256": true,
+        "cleaning": true,
+        "class_counts": true,
+        "track_type_counts": true,
+        "mapping_coverage": true,
+        "exceptions": true,
+        "metadata_capabilities": true,
+        "chart_resolution": true
+      },
+      "status": "pass"
+    }
+  ]
+}

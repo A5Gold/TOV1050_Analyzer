@@ -1,0 +1,206 @@
+{
+  "matrix": [
+    {
+      "line": "DRL",
+      "session": "PL",
+      "direction": "UT",
+      "fixture_count": 1,
+      "status": "blocked_metadata_coverage",
+      "fixtures": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\Raw data\\DRL\\20260817_022959_olpar.csv"
+    }
+  ],
+  "real_runs": [
+    {
+      "path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\Raw data\\DRL\\20260817_022959_olpar.csv",
+      "sha256": "616f2853e14c109c64dac26ebb2a5f3578fce423769e714cd993fd662d6c6db2",
+      "context": {
+        "file_path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\Raw data\\DRL\\20260817_022959_olpar.csv",
+        "line": "DRL",
+        "track": "UT",
+        "session": "PL",
+        "section": "PL",
+        "date_str": "20260817",
+        "station_start": "NOT_PROVIDED",
+        "station_end": "NOT_PROVIDED",
+        "client_session_id": "regression-DRL-PL-UT-0"
+      },
+      "cleaning": {
+        "raw_row_count": 252,
+        "retained_row_count": 52,
+        "trimmed_leading_count": 100,
+        "trimmed_trailing_count": 100,
+        "io_value_count": 1512,
+        "invalid_chainage_count": 0,
+        "no_valid_measurement_count": 0,
+        "delimiter": ",",
+        "chunk_size": 50000,
+        "chainage_unit": "m",
+        "chainage_scale": 1000.0
+      },
+      "exception_counts": {
+        "Low Height": 0,
+        "High Height": 0,
+        "Wire Wear": 0,
+        "Stagger Left": 0,
+        "Stagger Right": 0
+      },
+      "api_status": 200,
+      "report_status": 200,
+      "raw_status": 200,
+      "raw_rows": 52,
+      "verified_columns": [
+        "Chainage",
+        "height1",
+        "height2",
+        "height3",
+        "height4",
+        "stagger1",
+        "stagger2",
+        "stagger3",
+        "stagger4",
+        "wear1",
+        "wear2",
+        "wear3",
+        "wear4",
+        "source_row_number",
+        "source_chainage_km",
+        "height_min",
+        "height_max",
+        "wear_min",
+        "wear_max",
+        "stg_max",
+        "stg_min"
+      ],
+      "report_sha256": "228dd2d49aeb573bf0ce1189adec326fd2795b943888bef9d4badbea85a2880b",
+      "raw_sha256": "cfd3c9125f37dedd0daa73633d6dbc69f9ea2cd4a4dcbb6f48805cf2d88e86b4",
+      "report_bytes": 16566,
+      "raw_bytes": 12099,
+      "chart_rows_verified": 52,
+      "chart_columns_verified": [
+        "task_run_date",
+        "line",
+        "track",
+        "Section",
+        "task_no",
+        "station_start",
+        "station_end",
+        "Chainage",
+        "height1",
+        "height2",
+        "height3",
+        "height4",
+        "stagger1",
+        "stagger2",
+        "stagger3",
+        "stagger4",
+        "wear1",
+        "wear2",
+        "wear3",
+        "wear4",
+        "Track Type",
+        "Overlap",
+        "Tension Length",
+        "Landmark",
+        "Class",
+        "height_min",
+        "height_max",
+        "wear_min",
+        "wear_max",
+        "stg_max",
+        "stg_min"
+      ],
+      "summary_rows_verified": 0,
+      "station_context": "not supplied in source filename; NOT_PROVIDED is an export test label",
+      "metadata_capabilities": {
+        "schema_version": "tov1050-metadata-capabilities-v1",
+        "workbook": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\DRL metadata.xlsx",
+        "workbook_sha256": "641477e23e3f9afae7b4d63a4829286f2f93680153d077f987b538367a4902cc",
+        "line": "DRL",
+        "session": "PL",
+        "direction": "UT",
+        "chainage_unit": "m",
+        "enrichment_version": "tov640-first-nonempty-v1",
+        "overlap_state": "unknown",
+        "capabilities": {
+          "thresholds": {
+            "status": "available",
+            "count": 40,
+            "reason": ""
+          },
+          "class_intervals": {
+            "status": "available",
+            "count": 1,
+            "reason": ""
+          },
+          "track_intervals": {
+            "status": "available",
+            "count": 7,
+            "reason": ""
+          },
+          "bracket_points": {
+            "status": "unavailable",
+            "count": 0,
+            "reason": "No classified point records"
+          },
+          "landmark_points": {
+            "status": "unavailable",
+            "count": 0,
+            "reason": "No classified point records"
+          },
+          "tension_length_intervals": {
+            "status": "unavailable",
+            "count": 0,
+            "reason": "No approved physical interval source; observed bracket envelopes and landmark points are not intervals"
+          },
+          "overlap_intervals": {
+            "status": "unavailable",
+            "count": 0,
+            "reason": "No approved physical interval source; observed bracket envelopes and landmark points are not intervals"
+          },
+          "landmark_intervals": {
+            "status": "unavailable",
+            "count": 0,
+            "reason": "No approved physical interval source; observed bracket envelopes and landmark points are not intervals"
+          }
+        }
+      },
+      "mapping_coverage": {
+        "class": {
+          "uncovered_rows": 0,
+          "first_uncovered_chainages_m": []
+        },
+        "track": {
+          "uncovered_rows": 52,
+          "first_uncovered_chainages_m": [
+            45389.200000000004,
+            45389.200000000004,
+            45389.200000000004,
+            45389.200000000004,
+            45389.200000000004,
+            45389.200000000004,
+            45389.200000000004,
+            45389.200000000004,
+            45389.200000000004,
+            45389.0,
+            45389.0,
+            45389.0,
+            45389.0,
+            45389.0,
+            45389.0,
+            45389.0,
+            45389.0,
+            45389.0,
+            45389.0,
+            45388.8
+          ]
+        }
+      },
+      "fixture_context_confirmation": "User reply: DRL／PL／UT",
+      "limitation": "Zero-exception fixture cannot establish real peak/level/ID acceptance",
+      "acceptance_status": "blocked_metadata_coverage",
+      "diagnostic_phase": "before measurement-coverage preflight; HTTP200 and zero exceptions are not detector acceptance",
+      "analysis_base_commit": "27d786ce53f00c2ef83b7b3e971b6da76157171f"
+    }
+  ],
+  "unassigned_fixtures": []
+}
