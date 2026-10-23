@@ -1,0 +1,11 @@
+{
+  "measurements": [],
+  "datac": "C:\\Smart Maintanence\\TOV640_Analyzer\\docs\\test data\\EAL\\Cycle 8\\EAL_D1_260610.datac",
+  "metadata": "C:\\Smart Maintanence\\TOV640_Analyzer\\config\\EAL metadata.xlsx",
+  "context": {
+    "line": "EAL",
+    "section": "Mainline",
+    "track": "DN",
+    "date_str": "20261023"
+  }
+}

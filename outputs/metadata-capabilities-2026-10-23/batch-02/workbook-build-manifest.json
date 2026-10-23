@@ -1,0 +1,240 @@
+[
+  {
+    "file": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\metadata-capabilities-2026-10-23\\batch-02\\candidates\\LAR_AEL metadata (compatibility review).xlsx",
+    "status": "review-only; unavailable intervals stay blank",
+    "sheets": [
+      {
+        "name": "Capabilities",
+        "rows": 1
+      },
+      {
+        "name": "threshold",
+        "rows": 30
+      },
+      {
+        "name": "Exception Boundarys",
+        "rows": 6
+      },
+      {
+        "name": "LAR_AEL UT",
+        "rows": 1499
+      },
+      {
+        "name": "LAR_AEL UT Brackets",
+        "rows": 1422
+      },
+      {
+        "name": "LAR_AEL DT",
+        "rows": 1530
+      },
+      {
+        "name": "LAR_AEL DT Brackets",
+        "rows": 1449
+      }
+    ]
+  },
+  {
+    "file": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\metadata-capabilities-2026-10-23\\batch-02\\candidates\\LAR_TCL metadata (compatibility review).xlsx",
+    "status": "review-only; unavailable intervals stay blank",
+    "sheets": [
+      {
+        "name": "Capabilities",
+        "rows": 1
+      },
+      {
+        "name": "threshold",
+        "rows": 30
+      },
+      {
+        "name": "Exception Boundarys",
+        "rows": 6
+      },
+      {
+        "name": "LAR_TCL UT",
+        "rows": 1319
+      },
+      {
+        "name": "LAR_TCL UT Brackets",
+        "rows": 1242
+      },
+      {
+        "name": "LAR_TCL DT",
+        "rows": 1328
+      },
+      {
+        "name": "LAR_TCL DT Brackets",
+        "rows": 1247
+      }
+    ]
+  },
+  {
+    "file": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\metadata-capabilities-2026-10-23\\batch-02\\candidates\\ISL metadata (compatibility review).xlsx",
+    "status": "review-only; unavailable intervals stay blank",
+    "sheets": [
+      {
+        "name": "Capabilities",
+        "rows": 1
+      },
+      {
+        "name": "threshold",
+        "rows": 30
+      },
+      {
+        "name": "Exception Boundarys",
+        "rows": 3
+      },
+      {
+        "name": "ISL UT",
+        "rows": 1375
+      },
+      {
+        "name": "ISL UT Brackets",
+        "rows": 678
+      },
+      {
+        "name": "ISL DT",
+        "rows": 1372
+      },
+      {
+        "name": "ISL DT Brackets",
+        "rows": 830
+      }
+    ]
+  },
+  {
+    "file": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\metadata-capabilities-2026-10-23\\batch-02\\candidates\\KTL metadata (compatibility review).xlsx",
+    "status": "review-only; unavailable intervals stay blank",
+    "sheets": [
+      {
+        "name": "Capabilities",
+        "rows": 1
+      },
+      {
+        "name": "threshold",
+        "rows": 38
+      },
+      {
+        "name": "Exception Boundarys",
+        "rows": 6
+      },
+      {
+        "name": "KTL UT",
+        "rows": 2078
+      },
+      {
+        "name": "KTL UT Brackets",
+        "rows": 1583
+      },
+      {
+        "name": "KTL DT",
+        "rows": 2332
+      },
+      {
+        "name": "KTL DT Brackets",
+        "rows": 1678
+      }
+    ]
+  },
+  {
+    "file": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\metadata-capabilities-2026-10-23\\batch-02\\candidates\\TKL metadata (compatibility review).xlsx",
+    "status": "review-only; unavailable intervals stay blank",
+    "sheets": [
+      {
+        "name": "Capabilities",
+        "rows": 1
+      },
+      {
+        "name": "threshold",
+        "rows": 30
+      },
+      {
+        "name": "Exception Boundarys",
+        "rows": 1
+      },
+      {
+        "name": "TKL UT",
+        "rows": 675
+      },
+      {
+        "name": "TKL UT Brackets",
+        "rows": 639
+      },
+      {
+        "name": "TKL DT",
+        "rows": 684
+      },
+      {
+        "name": "TKL DT Brackets",
+        "rows": 657
+      }
+    ]
+  },
+  {
+    "file": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\metadata-capabilities-2026-10-23\\batch-02\\candidates\\TKS metadata (compatibility review).xlsx",
+    "status": "review-only; unavailable intervals stay blank",
+    "sheets": [
+      {
+        "name": "Capabilities",
+        "rows": 1
+      },
+      {
+        "name": "threshold",
+        "rows": 30
+      },
+      {
+        "name": "Exception Boundarys",
+        "rows": 1
+      },
+      {
+        "name": "TKS UT",
+        "rows": 183
+      },
+      {
+        "name": "TKS UT Brackets",
+        "rows": 170
+      },
+      {
+        "name": "TKS DT",
+        "rows": 192
+      },
+      {
+        "name": "TKS DT Brackets",
+        "rows": 180
+      }
+    ]
+  },
+  {
+    "file": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\metadata-capabilities-2026-10-23\\batch-02\\candidates\\TWL metadata (compatibility review).xlsx",
+    "status": "review-only; unavailable intervals stay blank",
+    "sheets": [
+      {
+        "name": "Capabilities",
+        "rows": 1
+      },
+      {
+        "name": "threshold",
+        "rows": 30
+      },
+      {
+        "name": "Exception Boundarys",
+        "rows": 5
+      },
+      {
+        "name": "TWL UT",
+        "rows": 1259
+      },
+      {
+        "name": "TWL UT Brackets",
+        "rows": 1176
+      },
+      {
+        "name": "TWL DT",
+        "rows": 1259
+      },
+      {
+        "name": "TWL DT Brackets",
+        "rows": 1192
+      }
+    ]
+  }
+]

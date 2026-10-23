@@ -1,0 +1,114 @@
+{
+  "source": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\Raw data\\AEL\\20260822_AEL_UT_SHO_AWE.csv",
+  "source_sha256": "6bea775cc19eb19a9d2124cff5a828d15879c431e90f1933689d914dfedeff93",
+  "context": {
+    "file_path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\Raw data\\AEL\\20260822_AEL_UT_SHO_AWE.csv",
+    "line": "AEL",
+    "track": "UT",
+    "section": "Mainline",
+    "session": "Mainline",
+    "date_str": "20260822",
+    "station_start": "SHO",
+    "station_end": "AWE",
+    "client_session_id": "fixture-audit"
+  },
+  "cleaning": {
+    "raw_row_count": 476,
+    "retained_row_count": 276,
+    "trimmed_leading_count": 100,
+    "trimmed_trailing_count": 100,
+    "io_value_count": 3309,
+    "invalid_chainage_count": 0,
+    "no_valid_measurement_count": 0,
+    "delimiter": ",",
+    "chunk_size": 50000,
+    "chainage_unit": "m",
+    "chainage_scale": 1000.0
+  },
+  "class_counts": {
+    "Open": 276
+  },
+  "track_type_counts": {
+    "Curve": 276
+  },
+  "mapping_coverage": {
+    "class": {
+      "uncovered_rows": 0,
+      "first_uncovered_chainages_m": []
+    },
+    "track": {
+      "uncovered_rows": 0,
+      "first_uncovered_chainages_m": []
+    }
+  },
+  "exceptions": {
+    "Low Height": [],
+    "High Height": [],
+    "Wire Wear": [],
+    "Stagger Left": [],
+    "Stagger Right": []
+  },
+  "metadata_capabilities": {
+    "schema_version": "tov1050-metadata-capabilities-v1",
+    "workbook": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\LAR_AEL metadata.xlsx",
+    "workbook_sha256": "e462ea9cf72620846be28a390091c3433a6bf91c77d28f70aef00e14848b67b7",
+    "line": "AEL",
+    "session": "Mainline",
+    "direction": "UT",
+    "chainage_unit": "m",
+    "enrichment_version": "tov640-first-nonempty-v1",
+    "overlap_state": "unknown",
+    "capabilities": {
+      "thresholds": {
+        "status": "available",
+        "count": 30,
+        "reason": ""
+      },
+      "class_intervals": {
+        "status": "available",
+        "count": 6,
+        "reason": ""
+      },
+      "track_intervals": {
+        "status": "available",
+        "count": 77,
+        "reason": ""
+      },
+      "bracket_points": {
+        "status": "available",
+        "count": 1422,
+        "reason": ""
+      },
+      "landmark_points": {
+        "status": "unavailable",
+        "count": 0,
+        "reason": "No classified point records"
+      },
+      "tension_length_intervals": {
+        "status": "unavailable",
+        "count": 0,
+        "reason": "No approved physical interval source; observed bracket envelopes and landmark points are not intervals"
+      },
+      "overlap_intervals": {
+        "status": "unavailable",
+        "count": 0,
+        "reason": "No approved physical interval source; observed bracket envelopes and landmark points are not intervals"
+      },
+      "landmark_intervals": {
+        "status": "unavailable",
+        "count": 0,
+        "reason": "No approved physical interval source; observed bracket envelopes and landmark points are not intervals"
+      }
+    }
+  },
+  "chart_resolution": {
+    "source_points": 276,
+    "returned_points": 276,
+    "bucket_count": 276,
+    "strategy": "raw",
+    "from_m": null,
+    "to_m": null,
+    "preserved_chainage_count": 12
+  },
+  "limitation": "Sample without exceptions"
+}

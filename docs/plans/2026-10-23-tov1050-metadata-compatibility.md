@@ -2,7 +2,7 @@
 
 - 日期：2026-10-23
 - 追蹤：DAV-21（Todo），關聯 DAV-20，parent DAV-10
-- 狀態：設計提案；尚未實作新的 TL/Overlap 區間產生器或修改已啟用 config
+- 狀態：使用者已批准設計；能力、點資料、審閱候選與獨立核准區間 sweep 已實作，詳見 `docs/requests/2026-10-23-tov1050-contract-and-capabilities.md`。未核准物理 TL 邊界，未將 sweep 接入 runtime、未修改已啟用 config。
 - 目的：讓兩個產品透過相同 canonical interval/report 契約工作，同時完整保留 TOV1050 Bracket 點資料。
 
 ## 實際差異與已核對影響
@@ -83,7 +83,7 @@ native TOV1050 workbook 保留目前 Track Type + Bracket 欄位。若要提供�
 
 ## 能力與相容性驗收
 
-這部分尚未實作，必須在下一階段接入 API/readiness/report：
+以下能力契約已開始實作並接入 API/report，實際驗收與未完成項目以當日 contract-and-capabilities request 為準：
 
 - 分別回報 thresholds、track intervals、bracket points、TL intervals、overlap intervals、landmark points／intervals 的 available／partial／unavailable，不用一個籠統 metadata valid 取代。
 - 使用 Class／Track Type 的現有 exception detection 可在必要資料驗證後使用；缺 TL／Landmark 的欄位須明確標缺資料，不宣稱已具備完整 TOV640 enrichment。

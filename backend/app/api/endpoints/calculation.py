@@ -50,6 +50,8 @@ from app.core.calculation.wear_tl_scope import (
 from app.core.config import get_config_dir
 from app.core.database import get_database
 from app.core.metadata import MetadataManager
+from app.core.tov1050_contract import LINE_WORKBOOKS, metadata_workbook_for
+from app.core.tov1050_metadata import TOV1050MetadataManager
 
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/calculation")
@@ -444,6 +446,12 @@ async def upload_wear(
 
     wear_results = []
     for (group_line, group_track, group_section), records in grouped_chart_data.items():
+        if group_line.upper() in LINE_WORKBOOKS:
+            mgr = TOV1050MetadataManager(metadata_workbook_for(group_line.upper(), group_section, get_config_dir()))
+            try:
+                mgr.require_tension_length_intervals(group_line, group_track, group_section)
+            except ValueError as exc:
+                raise HTTPException(status_code=422, detail=str(exc)) from exc
         tl_lookup = None
         if group_line and group_track:
             try:
@@ -489,6 +497,15 @@ async def upload_combined(
 
     latest_date = max(chart_data_by_date.keys()) if chart_data_by_date else None
     latest_chart_data = chart_data_by_date.get(latest_date, []) if latest_date else []
+    for record in latest_chart_data:
+        record_line = str(record.line or line).strip().upper()
+        if record_line in LINE_WORKBOOKS:
+            section = str(record.section or "Mainline").strip()
+            mgr = TOV1050MetadataManager(metadata_workbook_for(record_line, section, get_config_dir()))
+            try:
+                mgr.require_tension_length_intervals(record_line, record.track, section)
+            except ValueError as exc:
+                raise HTTPException(status_code=422, detail=str(exc)) from exc
     wear_results = calculate_average_wear(latest_chart_data)
 
     try:

@@ -13,6 +13,23 @@ export interface AnalyzeRequest {
 }
 
 // Response Types
+export interface MetadataCapabilities {
+  schema_version: 'tov1050-metadata-capabilities-v1';
+  workbook: string;
+  workbook_sha256: string;
+  line: string;
+  session: string;
+  direction: string;
+  chainage_unit: 'm';
+  enrichment_version: 'tov640-first-nonempty-v1';
+  overlap_state: 'unknown';
+  capabilities: Record<string, {
+    status: 'available' | 'partial' | 'unavailable';
+    count: number;
+    reason: string;
+  }>;
+}
+
 export interface AnalysisResponse {
   status: string;
   params: AnalyzeRequest;
@@ -28,6 +45,7 @@ export interface AnalysisResponse {
     to_m?: number | null;
   };
   client_session_id?: string;
+  metadata_capabilities?: MetadataCapabilities | null;
 }
 
 export interface ExceptionRecord {

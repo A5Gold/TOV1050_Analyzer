@@ -1,0 +1,390 @@
+{
+  "reference_commit": "cbca528f090152ec2c776ee04a4c30f0d371810f",
+  "tolerance": {
+    "atol": 1e-09,
+    "rtol": 0,
+    "strings_ids_columns": "exact"
+  },
+  "canonical": [
+    {
+      "case": "canonical-asc-default",
+      "status": "pass",
+      "input_sha256": "e5dee8f580f30fb20d56d6a20fb1cb29d0df0b12d485ab57d24032dd934e971e",
+      "input_kind": "synthetic_canonical_contract_only",
+      "counts": {
+        "Low Height": 1,
+        "High Height": 1,
+        "Wire Wear": 6,
+        "Stagger Left": 4,
+        "Stagger Right": 3
+      },
+      "levels": [
+        "L1"
+      ],
+      "raw_rows": 32,
+      "report_sheets": [
+        "Summary",
+        "Low Height",
+        "High Height",
+        "Wire Wear",
+        "Stagger Left",
+        "Stagger Right",
+        "ChartData"
+      ]
+    },
+    {
+      "case": "canonical-desc-custom",
+      "status": "pass",
+      "input_sha256": "36700eb3dada37049f76feca8182cb2e40fc9fb124cdb5eac91d733ba3bd897b",
+      "input_kind": "synthetic_canonical_contract_only",
+      "counts": {
+        "Low Height": 1,
+        "High Height": 1,
+        "Wire Wear": 6,
+        "Stagger Left": 4,
+        "Stagger Right": 3
+      },
+      "levels": [
+        "L1"
+      ],
+      "raw_rows": 32,
+      "report_sheets": [
+        "Summary",
+        "Low Height",
+        "High Height",
+        "Wire Wear",
+        "Stagger Left",
+        "Stagger Right",
+        "ChartData"
+      ]
+    },
+    {
+      "case": "canonical-isolated-levels",
+      "status": "pass",
+      "input_sha256": "b41a600a5de086b9db903d38f3b7a95cee984fd5ce1086f29f907a0b68435d5c",
+      "input_kind": "synthetic_canonical_contract_only",
+      "counts": {
+        "Low Height": 1,
+        "High Height": 1,
+        "Wire Wear": 1,
+        "Stagger Left": 3,
+        "Stagger Right": 3
+      },
+      "levels": [
+        "L1",
+        "L2",
+        "L3"
+      ],
+      "raw_rows": 36,
+      "report_sheets": [
+        "Summary",
+        "Low Height",
+        "High Height",
+        "Wire Wear",
+        "Stagger Left",
+        "Stagger Right",
+        "ChartData"
+      ]
+    }
+  ],
+  "legacy": [
+    {
+      "case": "legacy-EAL",
+      "status": "pass",
+      "input_sha256": "af4b24cd19ea96cd3e2f6f022b8a2563f26c95275f8a98657621f95de86b8802",
+      "input_kind": "real_datac",
+      "counts": {
+        "Low Height": 2,
+        "High Height": 0,
+        "Wire Wear": 511,
+        "Stagger Left": 43,
+        "Stagger Right": 29
+      },
+      "levels": [
+        "L1",
+        "L2",
+        "L3"
+      ],
+      "raw_rows": 54057,
+      "report_sheets": [
+        "Summary",
+        "Low Height",
+        "High Height",
+        "Wire Wear",
+        "Stagger Left",
+        "Stagger Right",
+        "ChartData"
+      ],
+      "source": "C:\\Smart Maintanence\\TOV640_Analyzer\\docs\\test data\\EAL\\Cycle 8\\EAL_D1_260610.datac",
+      "source_sha256": "b359507f1a3a48df7910e15dd89706b7f18a7dbfe18a7f76636cda57c12ceca0"
+    },
+    {
+      "line": "TML",
+      "status": "blocked_missing_real_datac"
+    }
+  ],
+  "matrix": [
+    {
+      "line": "AEL",
+      "session": "Mainline",
+      "direction": "UT",
+      "fixture_count": 1,
+      "status": "pass",
+      "fixtures": "C:\\Smart Maintanence\\TOV1050_Analyzer\\docs\\TOV1050_Migration\\Raw data\\AEL\\20260822_AEL_UT_SHO_AWE.csv"
+    },
+    {
+      "line": "AEL",
+      "session": "Mainline",
+      "direction": "DT",
+      "fixture_count": 0,
+      "status": "blocked_missing_real_fixture",
+      "fixtures": ""
+    },
+    {
+      "line": "TCL",
+      "session": "Mainline",
+      "direction": "UT",
+      "fixture_count": 0,
+      "status": "blocked_missing_real_fixture",
+      "fixtures": ""
+    },
+    {
+      "line": "TCL",
+      "session": "Mainline",
+      "direction": "DT",
+      "fixture_count": 0,
+      "status": "blocked_missing_real_fixture",
+      "fixtures": ""
+    },
+    {
+      "line": "DRL",
+      "session": "Mainline",
+      "direction": "UT",
+      "fixture_count": 0,
+      "status": "blocked_missing_real_fixture",
+      "fixtures": ""
+    },
+    {
+      "line": "DRL",
+      "session": "Mainline",
+      "direction": "DT",
+      "fixture_count": 0,
+      "status": "blocked_missing_real_fixture",
+      "fixtures": ""
+    },
+    {
+      "line": "DRL",
+      "session": "PL",
+      "direction": "UT",
+      "fixture_count": 0,
+      "status": "blocked_missing_real_fixture",
+      "fixtures": ""
+    },
+    {
+      "line": "DRL",
+      "session": "PL",
+      "direction": "DT",
+      "fixture_count": 0,
+      "status": "blocked_missing_real_fixture",
+      "fixtures": ""
+    },
+    {
+      "line": "ISL",
+      "session": "Mainline",
+      "direction": "UT",
+      "fixture_count": 0,
+      "status": "blocked_missing_real_fixture",
+      "fixtures": ""
+    },
+    {
+      "line": "ISL",
+      "session": "Mainline",
+      "direction": "DT",
+      "fixture_count": 0,
+      "status": "blocked_missing_real_fixture",
+      "fixtures": ""
+    },
+    {
+      "line": "KTL",
+      "session": "Mainline",
+      "direction": "UT",
+      "fixture_count": 0,
+      "status": "blocked_missing_real_fixture",
+      "fixtures": ""
+    },
+    {
+      "line": "KTL",
+      "session": "Mainline",
+      "direction": "DT",
+      "fixture_count": 0,
+      "status": "blocked_missing_real_fixture",
+      "fixtures": ""
+    },
+    {
+      "line": "TKL",
+      "session": "Mainline",
+      "direction": "UT",
+      "fixture_count": 0,
+      "status": "blocked_missing_real_fixture",
+      "fixtures": ""
+    },
+    {
+      "line": "TKL",
+      "session": "Mainline",
+      "direction": "DT",
+      "fixture_count": 0,
+      "status": "blocked_missing_real_fixture",
+      "fixtures": ""
+    },
+    {
+      "line": "TKL",
+      "session": "TKS",
+      "direction": "UT",
+      "fixture_count": 0,
+      "status": "blocked_missing_real_fixture",
+      "fixtures": ""
+    },
+    {
+      "line": "TKL",
+      "session": "TKS",
+      "direction": "DT",
+      "fixture_count": 0,
+      "status": "blocked_missing_real_fixture",
+      "fixtures": ""
+    },
+    {
+      "line": "TWL",
+      "session": "Mainline",
+      "direction": "UT",
+      "fixture_count": 0,
+      "status": "blocked_missing_real_fixture",
+      "fixtures": ""
+    },
+    {
+      "line": "TWL",
+      "session": "Mainline",
+      "direction": "DT",
+      "fixture_count": 0,
+      "status": "blocked_missing_real_fixture",
+      "fixtures": ""
+    }
+  ],
+  "real_runs": [
+    {
+      "path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\docs\\TOV1050_Migration\\Raw data\\AEL\\20260822_AEL_UT_SHO_AWE.csv",
+      "sha256": "6bea775cc19eb19a9d2124cff5a828d15879c431e90f1933689d914dfedeff93",
+      "context": {
+        "file_path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\docs\\TOV1050_Migration\\Raw data\\AEL\\20260822_AEL_UT_SHO_AWE.csv",
+        "line": "AEL",
+        "track": "UT",
+        "session": "Mainline",
+        "section": "Mainline",
+        "date_str": "20260822",
+        "station_start": "SHO",
+        "station_end": "AWE",
+        "client_session_id": "regression-AEL-Mainline-UT-0"
+      },
+      "cleaning": {
+        "raw_row_count": 476,
+        "retained_row_count": 276,
+        "trimmed_leading_count": 100,
+        "trimmed_trailing_count": 100,
+        "io_value_count": 3309,
+        "invalid_chainage_count": 0,
+        "no_valid_measurement_count": 0,
+        "delimiter": ",",
+        "chunk_size": 50000,
+        "chainage_unit": "m",
+        "chainage_scale": 1000.0
+      },
+      "exception_counts": {
+        "Low Height": 0,
+        "High Height": 0,
+        "Wire Wear": 0,
+        "Stagger Left": 0,
+        "Stagger Right": 0
+      },
+      "api_status": 200,
+      "report_status": 200,
+      "raw_status": 200,
+      "raw_rows": 276,
+      "verified_columns": [
+        "Chainage",
+        "height1",
+        "height2",
+        "height3",
+        "height4",
+        "stagger1",
+        "stagger2",
+        "stagger3",
+        "stagger4",
+        "wear1",
+        "wear2",
+        "wear3",
+        "wear4",
+        "source_row_number",
+        "source_chainage_km"
+      ],
+      "metadata_capabilities": {
+        "schema_version": "tov1050-metadata-capabilities-v1",
+        "workbook": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\LAR_AEL metadata.xlsx",
+        "workbook_sha256": "e462ea9cf72620846be28a390091c3433a6bf91c77d28f70aef00e14848b67b7",
+        "line": "AEL",
+        "session": "Mainline",
+        "direction": "UT",
+        "chainage_unit": "m",
+        "enrichment_version": "tov640-first-nonempty-v1",
+        "overlap_state": "unknown",
+        "capabilities": {
+          "thresholds": {
+            "status": "available",
+            "count": 30,
+            "reason": ""
+          },
+          "class_intervals": {
+            "status": "available",
+            "count": 6,
+            "reason": ""
+          },
+          "track_intervals": {
+            "status": "available",
+            "count": 77,
+            "reason": ""
+          },
+          "bracket_points": {
+            "status": "available",
+            "count": 1422,
+            "reason": ""
+          },
+          "landmark_points": {
+            "status": "unavailable",
+            "count": 0,
+            "reason": "No classified point records"
+          },
+          "tension_length_intervals": {
+            "status": "unavailable",
+            "count": 0,
+            "reason": "No approved physical interval source; observed bracket envelopes and landmark points are not intervals"
+          },
+          "overlap_intervals": {
+            "status": "unavailable",
+            "count": 0,
+            "reason": "No approved physical interval source; observed bracket envelopes and landmark points are not intervals"
+          },
+          "landmark_intervals": {
+            "status": "unavailable",
+            "count": 0,
+            "reason": "No approved physical interval source; observed bracket envelopes and landmark points are not intervals"
+          }
+        }
+      },
+      "limitation": "Zero-exception fixture cannot establish real peak/level/ID acceptance"
+    }
+  ],
+  "unassigned_fixtures": [],
+  "limitations": [
+    "Canonical fixtures are synthetic; not field acceptance",
+    "TL/wear physical parity blocked until approved intervals/scope",
+    "Only inventoried real fixtures are exercised; no portable/performance claim"
+  ]
+}

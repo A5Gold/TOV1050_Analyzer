@@ -8,13 +8,14 @@ import numpy as np
 import pandas as pd
 
 from .metadata import MetadataManager
+from .tov1050_capabilities import TOV1050CapabilitiesMixin
 from .tov1050_contract import metadata_track_sheet, metadata_workbook_for
 
 
 CHAINAGE_SCALE_M_PER_KM = 1000.0
 
 
-class TOV1050MetadataManager(MetadataManager):
+class TOV1050MetadataManager(TOV1050CapabilitiesMixin, MetadataManager):
     """Expose TOV1050 metadata through the TOV640 detector contract."""
 
     def _uses_wide_intervals(self) -> bool:

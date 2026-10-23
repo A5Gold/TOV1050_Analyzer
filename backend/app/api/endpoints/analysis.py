@@ -6,12 +6,14 @@ import pandas as pd
 import numpy as np
 from typing import Dict, Any, List, Optional, Union
 import io
+import json
 import re
 import urllib.parse
 import logging
 
 from app.core.data_ingestion import DataLoader
 from app.core.tov1050_contract import (
+    LINE_WORKBOOKS,
     build_output_filename,
     metadata_workbook_for,
     metadata_track_sheet,
@@ -23,6 +25,7 @@ from app.core.tov1050_metadata import TOV1050MetadataManager
 from app.core.metadata import MetadataManager
 from app.core.analyzers import ExceptionDetector
 from app.core.exporter import ExcelExporter
+from app.core.tov1050_report_export import export_analysis_report
 from app.core.repeated_finder import RepeatedExceptionFinder
 from app.core.chart_sampling import build_chart_payload
 
@@ -30,6 +33,13 @@ from app.core.chart_sampling import build_chart_payload
 logger = logging.getLogger(__name__)
 
 router = APIRouter()
+
+
+def _download_body(stream, line):
+    """Avoid a thread-pool handoff per CSV line or binary newline."""
+    if str(line).strip().upper() in LINE_WORKBOOKS:
+        return iter(lambda: stream.read(64 * 1024), b"")
+    return stream
 
 # Utility Function: Conditional File Naming
 def generate_filename(
@@ -133,6 +143,7 @@ LAST_ANALYSIS_SOURCE_PATH: Optional[str] = None
 LAST_COMPARE_RESULTS = pd.DataFrame()
 LAST_COMPARE_FILES = []
 LAST_ANALYSIS_PARAMS = {} # Store context for file naming
+LAST_METADATA_CAPABILITIES = None
 
 # Per-tab analysis state.  The desktop UI supplies ``client_session_id`` for
 # every analysis request; keeping raw frames and parameters under that key
@@ -216,6 +227,7 @@ async def analyze_data(request: AnalyzeRequest):
     Loads data, applies metadata mapping, and detects exceptions.
     """
     global LAST_ANALYSIS_RESULTS, LAST_RAW_DF, LAST_ANALYSIS_PARAMS, LAST_ANALYSIS_SOURCE_PATH
+    global LAST_METADATA_CAPABILITIES
     
     # 1. Validate Paths
     data_path = Path(request.file_path)
@@ -290,6 +302,17 @@ async def analyze_data(request: AnalyzeRequest):
         # direction as context for the copied detector/exporter contract.
         if is_tov1050:
             df['Track'] = request.track
+
+        metadata_capabilities = (
+            meta_mgr.get_capabilities(request.line, session, request.track)
+            if is_tov1050 else None
+        )
+        if metadata_capabilities:
+            missing_required = [name for name in ("thresholds", "class_intervals", "track_intervals")
+                                if metadata_capabilities["capabilities"][name]["status"] != "available"]
+            if missing_required:
+                raise ValueError(f"{metadata_file.name}/{request.line}/{session}/{request.track}: "
+                                 f"required metadata unavailable: {', '.join(missing_required)}")
         
         # 4. Run Analysis
         results, boundary_df = detector.analyze(
@@ -329,6 +352,7 @@ async def analyze_data(request: AnalyzeRequest):
             "raw_df": df.copy(deep=True),
             "source_path": source_path,
             "params": normalized_params,
+            "metadata_capabilities": metadata_capabilities,
         }
         # Bound process memory when a user opens many tabs with large CSVs.
         # Dict insertion order makes the oldest completed tab the eviction
@@ -340,6 +364,7 @@ async def analyze_data(request: AnalyzeRequest):
         LAST_RAW_DF = df
         LAST_ANALYSIS_SOURCE_PATH = source_path
         LAST_ANALYSIS_PARAMS = normalized_params
+        LAST_METADATA_CAPABILITIES = metadata_capabilities
         
         # 5. Format Response
         def df_to_records(d: pd.DataFrame):
@@ -368,6 +393,7 @@ async def analyze_data(request: AnalyzeRequest):
             "chart_resolution": chart_resolution,
             "client_session_id": request.client_session_id,
             "cleaning_summary": getattr(loader, "last_cleaning_summary", None),
+            "metadata_capabilities": metadata_capabilities,
         }
 
     except HTTPException:
@@ -732,7 +758,12 @@ async def export_report():
         raise HTTPException(status_code=400, detail="No analysis results available. Run analysis first.")
     
     try:
-        excel_file = ExcelExporter.export_report(LAST_ANALYSIS_RESULTS, chart_df=LAST_RAW_DF)
+        report_metadata = ({
+            "metadata_capabilities": json.dumps(LAST_METADATA_CAPABILITIES, ensure_ascii=False),
+            "enrichment_version": "tov640-first-nonempty-v1",
+        } if LAST_METADATA_CAPABILITIES else None)
+        excel_file = export_analysis_report(LAST_ANALYSIS_RESULTS, chart_df=LAST_RAW_DF,
+                                           metadata=report_metadata, line=LAST_ANALYSIS_PARAMS.get('line', ''))
         
         p = LAST_ANALYSIS_PARAMS
         date_s = p.get('date_str', 'UnknownDate')
@@ -756,7 +787,7 @@ async def export_report():
         headers = {
             'Content-Disposition': f'attachment; filename="{filename}"; filename*=utf-8\'\'{encoded_filename}'
         }
-        return StreamingResponse(excel_file, headers=headers, media_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        return StreamingResponse(_download_body(excel_file, line), headers=headers, media_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     except Exception as e:
         import traceback
         traceback.print_exc()
@@ -779,7 +810,14 @@ async def generate_report_from_data(request: GenerateAnalysisReportRequest):
             chart_df = pd.DataFrame(request.chart_data)
         
         # Generate Excel
-        excel_file = ExcelExporter.export_report(request.exceptions, chart_df=chart_df)
+        report_metadata = None
+        if state and state.get("metadata_capabilities"):
+            report_metadata = {
+                "metadata_capabilities": json.dumps(state["metadata_capabilities"], ensure_ascii=False),
+                "enrichment_version": "tov640-first-nonempty-v1",
+            }
+        excel_file = export_analysis_report(request.exceptions, chart_df=chart_df,
+                                           metadata=report_metadata, line=request.params.get('line', ''))
         
         # Construct Filename from params using conditional naming logic
         p = request.params
@@ -807,7 +845,7 @@ async def generate_report_from_data(request: GenerateAnalysisReportRequest):
             'Content-Disposition': f'attachment; filename="{filename}"; filename*=utf-8\'\'{encoded_filename}'
         }
         return StreamingResponse(
-            excel_file, 
+            _download_body(excel_file, line),
             headers=headers, 
             media_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
         )
@@ -866,7 +904,7 @@ async def export_raw_data(
         headers = {
             'Content-Disposition': f'attachment; filename="{filename}"; filename*=utf-8\'\'{encoded_filename}'
         }
-        return StreamingResponse(csv_file, headers=headers, media_type='text/csv')
+        return StreamingResponse(_download_body(csv_file, LAST_ANALYSIS_PARAMS.get('line', '')), headers=headers, media_type='text/csv')
     except ValueError as e:
         raise HTTPException(status_code=422, detail=str(e)) from e
     except Exception as e:
@@ -980,7 +1018,7 @@ async def export_raw_data_generate(request: ExportRawRequest):
         
         logger.info(f"[BUG 10.7-2] Raw export generated: {filename} with {len(df)} rows")
         
-        return StreamingResponse(csv_file, headers=headers, media_type='text/csv')
+        return StreamingResponse(_download_body(csv_file, line_val), headers=headers, media_type='text/csv')
         
     except ValueError as e:
         raise HTTPException(status_code=422, detail=str(e)) from e

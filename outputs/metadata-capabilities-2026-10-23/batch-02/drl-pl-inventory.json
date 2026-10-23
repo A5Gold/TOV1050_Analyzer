@@ -1,0 +1,57 @@
+[
+  {
+    "workbook": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\DRL metadata.xlsx",
+    "sha256": "641477e23e3f9afae7b4d63a4829286f2f93680153d077f987b538367a4902cc",
+    "sheet": "threshold",
+    "rows": 88,
+    "columns": [
+      "Location Type",
+      "Track Type",
+      "Exc Type",
+      "min",
+      "max",
+      "remark"
+    ],
+    "approval": "not_in_batch04",
+    "scope": "direction semantics of PL require business review"
+  },
+  {
+    "workbook": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\DRL metadata.xlsx",
+    "sha256": "641477e23e3f9afae7b4d63a4829286f2f93680153d077f987b538367a4902cc",
+    "sheet": "UT track type",
+    "rows": 10,
+    "columns": [
+      "track type",
+      "startKM",
+      "endKM"
+    ],
+    "approval": "not_in_batch04",
+    "scope": "direction semantics of PL require business review"
+  },
+  {
+    "workbook": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\DRL metadata.xlsx",
+    "sha256": "641477e23e3f9afae7b4d63a4829286f2f93680153d077f987b538367a4902cc",
+    "sheet": "PL track type",
+    "rows": 7,
+    "columns": [
+      "track type",
+      "startKM",
+      "endKM"
+    ],
+    "approval": "not_in_batch04",
+    "scope": "direction semantics of PL require business review"
+  },
+  {
+    "workbook": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\DRL metadata.xlsx",
+    "sha256": "641477e23e3f9afae7b4d63a4829286f2f93680153d077f987b538367a4902cc",
+    "sheet": "location type",
+    "rows": 1,
+    "columns": [
+      "location type",
+      "startKM",
+      "endKM"
+    ],
+    "approval": "not_in_batch04",
+    "scope": "direction semantics of PL require business review"
+  }
+]

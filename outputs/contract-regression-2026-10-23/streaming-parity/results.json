@@ -1,0 +1,26 @@
+[
+  {
+    "case": "canonical-asc-default",
+    "status": "pass",
+    "reference_commit": "cbca528f090152ec2c776ee04a4c30f0d371810f",
+    "writer": "TOV1050 streaming; exception/enrichment semantics unchanged"
+  },
+  {
+    "case": "canonical-desc-custom",
+    "status": "pass",
+    "reference_commit": "cbca528f090152ec2c776ee04a4c30f0d371810f",
+    "writer": "TOV1050 streaming; exception/enrichment semantics unchanged"
+  },
+  {
+    "case": "canonical-isolated-levels",
+    "status": "pass",
+    "reference_commit": "cbca528f090152ec2c776ee04a4c30f0d371810f",
+    "writer": "TOV1050 streaming; exception/enrichment semantics unchanged"
+  },
+  {
+    "case": "legacy-EAL",
+    "status": "pass",
+    "reference_commit": "cbca528f090152ec2c776ee04a4c30f0d371810f",
+    "writer": "TOV1050 streaming; exception/enrichment semantics unchanged"
+  }
+]
