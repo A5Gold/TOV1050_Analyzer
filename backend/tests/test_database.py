@@ -902,6 +902,8 @@ class TestRepeatedRecordQueryAggregates:
             'rac': 0,
             'low_s1': 2,
             'lmc': 1,
+            'pl': 0,
+            'tks': 0,
             'unknown': 2,
         }
         assert section_counts['all'] == sum(
@@ -923,6 +925,8 @@ class TestRepeatedRecordQueryAggregates:
                 'rac': 0,
                 'low_s1': 0,
                 'lmc': 0,
+                'pl': 0,
+                'tks': 0,
                 'unknown': 0,
             }
 

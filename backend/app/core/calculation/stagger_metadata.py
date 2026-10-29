@@ -4,12 +4,37 @@ from pathlib import Path
 import pandas as pd
 
 from app.core.config import get_config_dir
+from app.core.line_registry import LINE_CATALOG, normalize_context
+from app.core.report_context import ReportContextError
 
 
 DEFAULT_STAGGER_WORKBOOKS = {
     "EAL": "EAL Enhanced stagger calculation (Formula).xlsx",
     "TML": "TML Enhanced stagger calculation (Formula).xlsx",
 }
+
+
+class StaggerConfigurationUnavailable(ReportContextError):
+    def __init__(self, line, branch, direction, missing=None):
+        self.context = {'line': line, 'branch': branch, 'direction': direction}
+        self.missing = missing or ['approved branch support metadata', 'approved Keq strategy/coefficients']
+        super().__init__(f'Stagger calculation is unavailable for {line}/{branch or "(unknown branch)"}/{direction or "(unknown direction)"}: '
+                         + ', '.join(self.missing), 'STAGGER_CONFIG_UNAVAILABLE')
+
+    def detail(self):
+        return {**super().detail(), 'context': self.context, 'missing_configuration': self.missing}
+
+
+def require_stagger_configuration(line: str, branch: str = '', direction: str = ''):
+    try:
+        context = normalize_context(line, branch=branch or 'Mainline', direction=direction)
+    except ValueError as exc:
+        raise ReportContextError(str(exc)) from exc
+    profile = next((item.get('stagger_profile') for item in LINE_CATALOG[context.line]['branches']
+                    if item['branch'] == context.branch), None)
+    if not profile or context.line not in DEFAULT_STAGGER_WORKBOOKS:
+        raise StaggerConfigurationUnavailable(context.line, context.branch, context.direction)
+    return context
 
 
 @dataclass(slots=True)

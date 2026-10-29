@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { AnalysisResponse, ExceptionRecord } from '../types/api';
+import { AnalysisMode, AnalysisResponse, BackgroundJob, ExceptionRecord } from '../types/api';
 
 // --- Session Types ---
 
@@ -13,6 +13,7 @@ export interface AnalysisSession {
   section: string;
   track: string;
   dateStr: string;
+  analysisMode?: AnalysisMode;
   
   // Optional fields for custom file naming
   taskNo?: string;
@@ -23,6 +24,11 @@ export interface AnalysisSession {
   result: AnalysisResponse | null; // The heavy analysis result
   loading: boolean;
   error: string | null;
+  analysisJob?: BackgroundJob | null;
+  exportJob?: BackgroundJob | null;
+  exporting?: boolean;
+  exportMode?: 'raw' | 'chainage_mean' | 'chainage_median';
+  downloadStatus?: 'downloading' | 'downloaded' | 'failed' | null;
   
   // View State
   viewMode: 'graph' | 'table';

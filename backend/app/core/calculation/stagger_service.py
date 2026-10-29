@@ -9,6 +9,7 @@ from app.core.calculation.stagger_formula import (
     is_short_circuit_pass,
 )
 from app.core.calculation.stagger_keq import calculate_eal_keq, calculate_tml_keq
+from app.core.calculation.stagger_metadata import require_stagger_configuration
 from app.core.calculation.stagger_measurements import resolve_measurements
 from app.core.calculation.stagger_reference import resolve_reference_points
 from app.core.calculation.stagger_types import (
@@ -31,6 +32,7 @@ def compute_stagger_result_for_record(
     case_type: str,
     height_correction: float = 0.0,
 ) -> tuple[StaggerSummaryResult, dict[str, object]]:
+    require_stagger_configuration(record.line, record.branch, record.track)
     supports = metadata["supports"][record.line][record.track]
     reference = resolve_reference_points(record, supports)
 
@@ -39,6 +41,7 @@ def compute_stagger_result_for_record(
             id=record.id,
             run_date=record.run_date,
             line=record.line,
+            branch=record.branch,
             track=record.track,
             section=record.section,
             task_no=record.task_no,
@@ -100,6 +103,7 @@ def compute_stagger_result_for_record(
         id=record.id,
         run_date=record.run_date,
         line=record.line,
+        branch=record.branch,
         track=record.track,
         section=record.section,
         task_no=record.task_no,
@@ -166,6 +170,7 @@ def _calculate_keq(
     metadata: dict,
 ) -> dict[str, float | None]:
     line_key = record.line.upper()
+    require_stagger_configuration(line_key, record.branch, record.track)
     if line_key == "EAL":
         wind = metadata["wind_factor"]["EAL"]
         return calculate_eal_keq(
@@ -178,6 +183,8 @@ def _calculate_keq(
             kh_by_track=wind["kh"],
         )
 
+    if line_key != 'TML':
+        raise ValueError(f'No approved Keq strategy for {line_key}')
     strategy = metadata["wind_factor"]["TML"]
     k_eq = calculate_tml_keq(
         chi=reference.chi,

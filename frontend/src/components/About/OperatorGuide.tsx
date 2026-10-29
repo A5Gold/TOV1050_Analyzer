@@ -22,6 +22,8 @@ import {
   versionDifferenceLimits,
   versionDifferenceRoles,
   tov1050InputRows,
+  measurementFlow,
+  chartContractRows,
 } from './aboutGuideContent';
 import {
   CoverageExample,
@@ -33,7 +35,6 @@ import {
   ThresholdRangeChart,
   WearResolutionVisual,
 } from './GuideVisuals';
-import operatorWorkflowDiagram from '../../assets/tov1050-operator-workflow.png';
 
 const sectionSx = { scrollMarginTop: 16, py: 3 } as const;
 
@@ -52,25 +53,19 @@ const OperatorGuide: React.FC = () => (
         <Typography variant="body2" color="text.secondary" sx={{ maxWidth: '76ch', mb: 2 }}>
           選檔後先確認 Line、日期與 metadata 範圍。預覽是作出保存決定的必要步驟，不應直接略過 conflict、blocking reason 或 trace。
         </Typography>
-        <GuideFlow steps={operatorWorkflowSteps} label="TOV640 Analyzer 操作流程" desktopColumns={5} />
-        <Box
-          component="img"
-          src={operatorWorkflowDiagram}
-          alt="TOV1050 Exception Generator operator workflow from selecting a run preset through reviewing Graph and Table and exporting a report"
-          sx={{ display: 'block', width: '100%', maxWidth: 980, height: 'auto', mt: 2, border: 1, borderColor: 'divider' }}
-        />
+        <GuideFlow steps={operatorWorkflowSteps} label="雙系統 Analyzer 操作流程" desktopColumns={5} />
         <Typography variant="caption" color="text.secondary" display="block" sx={{ mt: 0.75 }}>
           Run preset 僅提供快速填入；特殊案例仍可直接編輯 Track、Station 與 Task 欄位。
         </Typography>
       </Box>
 
       <Box component="section" id="operator-tov1050-input" sx={sectionSx}>
-        <Typography variant="h6" component="h3" gutterBottom>TOV1050 輸入與輸出</Typography>
+        <Typography variant="h6" component="h3" gutterBottom>TOV640／TOV1050 輸入與輸出</Typography>
         <Typography variant="body2" color="text.secondary" sx={{ maxWidth: '76ch', mb: 2 }}>
-          原始量測 CSV 的檔名可能來自設備或現場流程，不一定是報表名稱。請在輸入表格確認業務參數；系統會用這些參數分析與產生可供其他模組使用的輸出檔名。
+          DATAC 與 CSV 的 header 及清洗方式不同，清洗後使用共同量測與報表契約。請在原始資料匯入表格確認業務參數；下游讀取報表已保存的身份，不因原始設備標籤或檔名改成另一條線。
         </Typography>
         <TableContainer>
-          <Table size="small" aria-label="TOV1050 input and output contract">
+          <Table size="small" aria-label="雙系統 input and output contract">
             <TableHead><TableRow><TableCell>項目</TableCell><TableCell>行為</TableCell></TableRow></TableHead>
             <TableBody>{tov1050InputRows.map((row) => (
               <TableRow key={row.cells[0]}><TableCell>{row.cells[0]}</TableCell><TableCell>{row.cells[1]}</TableCell></TableRow>
@@ -78,14 +73,31 @@ const OperatorGuide: React.FC = () => (
           </Table>
         </TableContainer>
         <Alert severity="warning" sx={{ mt: 2 }}>
-          若缺少日期、Line、Direction、Session 或 Station range，請先補齊表格欄位；不要嘗試修改原始 CSV 檔名來繞過提示。
+          若缺少日期、Line、Branch、Direction 或 Station range，請先補齊所需欄位。九個主 Line 可辨識，工程計算仍須該分支／方向的核准配置；不能因選單可選便當作全線已可計算。
+        </Alert>
+      </Box>
+
+      <Box component="section" id="operator-chart" sx={sectionSx}>
+        <Typography variant="h6" component="h3" gutterBottom>中位實測樣本、圖表與資料品質</Typography>
+        <GuideFlow steps={measurementFlow} label="雙格式清洗與中位樣本資料流" desktopColumns={4} />
+        <Typography variant="body2" sx={{ mt: 2, mb: 2, maxWidth: '76ch' }}>
+          同 Km 群內每個 channel 獨立選取中位實測樣本，不產生兩個樣本的平均值；偶數群的中間兩個樣本取採集較早者。各 channel 可能來自不同來源列，hover 可查來源列、SampleCount 及有效樣本數。圖表與報表使用相同代表資料，不額外濾噪。
+        </Typography>
+        <TableContainer><Table size="small" aria-label="Exception graph interaction contract">
+          <TableHead><TableRow><TableCell>項目</TableCell><TableCell>操作及限制</TableCell></TableRow></TableHead>
+          <TableBody>{chartContractRows.filter(row => !['快照隔離', '來源漂移與重試'].includes(row.cells[0])).map(row => (
+            <TableRow key={row.cells[0]}><TableCell>{row.cells[0]}</TableCell><TableCell>{row.cells[1]}</TableCell></TableRow>
+          ))}</TableBody>
+        </Table></TableContainer>
+        <Alert severity="info" sx={{ mt: 2 }}>
+          縮放失敗會保留最後成功圖表，可按「重試此範圍」。顯示「此範圍沒有資料」時可縮回有效里程或 Clear Selection；分析已過期或來源變更則重新匯入。
         </Alert>
       </Box>
 
       <Box component="section" id="operator-version-difference" sx={sectionSx}>
         <Typography variant="h6" component="h3" gutterBottom>Version Difference</Typography>
         <Typography variant="body2" color="text.secondary" sx={{ maxWidth: '76ch', mb: 2 }}>
-          用固定 cycle role 比較最多五份 ChartData 報表。先上傳 Latest，再依 Previous 1 至 Previous 4 的時間順序加入檔案；缺少 Previous 或 metric 時保留 partial result，不以猜測值補齊。
+          用固定 cycle role 比較最多五份 ChartData 報表。先上傳 Latest，再依 Previous 1 至 Previous 4 的時間順序加入檔案；缺少 Previous 或 metric 時保留 partial result。多 Section 或不同 Section 會明確拒絕，請先按 Section 分拆；舊報表未知演算法來源會標 unknown。
         </Typography>
         <GuideFlow steps={versionDifferenceRoles} label="Version Difference cycle 與軸線規則" desktopColumns={4} />
         <TableContainer sx={{ mt: 2 }}>
@@ -107,7 +119,7 @@ const OperatorGuide: React.FC = () => (
       <Box component="section" id="operator-threshold" sx={sectionSx}>
         <Typography variant="h6" component="h3" gutterBottom>Threshold 異常判定</Typography>
         <Typography variant="body2" color="text.secondary" sx={{ maxWidth: '76ch', mb: 2 }}>
-          原始量測先按 chainage 取得最壞值，再對照 metadata threshold。Low Height 與 Wire Wear 值愈低愈嚴重，High Height 值愈高愈嚴重；Stagger 依 Tangent 或 Curve threshold 比左右絕對值。
+          清洗後先選同 chainage 的中位實測樣本，各 channel 代表值再作最壞值／例外判定並對照 metadata threshold。Low Height 與 Wire Wear 值愈低愈嚴重，High Height 值愈高愈嚴重；Stagger 依 Tangent 或 Curve 的實際配置門檻分左右判斷。圖表取樣不參與判定。
         </Typography>
         <TableContainer sx={{ mb: 2 }}>
           <Table size="small" aria-label="Threshold 判斷次序">
@@ -125,7 +137,7 @@ const OperatorGuide: React.FC = () => (
       <Box component="section" id="operator-repeat" sx={sectionSx}>
         <Typography variant="h6" component="h3" gutterBottom>Repeat 配對</Typography>
         <Typography variant="body2" color="text.secondary" sx={{ maxWidth: '76ch', mb: 2 }}>
-          Repeat 必須同 exception type、區間有交集，而且最新與舊報表的兩個 peak 都落在交集。最新報表作為 accumulator，只有每一輪仍匹配的列才會延伸到 Previous N。
+          Repeat 先確認相同主線／分支／方向及 Section；多 Section 須先分拆。再要求同 exception type、區間有交集，而且最新與舊報表的兩個 peak 都落在交集。最新報表作為 accumulator，只有每一輪仍匹配的列才會延伸到 Previous N。
         </Typography>
         <RepeatChainTimeline />
         <Alert severity="info" sx={{ mt: 2 }}>
@@ -159,7 +171,7 @@ const OperatorGuide: React.FC = () => (
       <Box component="section" id="operator-wear" sx={sectionSx}>
         <Typography variant="h6" component="h3" gutterBottom>Wear 預覽、分類與覆蓋率</Typography>
         <Typography variant="body2" color="text.secondary" sx={{ maxWidth: '76ch', mb: 2 }}>
-          Analysis 接受 EAL 或 TML complete-cycle 檔案。位置解析、張力段 scope、identity 去重與 conflict acceptance 完成後，才產生 cycle records 與 MAINLINE-only coverage。
+          Wear complete-cycle 工程流程沿用已核准的 EAL／TML 配置。其他路線即使報表身份可辨識，仍須核准 TL interval、scope 與公式；缺項會提示，不借用 EAL／TML 設定。位置解析、identity 去重與 conflict acceptance 完成後，才產生 cycle records 與 MAINLINE-only coverage。
         </Typography>
         <Stack spacing={3}>
           <WearResolutionVisual />
@@ -171,7 +183,7 @@ const OperatorGuide: React.FC = () => (
         <Typography variant="h6" component="h3" gutterBottom>Trend 與 Stagger</Typography>
         <Typography variant="subtitle1" component="h4" fontWeight={700} gutterBottom>Wire Wear L2 Trend</Typography>
         <Typography variant="body2" color="text.secondary" sx={{ maxWidth: '76ch', mb: 1.5 }}>
-          Trend 只分析最新週期、ACTION 空白的 L2 Wire Wear 候選；Case B 另要求 ID 出現在 n_Repeated。每個日期在區間內取 wear_min 最小值，再做線性回歸。
+          Trend 只分析最新週期、ACTION 空白的 L2 Wire Wear 候選；Case B 另要求 ID 出現在 n_Repeated。同一主線／分支／方向下，每個日期在對應區間內取 wear_min 最小值，再做線性回歸。結果保留 Track、Section、Task No 及起終站；缺值如實呈現，不將 AEL 改成 EAL。
         </Typography>
         <TableContainer sx={{ mb: 3 }}>
           <Table size="small" aria-label="Trend recommendation 決策表">
@@ -185,7 +197,7 @@ const OperatorGuide: React.FC = () => (
         </TableContainer>
         <Typography variant="subtitle1" component="h4" fontWeight={700} gutterBottom>Stagger span</Typography>
         <Typography variant="body2" color="text.secondary" sx={{ maxWidth: '76ch', mb: 1.5 }}>
-          Stagger 只選 L1/L2 的 Left 或 Right 候選。Case B 必須 repeated summary 有相同 ID；系統再以 chi 找 SPT A、I、B，計算 AI 與 IB span，並保留完整或 partial trace。
+          Stagger 先辨識報表主線／分支／方向並檢查工程配置；未核准係數或 support metadata 時停止並列缺項。已配置流程只選 L1/L2 的 Left 或 Right 候選；Case B 必須 repeated summary 有相同 ID，再以 chi 找 SPT A、I、B，計算 AI 與 IB span，並保留完整或 partial trace。
         </Typography>
         <StaggerSpanVisual />
       </Box>

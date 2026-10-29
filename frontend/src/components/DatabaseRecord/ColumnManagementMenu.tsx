@@ -49,7 +49,8 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import WarningIcon from '@mui/icons-material/Warning';
 import { GridColumnVisibilityModel } from '@mui/x-data-grid';
 import { SavedRepeatedRecord } from '../../types/api';
-import { TOV1050_LINES, TOV1050_SECTION_OPTIONS } from '../../config/tov1050';
+import { LINE_CATALOG, PARENT_LINES } from '../../config/lineCatalog';
+const TOV1050_SECTION_OPTIONS = [...new Set(LINE_CATALOG.flatMap(item => item.sections))];
 
 // =============================================================================
 // TYPES
@@ -100,7 +101,7 @@ const COLUMN_GROUPS = {
 
 const ACTION_OPTIONS = ['Pending', 'Keep monitoring', 'Calculation', 'Verify on site', 'Adjustment required', 'Completed'];
 const LEVEL_OPTIONS = ['L1', 'L2', 'L3'];
-const LINE_OPTIONS = [...TOV1050_LINES];
+const LINE_OPTIONS = [...PARENT_LINES];
 // Feature-007: Section options for batch delete
 const SECTION_OPTIONS = [...TOV1050_SECTION_OPTIONS];
 

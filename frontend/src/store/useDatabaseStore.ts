@@ -30,7 +30,7 @@ import {
   Check1YearRequest,
   Check1YearResponse,
 } from '../types/api';
-import { TOV1050_LINES } from '../config/tov1050';
+import { PARENT_LINES } from '../config/lineCatalog';
 
 // =============================================================================
 // STORE TYPES
@@ -43,6 +43,7 @@ interface DatabaseStoreState {
   repeatedRecordsError: string | null;
   repeatedRecordsTotal: number;
   repeatedRecordSectionCounts: RepeatedRecordSectionCounts;
+  repeatedRecordBranchCounts: Record<string, number>;
   
   // Current Filters
   repeatedFilters: Partial<DatabaseFilters>;
@@ -109,6 +110,7 @@ const initialState = {
   repeatedRecordsLoading: false,
   repeatedRecordsError: null,
   repeatedRecordsTotal: 0,
+  repeatedRecordBranchCounts: {} as Record<string, number>,
   repeatedRecordSectionCounts: {
     all: 0,
     mainline: 0,
@@ -136,7 +138,7 @@ const initialState = {
   distinctValuesLoading: false,
   
   // Phase 12 Bug 4: Line Counts
-  lineCounts: Object.fromEntries(TOV1050_LINES.map((line) => [line, 0])) as Record<string, number>,
+  lineCounts: Object.fromEntries(PARENT_LINES.map((line) => [line, 0])) as Record<string, number>,
   lineCountsLoading: false,
 };
 
@@ -208,6 +210,7 @@ export const useDatabaseStore = create<DatabaseStoreState>((set, get) => ({
         repeatedRecords: response.data.records,
         repeatedRecordsTotal: response.data.total,
         repeatedRecordSectionCounts: response.data.section_counts,
+        repeatedRecordBranchCounts: response.data.branch_counts ?? {},
         repeatedRecordsLoading: false,
         repeatedFilters: mergedFilters,
       });

@@ -1,0 +1,11 @@
+{
+  "physical_tl_groups": 373,
+  "single_point_groups": 2,
+  "capability_contexts": 18,
+  "source_drift_count": 0,
+  "runtime_configs_unchanged": true,
+  "overlap_state": "unknown",
+  "candidate_status": "review_only_not_activated",
+  "drl_pl_status": "not_in_batch04; inventory only",
+  "interval_generation": "none: no approved physical boundaries"
+}

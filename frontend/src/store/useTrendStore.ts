@@ -1,3 +1,4 @@
+import { apiErrorMessage } from '../api/errorMessage';
 import { create } from 'zustand';
 import { uploadTrendFiles } from '../api/client';
 import type { TrendResult } from '../types/api';
@@ -42,13 +43,6 @@ const makeTab = (id: string, label: string): TrendTab => ({
 
 const updateActive = (tabs: TrendTab[], activeTabId: string, patch: Partial<TrendTab>): TrendTab[] =>
   tabs.map((t) => (t.id === activeTabId ? { ...t, ...patch } : t));
-
-const inferLineFromFiles = (files: File[]): 'EAL' | 'TML' => {
-  const names = files.map((file) => file.name.toUpperCase());
-  const hasTml = names.some((name) => /(^|_)TML(_|$)/.test(name));
-  const hasEal = names.some((name) => /(^|_)EAL(_|$)/.test(name));
-  return hasTml && !hasEal ? 'TML' : 'EAL';
-};
 
 export const useTrendStore = create<TrendStoreState>((set, get) => ({
   tabs: [makeTab('tab-1', 'Tab 1')],
@@ -123,11 +117,7 @@ export const useTrendStore = create<TrendStoreState>((set, get) => ({
     const tabId = activeTabId;
     set({ tabs: updateActive(tabs, tabId, { isLoading: true, error: null }) });
     try {
-      const line = inferLineFromFiles([
-        ...tab.uploadedFiles,
-        ...(tab.repeatedFile ? [tab.repeatedFile] : []),
-      ]);
-      const res = await uploadTrendFiles(tab.uploadedFiles, tab.repeatedFile, line);
+      const res = await uploadTrendFiles(tab.uploadedFiles, tab.repeatedFile);
       const { tabs: t2 } = get();
       set({
         tabs: updateActive(t2, tabId, {
@@ -138,10 +128,7 @@ export const useTrendStore = create<TrendStoreState>((set, get) => ({
         }),
       });
     } catch (err: any) {
-      const detail = err.response?.data?.detail;
-      const msg = Array.isArray(detail)
-        ? detail.map((d: any) => d.msg ?? JSON.stringify(d)).join('; ')
-        : (typeof detail === 'string' ? detail : err.message) || 'Analysis failed';
+      const msg = apiErrorMessage(err, 'Analysis failed');
       const { tabs: t2 } = get();
       set({ tabs: updateActive(t2, tabId, { error: msg, hasAnalyzed: false, isLoading: false }) });
     }

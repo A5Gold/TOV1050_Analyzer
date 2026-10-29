@@ -1,3 +1,5 @@
+import { apiErrorMessage } from '../api/errorMessage';
+import { canonicalBranch, normalizeReportIdentity, normalizeDirection } from '../config/lineCatalog';
 import React, { useState } from 'react';
 import { 
   Box, Typography, Button, Paper, 
@@ -302,7 +304,7 @@ const HistoryCompareView = () => {
       }
     } catch (err: any) {
       console.error(err);
-      const msg = err.response?.data?.detail || "Comparison failed.";
+      const msg = apiErrorMessage(err, "Comparison failed.");
       updateCompareSession(activeSession.id, { error: msg, loading: false });
     }
   };
@@ -313,9 +315,7 @@ const HistoryCompareView = () => {
       setToast({ open: true, message: 'Generating Report...', severity: 'info' });
 
       try {
-          const parsedMeta = activeSession.latestFileName 
-              ? parseMetadataFromFileName(activeSession.latestFileName) 
-              : { line: 'EAL', track: 'UP', date_str: '', task_run_date: '' };
+          const parsedMeta = parseMetadataFromFileName(activeSession.latestFileName || '');
           const payload = {
               data: activeSession.repeatedData,
               metadata: {
@@ -465,6 +465,9 @@ const HistoryCompareView = () => {
         ? options.filters.section 
         : undefined;
       
+      if (!filterLine || !metadata.track || (metadata.line && filterLine !== metadata.line)) {
+        throw new Error('請使用報表的實際路線與方向進行一年紀錄檢查。');
+      }
       // M5: Prepare exceptions data for the API using normalizer for consistent field names
       const exceptionsForCheck = realData.map(row => {
         const normalized = normalizeRecord(row);
@@ -489,6 +492,7 @@ const HistoryCompareView = () => {
         line: filterLine,
         track: metadata.track,
         section: filterSection,
+        session: canonicalBranch(filterLine, filterSection || metadata.section || '') || undefined,
         date_from: options.filters?.dateFrom,
         date_to: options.filters?.dateTo,
         exceptions: exceptionsForCheck,
@@ -571,57 +575,31 @@ const HistoryCompareView = () => {
    * 
    * Bug 10.6-4: Added task_run_date extraction from filename
    */
-  const parseMetadataFromFileName = (filename: string): { 
-    line: string; 
-    track: string; 
-    date_str: string;
-    task_run_date: string;
-    task_no?: string;
-    station_start?: string;
-    station_end?: string;
-  } => {
-    // Default values
-    const todayStr = new Date().toISOString().slice(0, 10).replace(/-/g, '');
-    const defaults = { line: 'EAL', track: 'UP', date_str: todayStr, task_run_date: todayStr };
-    
-    if (!filename) return defaults;
-    
-    // Remove file extension
-    const baseName = filename.replace(/\.[^/.]+$/, '');
-    const parts = baseName.split('_');
-    
-    if (parts.length >= 4) {
-      const dateStr = parts[0] || defaults.date_str;
-      const lineStr = parts[1] || defaults.line;
-      
-      // Detect Condition B (Custom): parts[3] contains '-' (e.g., "HUH-RAC")
-      // Condition A (Default): YYYYMMDD_LINE_TRACK_SECTION_...
-      // Condition B (Custom): YYYYMMDD_LINE_TASKNO_STATIONSTART-STATIONEND_...
-      const isCustomMode = parts[3] && parts[3].includes('-');
-      
-      if (isCustomMode) {
-        const stationParts = parts[3].split('-');
-        return {
-          date_str: dateStr,
-          task_run_date: dateStr,
-          line: lineStr,
-          track: defaults.track, // Track not in custom filename; use default
-          task_no: parts[2],
-          station_start: stationParts[0],
-          station_end: stationParts[1],
-        };
-      }
-      
-      // Condition A: Default mode
-      return {
-        date_str: dateStr,
-        task_run_date: dateStr,
-        line: lineStr,
-        track: parts[2] || defaults.track,
-      };
-    }
-    
-    return defaults;
+  const parseMetadataFromFileName = (filename: string) => {
+    const parts = filename.replace(/\.[^/.]+$/, '').split('_');
+    const custom = !!parts[3]?.includes('-');
+    const fileDate = /^\d{8}$/.test(parts[0] || '') ? parts[0] : '';
+    const identity = normalizeReportIdentity(parts[1] || '', custom ? '' : parts[3] || '');
+    const unique = (keys: string[]) => {
+      const values = new Set((activeSession?.repeatedData || []).map(row => {
+        const item = normalizeRecord(row) as Record<string, any>;
+        return keys.map(key => item[key]).find(value => value !== undefined && value !== null && String(value).trim()) || '';
+      }).map(String).filter(Boolean));
+      return values.size === 1 ? [...values][0] : values.size ? '' : undefined;
+    };
+    const rowLine = unique(['line']);
+    const rowSection = unique(['section']);
+    const rowIdentity = rowLine ? normalizeReportIdentity(rowLine, rowSection || '') : null;
+    return {
+      line: rowLine !== undefined ? rowIdentity?.line || '' : identity.line,
+      track: unique(['track']) ?? (custom ? '' : normalizeDirection(parts[2] || '') ? parts[2] : ''),
+      section: rowSection ?? identity.section,
+      date_str: unique(['task_run_date', 'date_str']) ?? fileDate,
+      task_run_date: unique(['task_run_date', 'date_str']) ?? fileDate,
+      task_no: unique(['task_no']) ?? (custom ? parts[2] : undefined),
+      station_start: unique(['station_start']) ?? (custom ? parts[3]?.split('-')[0] : parts[4]),
+      station_end: unique(['station_end']) ?? (custom ? parts[3]?.split('-')[1] : parts[5]),
+    };
   };
 
   /**
@@ -674,20 +652,7 @@ const HistoryCompareView = () => {
    * Feature-001: Detect section from repeated data
    * Returns the most common section in the data, defaults to 'Mainline'
    */
-  const detectSection = (): string => {
-    const realData = getRealData();
-    if (realData.length === 0) return 'Mainline';
-    
-    const sectionCounts: Record<string, number> = {};
-    realData.forEach(row => {
-      const section = (row as any).Section || 'Mainline';
-      sectionCounts[section] = (sectionCounts[section] || 0) + 1;
-    });
-    
-    // Return the most common section
-    const sortedSections = Object.entries(sectionCounts).sort((a, b) => b[1] - a[1]);
-    return sortedSections[0]?.[0] || 'Mainline';
-  };
+  const detectSection = (): string => parseMetadataFromFileName(activeSession?.latestFileName || '').section || '';
 
   /**
    * Feature-001: Open Save to DB dialog
@@ -726,7 +691,19 @@ const HistoryCompareView = () => {
     try {
       // Parse metadata from filename
       const metadata = parseMetadataFromFileName(activeSession.latestFileName);
-      
+      const selectedBranch = canonicalBranch(options.line, options.section);
+      if (!metadata.track || !metadata.date_str || !selectedBranch) {
+        throw new Error('缺少明確方向、量測日期或分支，請檢查報表資料。');
+      }
+      for (const row of realData) {
+        const item = normalizeRecord(row) as Record<string, any>;
+        const identity = normalizeReportIdentity(String(item.line || metadata.line || options.line), String(item.section || ''));
+        if (!identity.line || identity.line !== options.line ||
+            (identity.branch && identity.branch !== selectedBranch) ||
+            (item.track && normalizeDirection(String(item.track)) !== normalizeDirection(metadata.track))) {
+          throw new Error('報表路線、分支或方向與儲存選擇不一致，請勿重新標記來源資料。');
+        }
+      }
       // Build comparison files list
       const comparisonFiles: string[] = [];
       if (activeSession.latestFile) comparisonFiles.push(activeSession.latestFile.name);
@@ -740,7 +717,8 @@ const HistoryCompareView = () => {
       const effectiveStationEnd = activeSession.stationEnd || metadata.station_end;
       
       const response = await saveRepeatedRecords({
-        line: options.line, // From dialog
+        line: options.line,
+        session: selectedBranch,
         track: metadata.track,
         date_str: metadata.date_str,
         task_no: effectiveTaskNo,
@@ -749,7 +727,7 @@ const HistoryCompareView = () => {
         task_run_date: metadata.task_run_date,
         repeated_exceptions: realData.map(row => ({
           ...row,
-          Section: options.section, // Override section from dialog
+          Section: (normalizeRecord(row) as any).section || options.section,
           // Bug 10.9.1-5 FIX: Sync action field - use existing value or default to 'Pending'
           action: (row as any).action || 'Pending',
         })),
@@ -771,7 +749,7 @@ const HistoryCompareView = () => {
       setToast({ open: true, message, severity: 'success' });
       setApprovedReviewProposals([]);
     } catch (err: any) {
-      const errorMsg = err.response?.data?.detail || err.message || 'Failed to save to database';
+      const errorMsg = apiErrorMessage(err, 'Failed to save to database');
       console.error("Save to database failed:", err);
       setToast({ open: true, message: errorMsg, severity: 'error' });
     }

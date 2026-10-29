@@ -1,0 +1,424 @@
+{
+  "scope": "direct FastAPI route plus JSONResponse serialization, no Electron/network/render",
+  "raw_cache": "temporary mmap numeric/categorical arrays, 120s idle TTL; no raw DataFrame retained",
+  "files": [
+    {
+      "path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\Raw data\\TWL\\20260907_TWL_UT.csv",
+      "sha256_before": "54ab7ede00922f56e29919518882381520d7181a9f233d4440b6726abea44e37",
+      "bytes": 117229324,
+      "modes": {
+        "median": {
+          "analysis_seconds": 65.54386700000032,
+          "domain": {
+            "from_m": 146.2,
+            "to_m": 16851.0
+          },
+          "source_points": 838859,
+          "representative_points": 83963,
+          "threshold_segments": 1737,
+          "after_analysis_memory": {
+            "rss_mib": 0.0,
+            "peak_rss_mib": 0.0
+          },
+          "cold_detail": {
+            "total_ms": 218.36880000046222,
+            "route_ms": 197.06670000232407,
+            "json_ms": 21.302099998138146,
+            "bytes": 488259,
+            "queue_ms": 30.999999999039574,
+            "sampling_ms": 157.00000000288128,
+            "source_points": 838859,
+            "returned_points": 1001
+          },
+          "warm_distinct_windows": {
+            "total_ms": {
+              "p50_ms": 122.79194999973697,
+              "p95_ms": 169.8819299994284,
+              "min_ms": 100.0010999996448,
+              "max_ms": 176.07789999965462,
+              "n": 12
+            },
+            "json_ms": {
+              "p50_ms": 20.575550001012743,
+              "p95_ms": 24.723004999941622,
+              "min_ms": 17.49800000106916,
+              "max_ms": 25.26910000233329,
+              "n": 12
+            },
+            "queue_ms": {
+              "p50_ms": 0.0,
+              "p95_ms": 15.99999999962165,
+              "min_ms": 0.0,
+              "max_ms": 15.99999999962165,
+              "n": 12
+            },
+            "sampling_ms": {
+              "p50_ms": 94.00000000096043,
+              "p95_ms": 139.40000000129655,
+              "min_ms": 77.9999999977008,
+              "max_ms": 157.00000000288128,
+              "n": 12
+            }
+          },
+          "hot_same_window": {
+            "total_ms": {
+              "p50_ms": 25.064100002055056,
+              "p95_ms": 30.378520000522258,
+              "min_ms": 23.356999998213723,
+              "max_ms": 31.682400000136113,
+              "n": 5
+            },
+            "json_ms": {
+              "p50_ms": 17.7469000009296,
+              "p95_ms": 23.651239999890095,
+              "min_ms": 17.239700002392055,
+              "max_ms": 24.674899999808986,
+              "n": 5
+            },
+            "queue_ms": {
+              "p50_ms": 0.0,
+              "p95_ms": 15.799999999580905,
+              "min_ms": 0.0,
+              "max_ms": 15.99999999962165,
+              "n": 5
+            },
+            "sampling_ms": {
+              "p50_ms": 0.0,
+              "p95_ms": 0.0,
+              "min_ms": 0.0,
+              "max_ms": 0.0,
+              "n": 5
+            }
+          },
+          "negative_padding": {
+            "total_ms": 1663.624200002232,
+            "route_ms": 1520.1912000011362,
+            "json_ms": 143.43300000109593,
+            "bytes": 2593061,
+            "queue_ms": 15.99999999962165,
+            "sampling_ms": 1500.0,
+            "source_points": 838859,
+            "returned_points": 5028
+          },
+          "window_cache_entries": 8,
+          "window_cache_estimated_bytes": 7673026,
+          "after_detail_memory": {
+            "rss_mib": 0.0,
+            "peak_rss_mib": 0.0
+          }
+        },
+        "raw_overview": {
+          "analysis_seconds": 53.390908800000034,
+          "domain": {
+            "from_m": 146.2,
+            "to_m": 16851.0
+          },
+          "source_points": 838859,
+          "representative_points": 838859,
+          "threshold_segments": 1737,
+          "after_analysis_memory": {
+            "rss_mib": 0.0,
+            "peak_rss_mib": 0.0
+          },
+          "cold_detail": {
+            "total_ms": 36754.177900002105,
+            "route_ms": 36683.96490000305,
+            "json_ms": 70.2129999990575,
+            "bytes": 1833317,
+            "queue_ms": 14.999999999417923,
+            "sampling_ms": 36672.0000000023,
+            "source_points": 838859,
+            "returned_points": 10010
+          },
+          "warm_distinct_windows": {
+            "total_ms": {
+              "p50_ms": 337.5525999981619,
+              "p95_ms": 357.9772250002861,
+              "min_ms": 254.22850000177277,
+              "max_ms": 361.69109999900684,
+              "n": 12
+            },
+            "json_ms": {
+              "p50_ms": 70.93095000163885,
+              "p95_ms": 81.94208999957482,
+              "min_ms": 47.12359999757609,
+              "max_ms": 82.7331000000413,
+              "n": 12
+            },
+            "queue_ms": {
+              "p50_ms": 0.0,
+              "p95_ms": 0.0,
+              "min_ms": 0.0,
+              "max_ms": 0.0,
+              "n": 12
+            },
+            "sampling_ms": {
+              "p50_ms": 264.9999999994179,
+              "p95_ms": 281.44999999913125,
+              "min_ms": 202.9999999977008,
+              "max_ms": 281.9999999992433,
+              "n": 12
+            }
+          },
+          "hot_same_window": {
+            "total_ms": {
+              "p50_ms": 48.565100001724204,
+              "p95_ms": 59.584700001141755,
+              "min_ms": 45.29249999905005,
+              "max_ms": 61.346900001808535,
+              "n": 5
+            },
+            "json_ms": {
+              "p50_ms": 46.1198000011791,
+              "p95_ms": 56.87394000124186,
+              "min_ms": 42.797399997652974,
+              "max_ms": 58.70290000166278,
+              "n": 5
+            },
+            "queue_ms": {
+              "p50_ms": 0.0,
+              "p95_ms": 0.0,
+              "min_ms": 0.0,
+              "max_ms": 0.0,
+              "n": 5
+            },
+            "sampling_ms": {
+              "p50_ms": 0.0,
+              "p95_ms": 0.0,
+              "min_ms": 0.0,
+              "max_ms": 0.0,
+              "n": 5
+            }
+          },
+          "negative_padding": {
+            "total_ms": 2803.088000000571,
+            "route_ms": 2769.05909999914,
+            "json_ms": 34.028900001430884,
+            "bytes": 1237448,
+            "queue_ms": 0.0,
+            "sampling_ms": 2750.0,
+            "source_points": 838859,
+            "returned_points": 5871
+          },
+          "window_cache_entries": 3,
+          "window_cache_estimated_bytes": 6709012,
+          "after_detail_memory": {
+            "rss_mib": 0.0,
+            "peak_rss_mib": 0.0
+          }
+        }
+      },
+      "sha256_after": "54ab7ede00922f56e29919518882381520d7181a9f233d4440b6726abea44e37"
+    }
+  ],
+  "render_ms": null,
+  "heap_mib": null,
+  "current_file": {
+    "path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\Raw data\\TWL\\20260630_TWL_UT.csv",
+    "sha256_before": "e2ab667196694f07023ceb273e4fe7014fcab6a76165b5a0fec592ea55fbe251",
+    "bytes": 116478369,
+    "modes": {
+      "median": {
+        "analysis_seconds": 60.369123299999046,
+        "domain": {
+          "from_m": 318.0,
+          "to_m": 16829.2
+        },
+        "source_points": 830792,
+        "representative_points": 83244,
+        "threshold_segments": 2430,
+        "after_analysis_memory": {
+          "rss_mib": 0.0,
+          "peak_rss_mib": 0.0
+        },
+        "cold_detail": {
+          "total_ms": 232.87749999872176,
+          "route_ms": 205.32800000000861,
+          "json_ms": 27.549499998713145,
+          "bytes": 488036,
+          "queue_ms": 16.00000000325963,
+          "sampling_ms": 187.99999999828287,
+          "source_points": 830792,
+          "returned_points": 1001
+        },
+        "warm_distinct_windows": {
+          "total_ms": {
+            "p50_ms": 146.3896500008559,
+            "p95_ms": 172.13679500073337,
+            "min_ms": 102.64429999733693,
+            "max_ms": 187.69690000044648,
+            "n": 12
+          },
+          "json_ms": {
+            "p50_ms": 22.379500000170083,
+            "p95_ms": 24.604390000604326,
+            "min_ms": 17.02379999915138,
+            "max_ms": 24.960900002042763,
+            "n": 12
+          },
+          "queue_ms": {
+            "p50_ms": 0.0,
+            "p95_ms": 7.199999999829731,
+            "min_ms": 0.0,
+            "max_ms": 15.99999999962165,
+            "n": 12
+          },
+          "sampling_ms": {
+            "p50_ms": 117.00000000018917,
+            "p95_ms": 138.95000000120487,
+            "min_ms": 78.00000000133878,
+            "max_ms": 156.00000000267755,
+            "n": 12
+          }
+        },
+        "hot_same_window": {
+          "total_ms": {
+            "p50_ms": 25.038399999175454,
+            "p95_ms": 27.72636000008788,
+            "min_ms": 20.532400001684437,
+            "max_ms": 27.963399999862304,
+            "n": 5
+          },
+          "json_ms": {
+            "p50_ms": 18.15809999970952,
+            "p95_ms": 19.904940001288196,
+            "min_ms": 14.635899999120738,
+            "max_ms": 20.004900001367787,
+            "n": 5
+          },
+          "queue_ms": {
+            "p50_ms": 0.0,
+            "p95_ms": 12.8000000026077,
+            "min_ms": 0.0,
+            "max_ms": 16.00000000325963,
+            "n": 5
+          },
+          "sampling_ms": {
+            "p50_ms": 0.0,
+            "p95_ms": 0.0,
+            "min_ms": 0.0,
+            "max_ms": 0.0,
+            "n": 5
+          }
+        },
+        "negative_padding": {
+          "total_ms": 1611.7801000000327,
+          "route_ms": 1481.9673000019975,
+          "json_ms": 129.8127999980352,
+          "bytes": 2927553,
+          "queue_ms": 0.0,
+          "sampling_ms": 1468.0000000007567,
+          "source_points": 830792,
+          "returned_points": 5588
+        },
+        "window_cache_entries": 8,
+        "window_cache_estimated_bytes": 8029612,
+        "after_detail_memory": {
+          "rss_mib": 0.0,
+          "peak_rss_mib": 0.0
+        }
+      },
+      "raw_overview": {
+        "analysis_seconds": 49.372885799999494,
+        "domain": {
+          "from_m": 318.0,
+          "to_m": 16829.2
+        },
+        "source_points": 830792,
+        "representative_points": 830792,
+        "threshold_segments": 2430,
+        "after_analysis_memory": {
+          "rss_mib": 0.0,
+          "peak_rss_mib": 0.0
+        },
+        "cold_detail": {
+          "total_ms": 45338.337299999694,
+          "route_ms": 45127.69169999956,
+          "json_ms": 210.64560000013444,
+          "bytes": 1832222,
+          "queue_ms": 15.99999999962165,
+          "sampling_ms": 45109.00000000038,
+          "source_points": 830792,
+          "returned_points": 10010
+        },
+        "warm_distinct_windows": {
+          "total_ms": {
+            "p50_ms": 541.5394499996182,
+            "p95_ms": 591.1088149992793,
+            "min_ms": 432.99210000259336,
+            "max_ms": 596.1669999996957,
+            "n": 12
+          },
+          "json_ms": {
+            "p50_ms": 142.0679500006372,
+            "p95_ms": 193.58720999935028,
+            "min_ms": 98.58290000192937,
+            "max_ms": 211.20579999842448,
+            "n": 12
+          },
+          "queue_ms": {
+            "p50_ms": 0.0,
+            "p95_ms": 22.199999999247655,
+            "min_ms": 0.0,
+            "max_ms": 30.999999999039574,
+            "n": 12
+          },
+          "sampling_ms": {
+            "p50_ms": 375.0,
+            "p95_ms": 427.15000000007416,
+            "min_ms": 327.9999999977008,
+            "max_ms": 453.0000000013388,
+            "n": 12
+          }
+        },
+        "hot_same_window": {
+          "total_ms": {
+            "p50_ms": 172.12099999960628,
+            "p95_ms": 230.62918000214268,
+            "min_ms": 88.62009999938891,
+            "max_ms": 237.52380000223638,
+            "n": 5
+          },
+          "json_ms": {
+            "p50_ms": 165.9609000016644,
+            "p95_ms": 222.4199000003864,
+            "min_ms": 82.16299999912735,
+            "max_ms": 228.57110000040848,
+            "n": 5
+          },
+          "queue_ms": {
+            "p50_ms": 0.0,
+            "p95_ms": 0.0,
+            "min_ms": 0.0,
+            "max_ms": 0.0,
+            "n": 5
+          },
+          "sampling_ms": {
+            "p50_ms": 0.0,
+            "p95_ms": 0.0,
+            "min_ms": 0.0,
+            "max_ms": 0.0,
+            "n": 5
+          }
+        },
+        "negative_padding": {
+          "total_ms": 5900.396700002602,
+          "route_ms": 5828.535700002249,
+          "json_ms": 71.86100000035367,
+          "bytes": 1404427,
+          "queue_ms": 0.0,
+          "sampling_ms": 5828.000000001339,
+          "source_points": 830792,
+          "returned_points": 6382
+        },
+        "window_cache_entries": 3,
+        "window_cache_estimated_bytes": 6821288,
+        "after_detail_memory": {
+          "rss_mib": 0.0,
+          "peak_rss_mib": 0.0
+        }
+      }
+    },
+    "sha256_after": "e2ab667196694f07023ceb273e4fe7014fcab6a76165b5a0fec592ea55fbe251"
+  }
+}

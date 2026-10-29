@@ -40,6 +40,7 @@ from app.core.database import (
     query_repeated_records,
     count_repeated_records,
     get_repeated_record_section_counts,
+    get_repeated_record_branch_counts,
     update_repeated_record_workflow,
     delete_repeated_record,
     export_repeated_records_to_df,
@@ -48,7 +49,8 @@ from app.core.database import (
     import_repeated_records_from_data,
 )
 from app.core.check_1_year_rules import evaluate_recurrence, append_recurrence_ids, target_version, parse_date
-from app.core.tov1050_contract import LINE_SESSIONS, normalize_session
+from app.core.line_registry import normalize_context, normalize_line
+from app.core.database import _build_repeated_record_predicates
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -56,21 +58,67 @@ logger = logging.getLogger(__name__)
 router = APIRouter()
 
 def _validate_tov1050_context(line: str, track: str, session: str) -> str:
-    logical_line = str(line or '').strip().upper()
-    direction = str(track or '').strip().upper()
-    # Legacy EAL/TML callers remain available for explicit regression tools;
-    # the product UI only supplies TOV1050 lines and takes the strict branch.
-    if logical_line not in LINE_SESSIONS:
-        return str(session or 'Mainline').strip() or 'Mainline'
-    if direction not in {'UT', 'DT'}:
-        raise HTTPException(status_code=422, detail=f'Unsupported TOV1050 direction: {track}')
     try:
-        normalized = normalize_session(session)
+        context = normalize_context(line, branch=session, direction=track)
+        if not context.direction or not context.branch:
+            raise ValueError('請提供明確的路線、分支及行車方向')
+        return context.legacy_session
     except ValueError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
-    if normalized not in LINE_SESSIONS[logical_line]:
-        raise HTTPException(status_code=422, detail=f'Session {normalized} is not supported for {logical_line}')
-    return normalized
+
+
+def _validate_record_batch(line: str, track: str, session: Optional[str], rows: List[Dict[str, Any]]):
+    """Validate all identities before opening a write transaction; never relabel rows."""
+    try:
+        branch = session or ''
+        if not branch:
+            scopes = {normalize_context(line, direction=track,
+                section=row.get('Section') or row.get('section'),
+                branch=row.get('branch') or row.get('Branch') or row.get('session') or row.get('Session')).branch for row in rows}
+            if len(scopes) != 1 or not next(iter(scopes), ''):
+                raise ValueError('缺少或混合分支，請選擇單一路線分支後重試')
+            branch = next(iter(scopes))
+        context = normalize_context(line, direction=track, branch=branch)
+        if not context.direction:
+            raise ValueError('缺少行車方向，不能預設為 UP／UT')
+        validated = []
+        for row in rows:
+            row = dict(row)
+            source_line = row.get('Line') or row.get('line') or line
+            row_track = row.get('Track') or row.get('track') or track
+            row_section = row.get('Section') or row.get('section') or ''
+            identity = normalize_context(source_line, direction=row_track,
+                branch=row.get('branch') or row.get('Branch') or row.get('session') or row.get('Session'), section=row_section, allow_legacy_aliases=True)
+            if identity.line != context.line or identity.direction != context.direction:
+                raise ValueError('報表的路線／方向與儲存選擇不一致')
+            if identity.branch and identity.branch != context.branch:
+                raise ValueError('報表的分支與儲存選擇不一致')
+            for key in ('line', 'Line'):
+                if row.get(key):
+                    declared = normalize_context(row[key], direction=row_track,
+                        section=row_section, allow_legacy_aliases=True)
+                    if declared.line != context.line or (declared.branch and declared.branch != context.branch):
+                        raise ValueError('Conflicting duplicate line/context columns')
+            for key in ('track', 'Track'):
+                if row.get(key) and normalize_context(context.line, direction=row[key]).direction != context.direction:
+                    raise ValueError('Conflicting duplicate track columns')
+            for key in ('branch', 'Branch', 'session', 'Session'):
+                if row.get(key) and normalize_context(context.line, branch=row[key]).branch != context.branch:
+                    raise ValueError('Conflicting duplicate branch/session columns')
+            row['Line'] = context.line
+            row['Track'] = context.wire_track
+            row['session'] = row['Session'] = context.legacy_session
+            row['branch'] = context.branch
+            row['source_track'] = identity.source_direction
+            row['source_line'] = identity.source_line
+            row['line'] = context.line
+            row['track'] = context.wire_track
+            row['section'] = (context.legacy_session if row_section.upper() in {context.branch.upper(), context.legacy_session.upper()} else row_section) or context.legacy_session
+            row['Section'] = row['section']
+            validated.append(row)
+        return context, validated
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
 
 
 # =============================================================================
@@ -82,7 +130,7 @@ class SaveRepeatedRecordsRequest(BaseModel):
     """Request model for saving repeated records (Sub-module 2)."""
     line: str
     track: str
-    session: str = 'Mainline'
+    session: Optional[str] = None
     date_str: str
     repeated_exceptions: List[Dict[str, Any]]
     task_no: Optional[str] = None
@@ -129,7 +177,7 @@ class ImportRecordsRequest(BaseModel):
     records: List[Dict[str, Any]]
     line: str
     track: str
-    session: str = 'Mainline'
+    session: Optional[str] = None
     date_str: str
 
 
@@ -149,6 +197,7 @@ class Check1YearRequest(BaseModel):
     track: str
     current_date: Optional[str] = None  # FIX #6: Fallback date for exceptions without task_run_date
     section: Optional[str] = None
+    session: Optional[str] = None
     date_from: Optional[str] = None
     date_to: Optional[str] = None
 
@@ -175,6 +224,8 @@ class RepeatedRecordSectionCountsResponse(BaseModel):
     rac: int
     low_s1: int
     lmc: int
+    pl: int = 0
+    tks: int = 0
     unknown: int
 
 
@@ -183,6 +234,7 @@ class RecordsListResponse(BaseModel):
     status: str
     total: int
     section_counts: RepeatedRecordSectionCountsResponse
+    branch_counts: Dict[str, int] = {}
     records: List[Dict[str, Any]]
 
 
@@ -225,7 +277,8 @@ async def save_repeated_records(request: SaveRepeatedRecordsRequest) -> SaveSucc
     - `comparison_files`: List of files used in comparison
     """
     try:
-        normalized_session = _validate_tov1050_context(request.line, request.track, request.session)
+        context, validated_rows = _validate_record_batch(request.line, request.track, request.session, request.repeated_exceptions)
+        normalized_session = context.legacy_session
         if not request.repeated_exceptions:
             raise HTTPException(
                 status_code=400,
@@ -255,11 +308,11 @@ async def save_repeated_records(request: SaveRepeatedRecordsRequest) -> SaveSucc
                 target_rows[record_id] = row
             result = save_repeated_records_batch(
                 conn=conn,
-                line=request.line,
-                track=request.track,
+                line=context.line,
+                track=context.wire_track,
                 session=normalized_session,
                 date_str=request.date_str,
-                repeated_exceptions=request.repeated_exceptions,
+                repeated_exceptions=validated_rows,
                 task_no=request.task_no,
                 station_start=request.station_start,
                 station_end=request.station_end,
@@ -306,6 +359,8 @@ async def save_repeated_records(request: SaveRepeatedRecordsRequest) -> SaveSucc
     
     except HTTPException:
         raise
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
     except Exception as e:
         logger.error(f"Error saving repeated records: {e}")
         raise HTTPException(status_code=500, detail=str(e))
@@ -346,6 +401,10 @@ async def get_distinct_field_values(
             "values": values,
             "count": len(values),
         }
+    except HTTPException:
+        raise
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
     except Exception as e:
         logger.error(f"Error getting distinct values for {field}: {e}")
         raise HTTPException(status_code=500, detail=str(e))
@@ -373,6 +432,10 @@ async def get_repeated_record_counts():
             "status": "success",
             "counts": counts,
         }
+    except HTTPException:
+        raise
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
     except Exception as e:
         logger.error(f"Error getting line counts: {e}")
         raise HTTPException(status_code=500, detail=str(e))
@@ -411,15 +474,20 @@ async def get_repeated_records(
     - `chainage_from`, `chainage_to`: Chainage range filter (partial overlap logic)
     """
     try:
-        if session:
-            _validate_tov1050_context(line or 'AEL', track or 'UT', session)
+        if line:
+            try:
+                normalize_line(line)
+            except ValueError as exc:
+                raise HTTPException(status_code=422, detail=str(exc)) from exc
+        if session and not line:
+            raise HTTPException(status_code=422, detail='分支篩選必須指定路線')
         filters: Dict[str, Any] = {}
         if line:
             filters['line'] = line
         if track:
             filters['track'] = track
         if session:
-            filters['session'] = normalize_session(session)
+            filters['session'] = normalize_context(line, branch=session).legacy_session
         if section:
             filters['section'] = section
         if level:
@@ -453,6 +521,7 @@ async def get_repeated_records(
                 offset=offset
             )
             total = count_repeated_records(conn, filters=filters if filters else None)
+            branch_counts = get_repeated_record_branch_counts(conn, filters)
             section_counts = get_repeated_record_section_counts(
                 conn,
                 filters=filters if filters else None,
@@ -462,9 +531,14 @@ async def get_repeated_records(
             status="success",
             total=total,
             section_counts=section_counts,
+            branch_counts=branch_counts,
             records=records
         )
     
+    except HTTPException:
+        raise
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
     except Exception as e:
         logger.error(f"Error querying repeated records: {e}")
         raise HTTPException(status_code=500, detail=str(e))
@@ -516,6 +590,8 @@ async def update_repeated_record(
     
     except HTTPException:
         raise
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
     except Exception as e:
         logger.error(f"Error updating repeated record: {e}")
         raise HTTPException(status_code=500, detail=str(e))
@@ -610,6 +686,10 @@ async def batch_update_repeated_records(request: BatchUpdateRequest) -> BatchUpd
             message=f"Successfully updated {updated_count} records"
         )
     
+    except HTTPException:
+        raise
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
     except Exception as e:
         logger.error(f"Error batch updating records: {e}")
         raise HTTPException(status_code=500, detail=str(e))
@@ -642,6 +722,8 @@ async def delete_repeated_record_endpoint(record_id: int) -> SuccessResponse:
     
     except HTTPException:
         raise
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
     except Exception as e:
         logger.error(f"Error deleting repeated record: {e}")
         raise HTTPException(status_code=500, detail=str(e))
@@ -664,15 +746,20 @@ async def export_repeated_records(
     Returns an Excel file (.xlsx) as a downloadable attachment.
     """
     try:
-        if session:
-            _validate_tov1050_context(line or 'AEL', track or 'UT', session)
+        if line:
+            try:
+                normalize_line(line)
+            except ValueError as exc:
+                raise HTTPException(status_code=422, detail=str(exc)) from exc
+        if session and not line:
+            raise HTTPException(status_code=422, detail='分支篩選必須指定路線')
         filters: Dict[str, Any] = {}
         if line:
             filters['line'] = line
         if track:
             filters['track'] = track
         if session:
-            filters['session'] = normalize_session(session)
+            filters['session'] = normalize_context(line, branch=session).legacy_session
         if action:
             filters['action'] = action
         if level:
@@ -713,6 +800,10 @@ async def export_repeated_records(
             headers={'Content-Disposition': f'attachment; filename="{filename}"'}
         )
     
+    except HTTPException:
+        raise
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
     except Exception as e:
         logger.error(f"Error exporting repeated records: {e}")
         raise HTTPException(status_code=500, detail=str(e))
@@ -746,7 +837,8 @@ async def import_repeated_records(request: ImportRecordsRequest) -> ImportRecord
     - `error_count`: Number of failed records
     """
     try:
-        normalized_session = _validate_tov1050_context(request.line, request.track, request.session)
+        context, validated_rows = _validate_record_batch(request.line, request.track, request.session, request.records)
+        normalized_session = context.legacy_session
         if not request.records:
             raise HTTPException(
                 status_code=400,
@@ -757,9 +849,9 @@ async def import_repeated_records(request: ImportRecordsRequest) -> ImportRecord
         with db.get_connection() as conn:
             result = import_repeated_records_from_data(
                 conn=conn,
-                records=request.records,
-                line=request.line,
-                track=request.track,
+                records=validated_rows,
+                line=context.line,
+                track=context.wire_track,
                 date_str=request.date_str,
                 session=normalized_session
             )
@@ -777,6 +869,8 @@ async def import_repeated_records(request: ImportRecordsRequest) -> ImportRecord
     
     except HTTPException:
         raise
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
     except Exception as e:
         logger.error(f"Error importing repeated records: {e}")
         raise HTTPException(status_code=500, detail=str(e))
@@ -840,12 +934,51 @@ async def check_1_year_record(request: Check1YearRequest) -> Check1YearResponse:
                         break
                 if not has_effective_window:
                     raise HTTPException(status_code=422, detail="date filter has no effective 365-day window for the supplied exceptions")
+            try:
+                scope = normalize_context(request.line, branch=request.session, direction=request.track, section=request.section)
+                if not scope.direction:
+                    raise ValueError('缺少行車方向')
+            except ValueError as exc:
+                raise HTTPException(status_code=422, detail=str(exc)) from exc
+            for exception in request.exceptions:
+                try:
+                    identity = normalize_context(exception.get('line') or exception.get('Line') or scope.line,
+                        direction=exception.get('track') or exception.get('Track') or scope.wire_track,
+                        section=exception.get('section') or exception.get('Section'),
+                        branch=exception.get('branch') or exception.get('session') or scope.branch, allow_legacy_aliases=True)
+                    if identity.line != scope.line or identity.direction != scope.direction:
+                        raise ValueError('Exception identity does not match requested line/direction')
+                    if scope.branch and identity.branch and identity.branch != scope.branch:
+                        raise ValueError('Exception branch does not match requested branch')
+                    exception['line'], exception['track'] = identity.line, identity.wire_track
+                    exception['branch'] = identity.branch
+                    section_value = exception.get('section') or exception.get('Section') or ''
+                    if identity.branch and str(section_value).upper() in {identity.branch.upper(), identity.legacy_session.upper()}:
+                        exception['section'] = identity.legacy_session
+                except ValueError as exc:
+                    raise HTTPException(status_code=422, detail=str(exc)) from exc
+            if request.section and scope.branch and request.section.upper() == 'UT' and scope.line == 'DRL':
+                request.section = scope.legacy_session
+            request.line, request.track = scope.line, scope.wire_track
+            where, parameters = _build_repeated_record_predicates({'line': scope.line, 'track': scope.wire_track})
             rows = [dict(row) for row in conn.execute(
-                "SELECT * FROM saved_repeated_exceptions WHERE line = ? AND track = ?",
-                (request.line, request.track),
+                f"SELECT * FROM saved_repeated_exceptions {where}", parameters,
             ).fetchall()]
+            for row in rows:
+                # Historical alias line is direct branch evidence, even when an
+                # old schema supplied its default session='Mainline'.
+                source = str(row['line']).strip().upper()
+                identity = normalize_context(source, direction=row['track'],
+                    branch=None if source in {'LMC', 'TKS'} else row.get('session'),
+                    section=None if source in {'LMC', 'TKS'} else row.get('section'),
+                    allow_legacy_aliases=True)
+                row['line'], row['track'], row['branch'] = identity.line, identity.wire_track, identity.branch
+                section = str(row.get('section') or '').strip()
+                if identity.branch and (source in {'LMC', 'TKS'} or section.upper() in {identity.branch.upper(), identity.legacy_session.upper()}):
+                    row['section'] = identity.legacy_session
             results = [evaluate_recurrence(
-                exception, rows, line=request.line, track=request.track,
+                exception, [row for row in rows if row.get('branch', '') == exception.get('branch', '')],
+                line=request.line, track=request.track,
                 current_date=request.current_date, section_filter=request.section,
                 date_from=request.date_from, date_to=request.date_to,
             ) for exception in request.exceptions]
@@ -907,6 +1040,8 @@ async def check_1_year_record(request: Check1YearRequest) -> Check1YearResponse:
     
     except HTTPException:
         raise
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
     except Exception as e:
         logger.error(f"Error checking 1 year records: {e}")
         raise HTTPException(status_code=500, detail=str(e))

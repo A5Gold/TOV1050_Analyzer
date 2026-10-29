@@ -1,0 +1,192 @@
+{
+  "engine": "lxml",
+  "LXML": true,
+  "openpyxl": "3.1.5",
+  "python": "3.12.8 (tags/v3.12.8:2dc476b, Dec  3 2024, 19:30:04) [MSC v.1942 64 bit (AMD64)]",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "records": [
+    {
+      "iteration": 0,
+      "warmup": true,
+      "seconds": 12.085314099998868,
+      "bytes": 1065353,
+      "stages": [
+        [
+          "exporting",
+          0.4390382999990834
+        ],
+        [
+          "exporting_ChartData",
+          0.49862559999928635
+        ],
+        [
+          "exporting_ChainageStatistics",
+          11.47618759999932
+        ],
+        [
+          "finalizing",
+          11.484575200000108
+        ]
+      ]
+    },
+    {
+      "iteration": 1,
+      "warmup": false,
+      "seconds": 13.47481610000068,
+      "bytes": 1065351,
+      "stages": [
+        [
+          "exporting",
+          0.12243400000079419
+        ],
+        [
+          "exporting_ChartData",
+          0.15837529999953404
+        ],
+        [
+          "exporting_ChainageStatistics",
+          13.02781590000086
+        ],
+        [
+          "finalizing",
+          13.035948200000348
+        ]
+      ]
+    },
+    {
+      "iteration": 2,
+      "warmup": false,
+      "seconds": 15.703158000000258,
+      "bytes": 1065352,
+      "stages": [
+        [
+          "exporting",
+          0.11626809999870602
+        ],
+        [
+          "exporting_ChartData",
+          0.1538096999993286
+        ],
+        [
+          "exporting_ChainageStatistics",
+          15.034051299999192
+        ],
+        [
+          "finalizing",
+          15.046125400000165
+        ]
+      ]
+    },
+    {
+      "iteration": 3,
+      "warmup": false,
+      "seconds": 15.312698899999305,
+      "bytes": 1065351,
+      "stages": [
+        [
+          "exporting",
+          0.19641819999924337
+        ],
+        [
+          "exporting_ChartData",
+          0.2572184999989986
+        ],
+        [
+          "exporting_ChainageStatistics",
+          14.59428139999909
+        ],
+        [
+          "finalizing",
+          14.605986099999427
+        ]
+      ]
+    }
+  ],
+  "median_seconds": 15.312698899999305,
+  "fingerprint": [
+    {
+      "name": "Summary",
+      "state": "visible",
+      "rows": 6,
+      "columns": 21,
+      "cells": 126,
+      "sha256": "18fd18f46d3453f887b35a5e853853f9fcd9156bee81644f50d0c5a0a7db629a"
+    },
+    {
+      "name": "Low Height",
+      "state": "visible",
+      "rows": 2,
+      "columns": 21,
+      "cells": 42,
+      "sha256": "7353f373390d1a802bf52cc5fc09e968d6ab79b028eb297ea7319a57b1087dbc"
+    },
+    {
+      "name": "High Height",
+      "state": "visible",
+      "rows": 2,
+      "columns": 21,
+      "cells": 42,
+      "sha256": "9840b0b29112daa4a8c8a9b87f8bab8ebdf2640b4c9dc3ebd59495e2eef485f3"
+    },
+    {
+      "name": "Wire Wear",
+      "state": "visible",
+      "rows": 2,
+      "columns": 21,
+      "cells": 42,
+      "sha256": "0dd658a5ab1c775538f5b52a2cc88ce9d5345f9ffdee083e88274b1c2c2904b7"
+    },
+    {
+      "name": "Stagger Left",
+      "state": "visible",
+      "rows": 2,
+      "columns": 21,
+      "cells": 42,
+      "sha256": "17dabc27bbfd98b6d00bbbadf001e7604ae1d832e00dfbbc43a08b74947ef3bd"
+    },
+    {
+      "name": "Stagger Right",
+      "state": "visible",
+      "rows": 2,
+      "columns": 21,
+      "cells": 42,
+      "sha256": "171288a93f01d655e1eec5d46306ede60f6455daefdad8d845662db41f677316"
+    },
+    {
+      "name": "ChartData",
+      "state": "visible",
+      "rows": 10001,
+      "columns": 31,
+      "cells": 310031,
+      "sha256": "ba2474f0c855dd2c6b99f01c16405dd2c49e2e076116c764d733534508251662"
+    },
+    {
+      "name": "ChainageStatistics",
+      "state": "visible",
+      "rows": 21,
+      "columns": 10,
+      "cells": 202,
+      "sha256": "e635d12fc07466378a713a50ddca297267ee6fcdf04e432515cf3f7e14888b31"
+    },
+    {
+      "name": "_Metadata",
+      "state": "hidden",
+      "rows": 8,
+      "columns": 2,
+      "cells": 16,
+      "sha256": "5d25e292bfe5034f6e117631d3af5d91f1e273006f27ac5487b29be7d84bed65"
+    }
+  ],
+  "lxml": [
+    6,
+    0,
+    2,
+    0
+  ],
+  "libxml": [
+    2,
+    11,
+    9
+  ],
+  "lxml_file": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\exception-performance-2026-10-26\\xml-engine-01\\lxml-target\\lxml\\etree.cp312-win_amd64.pyd"
+}

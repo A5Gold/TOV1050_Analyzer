@@ -76,18 +76,33 @@ class ExceptionDetector:
         raw_data_file_size: Optional[int] = None,
         task_no: Optional[str] = None,
         station_start: Optional[str] = None,
-        station_end: Optional[str] = None
+        station_end: Optional[str] = None,
+        progress=None,
+        metadata_mapped: bool = False,
     ) -> Tuple[Dict[str, Any], pd.DataFrame]:
         """
         執行完整的異常分析流程。
         Returns: (results_dict, boundary_df_for_plot)
         """
-        # 1. Map Class (Dynamic Section)
-        df = self._map_class_info(df, line, track, section)
-        
-        # 2. Map Track Type, Overlap, Landmark
-        df = self._map_track_info(df, line, section, track)
-        
+        if metadata_mapped:
+            # The median reduction path maps context once before reducing.
+            # Re-mapping the 90%-smaller frame would waste time and can erase
+            # context that was intentionally carried into each representative.
+            if progress:
+                progress("metadata_mapping", 2, 2, "steps")
+        else:
+            if progress:
+                progress("metadata_mapping", 0, 2, "steps")
+            # 1. Map Class (Dynamic Section)
+            df = self._map_class_info(df, line, track, section)
+
+            if progress:
+                progress("metadata_mapping", 1, 2, "steps")
+            # 2. Map Track Type, Overlap, Landmark
+            df = self._map_track_info(df, line, section, track)
+
+            if progress:
+                progress("metadata_mapping", 2, 2, "steps")
         # 3. Get Boundaries for Plotting
         boundary_df = self.meta_mgr.get_boundaries_for_plot(line, track, section)
         
@@ -109,18 +124,24 @@ class ExceptionDetector:
             df['wear_max'] = df[wear_cols].max(axis=1)
         
         # 5. Detect Scalar (Height, Wear) - Depth 2
+        if progress:
+            progress("detecting", 0, 4, "checks")
         results['Low Height'] = self._detect_scalar(
             df, 'height', 'Low Height', thresholds_df, mode='min',
             date_str=date_str, track=track, line=line, section_name=section,
             task_no=task_no, station_start=station_start, station_end=station_end
         )
 
+        if progress:
+            progress("detecting", 1, 4, "checks")
         results['High Height'] = self._detect_scalar(
             df, 'height', 'High Height', thresholds_df, mode='max',
             date_str=date_str, track=track, line=line, section_name=section,
             task_no=task_no, station_start=station_start, station_end=station_end
         )
 
+        if progress:
+            progress("detecting", 2, 4, "checks")
         results['Wire Wear'] = self._detect_scalar(
             df, 'wear', 'Wire Wear', thresholds_df, mode='min',
             date_str=date_str, track=track, line=line, section_name=section,
@@ -128,12 +149,16 @@ class ExceptionDetector:
         )
         
         # 6. Detect Stagger - Depth 3
+        if progress:
+            progress("detecting", 3, 4, "checks")
         stagger_l, stagger_r = self._detect_stagger(
             df, thresholds_df, date_str, track, line, section_name=section,
             task_no=task_no, station_start=station_start, station_end=station_end
         )
         results['Stagger Left'] = stagger_l
         results['Stagger Right'] = stagger_r
+        if progress:
+            progress("detecting", 4, 4, "checks")
         
         # 6.5 Inject Task Run Data into all exception DataFrames (Phase 10.10 Issue 1)
         # This ensures exported Excel contains complete Task Run Data columns
@@ -379,8 +404,18 @@ class ExceptionDetector:
         if not mask_series.any():
             return pd.DataFrame()
 
-        changes = (mask_series != mask_series.shift()).cumsum()
+        boundary = mask_series.ne(mask_series.shift())
+        # Reduced inputs explicitly identify source/context/pass gaps. Legacy
+        # frames without this field keep their established grouping behaviour.
+        if 'segment_id' in df:
+            segment = df['segment_id']
+            previous = segment.shift()
+            same_segment = segment.eq(previous) | (segment.isna() & previous.isna())
+            boundary = boundary | ~same_segment
+        changes = boundary.cumsum()
         exc_df = df[mask_series].copy()
+        if 'group_id' in exc_df:
+            exc_df['_representative_group_id'] = exc_df['group_id']
         exc_df['group_id'] = changes[mask_series]
         
         results = []
@@ -396,6 +431,24 @@ class ExceptionDetector:
             worst_val = group.loc[worst_idx, value_col]
             worst_loc = group.loc[worst_idx, 'Chainage']
             worst_class = group.loc[worst_idx, 'Class']
+            peak_row = group.loc[worst_idx]
+            prefix = ('stagger' if value_col.startswith('stg_') else
+                      'height' if 'height' in value_col else
+                      'wear' if 'wear' in value_col else None)
+            candidates = [f'{prefix}{i}' for i in range(1, 5)
+                          if prefix and f'{prefix}{i}' in group]
+            peak_channel = next((column for column in candidates
+                                 if pd.notna(peak_row[column]) and peak_row[column] == worst_val), None)
+            peak_provenance = {}
+            if peak_channel is not None:
+                peak_provenance = {
+                    'peak_channel': peak_channel,
+                    'peak_source_row': peak_row.get(f'{peak_channel}_source_row', peak_row.get('source_row_number')),
+                    'peak_sample_counter': peak_row.get(f'{peak_channel}_sample_counter',
+                                                        peak_row.get('SampleCount', peak_row.get('SampleCount [n.]'))),
+                    'peak_group_id': peak_row.get('_representative_group_id'),
+                    'peak_segment_id': peak_row.get('segment_id'),
+                }
             
             if 'Track Type' in group.columns:
                 t_type = group['Track Type'].mode()[0] if not group['Track Type'].mode().empty else 'Unknown'
@@ -417,7 +470,8 @@ class ExceptionDetector:
                 'Tension Length': tl,
                 'Landmark': landmark,
                 'Class': worst_class,
-                'Section': section_name
+                'Section': section_name,
+                **peak_provenance,
             })
             
         return pd.DataFrame(results)

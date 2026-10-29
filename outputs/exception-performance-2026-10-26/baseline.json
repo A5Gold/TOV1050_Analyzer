@@ -1,0 +1,98 @@
+[
+  {
+    "size": "partial",
+    "input_bytes": 7073160,
+    "analysis_seconds": 80.809,
+    "cleaning": {
+      "raw_row_count": 51170,
+      "retained_row_count": 50904,
+      "trimmed_leading_count": 100,
+      "trimmed_trailing_count": 100,
+      "io_value_count": 306792,
+      "invalid_chainage_count": 0,
+      "no_valid_measurement_count": 66,
+      "delimiter": ",",
+      "chunk_size": 50000,
+      "chainage_unit": "m",
+      "chainage_scale": 1000.0
+    },
+    "exceptions": {
+      "Low Height": 0,
+      "High Height": 0,
+      "Wire Wear": 0,
+      "Stagger Left": 0,
+      "Stagger Right": 2
+    },
+    "chart": {
+      "source_points": 50904,
+      "returned_points": 19336,
+      "bucket_count": 6000,
+      "strategy": "min_max_envelope",
+      "from_m": null,
+      "to_m": null,
+      "preserved_chainage_count": 16
+    },
+    "chainage_range": [
+      9002.2,
+      9997.8
+    ],
+    "adjacent_increases": 19,
+    "adjacent_decreases": 5066,
+    "adjacent_equal": 45818,
+    "unique_chainages": 4949,
+    "duplicate_chainages": 4948,
+    "rows_at_duplicate_chainages": 50903,
+    "conflicting_chainages": {
+      "height1": 4948,
+      "height2": 4944,
+      "stagger1": 4948,
+      "stagger2": 4944,
+      "wear1": 4854,
+      "wear2": 4854
+    },
+    "increase_examples": [
+      {
+        "source_row": 17241,
+        "from_m": 9655.2,
+        "to_m": 9656.6
+      },
+      {
+        "source_row": 17361,
+        "from_m": 9654.4,
+        "to_m": 9655.8
+      },
+      {
+        "source_row": 17421,
+        "from_m": 9654.8,
+        "to_m": 9655.4
+      },
+      {
+        "source_row": 17461,
+        "from_m": 9654.8,
+        "to_m": 9655.4
+      },
+      {
+        "source_row": 17571,
+        "from_m": 9652.2,
+        "to_m": 9653.2
+      },
+      {
+        "source_row": 17601,
+        "from_m": 9652.8,
+        "to_m": 9653.8
+      },
+      {
+        "source_row": 17731,
+        "from_m": 9651.4,
+        "to_m": 9653.0
+      },
+      {
+        "source_row": 18081,
+        "from_m": 9646.2,
+        "to_m": 9647.8
+      }
+    ],
+    "export_seconds": 57.53,
+    "export_bytes": 5979458
+  }
+]

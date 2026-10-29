@@ -1,0 +1,25 @@
+[
+  {
+    "Run Date": 20260902,
+    "Line": "TKL",
+    "Track": "DT",
+    "Section": "TKS",
+    "Task No": null,
+    "St. Start": "NOT_PROVIDED",
+    "St. End": "NOT_PROVIDED",
+    "ID": "20260902_TKL_DT_TKS_SR0",
+    "FromM": 65604.6,
+    "ToM": 65605.40000000001,
+    "Length": 0.80000000000291,
+    "Exception Type": "Stagger Right",
+    "MaxValue": -201.951,
+    "MaxLocation": 65605,
+    "Overlap": null,
+    "Tension Length": null,
+    "Track Type": "Tangent",
+    "Level": "L3",
+    "Landmark": null,
+    "Class": "Tunnel",
+    "Threshold Value": 200
+  }
+]

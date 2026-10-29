@@ -74,7 +74,7 @@ export const ThresholdRangeChart: React.FC = () => (
       Wear 平均最小值狀態範圍
     </Typography>
     <Typography variant="caption" color="text.secondary" display="block" sx={{ mb: 1 }}>
-      真實門檻：9.1 與 10.2。數值愈低代表剩餘線徑愈小。
+      既有 Wear 記錄狀態顯示使用 9.1 與 10.2；這不是所有路線的 Exception threshold。實際異常門檻以該分支／方向的核准 metadata 為準。
     </Typography>
     <Box
       aria-hidden="true"

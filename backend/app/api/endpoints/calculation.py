@@ -19,10 +19,17 @@ from app.core.calculation.excel_parser import (
     WireWearRecord,
     load_repeated_summary_sheet,
     parse_exception_report,
-    parse_repeated_report,
+    parse_repeated_summary_sheet,
     parse_stagger_chart_data_sheet,
 )
-from app.core.calculation.stagger_metadata import load_stagger_metadata
+from app.core.calculation.stagger_metadata import (
+    load_stagger_metadata, require_stagger_configuration, StaggerConfigurationUnavailable,
+)
+from app.core.report_context import (
+    ReportContextError, context_values, ensure_compatible_scopes,
+    filename_context, normalize_report_row, read_report_context, sheet_records,
+    load_report_preflight,
+)
 from app.core.calculation.stagger_selector import select_stagger_candidates
 from app.core.calculation.stagger_service import compute_stagger_result_for_record
 from app.core.calculation.trend_analyzer import analyze_trend
@@ -85,7 +92,9 @@ def _sanitize(obj):
 
 
 def _metadata_manager(line_group: str) -> MetadataManager:
-    filename = "EAL metadata.xlsx" if line_group == "EAL" else "TML metadata.xlsx"
+    if line_group not in {'EAL', 'TML'}:
+        raise MetadataValidationError(f'No approved complete-cycle metadata for {line_group}')
+    filename = f"{line_group} metadata.xlsx"
     return MetadataManager(config_path=get_config_dir() / filename)
 
 
@@ -334,33 +343,10 @@ def _complete_cycle_response(preview, expected_data_version: int) -> dict:
 
 
 def _infer_stagger_line(summary_df: pd.DataFrame, filename: str, candidate_records: List[object]) -> str:
-    allowed_lines = {"EAL", "TML"}
-
-    for record in candidate_records:
-        candidate = str(getattr(record, "line", "") or "").strip().upper()
-        if candidate in allowed_lines:
-            return candidate
-
-    columns = {str(column).strip().lower(): column for column in summary_df.columns}
-    for logical_name in ("line", "class"):
-        actual_column = columns.get(logical_name)
-        if actual_column is None:
-            continue
-        values = {
-            str(value).strip().upper()
-            for value in summary_df[actual_column].dropna().tolist()
-            if str(value).strip()
-        }
-        matching = values & allowed_lines
-        if len(matching) == 1:
-            return next(iter(matching))
-
-    upper_filename = str(filename or "").upper()
-    for candidate in allowed_lines:
-        if f"_{candidate}_" in upper_filename or upper_filename.startswith(f"{candidate}_"):
-            return candidate
-
-    return ""
+    contexts = [normalize_report_row(row, source='Summary') for row in summary_df.to_dict('records')]
+    contexts.extend(normalize_report_row(asdict(record), source='Stagger candidate') for record in candidate_records)
+    context = ensure_compatible_scopes(contexts)
+    return context.line or filename_context(filename).line
 
 
 @router.get("/health")
@@ -415,17 +401,19 @@ async def upload_wear(
     for f in files:
         try:
             file_bytes = await f.read()
-            _, chart_data = parse_exception_report(file_bytes)
+            _, chart_data = parse_exception_report(file_bytes, filename=f.filename or '')
             all_chart_data.extend(chart_data)
+        except ReportContextError as exc:
+            raise HTTPException(status_code=422, detail=exc.detail()) from exc
         except Exception as exc:
             logger.error("Failed to parse %s: %s", f.filename, exc)
             raise HTTPException(status_code=422, detail=f"Failed to parse {f.filename}: {exc}")
 
     def record_identity(rec: ChartDataRecord) -> tuple:
-        rec_line = (line or rec.line or "").strip().upper()
+        rec_line = (rec.line or line or "").strip().upper()
         rec_track = (rec.track or track or "").strip()
         rec_section = (rec.section or section or "Mainline").strip()
-        return (rec_line, rec_track, rec_section, rec.chainage)
+        return (rec_line, rec_track, rec.branch, rec_section, rec.chainage)
 
     chainage_date_map: dict = {}
     for rec in all_chart_data:
@@ -439,26 +427,31 @@ async def upload_wear(
     ]
 
     latest_date = max(chainage_date_map.values()) if chainage_date_map else None
-    grouped_chart_data: Dict[tuple[str, str, str], List[ChartDataRecord]] = {}
+    grouped_chart_data: Dict[tuple[str, str, str, str], List[ChartDataRecord]] = {}
     for rec in deduped_chart_data:
-        rec_line, rec_track, rec_section, _chainage = record_identity(rec)
-        grouped_chart_data.setdefault((rec_line, rec_track, rec_section), []).append(rec)
+        rec_line, rec_track, rec_branch, rec_section, _chainage = record_identity(rec)
+        grouped_chart_data.setdefault((rec_line, rec_track, rec_branch, rec_section), []).append(rec)
 
     wear_results = []
-    for (group_line, group_track, group_section), records in grouped_chart_data.items():
+    for (group_line, group_track, group_branch, group_section), records in grouped_chart_data.items():
+        if group_line == 'EAL' and group_branch == 'LMC':
+            group_section = 'LMC'
+        tl_lookup = None
         if group_line.upper() in LINE_WORKBOOKS:
             mgr = TOV1050MetadataManager(metadata_workbook_for(group_line.upper(), group_section, get_config_dir()))
             try:
                 mgr.require_tension_length_intervals(group_line, group_track, group_section)
             except ValueError as exc:
-                raise HTTPException(status_code=422, detail=str(exc)) from exc
-        tl_lookup = None
-        if group_line and group_track:
+                raise HTTPException(status_code=422, detail={'code': 'WEAR_CONFIG_UNAVAILABLE', 'message': str(exc),
+                    'context': {'line': group_line, 'section': group_section, 'track': group_track}}) from exc
+            tl_lookup = mgr.get_tension_length_lookup(group_line, group_track, group_section)
+        elif group_line in {'EAL', 'TML'}:
             try:
                 config_dir = get_config_dir()
                 filename = "EAL metadata.xlsx" if group_line == "EAL" else "TML metadata.xlsx"
-                mgr = MetadataManager(config_path=config_dir / filename)
-                tl_lookup = mgr.get_tension_length_lookup(group_line, group_track, group_section)
+                if group_track:
+                    mgr = MetadataManager(config_path=config_dir / filename)
+                    tl_lookup = mgr.get_tension_length_lookup(group_line, group_track, group_section)
             except Exception as exc:
                 logger.warning(
                     "Could not build tl_lookup for %s/%s/%s: %s",
@@ -467,6 +460,9 @@ async def upload_wear(
                     group_section,
                     exc,
                 )
+        else:
+            raise HTTPException(status_code=422, detail={'code': 'WEAR_CONFIG_UNAVAILABLE',
+                'message': f'No approved wear metadata for {group_line}/{group_section}/{group_track}'})
         wear_results.extend(calculate_average_wear(records, tl_lookup=tl_lookup))
 
     return {
@@ -478,7 +474,7 @@ async def upload_wear(
 @router.post("/upload")
 async def upload_combined(
     files: List[UploadFile] = File(...),
-    line: str = Form(default="EAL"),
+    line: str = Form(default=""),
 ):
     """Combined endpoint: returns both wear_results and trend_results."""
     all_wire_wear: List[WireWearRecord] = []
@@ -487,10 +483,12 @@ async def upload_combined(
     for f in files:
         try:
             file_bytes = await f.read()
-            wire_wear, chart_data = parse_exception_report(file_bytes)
+            wire_wear, chart_data = parse_exception_report(file_bytes, filename=f.filename or '')
             all_wire_wear.extend(wire_wear)
             for rec in chart_data:
                 chart_data_by_date.setdefault(rec.task_run_date, []).append(rec)
+        except ReportContextError as exc:
+            raise HTTPException(status_code=422, detail=exc.detail()) from exc
         except Exception as exc:
             logger.error("Failed to parse %s: %s", f.filename, exc)
             raise HTTPException(status_code=422, detail=f"Failed to parse {f.filename}: {exc}")
@@ -510,6 +508,8 @@ async def upload_combined(
 
     try:
         trend_results = analyze_trend(all_wire_wear, chart_data_by_date, line=line)
+    except ReportContextError as exc:
+        raise HTTPException(status_code=422, detail=exc.detail()) from exc
     except Exception as exc:
         logger.error("Trend analysis failed: %s", exc)
         raise HTTPException(status_code=500, detail=f"Trend analysis failed: {exc}")
@@ -525,7 +525,7 @@ async def upload_combined(
 @router.post("/trend")
 async def upload_trend(
     files: List[UploadFile] = File(...),
-    line: str = Form(default="EAL"),
+    line: str = Form(default=""),
     repeated_file: Optional[UploadFile] = File(None),
 ):
     """Multiple files across dates -> L2 trend analysis."""
@@ -535,10 +535,12 @@ async def upload_trend(
     for f in files:
         try:
             file_bytes = await f.read()
-            wire_wear, chart_data = parse_exception_report(file_bytes)
+            wire_wear, chart_data = parse_exception_report(file_bytes, filename=f.filename or '')
             all_wire_wear.extend(wire_wear)
             for rec in chart_data:
                 chart_data_by_date.setdefault(rec.task_run_date, []).append(rec)
+        except ReportContextError as exc:
+            raise HTTPException(status_code=422, detail=exc.detail()) from exc
         except Exception as exc:
             logger.error("Failed to parse %s: %s", f.filename, exc)
             raise HTTPException(status_code=422, detail=f"Failed to parse {f.filename}: {exc}")
@@ -547,7 +549,18 @@ async def upload_trend(
     if repeated_file is not None:
         try:
             repeated_bytes = await repeated_file.read()
-            repeated_records = parse_repeated_report(repeated_bytes)
+            repeated_summary = load_repeated_summary_sheet(repeated_bytes)
+            repeated_records = parse_repeated_summary_sheet(repeated_summary)
+            contexts = {
+                normalize_report_row({'line': record.line, 'branch': record.branch,
+                                      'track': record.track, 'section': record.section}, source='Trend uploads')
+                for records in chart_data_by_date.values() for record in records
+            }
+            contexts.update(normalize_report_row(row, source='Repeated Summary')
+                            for row in repeated_summary.to_dict('records'))
+            ensure_compatible_scopes(contexts, source='Trend repeated report')
+        except ReportContextError as exc:
+            raise HTTPException(status_code=422, detail=exc.detail()) from exc
         except Exception as exc:
             logger.error("Failed to parse repeated file %s: %s", repeated_file.filename, exc)
             raise HTTPException(
@@ -562,6 +575,8 @@ async def upload_trend(
             line=line,
             repeated_records=repeated_records,
         )
+    except ReportContextError as exc:
+        raise HTTPException(status_code=422, detail=exc.detail()) from exc
     except Exception as exc:
         logger.error("Trend analysis failed: %s", exc)
         raise HTTPException(status_code=500, detail=f"Trend analysis failed: {exc}")
@@ -580,17 +595,36 @@ async def upload_stagger(
 ):
     try:
         file_bytes = await file.read()
-        workbook = pd.read_excel(
-            io.BytesIO(file_bytes),
-            sheet_name=["Summary", "ChartData"],
-        )
-        summary_df = workbook["Summary"]
-        chart_rows = parse_stagger_chart_data_sheet(workbook["ChartData"])
+        # Resolve identity and capability from the small sheets first. An
+        # unsupported engineering profile must never decode a large ChartData.
+        workbook = load_report_preflight(file_bytes)
+        try:
+            if 'Summary' not in workbook.sheetnames:
+                raise KeyError('Summary')
+            context = read_report_context(workbook, file.filename or '')
+            if not context.line:
+                raise ReportContextError('The report does not identify a supported line.')
+            configured = require_stagger_configuration(context.line, context.branch, context.direction)
+            summary_rows = list(sheet_records(workbook['Summary']))
+        finally:
+            workbook.close()
+        # Old EAL/TML reports can omit Branch, but explicit cells always win.
+        for row in summary_rows:
+            row_context = normalize_report_row(row, context, source='Summary')
+            row['Line'] = row_context.line
+            row['Branch'] = row_context.branch or configured.branch
+            row['Track'] = row_context.direction
+            if not row_context.direction:
+                raise ReportContextError('Stagger requires an explicit track/direction in the report.')
+        summary_df = pd.DataFrame(summary_rows)
 
         repeated_summary_df = None
         if repeated_file is not None:
             repeated_bytes = await repeated_file.read()
             repeated_summary_df = load_repeated_summary_sheet(repeated_bytes)
+            ensure_compatible_scopes([context, *(
+                normalize_report_row(row, source='Repeated Summary')
+                for row in repeated_summary_df.to_dict('records'))], source='Stagger reports')
 
         fallback_records = select_stagger_candidates(summary_df=summary_df, repeated_summary_df=None)
         selected_records = select_stagger_candidates(
@@ -605,7 +639,27 @@ async def upload_stagger(
         if line:
             fallback_records = [replace(record, line=line) for record in fallback_records]
             selected_records = [replace(record, line=line) for record in selected_records]
-        metadata = load_stagger_metadata(line=line)
+        try:
+            metadata = load_stagger_metadata(line=line)
+        except (FileNotFoundError, KeyError, ValueError) as exc:
+            raise StaggerConfigurationUnavailable(line, configured.branch, configured.direction,
+                                                   [f'approved Stagger metadata: {exc}']) from exc
+        if configured.direction.lower() not in metadata.get('supports', {}).get(line, {}):
+            raise StaggerConfigurationUnavailable(line, configured.branch, configured.direction,
+                                                   ['approved direction-specific support metadata'])
+        chart_df = pd.read_excel(io.BytesIO(file_bytes), sheet_name='ChartData')
+        from app.core.report_context import CONTEXT_ALIASES
+        aliases = {alias for names in CONTEXT_ALIASES.values() for alias in names}
+        identity_columns = [column for column in chart_df.columns if str(column).strip().lower() in aliases]
+        unique_chart_contexts = chart_df[identity_columns].drop_duplicates().to_dict('records')
+        ensure_compatible_scopes([context, *(
+            normalize_report_row(row, source='ChartData')
+            for row in unique_chart_contexts)], source='Stagger report')
+        chart_rows = parse_stagger_chart_data_sheet(chart_df)
+    except ReportContextError as exc:
+        raise HTTPException(status_code=422, detail=exc.detail()) from exc
+    except HTTPException:
+        raise
     except Exception as exc:
         logger.error("Failed to parse stagger workbook %s: %s", file.filename, exc)
         raise HTTPException(status_code=422, detail=f"Failed to parse stagger workbook {file.filename}: {exc}")

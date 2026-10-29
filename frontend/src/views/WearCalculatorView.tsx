@@ -125,6 +125,7 @@ const WearCalculatorView: React.FC = () => {
 
   const renderAnalysis = () => (
     <>
+      <Alert severity="info" sx={{ mb: 2 }}>Wear 工程計算目前只提供 EAL／TML 的核准配置；其他路線報表會先核對實際路線並提示缺少配置，請勿改選為 EAL／TML。</Alert>
       <Box component="section" aria-labelledby="wear-upload-title" sx={{ pt: { xs: 0, sm: 1 } }}>
         <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 2, mb: 3 }}>
           <Box>

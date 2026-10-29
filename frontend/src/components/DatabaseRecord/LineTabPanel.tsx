@@ -35,7 +35,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { RepeatedRecordSectionCounts, SavedRepeatedRecord } from '../../types/api';
 import FilterPanel from './FilterPanel';
 import { useDatabaseStore } from '../../store/useDatabaseStore';
-import { TOV1050_LINES, TOV1050_SESSIONS, Tov1050Line, Tov1050Session } from '../../config/tov1050';
+import { PARENT_LINES, sectionOptionsForLine as catalogSections, normalizeReportIdentity, branchOptionsForLine, canonicalBranch } from '../../config/lineCatalog';
 
 // =============================================================================
 // TYPES
@@ -47,7 +47,7 @@ interface LineTabPanelProps {
   /** Loading state */
   loading: boolean;
   /** Callback when Line/Section filter changes (legacy, optional) */
-  onFilterChange?: (line: Tov1050Line | null, session: Tov1050Session | null) => void;
+  onFilterChange?: (line: string | null, session: string | null) => void;
   /** Child component to render the table */
   children: (filteredRecords: SavedRepeatedRecord[]) => React.ReactNode;
 }
@@ -62,7 +62,7 @@ interface TabPanelProps {
 // CONSTANTS
 // =============================================================================
 
-const LINE_TABS = TOV1050_LINES.map((line, index) => ({
+const LINE_TABS = PARENT_LINES.map((line, index) => ({
   label: line,
   value: line,
   icon: index % 2 === 0 ? <TrainIcon /> : <TramIcon />,
@@ -72,17 +72,14 @@ const LINE_TABS = TOV1050_LINES.map((line, index) => ({
 // Feature-006: Separate section options for EAL (all) vs TML (Mainline only)
 // BUG 10.9.1-1 FIX: Use 'LOW S1' as value to match DatabaseRecordView SECTION_OPTIONS
 // This prevents MUI "out-of-range value" warning when selecting LOW S1 button
-const sectionOptionsForLine = (line: Tov1050Line) => [
+const sectionOptionsForLine = (line: string) => [
   { label: 'All Sections', value: null },
-  ...(TOV1050_SESSIONS[line as keyof typeof TOV1050_SESSIONS] ?? ['Mainline'])
-    .map((value) => ({ label: value, value: value as Tov1050Session })),
+  ...catalogSections(line),
 ];
 
 const SECTION_COUNT_KEYS: Record<string, keyof RepeatedRecordSectionCounts> = {
-  Mainline: 'mainline',
-  PL: 'mainline',
-  TKS: 'mainline',
-  Unknown: 'unknown',
+  Mainline: 'mainline', RAC: 'rac', 'LOW S1': 'low_s1', LMC: 'lmc',
+  PL: 'pl', TKS: 'tks', Unknown: 'unknown',
 };
 
 const EMPTY_SECTION_COUNTS: RepeatedRecordSectionCounts = {
@@ -155,11 +152,11 @@ const LineTabPanel: React.FC<LineTabPanelProps> = ({
   // =========================================================================
 
   const [selectedLineIndex, setSelectedLineIndex] = useState(0);
-  const [selectedSection, setSelectedSection] = useState<Tov1050Session | null>(null);
+  const [selectedSection, setSelectedSection] = useState<string | null>(null);
   const [filterOpen, setFilterOpen] = useState(false);
 
   // Phase 12 Bug 4: Use API-based line counts instead of local computation
-  const { lineCounts, fetchLineCounts, repeatedRecordSectionCounts } = useDatabaseStore();
+  const { lineCounts, fetchLineCounts, repeatedRecordSectionCounts, repeatedRecordBranchCounts } = useDatabaseStore();
 
   // Line badges retain their existing full-database semantics.
   useEffect(() => {
@@ -170,7 +167,7 @@ const LineTabPanel: React.FC<LineTabPanelProps> = ({
   // COMPUTED VALUES
   // =========================================================================
 
-  const selectedLine = LINE_TABS[selectedLineIndex].value as Tov1050Line;
+  const selectedLine = LINE_TABS[selectedLineIndex].value as string;
   const sectionCounts = repeatedRecordSectionCounts ?? EMPTY_SECTION_COUNTS;
 
   // Feature-006: Get section options based on selected line (TML only shows Mainline)
@@ -190,12 +187,13 @@ const LineTabPanel: React.FC<LineTabPanelProps> = ({
   // The API owns filtering; this defensive filter prevents stale rows from the
   // previous request flashing under a newly selected line or section.
   const filteredRecords = useMemo(() => {
-    let filtered = safeRecords.filter((record) => record.line === selectedLine);
+    let filtered = safeRecords.filter((record) => normalizeReportIdentity(record.line, record.section || '').line === selectedLine);
     
     if (selectedSection) {
       filtered = filtered.filter((record) => {
-        const section = record.section || '';
-        return section === selectedSection;
+        const section = normalizeReportIdentity(record.line, record.section || '').section;
+        const branch = branchOptionsForLine(selectedLine).find(item => item.value === selectedSection);
+        return branch ? (canonicalBranch(selectedLine, section) || canonicalBranch(selectedLine, record.session || '')) === branch.branch : section === selectedSection;
       });
     }
     
@@ -219,7 +217,7 @@ const LineTabPanel: React.FC<LineTabPanelProps> = ({
 
   const handleSectionChange = useCallback(
     (_event: React.MouseEvent<HTMLElement>, newSection: string | null) => {
-      const normalizedSection = (newSection || null) as Tov1050Session | null;
+      const normalizedSection = (newSection || null) as string | null;
       setSelectedSection(normalizedSection);
       // Legacy callback (optional) — FilterPanel now handles fetch internally
       onFilterChange?.(selectedLine, normalizedSection);
@@ -247,6 +245,8 @@ const LineTabPanel: React.FC<LineTabPanelProps> = ({
             value={selectedLineIndex}
             onChange={handleLineChange}
             aria-label="Line tabs"
+            variant="scrollable"
+            scrollButtons="auto"
             sx={{
               flex: 1,
               '& .MuiTabs-indicator': {
@@ -295,7 +295,7 @@ const LineTabPanel: React.FC<LineTabPanelProps> = ({
         <Box sx={{ py: 1, px: 1.5, bgcolor: 'background.paper', overflowX: 'auto' }}>
           <Stack direction="row" spacing={2} alignItems="center" sx={{ minWidth: 'max-content' }}>
               <Typography variant="body2" color="text.secondary">
-              Session:
+              Section / Branch:
             </Typography>
             <ToggleButtonGroup
               value={selectedSection ?? ''}
@@ -308,7 +308,8 @@ const LineTabPanel: React.FC<LineTabPanelProps> = ({
               {sectionOptions.map((option) => (
                 (() => {
                   const countKey = option.value ? SECTION_COUNT_KEYS[option.value] : 'all';
-                  const count = sectionCounts[countKey];
+                  const branch = branchOptionsForLine(selectedLine).find(item => item.value === option.value);
+                  const count = (branch ? repeatedRecordBranchCounts?.[branch.value] : undefined) ?? sectionCounts[countKey] ?? 0;
                   return (
                 <ToggleButton
                   key={option.label}

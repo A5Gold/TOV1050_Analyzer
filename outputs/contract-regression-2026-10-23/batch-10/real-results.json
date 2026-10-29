@@ -1,0 +1,185 @@
+{
+  "matrix": [
+    {
+      "line": "TKL",
+      "session": "TKS",
+      "direction": "DT",
+      "fixture_count": 1,
+      "status": "pass",
+      "fixtures": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\Raw data\\TKS\\20260902_TKS_DT.csv"
+    }
+  ],
+  "real_runs": [
+    {
+      "path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\Raw data\\TKS\\20260902_TKS_DT.csv",
+      "sha256": "9263b95b8fdf705a805fc7d196943b83c61f7e58d4b31881509c8e0cdfae7d11",
+      "context": {
+        "file_path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\Raw data\\TKS\\20260902_TKS_DT.csv",
+        "line": "TKL",
+        "track": "DT",
+        "session": "TKS",
+        "section": "TKS",
+        "date_str": "20260902",
+        "station_start": "NOT_PROVIDED",
+        "station_end": "NOT_PROVIDED",
+        "client_session_id": "regression-TKL-TKS-DT-0"
+      },
+      "cleaning": {
+        "raw_row_count": 131222,
+        "retained_row_count": 130825,
+        "trimmed_leading_count": 100,
+        "trimmed_trailing_count": 100,
+        "io_value_count": 774765,
+        "invalid_chainage_count": 0,
+        "no_valid_measurement_count": 197,
+        "delimiter": ",",
+        "chunk_size": 50000,
+        "chainage_unit": "m",
+        "chainage_scale": 1000.0
+      },
+      "exception_counts": {
+        "Low Height": 0,
+        "High Height": 0,
+        "Wire Wear": 0,
+        "Stagger Left": 0,
+        "Stagger Right": 1
+      },
+      "api_status": 200,
+      "report_status": 200,
+      "raw_status": 200,
+      "raw_rows": 130825,
+      "verified_columns": [
+        "Chainage",
+        "height1",
+        "height2",
+        "height3",
+        "height4",
+        "stagger1",
+        "stagger2",
+        "stagger3",
+        "stagger4",
+        "wear1",
+        "wear2",
+        "wear3",
+        "wear4",
+        "source_row_number",
+        "source_chainage_km",
+        "height_min",
+        "height_max",
+        "wear_min",
+        "wear_max",
+        "stg_max",
+        "stg_min"
+      ],
+      "report_sha256": "b199e3b7b092be7bb35eb31f502ee410b1165cc1ca8b65c9c49974d6c393d405",
+      "raw_sha256": "1ba5c1033bce88bb6b9f35e4c7c1a53311357518642b496361772268f9834b16",
+      "report_bytes": 12250689,
+      "raw_bytes": 32098941,
+      "chart_rows_verified": 130825,
+      "chart_columns_verified": [
+        "task_run_date",
+        "line",
+        "track",
+        "Section",
+        "task_no",
+        "station_start",
+        "station_end",
+        "Chainage",
+        "height1",
+        "height2",
+        "height3",
+        "height4",
+        "stagger1",
+        "stagger2",
+        "stagger3",
+        "stagger4",
+        "wear1",
+        "wear2",
+        "wear3",
+        "wear4",
+        "Track Type",
+        "Overlap",
+        "Tension Length",
+        "Landmark",
+        "Class",
+        "height_min",
+        "height_max",
+        "wear_min",
+        "wear_max",
+        "stg_max",
+        "stg_min"
+      ],
+      "summary_rows_verified": 1,
+      "station_context": "not supplied in source filename; NOT_PROVIDED is an export test label",
+      "metadata_capabilities": {
+        "schema_version": "tov1050-metadata-capabilities-v1",
+        "workbook": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\TKS metadata.xlsx",
+        "workbook_sha256": "40a6979ed72c99fa5582d574e99f0c75f17f92bc9e07705989084ec5c69f5f6e",
+        "line": "TKL",
+        "session": "TKS",
+        "direction": "DT",
+        "chainage_unit": "m",
+        "enrichment_version": "tov640-first-nonempty-v1",
+        "overlap_state": "unknown",
+        "capabilities": {
+          "thresholds": {
+            "status": "available",
+            "count": 30,
+            "reason": ""
+          },
+          "class_intervals": {
+            "status": "available",
+            "count": 1,
+            "reason": ""
+          },
+          "track_intervals": {
+            "status": "available",
+            "count": 12,
+            "reason": ""
+          },
+          "bracket_points": {
+            "status": "available",
+            "count": 175,
+            "reason": ""
+          },
+          "landmark_points": {
+            "status": "available",
+            "count": 5,
+            "reason": ""
+          },
+          "tension_length_intervals": {
+            "status": "unavailable",
+            "count": 0,
+            "reason": "No approved physical interval source; observed bracket envelopes and landmark points are not intervals"
+          },
+          "overlap_intervals": {
+            "status": "unavailable",
+            "count": 0,
+            "reason": "No approved physical interval source; observed bracket envelopes and landmark points are not intervals"
+          },
+          "landmark_intervals": {
+            "status": "unavailable",
+            "count": 0,
+            "reason": "No approved physical interval source; observed bracket envelopes and landmark points are not intervals"
+          }
+        }
+      },
+      "mapping_coverage": {
+        "class": {
+          "uncovered_rows": 0,
+          "first_uncovered_chainages_m": []
+        },
+        "track": {
+          "uncovered_rows": 0,
+          "first_uncovered_chainages_m": []
+        }
+      },
+      "fixture_context_confirmation": "Filename 20260902_TKS_DT.csv plus existing product contract: TKS is a TKL session",
+      "limitation": "Actual exceptions exercised"
+    }
+  ],
+  "unassigned_fixtures": [
+    "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\Raw data\\TCL\\20260618_032025_olpar.csv"
+  ],
+  "validation_scope": "runtime_config_incremental"
+}

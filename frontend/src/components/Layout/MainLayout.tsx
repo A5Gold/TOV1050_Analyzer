@@ -184,7 +184,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, activeView, onViewCha
           </Box>
           <Box component="footer" sx={{ minHeight: 44, px: 2, py: 1.25, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0.75, color: '#667286', bgcolor: '#ffffff', borderTop: '1px solid #e7ebf1' }}>
             <RouteOutlinedIcon sx={{ fontSize: 15, color: 'primary.main' }} />
-            <Typography sx={{ fontSize: '0.72rem', letterSpacing: 0 }}>Secure processing workspace • TOV1050 CSV input • Version 2.0</Typography>
+            <Typography sx={{ fontSize: '0.72rem', letterSpacing: 0 }}>Secure processing workspace • TOV640 DATAC / TOV1050 CSV • Version 2.0</Typography>
           </Box>
         </Box>
       </Box>

@@ -32,6 +32,7 @@ class DataLoader:
             # but usually fixed width or purely ; delimited. 
             # The sample shows ; delimiter.
             df = pd.read_csv(path, sep=';', engine='python')
+            df['source_row_number'] = np.arange(2, len(df) + 2)
             
             # Clean string columns (strip whitespace)
             df = df.apply(lambda x: x.str.strip() if x.dtype == "object" else x)

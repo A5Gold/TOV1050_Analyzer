@@ -32,6 +32,8 @@ import {
 import SaveIcon from '@mui/icons-material/Save';
 import WarningIcon from '@mui/icons-material/Warning';
 
+import { PARENT_LINES, sectionOptionsForLine, normalizeReportIdentity } from '../../config/lineCatalog';
+
 // --- Types ---
 export interface SaveToDBDialogProps {
   open: boolean;
@@ -49,21 +51,7 @@ export interface SaveOptions {
 }
 
 // --- Constants ---
-const LINE_OPTIONS = [
-  { value: 'EAL', label: 'EAL' },
-  { value: 'TML', label: 'TML' },
-];
-
-const EAL_SECTION_OPTIONS = [
-  { value: 'Mainline', label: 'Mainline' },
-  { value: 'RAC', label: 'RAC' },
-  { value: 'LOW S1', label: 'LOW S1' },
-  { value: 'LMC', label: 'LMC' },
-];
-
-const TML_SECTION_OPTIONS = [
-  { value: 'Mainline', label: 'Mainline' },
-];
+const LINE_OPTIONS = PARENT_LINES.map(value => ({ value, label: value }));
 
 // --- Component ---
 const SaveToDBDialog: React.FC<SaveToDBDialogProps> = ({
@@ -71,8 +59,8 @@ const SaveToDBDialog: React.FC<SaveToDBDialogProps> = ({
   onClose,
   onSave,
   recordCount,
-  detectedLine = 'EAL',
-  detectedSection = 'Mainline',
+  detectedLine = '',
+  detectedSection = '',
   isSaving = false,
 }) => {
   // State for user selections
@@ -82,30 +70,29 @@ const SaveToDBDialog: React.FC<SaveToDBDialogProps> = ({
   // Reset state when dialog opens with new detected values
   useEffect(() => {
     if (open) {
-      setSelectedLine(detectedLine || 'EAL');
-      setSelectedSection(detectedSection || 'Mainline');
+      const identity = normalizeReportIdentity(detectedLine, detectedSection);
+      setSelectedLine(identity.line);
+      setSelectedSection(identity.section);
     }
   }, [open, detectedLine, detectedSection]);
 
-  // Get available sections based on selected line
-  const sectionOptions = useMemo(() => {
-    return selectedLine === 'TML' ? TML_SECTION_OPTIONS : EAL_SECTION_OPTIONS;
-  }, [selectedLine]);
+  const sectionOptions = useMemo(() => sectionOptionsForLine(selectedLine), [selectedLine]);
 
-  // Reset section to Mainline when changing to TML (TML only supports Mainline)
   useEffect(() => {
-    if (selectedLine === 'TML' && selectedSection !== 'Mainline') {
-      setSelectedSection('Mainline');
+    if (selectedSection && !sectionOptions.some(item => item.value === selectedSection)) {
+      setSelectedSection('');
     }
-  }, [selectedLine, selectedSection]);
+  }, [sectionOptions, selectedSection]);
 
   // Validation
   const hasNoRecords = recordCount === 0;
-  const canSave = !hasNoRecords && !isSaving;
+  const canSave = !hasNoRecords && !isSaving && !!selectedLine && !!selectedSection;
 
   // Handlers
   const handleLineChange = (event: any) => {
-    setSelectedLine(event.target.value as string);
+    const nextLine = event.target.value as string;
+    setSelectedLine(nextLine);
+    setSelectedSection(sectionOptionsForLine(nextLine)[0]?.value || '');
   };
 
   const handleSectionChange = (event: any) => {

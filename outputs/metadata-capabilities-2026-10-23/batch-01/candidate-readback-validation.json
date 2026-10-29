@@ -1,0 +1,51 @@
+[
+  {
+    "file": "outputs\\metadata-capabilities-2026-10-23\\batch-01\\candidates\\LAR_AEL metadata (compatibility review).xlsx",
+    "sha256": "e0bb8a6205755d78e42ffa64cb202cd57ec4919d4ccc5b94195e98c108414473",
+    "status": "pass_all_cells",
+    "point_rows": 2871,
+    "intervals": "TL/Overlap/Landmark unavailable; no inferred interval populated"
+  },
+  {
+    "file": "outputs\\metadata-capabilities-2026-10-23\\batch-01\\candidates\\LAR_TCL metadata (compatibility review).xlsx",
+    "sha256": "7cd20f4ad7221683963400b5a304fefb897ec40e5443ab4d266638afd1ec095b",
+    "status": "pass_all_cells",
+    "point_rows": 2489,
+    "intervals": "TL/Overlap/Landmark unavailable; no inferred interval populated"
+  },
+  {
+    "file": "outputs\\metadata-capabilities-2026-10-23\\batch-01\\candidates\\ISL metadata (compatibility review).xlsx",
+    "sha256": "b39f6ae50feb5c188cb1fbec6d770048a19c9599c9276bf98933102da09055f2",
+    "status": "pass_all_cells",
+    "point_rows": 1508,
+    "intervals": "TL/Overlap/Landmark unavailable; no inferred interval populated"
+  },
+  {
+    "file": "outputs\\metadata-capabilities-2026-10-23\\batch-01\\candidates\\KTL metadata (compatibility review).xlsx",
+    "sha256": "326023968b09d4e63cb117d14c5c8191f5dbba0bf884567e98634ce62b446d73",
+    "status": "pass_all_cells",
+    "point_rows": 3261,
+    "intervals": "TL/Overlap/Landmark unavailable; no inferred interval populated"
+  },
+  {
+    "file": "outputs\\metadata-capabilities-2026-10-23\\batch-01\\candidates\\TKL metadata (compatibility review).xlsx",
+    "sha256": "936bb09077e93d5881d207ddfc93193d5f3c5b5b27eeebbd1836d2b495ca039a",
+    "status": "pass_all_cells",
+    "point_rows": 1296,
+    "intervals": "TL/Overlap/Landmark unavailable; no inferred interval populated"
+  },
+  {
+    "file": "outputs\\metadata-capabilities-2026-10-23\\batch-01\\candidates\\TKS metadata (compatibility review).xlsx",
+    "sha256": "c03ef8463cc3bea84fd9c146d1105a9e85bef4930e13ee93c086021492acd619",
+    "status": "pass_all_cells",
+    "point_rows": 350,
+    "intervals": "TL/Overlap/Landmark unavailable; no inferred interval populated"
+  },
+  {
+    "file": "outputs\\metadata-capabilities-2026-10-23\\batch-01\\candidates\\TWL metadata (compatibility review).xlsx",
+    "sha256": "f0d1e5f57c2ad0a04c2914c1b0d188a8cff1cf15ed9672fba5cccfd499472b20",
+    "status": "pass_all_cells",
+    "point_rows": 2368,
+    "intervals": "TL/Overlap/Landmark unavailable; no inferred interval populated"
+  }
+]

@@ -4,6 +4,7 @@ Analyzes L2-level wire wear exceptions across multiple inspection dates.
 """
 import math
 from dataclasses import dataclass
+from functools import lru_cache
 from datetime import date, datetime
 from typing import List, Dict, Optional
 
@@ -11,6 +12,10 @@ import numpy as np
 import pandas as pd
 
 from app.core.calculation.excel_parser import WireWearRecord, ChartDataRecord, RepeatedSummaryRecord
+from app.core.report_context import (
+    ReportContext, ReportContextError, ensure_compatible_scopes, normalize_report_row,
+    validate_algorithm_compatibility,
+)
 
 
 L2_THRESHOLD: float = 10.2
@@ -70,13 +75,16 @@ class TrendResult:
     station_end: str = ''
     max_value: float = 0.0
     max_location: float = 0.0
+    branch: str = ''
+    direction: str = ''
+    algorithm_status: str = 'unknown'
 
 
 def _parse_date(s: str) -> date:
     """Parse date string supporting multiple formats. Returns None for empty/unparseable strings."""
     if not s or not s.strip():
         return None
-    for fmt in ('%Y-%m-%d', '%d-%m-%Y', '%d/%m/%Y', '%Y/%m/%d'):
+    for fmt in ('%Y-%m-%d', '%d-%m-%Y', '%d/%m/%Y', '%Y/%m/%d', '%Y%m%d'):
         try:
             return datetime.strptime(s.strip(), fmt).date()
         except ValueError:
@@ -87,7 +95,7 @@ def _parse_date(s: str) -> date:
 def analyze_trend(
     wire_wear_records: List[WireWearRecord],
     chart_data_by_date: Dict[str, List[ChartDataRecord]],
-    line: str = 'EAL',
+    line: str = '',
     repeated_records: Optional[List[RepeatedSummaryRecord]] = None,
 ) -> List[TrendResult]:
     """
@@ -96,7 +104,7 @@ def analyze_trend(
     Args:
         wire_wear_records: Wire Wear rows (typically from the latest Excel)
         chart_data_by_date: {task_run_date: [ChartDataRecord]} for all uploaded Excels
-        line: 'EAL', 'TML', or 'LMC' — determines next inspection cycle days
+        line: Optional explicit identity for old reports that have no line cells.
         repeated_records: Optional Wire Wear L2 rows from n_Repeated Exception Report Summary sheet.
             When provided (Case B), only IDs present in both repeated report and wire wear sheet are analyzed.
             When None (Case A), existing logic applies — latest-cycle L2 with blank ACTION.
@@ -106,6 +114,45 @@ def analyze_trend(
     """
     def _normalize_id(value: str) -> str:
         return str(value or '').strip()
+
+    @lru_cache(maxsize=512)
+    def _scope(raw_line, branch, direction, section):
+        return normalize_report_row({'line': raw_line, 'branch': branch,
+                                     'track': direction, 'section': section}, source='Trend')
+
+    def identity(record):
+        return _scope(str(getattr(record, 'line', '') or line or ''),
+                      str(getattr(record, 'branch', '') or ''),
+                      str(getattr(record, 'direction', '') or getattr(record, 'track', '') or ''),
+                      str(getattr(record, 'section', '') or ''))
+
+    shared = ensure_compatible_scopes(
+        [identity(record) for record in wire_wear_records]
+        + [identity(record) for records in chart_data_by_date.values() for record in records],
+        source='Trend uploads',
+    )
+    algorithm_known = validate_algorithm_compatibility({
+        ReportContext(algorithm=record.algorithm, algorithm_mode=record.algorithm_mode)
+        for records in chart_data_by_date.values() for record in records
+    })
+
+    def compatible(candidate, measurement):
+        left, right = identity(candidate), identity(measurement)
+        if any(a and b and a != b for a, b in zip(left.scope, right.scope)):
+            return False
+        if candidate.section and measurement.section and candidate.section.strip().casefold() != measurement.section.strip().casefold():
+            return False
+        if candidate.tension_length and measurement.tension_length:
+            candidate_tls = {value.strip() for value in candidate.tension_length.split(',') if value.strip()}
+            measurement_tls = {value.strip() for value in measurement.tension_length.split(',') if value.strip()}
+            if not candidate_tls.intersection(measurement_tls):
+                return False
+        if _parse_date(candidate.run_date) == _parse_date(measurement.task_run_date):
+            if candidate.source_id and measurement.source_id and candidate.source_id != measurement.source_id:
+                return False
+            if candidate.task_no and measurement.task_no and candidate.task_no != measurement.task_no:
+                return False
+        return candidate.from_m <= measurement.chainage <= candidate.to_m
 
     # Determine which L2 Wire Wear exceptions to analyze
     if repeated_records is not None:
@@ -133,31 +180,20 @@ def analyze_trend(
         for record in repeated_records:
             repeated_max_location[_normalize_id(record.exception_id)] = record.max_location
 
-    # Collect per-TL metadata from ChartDataRecord
-    tl_meta: Dict[str, dict] = {}
-    for records in chart_data_by_date.values():
-        for r in records:
-            tl = r.tension_length.strip()
-            if tl and tl not in tl_meta:
-                tl_meta[tl] = {
-                    'track': r.track or '',
-                    'section': r.section or '',
-                    'task_no': r.task_no or '',
-                    'station_start': r.station_start or '',
-                    'station_end': r.station_end or '',
-                }
-
     results: List[TrendResult] = []
 
     for rec in l2_records:
         # Build min(wear_min) within rec.from_m..rec.to_m per date, keyed by exception_id
         exc_date_min: Dict[str, float] = {}
         for run_date, records in chart_data_by_date.items():
-            matching = [
-                r.wear_min for r in records
-                if rec.from_m <= r.chainage <= rec.to_m
-            ]
-            exc_date_min[run_date] = min(matching) if matching else None
+            matching = [r for r in records if compatible(rec, r) and math.isfinite(r.wear_min)]
+            tasks = {r.task_no for r in matching if r.task_no}
+            sources = {r.source_id for r in matching if r.source_id}
+            sections = {r.section.strip().casefold() for r in matching if r.section}
+            if len(tasks) > 1 or len(sources) > 1 or len(sections) > 1:
+                raise ReportContextError(f'Trend candidate {rec.exception_id}: multiple acquisitions overlap its span on {run_date}; compare each acquisition separately.',
+                                         'AMBIGUOUS_REPORT_ACQUISITION')
+            exc_date_min[run_date] = min(r.wear_min for r in matching) if matching else None
 
         if not exc_date_min:
             continue
@@ -172,6 +208,8 @@ def analyze_trend(
         sorted_dates = [d for d, _ in parseable]
         ordinals = [pd_.toordinal() for _, pd_ in parseable]
         values = [exc_date_min[d] for d in sorted_dates]
+        if not values or values[0] is None:
+            continue
 
         # Drop None values before regression
         valid_pairs = [(o, v) for o, v in zip(ordinals, values) if v is not None]
@@ -198,7 +236,24 @@ def analyze_trend(
         else:
             recommendation = 'confirmed valid L2'
 
-        meta = tl_meta.get(rec.tension_length, {})
+        # Acquisition metadata comes from the candidate's own Summary. Legacy
+        # blanks may only be filled from its own date/scope/span, never the
+        # first uploaded TL or another inspection date.
+        same_run = [r for records in chart_data_by_date.values() for r in records
+                    if _parse_date(r.task_run_date) == _parse_date(rec.run_date)
+                    and compatible(rec, r)
+                    and (not rec.task_no or not r.task_no or rec.task_no == r.task_no)]
+        meta = {}
+        for field in ('track', 'section', 'task_no', 'station_start', 'station_end'):
+            own = getattr(rec, field, '')
+            if own:
+                meta[field] = own
+                continue
+            candidates = {getattr(r, field, '') for r in same_run if getattr(r, field, '')}
+            if len(candidates) > 1:
+                raise ReportContextError(f'Trend candidate {rec.exception_id}: ambiguous {field} within its acquisition span')
+            meta[field] = next(iter(candidates), '')
+        scope = identity(rec)
         results.append(TrendResult(
             tension_length=rec.tension_length,
             from_m=rec.from_m,
@@ -213,7 +268,10 @@ def analyze_trend(
             recommendation=recommendation,
             exception_id=rec.exception_id or '',
             task_run_date=sorted_dates[0] if sorted_dates else '',
-            line=line,
+            line=scope.line or shared.line,
+            branch=scope.branch or shared.branch,
+            direction=scope.direction or shared.direction,
+            algorithm_status='verified' if algorithm_known else 'unknown',
             track=meta.get('track', ''),
             section=meta.get('section', ''),
             task_no=meta.get('task_no', ''),

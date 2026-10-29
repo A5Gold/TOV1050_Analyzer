@@ -1,0 +1,1637 @@
+{
+  "parameters": [
+    {
+      "height": 0.25,
+      "stagger": 1.0,
+      "wear": 0.005
+    },
+    {
+      "height": 0.5,
+      "stagger": 2.0,
+      "wear": 0.01
+    },
+    {
+      "height": 1.0,
+      "stagger": 4.0,
+      "wear": 0.02
+    },
+    {
+      "height": 2.0,
+      "stagger": 8.0,
+      "wear": 0.05
+    }
+  ],
+  "kernel_checks": 624,
+  "metadata_path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\TWL metadata.xlsx",
+  "metadata_sha256_before": "ac96e8d32b2ac7ccc3aea8c5bea68e450355fe4fb285febd43f43356c020d2ab",
+  "datasets": {
+    "partial": {
+      "input_path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\Raw data\\TWL\\test file partial.csv",
+      "source_sha256_before": "5a5bf1cc4a78fc03ef6cbf6f301c76305e9ff415ae718c4cc94546dfbcdc1866",
+      "cleaning": {
+        "raw_row_count": 51170,
+        "retained_row_count": 50904,
+        "trimmed_leading_count": 100,
+        "trimmed_trailing_count": 100,
+        "io_value_count": 306792,
+        "invalid_chainage_count": 0,
+        "no_valid_measurement_count": 66,
+        "delimiter": ",",
+        "chunk_size": 50000,
+        "chainage_unit": "m",
+        "chainage_scale": 1000.0
+      },
+      "baseline_seconds": 3.236951200000476,
+      "raw_counts": {
+        "Low Height": 0,
+        "High Height": 0,
+        "Wire Wear": 0,
+        "Stagger Left": 0,
+        "Stagger Right": 2
+      },
+      "runs": 5086,
+      "run_sizes": {
+        "1": 1,
+        "4": 1,
+        "9": 1,
+        "10": 5079,
+        "20": 2,
+        "30": 2
+      },
+      "profiles": {
+        "p1-majority": {
+          "params": {
+            "height": 0.25,
+            "stagger": 1.0,
+            "wear": 0.005
+          },
+          "support_rule": "max(5,floor(retained_run_size/2)+1)",
+          "filter_seconds": 0.30216079999809153,
+          "detector_seconds": 0.21065769999768236,
+          "channels": {
+            "height1": {
+              "delta_mm": 0.25,
+              "status": {
+                "accepted": 2145,
+                "ambiguous": 828,
+                "insufficient": 2,
+                "no_consensus": 2111
+              },
+              "populated_runs": 5086,
+              "acceptance_pct": 42.1746
+            },
+            "height2": {
+              "delta_mm": 0.25,
+              "status": {
+                "accepted": 2122,
+                "ambiguous": 971,
+                "insufficient": 4,
+                "missing": 3,
+                "no_consensus": 1986
+              },
+              "populated_runs": 5083,
+              "acceptance_pct": 41.747
+            },
+            "height3": {
+              "delta_mm": 0.25,
+              "status": {
+                "missing": 5071,
+                "no_consensus": 15
+              },
+              "populated_runs": 15,
+              "acceptance_pct": 0.0
+            },
+            "height4": {
+              "delta_mm": 0.25,
+              "status": {
+                "accepted": 2,
+                "insufficient": 1,
+                "missing": 5074,
+                "no_consensus": 9
+              },
+              "populated_runs": 12,
+              "acceptance_pct": 16.6667
+            },
+            "stagger1": {
+              "delta_mm": 1.0,
+              "status": {
+                "accepted": 2532,
+                "ambiguous": 1115,
+                "insufficient": 2,
+                "no_consensus": 1437
+              },
+              "populated_runs": 5086,
+              "acceptance_pct": 49.7837
+            },
+            "stagger2": {
+              "delta_mm": 1.0,
+              "status": {
+                "accepted": 2540,
+                "ambiguous": 1115,
+                "insufficient": 4,
+                "missing": 3,
+                "no_consensus": 1424
+              },
+              "populated_runs": 5083,
+              "acceptance_pct": 49.9705
+            },
+            "stagger3": {
+              "delta_mm": 1.0,
+              "status": {
+                "accepted": 15,
+                "missing": 5071
+              },
+              "populated_runs": 15,
+              "acceptance_pct": 100.0
+            },
+            "stagger4": {
+              "delta_mm": 1.0,
+              "status": {
+                "accepted": 11,
+                "insufficient": 1,
+                "missing": 5074
+              },
+              "populated_runs": 12,
+              "acceptance_pct": 91.6667
+            },
+            "wear1": {
+              "delta_mm": 0.005,
+              "status": {
+                "accepted": 3403,
+                "ambiguous": 628,
+                "insufficient": 2,
+                "no_consensus": 1053
+              },
+              "populated_runs": 5086,
+              "acceptance_pct": 66.9092
+            },
+            "wear2": {
+              "delta_mm": 0.005,
+              "status": {
+                "accepted": 3574,
+                "ambiguous": 605,
+                "insufficient": 4,
+                "missing": 3,
+                "no_consensus": 900
+              },
+              "populated_runs": 5083,
+              "acceptance_pct": 70.3128
+            },
+            "wear3": {
+              "delta_mm": 0.005,
+              "status": {
+                "accepted": 8,
+                "ambiguous": 3,
+                "missing": 5071,
+                "no_consensus": 4
+              },
+              "populated_runs": 15,
+              "acceptance_pct": 53.3333
+            },
+            "wear4": {
+              "delta_mm": 0.005,
+              "status": {
+                "accepted": 1,
+                "ambiguous": 3,
+                "insufficient": 1,
+                "missing": 5074,
+                "no_consensus": 7
+              },
+              "populated_runs": 12,
+              "acceptance_pct": 8.3333
+            }
+          },
+          "impacts": {
+            "Low Height": {
+              "raw_count": 0,
+              "candidate_count": 0,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 0,
+              "raw_with_changed_overlaps": 0,
+              "raw_with_multiple_overlaps": 0
+            },
+            "Wire Wear": {
+              "raw_count": 0,
+              "candidate_count": 0,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 0,
+              "raw_with_changed_overlaps": 0,
+              "raw_with_multiple_overlaps": 0
+            },
+            "High Height": {
+              "raw_count": 0,
+              "candidate_count": 0,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 0,
+              "raw_with_changed_overlaps": 0,
+              "raw_with_multiple_overlaps": 0
+            },
+            "Stagger Left": {
+              "raw_count": 0,
+              "candidate_count": 0,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 0,
+              "raw_with_changed_overlaps": 0,
+              "raw_with_multiple_overlaps": 0
+            },
+            "Stagger Right": {
+              "raw_count": 2,
+              "candidate_count": 2,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 0,
+              "raw_with_changed_overlaps": 2,
+              "raw_with_multiple_overlaps": 0
+            }
+          }
+        },
+        "p2-majority": {
+          "params": {
+            "height": 0.5,
+            "stagger": 2.0,
+            "wear": 0.01
+          },
+          "support_rule": "max(5,floor(retained_run_size/2)+1)",
+          "filter_seconds": 0.5258940000021539,
+          "detector_seconds": 0.35872810000000754,
+          "channels": {
+            "height1": {
+              "delta_mm": 0.5,
+              "status": {
+                "accepted": 3299,
+                "ambiguous": 1303,
+                "insufficient": 2,
+                "no_consensus": 482
+              },
+              "populated_runs": 5086,
+              "acceptance_pct": 64.8643,
+              "alternative_support_counts": {
+                "B_at_least5_before_tie_policy": 4920,
+                "A_radius_delta_over2_at_least5": 4893,
+                "C_contiguous5": 4920
+              }
+            },
+            "height2": {
+              "delta_mm": 0.5,
+              "status": {
+                "accepted": 3412,
+                "ambiguous": 1207,
+                "insufficient": 4,
+                "missing": 3,
+                "no_consensus": 460
+              },
+              "populated_runs": 5083,
+              "acceptance_pct": 67.1257,
+              "alternative_support_counts": {
+                "B_at_least5_before_tie_policy": 4912,
+                "A_radius_delta_over2_at_least5": 4888,
+                "C_contiguous5": 4912
+              }
+            },
+            "height3": {
+              "delta_mm": 0.5,
+              "status": {
+                "ambiguous": 1,
+                "missing": 5071,
+                "no_consensus": 14
+              },
+              "populated_runs": 15,
+              "acceptance_pct": 0.0,
+              "alternative_support_counts": {
+                "B_at_least5_before_tie_policy": 3,
+                "A_radius_delta_over2_at_least5": 1,
+                "C_contiguous5": 3
+              }
+            },
+            "height4": {
+              "delta_mm": 0.5,
+              "status": {
+                "accepted": 2,
+                "ambiguous": 2,
+                "insufficient": 1,
+                "missing": 5074,
+                "no_consensus": 7
+              },
+              "populated_runs": 12,
+              "acceptance_pct": 16.6667,
+              "alternative_support_counts": {
+                "B_at_least5_before_tie_policy": 5,
+                "A_radius_delta_over2_at_least5": 5,
+                "C_contiguous5": 5
+              }
+            },
+            "stagger1": {
+              "delta_mm": 2.0,
+              "status": {
+                "accepted": 3810,
+                "ambiguous": 777,
+                "insufficient": 2,
+                "no_consensus": 497
+              },
+              "populated_runs": 5086,
+              "acceptance_pct": 74.9115,
+              "alternative_support_counts": {
+                "B_at_least5_before_tie_policy": 4830,
+                "A_radius_delta_over2_at_least5": 4828,
+                "C_contiguous5": 4830
+              }
+            },
+            "stagger2": {
+              "delta_mm": 2.0,
+              "status": {
+                "accepted": 3816,
+                "ambiguous": 797,
+                "insufficient": 4,
+                "missing": 3,
+                "no_consensus": 466
+              },
+              "populated_runs": 5083,
+              "acceptance_pct": 75.0738,
+              "alternative_support_counts": {
+                "B_at_least5_before_tie_policy": 4846,
+                "A_radius_delta_over2_at_least5": 4844,
+                "C_contiguous5": 4846
+              }
+            },
+            "stagger3": {
+              "delta_mm": 2.0,
+              "status": {
+                "accepted": 15,
+                "missing": 5071
+              },
+              "populated_runs": 15,
+              "acceptance_pct": 100.0,
+              "alternative_support_counts": {
+                "B_at_least5_before_tie_policy": 15,
+                "A_radius_delta_over2_at_least5": 15,
+                "C_contiguous5": 15
+              }
+            },
+            "stagger4": {
+              "delta_mm": 2.0,
+              "status": {
+                "accepted": 11,
+                "insufficient": 1,
+                "missing": 5074
+              },
+              "populated_runs": 12,
+              "acceptance_pct": 91.6667,
+              "alternative_support_counts": {
+                "B_at_least5_before_tie_policy": 11,
+                "A_radius_delta_over2_at_least5": 11,
+                "C_contiguous5": 11
+              }
+            },
+            "wear1": {
+              "delta_mm": 0.01,
+              "status": {
+                "accepted": 4192,
+                "ambiguous": 524,
+                "insufficient": 2,
+                "no_consensus": 368
+              },
+              "populated_runs": 5086,
+              "acceptance_pct": 82.4223,
+              "alternative_support_counts": {
+                "B_at_least5_before_tie_policy": 4877,
+                "A_radius_delta_over2_at_least5": 4863,
+                "C_contiguous5": 4876
+              }
+            },
+            "wear2": {
+              "delta_mm": 0.01,
+              "status": {
+                "accepted": 4305,
+                "ambiguous": 489,
+                "insufficient": 4,
+                "missing": 3,
+                "no_consensus": 285
+              },
+              "populated_runs": 5083,
+              "acceptance_pct": 84.6941,
+              "alternative_support_counts": {
+                "B_at_least5_before_tie_policy": 4930,
+                "A_radius_delta_over2_at_least5": 4915,
+                "C_contiguous5": 4930
+              }
+            },
+            "wear3": {
+              "delta_mm": 0.01,
+              "status": {
+                "accepted": 13,
+                "ambiguous": 1,
+                "missing": 5071,
+                "no_consensus": 1
+              },
+              "populated_runs": 15,
+              "acceptance_pct": 86.6667,
+              "alternative_support_counts": {
+                "B_at_least5_before_tie_policy": 14,
+                "A_radius_delta_over2_at_least5": 14,
+                "C_contiguous5": 14
+              }
+            },
+            "wear4": {
+              "delta_mm": 0.01,
+              "status": {
+                "accepted": 4,
+                "ambiguous": 3,
+                "insufficient": 1,
+                "missing": 5074,
+                "no_consensus": 4
+              },
+              "populated_runs": 12,
+              "acceptance_pct": 33.3333,
+              "alternative_support_counts": {
+                "B_at_least5_before_tie_policy": 10,
+                "A_radius_delta_over2_at_least5": 10,
+                "C_contiguous5": 10
+              }
+            }
+          },
+          "impacts": {
+            "Low Height": {
+              "raw_count": 0,
+              "candidate_count": 0,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 0,
+              "raw_with_changed_overlaps": 0,
+              "raw_with_multiple_overlaps": 0
+            },
+            "Wire Wear": {
+              "raw_count": 0,
+              "candidate_count": 0,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 0,
+              "raw_with_changed_overlaps": 0,
+              "raw_with_multiple_overlaps": 0
+            },
+            "High Height": {
+              "raw_count": 0,
+              "candidate_count": 0,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 0,
+              "raw_with_changed_overlaps": 0,
+              "raw_with_multiple_overlaps": 0
+            },
+            "Stagger Left": {
+              "raw_count": 0,
+              "candidate_count": 0,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 0,
+              "raw_with_changed_overlaps": 0,
+              "raw_with_multiple_overlaps": 0
+            },
+            "Stagger Right": {
+              "raw_count": 2,
+              "candidate_count": 2,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 0,
+              "raw_with_changed_overlaps": 2,
+              "raw_with_multiple_overlaps": 0
+            }
+          }
+        },
+        "p3-majority": {
+          "params": {
+            "height": 1.0,
+            "stagger": 4.0,
+            "wear": 0.02
+          },
+          "support_rule": "max(5,floor(retained_run_size/2)+1)",
+          "filter_seconds": 0.21297739999863552,
+          "detector_seconds": 0.21460110000043642,
+          "channels": {
+            "height1": {
+              "delta_mm": 1.0,
+              "status": {
+                "accepted": 4754,
+                "ambiguous": 314,
+                "insufficient": 2,
+                "no_consensus": 16
+              },
+              "populated_runs": 5086,
+              "acceptance_pct": 93.4723
+            },
+            "height2": {
+              "delta_mm": 1.0,
+              "status": {
+                "accepted": 4729,
+                "ambiguous": 344,
+                "insufficient": 4,
+                "missing": 3,
+                "no_consensus": 6
+              },
+              "populated_runs": 5083,
+              "acceptance_pct": 93.0356
+            },
+            "height3": {
+              "delta_mm": 1.0,
+              "status": {
+                "accepted": 2,
+                "ambiguous": 5,
+                "missing": 5071,
+                "no_consensus": 8
+              },
+              "populated_runs": 15,
+              "acceptance_pct": 13.3333
+            },
+            "height4": {
+              "delta_mm": 1.0,
+              "status": {
+                "accepted": 5,
+                "ambiguous": 2,
+                "insufficient": 1,
+                "missing": 5074,
+                "no_consensus": 4
+              },
+              "populated_runs": 12,
+              "acceptance_pct": 41.6667
+            },
+            "stagger1": {
+              "delta_mm": 4.0,
+              "status": {
+                "accepted": 4713,
+                "ambiguous": 369,
+                "insufficient": 2,
+                "no_consensus": 2
+              },
+              "populated_runs": 5086,
+              "acceptance_pct": 92.6661
+            },
+            "stagger2": {
+              "delta_mm": 4.0,
+              "status": {
+                "accepted": 4722,
+                "ambiguous": 355,
+                "insufficient": 4,
+                "missing": 3,
+                "no_consensus": 2
+              },
+              "populated_runs": 5083,
+              "acceptance_pct": 92.8979
+            },
+            "stagger3": {
+              "delta_mm": 4.0,
+              "status": {
+                "accepted": 15,
+                "missing": 5071
+              },
+              "populated_runs": 15,
+              "acceptance_pct": 100.0
+            },
+            "stagger4": {
+              "delta_mm": 4.0,
+              "status": {
+                "accepted": 11,
+                "insufficient": 1,
+                "missing": 5074
+              },
+              "populated_runs": 12,
+              "acceptance_pct": 91.6667
+            },
+            "wear1": {
+              "delta_mm": 0.02,
+              "status": {
+                "accepted": 4783,
+                "ambiguous": 201,
+                "insufficient": 2,
+                "no_consensus": 100
+              },
+              "populated_runs": 5086,
+              "acceptance_pct": 94.0425
+            },
+            "wear2": {
+              "delta_mm": 0.02,
+              "status": {
+                "accepted": 4837,
+                "ambiguous": 187,
+                "insufficient": 4,
+                "missing": 3,
+                "no_consensus": 55
+              },
+              "populated_runs": 5083,
+              "acceptance_pct": 95.1603
+            },
+            "wear3": {
+              "delta_mm": 0.02,
+              "status": {
+                "accepted": 14,
+                "missing": 5071,
+                "no_consensus": 1
+              },
+              "populated_runs": 15,
+              "acceptance_pct": 93.3333
+            },
+            "wear4": {
+              "delta_mm": 0.02,
+              "status": {
+                "accepted": 9,
+                "ambiguous": 1,
+                "insufficient": 1,
+                "missing": 5074,
+                "no_consensus": 1
+              },
+              "populated_runs": 12,
+              "acceptance_pct": 75.0
+            }
+          },
+          "impacts": {
+            "Low Height": {
+              "raw_count": 0,
+              "candidate_count": 0,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 0,
+              "raw_with_changed_overlaps": 0,
+              "raw_with_multiple_overlaps": 0
+            },
+            "Wire Wear": {
+              "raw_count": 0,
+              "candidate_count": 0,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 0,
+              "raw_with_changed_overlaps": 0,
+              "raw_with_multiple_overlaps": 0
+            },
+            "High Height": {
+              "raw_count": 0,
+              "candidate_count": 0,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 0,
+              "raw_with_changed_overlaps": 0,
+              "raw_with_multiple_overlaps": 0
+            },
+            "Stagger Left": {
+              "raw_count": 0,
+              "candidate_count": 0,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 0,
+              "raw_with_changed_overlaps": 0,
+              "raw_with_multiple_overlaps": 0
+            },
+            "Stagger Right": {
+              "raw_count": 2,
+              "candidate_count": 2,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 0,
+              "raw_with_changed_overlaps": 2,
+              "raw_with_multiple_overlaps": 0
+            }
+          }
+        },
+        "p4-majority": {
+          "params": {
+            "height": 2.0,
+            "stagger": 8.0,
+            "wear": 0.05
+          },
+          "support_rule": "max(5,floor(retained_run_size/2)+1)",
+          "filter_seconds": 0.2704248000009102,
+          "detector_seconds": 0.22488270000030752,
+          "channels": {
+            "height1": {
+              "delta_mm": 2.0,
+              "status": {
+                "accepted": 5076,
+                "ambiguous": 8,
+                "insufficient": 2
+              },
+              "populated_runs": 5086,
+              "acceptance_pct": 99.8034
+            },
+            "height2": {
+              "delta_mm": 2.0,
+              "status": {
+                "accepted": 5076,
+                "ambiguous": 3,
+                "insufficient": 4,
+                "missing": 3
+              },
+              "populated_runs": 5083,
+              "acceptance_pct": 99.8623
+            },
+            "height3": {
+              "delta_mm": 2.0,
+              "status": {
+                "accepted": 10,
+                "ambiguous": 5,
+                "missing": 5071
+              },
+              "populated_runs": 15,
+              "acceptance_pct": 66.6667
+            },
+            "height4": {
+              "delta_mm": 2.0,
+              "status": {
+                "accepted": 8,
+                "ambiguous": 3,
+                "insufficient": 1,
+                "missing": 5074
+              },
+              "populated_runs": 12,
+              "acceptance_pct": 66.6667
+            },
+            "stagger1": {
+              "delta_mm": 8.0,
+              "status": {
+                "accepted": 5082,
+                "ambiguous": 2,
+                "insufficient": 2
+              },
+              "populated_runs": 5086,
+              "acceptance_pct": 99.9214
+            },
+            "stagger2": {
+              "delta_mm": 8.0,
+              "status": {
+                "accepted": 5077,
+                "ambiguous": 2,
+                "insufficient": 4,
+                "missing": 3
+              },
+              "populated_runs": 5083,
+              "acceptance_pct": 99.882
+            },
+            "stagger3": {
+              "delta_mm": 8.0,
+              "status": {
+                "accepted": 15,
+                "missing": 5071
+              },
+              "populated_runs": 15,
+              "acceptance_pct": 100.0
+            },
+            "stagger4": {
+              "delta_mm": 8.0,
+              "status": {
+                "accepted": 11,
+                "insufficient": 1,
+                "missing": 5074
+              },
+              "populated_runs": 12,
+              "acceptance_pct": 91.6667
+            },
+            "wear1": {
+              "delta_mm": 0.05,
+              "status": {
+                "accepted": 5040,
+                "ambiguous": 28,
+                "insufficient": 2,
+                "no_consensus": 16
+              },
+              "populated_runs": 5086,
+              "acceptance_pct": 99.0956
+            },
+            "wear2": {
+              "delta_mm": 0.05,
+              "status": {
+                "accepted": 5064,
+                "ambiguous": 6,
+                "insufficient": 4,
+                "missing": 3,
+                "no_consensus": 9
+              },
+              "populated_runs": 5083,
+              "acceptance_pct": 99.6262
+            },
+            "wear3": {
+              "delta_mm": 0.05,
+              "status": {
+                "accepted": 15,
+                "missing": 5071
+              },
+              "populated_runs": 15,
+              "acceptance_pct": 100.0
+            },
+            "wear4": {
+              "delta_mm": 0.05,
+              "status": {
+                "accepted": 11,
+                "insufficient": 1,
+                "missing": 5074
+              },
+              "populated_runs": 12,
+              "acceptance_pct": 91.6667
+            }
+          },
+          "impacts": {
+            "Low Height": {
+              "raw_count": 0,
+              "candidate_count": 0,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 0,
+              "raw_with_changed_overlaps": 0,
+              "raw_with_multiple_overlaps": 0
+            },
+            "Wire Wear": {
+              "raw_count": 0,
+              "candidate_count": 0,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 0,
+              "raw_with_changed_overlaps": 0,
+              "raw_with_multiple_overlaps": 0
+            },
+            "High Height": {
+              "raw_count": 0,
+              "candidate_count": 0,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 0,
+              "raw_with_changed_overlaps": 0,
+              "raw_with_multiple_overlaps": 0
+            },
+            "Stagger Left": {
+              "raw_count": 0,
+              "candidate_count": 0,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 0,
+              "raw_with_changed_overlaps": 0,
+              "raw_with_multiple_overlaps": 0
+            },
+            "Stagger Right": {
+              "raw_count": 2,
+              "candidate_count": 2,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 0,
+              "raw_with_changed_overlaps": 2,
+              "raw_with_multiple_overlaps": 0
+            }
+          }
+        },
+        "p1-five": {
+          "params": {
+            "height": 0.25,
+            "stagger": 1.0,
+            "wear": 0.005
+          },
+          "support_rule": "5",
+          "filter_seconds": 0.2884463999980653,
+          "detector_seconds": 0.280541500000254,
+          "channels": {
+            "height1": {
+              "delta_mm": 0.25,
+              "status": {
+                "accepted": 2245,
+                "ambiguous": 1326,
+                "insufficient": 2,
+                "no_consensus": 1513
+              },
+              "populated_runs": 5086,
+              "acceptance_pct": 44.1408
+            },
+            "height2": {
+              "delta_mm": 0.25,
+              "status": {
+                "accepted": 2237,
+                "ambiguous": 1463,
+                "insufficient": 3,
+                "missing": 3,
+                "no_consensus": 1380
+              },
+              "populated_runs": 5083,
+              "acceptance_pct": 44.0094
+            },
+            "height3": {
+              "delta_mm": 0.25,
+              "status": {
+                "accepted": 1,
+                "missing": 5071,
+                "no_consensus": 14
+              },
+              "populated_runs": 15,
+              "acceptance_pct": 6.6667
+            },
+            "height4": {
+              "delta_mm": 0.25,
+              "status": {
+                "accepted": 2,
+                "ambiguous": 1,
+                "insufficient": 1,
+                "missing": 5074,
+                "no_consensus": 8
+              },
+              "populated_runs": 12,
+              "acceptance_pct": 16.6667
+            },
+            "stagger1": {
+              "delta_mm": 1.0,
+              "status": {
+                "accepted": 2547,
+                "ambiguous": 1458,
+                "insufficient": 2,
+                "no_consensus": 1079
+              },
+              "populated_runs": 5086,
+              "acceptance_pct": 50.0786
+            },
+            "stagger2": {
+              "delta_mm": 1.0,
+              "status": {
+                "accepted": 2551,
+                "ambiguous": 1459,
+                "insufficient": 3,
+                "missing": 3,
+                "no_consensus": 1070
+              },
+              "populated_runs": 5083,
+              "acceptance_pct": 50.1869
+            },
+            "stagger3": {
+              "delta_mm": 1.0,
+              "status": {
+                "accepted": 15,
+                "missing": 5071
+              },
+              "populated_runs": 15,
+              "acceptance_pct": 100.0
+            },
+            "stagger4": {
+              "delta_mm": 1.0,
+              "status": {
+                "accepted": 11,
+                "insufficient": 1,
+                "missing": 5074
+              },
+              "populated_runs": 12,
+              "acceptance_pct": 91.6667
+            },
+            "wear1": {
+              "delta_mm": 0.005,
+              "status": {
+                "accepted": 3532,
+                "ambiguous": 849,
+                "insufficient": 2,
+                "no_consensus": 703
+              },
+              "populated_runs": 5086,
+              "acceptance_pct": 69.4455
+            },
+            "wear2": {
+              "delta_mm": 0.005,
+              "status": {
+                "accepted": 3677,
+                "ambiguous": 844,
+                "insufficient": 3,
+                "missing": 3,
+                "no_consensus": 559
+              },
+              "populated_runs": 5083,
+              "acceptance_pct": 72.3392
+            },
+            "wear3": {
+              "delta_mm": 0.005,
+              "status": {
+                "accepted": 8,
+                "ambiguous": 5,
+                "missing": 5071,
+                "no_consensus": 2
+              },
+              "populated_runs": 15,
+              "acceptance_pct": 53.3333
+            },
+            "wear4": {
+              "delta_mm": 0.005,
+              "status": {
+                "accepted": 3,
+                "ambiguous": 3,
+                "insufficient": 1,
+                "missing": 5074,
+                "no_consensus": 5
+              },
+              "populated_runs": 12,
+              "acceptance_pct": 25.0
+            }
+          },
+          "impacts": {
+            "Low Height": {
+              "raw_count": 0,
+              "candidate_count": 0,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 0,
+              "raw_with_changed_overlaps": 0,
+              "raw_with_multiple_overlaps": 0
+            },
+            "Wire Wear": {
+              "raw_count": 0,
+              "candidate_count": 0,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 0,
+              "raw_with_changed_overlaps": 0,
+              "raw_with_multiple_overlaps": 0
+            },
+            "High Height": {
+              "raw_count": 0,
+              "candidate_count": 0,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 0,
+              "raw_with_changed_overlaps": 0,
+              "raw_with_multiple_overlaps": 0
+            },
+            "Stagger Left": {
+              "raw_count": 0,
+              "candidate_count": 0,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 0,
+              "raw_with_changed_overlaps": 0,
+              "raw_with_multiple_overlaps": 0
+            },
+            "Stagger Right": {
+              "raw_count": 2,
+              "candidate_count": 2,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 0,
+              "raw_with_changed_overlaps": 2,
+              "raw_with_multiple_overlaps": 0
+            }
+          }
+        },
+        "p2-five": {
+          "params": {
+            "height": 0.5,
+            "stagger": 2.0,
+            "wear": 0.01
+          },
+          "support_rule": "5",
+          "filter_seconds": 0.2479496999985713,
+          "detector_seconds": 0.21062170000004699,
+          "channels": {
+            "height1": {
+              "delta_mm": 0.5,
+              "status": {
+                "accepted": 3320,
+                "ambiguous": 1600,
+                "insufficient": 2,
+                "no_consensus": 164
+              },
+              "populated_runs": 5086,
+              "acceptance_pct": 65.2772
+            },
+            "height2": {
+              "delta_mm": 0.5,
+              "status": {
+                "accepted": 3424,
+                "ambiguous": 1488,
+                "insufficient": 3,
+                "missing": 3,
+                "no_consensus": 168
+              },
+              "populated_runs": 5083,
+              "acceptance_pct": 67.3618
+            },
+            "height3": {
+              "delta_mm": 0.5,
+              "status": {
+                "ambiguous": 3,
+                "missing": 5071,
+                "no_consensus": 12
+              },
+              "populated_runs": 15,
+              "acceptance_pct": 0.0
+            },
+            "height4": {
+              "delta_mm": 0.5,
+              "status": {
+                "accepted": 2,
+                "ambiguous": 3,
+                "insufficient": 1,
+                "missing": 5074,
+                "no_consensus": 6
+              },
+              "populated_runs": 12,
+              "acceptance_pct": 16.6667
+            },
+            "stagger1": {
+              "delta_mm": 2.0,
+              "status": {
+                "accepted": 3812,
+                "ambiguous": 1018,
+                "insufficient": 2,
+                "no_consensus": 254
+              },
+              "populated_runs": 5086,
+              "acceptance_pct": 74.9508
+            },
+            "stagger2": {
+              "delta_mm": 2.0,
+              "status": {
+                "accepted": 3820,
+                "ambiguous": 1026,
+                "insufficient": 3,
+                "missing": 3,
+                "no_consensus": 234
+              },
+              "populated_runs": 5083,
+              "acceptance_pct": 75.1525
+            },
+            "stagger3": {
+              "delta_mm": 2.0,
+              "status": {
+                "accepted": 15,
+                "missing": 5071
+              },
+              "populated_runs": 15,
+              "acceptance_pct": 100.0
+            },
+            "stagger4": {
+              "delta_mm": 2.0,
+              "status": {
+                "accepted": 11,
+                "insufficient": 1,
+                "missing": 5074
+              },
+              "populated_runs": 12,
+              "acceptance_pct": 91.6667
+            },
+            "wear1": {
+              "delta_mm": 0.01,
+              "status": {
+                "accepted": 4230,
+                "ambiguous": 647,
+                "insufficient": 2,
+                "no_consensus": 207
+              },
+              "populated_runs": 5086,
+              "acceptance_pct": 83.1695
+            },
+            "wear2": {
+              "delta_mm": 0.01,
+              "status": {
+                "accepted": 4336,
+                "ambiguous": 594,
+                "insufficient": 3,
+                "missing": 3,
+                "no_consensus": 150
+              },
+              "populated_runs": 5083,
+              "acceptance_pct": 85.304
+            },
+            "wear3": {
+              "delta_mm": 0.01,
+              "status": {
+                "accepted": 13,
+                "ambiguous": 1,
+                "missing": 5071,
+                "no_consensus": 1
+              },
+              "populated_runs": 15,
+              "acceptance_pct": 86.6667
+            },
+            "wear4": {
+              "delta_mm": 0.01,
+              "status": {
+                "accepted": 6,
+                "ambiguous": 4,
+                "insufficient": 1,
+                "missing": 5074,
+                "no_consensus": 1
+              },
+              "populated_runs": 12,
+              "acceptance_pct": 50.0
+            }
+          },
+          "impacts": {
+            "Low Height": {
+              "raw_count": 0,
+              "candidate_count": 0,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 0,
+              "raw_with_changed_overlaps": 0,
+              "raw_with_multiple_overlaps": 0
+            },
+            "Wire Wear": {
+              "raw_count": 0,
+              "candidate_count": 0,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 0,
+              "raw_with_changed_overlaps": 0,
+              "raw_with_multiple_overlaps": 0
+            },
+            "High Height": {
+              "raw_count": 0,
+              "candidate_count": 0,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 0,
+              "raw_with_changed_overlaps": 0,
+              "raw_with_multiple_overlaps": 0
+            },
+            "Stagger Left": {
+              "raw_count": 0,
+              "candidate_count": 0,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 0,
+              "raw_with_changed_overlaps": 0,
+              "raw_with_multiple_overlaps": 0
+            },
+            "Stagger Right": {
+              "raw_count": 2,
+              "candidate_count": 2,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 0,
+              "raw_with_changed_overlaps": 2,
+              "raw_with_multiple_overlaps": 0
+            }
+          }
+        },
+        "p3-five": {
+          "params": {
+            "height": 1.0,
+            "stagger": 4.0,
+            "wear": 0.02
+          },
+          "support_rule": "5",
+          "filter_seconds": 0.30312879999837605,
+          "detector_seconds": 0.3518575999987661,
+          "channels": {
+            "height1": {
+              "delta_mm": 1.0,
+              "status": {
+                "accepted": 4756,
+                "ambiguous": 327,
+                "insufficient": 2,
+                "no_consensus": 1
+              },
+              "populated_runs": 5086,
+              "acceptance_pct": 93.5116
+            },
+            "height2": {
+              "delta_mm": 1.0,
+              "status": {
+                "accepted": 4730,
+                "ambiguous": 349,
+                "insufficient": 3,
+                "missing": 3,
+                "no_consensus": 1
+              },
+              "populated_runs": 5083,
+              "acceptance_pct": 93.0553
+            },
+            "height3": {
+              "delta_mm": 1.0,
+              "status": {
+                "accepted": 2,
+                "ambiguous": 13,
+                "missing": 5071
+              },
+              "populated_runs": 15,
+              "acceptance_pct": 13.3333
+            },
+            "height4": {
+              "delta_mm": 1.0,
+              "status": {
+                "accepted": 6,
+                "ambiguous": 2,
+                "insufficient": 1,
+                "missing": 5074,
+                "no_consensus": 3
+              },
+              "populated_runs": 12,
+              "acceptance_pct": 50.0
+            },
+            "stagger1": {
+              "delta_mm": 4.0,
+              "status": {
+                "accepted": 4713,
+                "ambiguous": 371,
+                "insufficient": 2
+              },
+              "populated_runs": 5086,
+              "acceptance_pct": 92.6661
+            },
+            "stagger2": {
+              "delta_mm": 4.0,
+              "status": {
+                "accepted": 4723,
+                "ambiguous": 357,
+                "insufficient": 3,
+                "missing": 3
+              },
+              "populated_runs": 5083,
+              "acceptance_pct": 92.9176
+            },
+            "stagger3": {
+              "delta_mm": 4.0,
+              "status": {
+                "accepted": 15,
+                "missing": 5071
+              },
+              "populated_runs": 15,
+              "acceptance_pct": 100.0
+            },
+            "stagger4": {
+              "delta_mm": 4.0,
+              "status": {
+                "accepted": 11,
+                "insufficient": 1,
+                "missing": 5074
+              },
+              "populated_runs": 12,
+              "acceptance_pct": 91.6667
+            },
+            "wear1": {
+              "delta_mm": 0.02,
+              "status": {
+                "accepted": 4797,
+                "ambiguous": 242,
+                "insufficient": 2,
+                "no_consensus": 45
+              },
+              "populated_runs": 5086,
+              "acceptance_pct": 94.3177
+            },
+            "wear2": {
+              "delta_mm": 0.02,
+              "status": {
+                "accepted": 4845,
+                "ambiguous": 214,
+                "insufficient": 3,
+                "missing": 3,
+                "no_consensus": 21
+              },
+              "populated_runs": 5083,
+              "acceptance_pct": 95.3177
+            },
+            "wear3": {
+              "delta_mm": 0.02,
+              "status": {
+                "accepted": 15,
+                "missing": 5071
+              },
+              "populated_runs": 15,
+              "acceptance_pct": 100.0
+            },
+            "wear4": {
+              "delta_mm": 0.02,
+              "status": {
+                "accepted": 9,
+                "ambiguous": 2,
+                "insufficient": 1,
+                "missing": 5074
+              },
+              "populated_runs": 12,
+              "acceptance_pct": 75.0
+            }
+          },
+          "impacts": {
+            "Low Height": {
+              "raw_count": 0,
+              "candidate_count": 0,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 0,
+              "raw_with_changed_overlaps": 0,
+              "raw_with_multiple_overlaps": 0
+            },
+            "Wire Wear": {
+              "raw_count": 0,
+              "candidate_count": 0,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 0,
+              "raw_with_changed_overlaps": 0,
+              "raw_with_multiple_overlaps": 0
+            },
+            "High Height": {
+              "raw_count": 0,
+              "candidate_count": 0,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 0,
+              "raw_with_changed_overlaps": 0,
+              "raw_with_multiple_overlaps": 0
+            },
+            "Stagger Left": {
+              "raw_count": 0,
+              "candidate_count": 0,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 0,
+              "raw_with_changed_overlaps": 0,
+              "raw_with_multiple_overlaps": 0
+            },
+            "Stagger Right": {
+              "raw_count": 2,
+              "candidate_count": 2,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 0,
+              "raw_with_changed_overlaps": 2,
+              "raw_with_multiple_overlaps": 0
+            }
+          }
+        },
+        "p4-five": {
+          "params": {
+            "height": 2.0,
+            "stagger": 8.0,
+            "wear": 0.05
+          },
+          "support_rule": "5",
+          "filter_seconds": 0.31565150000096764,
+          "detector_seconds": 0.20687940000061644,
+          "channels": {
+            "height1": {
+              "delta_mm": 2.0,
+              "status": {
+                "accepted": 5076,
+                "ambiguous": 8,
+                "insufficient": 2
+              },
+              "populated_runs": 5086,
+              "acceptance_pct": 99.8034
+            },
+            "height2": {
+              "delta_mm": 2.0,
+              "status": {
+                "accepted": 5077,
+                "ambiguous": 3,
+                "insufficient": 3,
+                "missing": 3
+              },
+              "populated_runs": 5083,
+              "acceptance_pct": 99.882
+            },
+            "height3": {
+              "delta_mm": 2.0,
+              "status": {
+                "accepted": 10,
+                "ambiguous": 5,
+                "missing": 5071
+              },
+              "populated_runs": 15,
+              "acceptance_pct": 66.6667
+            },
+            "height4": {
+              "delta_mm": 2.0,
+              "status": {
+                "accepted": 8,
+                "ambiguous": 3,
+                "insufficient": 1,
+                "missing": 5074
+              },
+              "populated_runs": 12,
+              "acceptance_pct": 66.6667
+            },
+            "stagger1": {
+              "delta_mm": 8.0,
+              "status": {
+                "accepted": 5082,
+                "ambiguous": 2,
+                "insufficient": 2
+              },
+              "populated_runs": 5086,
+              "acceptance_pct": 99.9214
+            },
+            "stagger2": {
+              "delta_mm": 8.0,
+              "status": {
+                "accepted": 5078,
+                "ambiguous": 2,
+                "insufficient": 3,
+                "missing": 3
+              },
+              "populated_runs": 5083,
+              "acceptance_pct": 99.9016
+            },
+            "stagger3": {
+              "delta_mm": 8.0,
+              "status": {
+                "accepted": 15,
+                "missing": 5071
+              },
+              "populated_runs": 15,
+              "acceptance_pct": 100.0
+            },
+            "stagger4": {
+              "delta_mm": 8.0,
+              "status": {
+                "accepted": 11,
+                "insufficient": 1,
+                "missing": 5074
+              },
+              "populated_runs": 12,
+              "acceptance_pct": 91.6667
+            },
+            "wear1": {
+              "delta_mm": 0.05,
+              "status": {
+                "accepted": 5047,
+                "ambiguous": 30,
+                "insufficient": 2,
+                "no_consensus": 7
+              },
+              "populated_runs": 5086,
+              "acceptance_pct": 99.2332
+            },
+            "wear2": {
+              "delta_mm": 0.05,
+              "status": {
+                "accepted": 5069,
+                "ambiguous": 8,
+                "insufficient": 3,
+                "missing": 3,
+                "no_consensus": 3
+              },
+              "populated_runs": 5083,
+              "acceptance_pct": 99.7246
+            },
+            "wear3": {
+              "delta_mm": 0.05,
+              "status": {
+                "accepted": 15,
+                "missing": 5071
+              },
+              "populated_runs": 15,
+              "acceptance_pct": 100.0
+            },
+            "wear4": {
+              "delta_mm": 0.05,
+              "status": {
+                "accepted": 11,
+                "insufficient": 1,
+                "missing": 5074
+              },
+              "populated_runs": 12,
+              "acceptance_pct": 91.6667
+            }
+          },
+          "impacts": {
+            "Low Height": {
+              "raw_count": 0,
+              "candidate_count": 0,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 0,
+              "raw_with_changed_overlaps": 0,
+              "raw_with_multiple_overlaps": 0
+            },
+            "Wire Wear": {
+              "raw_count": 0,
+              "candidate_count": 0,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 0,
+              "raw_with_changed_overlaps": 0,
+              "raw_with_multiple_overlaps": 0
+            },
+            "High Height": {
+              "raw_count": 0,
+              "candidate_count": 0,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 0,
+              "raw_with_changed_overlaps": 0,
+              "raw_with_multiple_overlaps": 0
+            },
+            "Stagger Left": {
+              "raw_count": 0,
+              "candidate_count": 0,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 0,
+              "raw_with_changed_overlaps": 0,
+              "raw_with_multiple_overlaps": 0
+            },
+            "Stagger Right": {
+              "raw_count": 2,
+              "candidate_count": 2,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 0,
+              "raw_with_changed_overlaps": 2,
+              "raw_with_multiple_overlaps": 0
+            }
+          }
+        }
+      },
+      "source_sha256_after": "5a5bf1cc4a78fc03ef6cbf6f301c76305e9ff415ae718c4cc94546dfbcdc1866"
+    }
+  }
+}

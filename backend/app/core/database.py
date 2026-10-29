@@ -25,6 +25,7 @@ from typing import Dict, List, Optional, Any, Generator
 
 import pandas as pd
 
+from .line_registry import PARENT_LINES, normalize_context, normalize_direction
 from .config import get_config_dir
 from .database_record_seed import seed_database_records as seed_database_record_assets
 
@@ -1085,8 +1086,9 @@ def get_sessions(
             params.append(filters['line'])
         
         if filters.get('track'):
-            query += " AND track = ?"
-            params.append(filters['track'])
+            aliases = ("UP", "UT", "U") if normalize_direction(filters["track"]) == "UP" else ("DOWN", "DN", "DT", "D")
+            query += f" AND UPPER(TRIM(track)) IN ({','.join('?' for _ in aliases)})"
+            params.extend(aliases)
         
         if filters.get('section'):
             query += " AND section = ?"
@@ -1444,6 +1446,11 @@ def save_repeated_records_batch(
 
 _REPEATED_RECORD_SECTION_SQL = """
 CASE
+    WHEN UPPER(TRIM(line)) = 'LMC' THEN 'lmc'
+    WHEN UPPER(TRIM(line)) = 'TKS' THEN 'tks'
+    WHEN UPPER(TRIM(line)) = 'DRL' AND UPPER(TRIM(section)) = 'UT' THEN 'mainline'
+    WHEN UPPER(TRIM(section)) = 'PL' THEN 'pl'
+    WHEN UPPER(TRIM(section)) = 'TKS' THEN 'tks'
     WHEN section IS NULL OR TRIM(section) = '' THEN 'unknown'
     WHEN UPPER(TRIM(section)) LIKE '%LOW%' THEN 'low_s1'
     WHEN UPPER(TRIM(section)) = 'MAINLINE' THEN 'mainline'
@@ -1459,7 +1466,7 @@ def _canonical_repeated_record_section(section: str) -> Optional[str]:
     normalized = section.strip().lower()
     if 'low' in normalized:
         return 'low_s1'
-    if normalized in {'mainline', 'rac', 'lmc', 'unknown'}:
+    if normalized in {'mainline', 'rac', 'lmc', 'pl', 'tks', 'unknown'}:
         return normalized
     return None
 
@@ -1475,9 +1482,7 @@ def _build_repeated_record_predicates(
     filters = filters or {}
 
     for key, column in (
-        ('line', 'line'),
-        ('track', 'track'),
-        ('session', 'session'),
+
         ('level', 'level'),
         ('exception_type', 'exception_type'),
         ('class', 'class'),
@@ -1487,6 +1492,34 @@ def _build_repeated_record_predicates(
         if filters.get(key):
             clauses.append(f"{column} = ?")
             params.append(filters[key])
+
+    if filters.get('line'):
+        try:
+            context = normalize_context(filters['line'], allow_legacy_aliases=True)
+        except ValueError:
+            context = None
+        clauses.append("(CASE UPPER(TRIM(line)) WHEN 'LMC' THEN 'EAL' WHEN 'TKS' THEN 'TKL' ELSE UPPER(TRIM(line)) END) = ?")
+        params.append(context.line if context else str(filters['line']).strip().upper())
+        if context and context.branch:
+            clauses.append(f"({_REPEATED_RECORD_SECTION_SQL}) = ?")
+            params.append(context.branch.lower())
+    if filters.get('track'):
+        direction = normalize_direction(filters['track'])
+        aliases = ('UP', 'UT', 'U') if direction == 'UP' else ('DOWN', 'DN', 'DT', 'D')
+        clauses.append(f"UPPER(TRIM(track)) IN ({','.join('?' for _ in aliases)})")
+        params.extend(aliases)
+    if filters.get('session'):
+        branch = str(filters['session'])
+        if filters.get('line'):
+            context = normalize_context(filters['line'], branch=branch, allow_legacy_aliases=True)
+            branch = context.legacy_session
+        clauses.append("""(CASE
+            WHEN UPPER(TRIM(line)) = 'LMC' OR UPPER(TRIM(section)) = 'LMC' THEN 'LMC'
+            WHEN UPPER(TRIM(line)) = 'TKS' OR UPPER(TRIM(section)) = 'TKS' THEN 'TKS'
+            WHEN UPPER(TRIM(section)) = 'PL' THEN 'PL'
+            WHEN UPPER(TRIM(line)) = 'DRL' AND UPPER(TRIM(session)) = 'UT' THEN 'Mainline'
+            ELSE session END) = ?""")
+        params.append(branch)
 
     if include_section and filters.get('section'):
         section = str(filters['section'])
@@ -1909,6 +1942,8 @@ def get_repeated_record_section_counts(
     filters: Optional[Dict[str, Any]] = None,
 ) -> Dict[str, int]:
     """Count canonical sections while retaining all section navigation options."""
+    filters = dict(filters or {})
+    filters.pop('session', None)
     where_clause, params = _build_repeated_record_predicates(
         filters,
         include_section=False,
@@ -1925,11 +1960,32 @@ def get_repeated_record_section_counts(
         'rac': 0,
         'low_s1': 0,
         'lmc': 0,
+        'pl': 0,
+        'tks': 0,
         'unknown': 0,
     }
     for row in conn.execute(query, params).fetchall():
         counts[row['section_key']] = row['count']
     counts['all'] = sum(count for key, count in counts.items() if key != 'all')
+    return counts
+
+
+def get_repeated_record_branch_counts(conn, filters=None):
+    """Branch navigation includes geographical Sections without relabelling them."""
+    filters = dict(filters or {})
+    filters.pop('session', None)
+    where, parameters = _build_repeated_record_predicates(filters, include_section=False)
+    counts = {}
+    rows = conn.execute(f"SELECT line, session, section, COUNT(*) AS count FROM saved_repeated_exceptions {where} GROUP BY line, session, section", parameters)
+    for row in rows:
+        try:
+            identity = normalize_context(row['line'], section=row['section'], allow_legacy_aliases=True)
+            if not identity.branch and row['session']:
+                identity = normalize_context(identity.line, branch=row['session'])
+            key = identity.legacy_session or 'Unknown'
+        except ValueError:
+            key = 'Unknown'
+        counts[key] = counts.get(key, 0) + row['count']
     return counts
 
 
@@ -2482,11 +2538,12 @@ def get_line_counts(
     query += " GROUP BY line"
     cursor = conn.execute(query, params)
     
-    result: Dict[str, int] = {line: 0 for line in ('AEL', 'TCL', 'DRL', 'KTL', 'ISL', 'TWL', 'TKL')}
+    result: Dict[str, int] = {line: 0 for line in PARENT_LINES}
     for row in cursor.fetchall():
         line = str(row['line']).strip().upper()
+        line = {'LMC': 'EAL', 'TKS': 'TKL'}.get(line, line)
         if line in result:
-            result[line] = int(row['count'])
+            result[line] += int(row['count'])
     return result
 
 

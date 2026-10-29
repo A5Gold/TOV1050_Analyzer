@@ -24,6 +24,12 @@
  * Keys are the source formats, values are the normalized snake_case names.
  */
 export const FIELD_MAP: Record<string, string> = {
+  // Report context aliases
+  'Line': 'line', 'Track': 'track', 'Task No': 'task_no', 'Task Number': 'task_no',
+  'Stn Start': 'station_start', 'Stn End': 'station_end',
+  'St. Start': 'station_start', 'St. End': 'station_end',
+  'Station Start': 'station_start', 'Station End': 'station_end',
+  'Run Date': 'task_run_date', 'Task Run Date': 'task_run_date',
   // ID Fields
   'id': 'exception_id',
   'ID': 'exception_id',

@@ -1,0 +1,52 @@
+[
+  {
+    "size": "partial",
+    "counter_column": "SampleCount [n.]",
+    "source": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\Raw data\\TWL\\test file partial.csv",
+    "raw": {
+      "rows": 51170,
+      "finite_counters": 51170,
+      "decreases": 0,
+      "decrease_positions_zero_based": [],
+      "first_counter": 348550,
+      "last_counter": 399719
+    },
+    "trimmed": {
+      "rows": 50970,
+      "finite_counters": 50970,
+      "decreases": 0,
+      "decrease_positions_zero_based": [],
+      "first_counter": 348650,
+      "last_counter": 399619
+    },
+    "trimmed_leading": 100,
+    "trimmed_trailing": 100,
+    "counter_only_seconds": 0.4331144999996468,
+    "interpretation": "No decreases in trim-only counters proves no reset in any further retained subset; otherwise exact retained verification is required."
+  },
+  {
+    "size": "full",
+    "counter_column": "SampleCount [n.]",
+    "source": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\Raw data\\TWL\\test file full.csv",
+    "raw": {
+      "rows": 843623,
+      "finite_counters": 843623,
+      "decreases": 0,
+      "decrease_positions_zero_based": [],
+      "first_counter": 114,
+      "last_counter": 843736
+    },
+    "trimmed": {
+      "rows": 843423,
+      "finite_counters": 843423,
+      "decreases": 0,
+      "decrease_positions_zero_based": [],
+      "first_counter": 214,
+      "last_counter": 843636
+    },
+    "trimmed_leading": 100,
+    "trimmed_trailing": 100,
+    "counter_only_seconds": 5.677709999999934,
+    "interpretation": "No decreases in trim-only counters proves no reset in any further retained subset; otherwise exact retained verification is required."
+  }
+]

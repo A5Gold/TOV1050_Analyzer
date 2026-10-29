@@ -1,0 +1,98 @@
+{
+  "version": "1",
+  "pip_version": "24.3.1",
+  "install": [
+    {
+      "download_info": {
+        "url": "https://files.pythonhosted.org/packages/f7/d7/0cdfb6c3e30893463fb3d1e52bc5f5f99684a03c29a0b6b605cfae879cd5/lxml-6.0.2-cp312-cp312-win_amd64.whl",
+        "archive_info": {
+          "hash": "sha256=72c87e5ee4e58a8354fb9c7c84cbf95a1c8236c127a5d1b7683f04bed8361e1f",
+          "hashes": {
+            "sha256": "72c87e5ee4e58a8354fb9c7c84cbf95a1c8236c127a5d1b7683f04bed8361e1f"
+          }
+        }
+      },
+      "is_direct": false,
+      "is_yanked": false,
+      "requested": true,
+      "metadata": {
+        "metadata_version": "2.4",
+        "name": "lxml",
+        "version": "6.0.2",
+        "dynamic": [
+          "author",
+          "author-email",
+          "classifier",
+          "description",
+          "home-page",
+          "license",
+          "license-file",
+          "maintainer",
+          "maintainer-email",
+          "project-url",
+          "provides-extra",
+          "requires-python",
+          "summary"
+        ],
+        "summary": "Powerful and Pythonic XML processing library combining libxml2/libxslt with the ElementTree API.",
+        "description": "lxml is a Pythonic, mature binding for the libxml2 and libxslt libraries.\r\nIt provides safe and convenient access to these libraries using the\r\nElementTree API.\r\n\r\nIt extends the ElementTree API significantly to offer support for XPath,\r\nRelaxNG, XML Schema, XSLT, C14N and much more.\r\n\r\nTo contact the project, go to the `project home page <https://lxml.de/>`_\r\nor see our bug tracker at https://launchpad.net/lxml\r\n\r\nIn case you want to use the current in-development version of lxml,\r\nyou can get it from the github repository at\r\nhttps://github.com/lxml/lxml .  Note that this requires Cython to\r\nbuild the sources, see the build instructions on the project home page.\r\n\r\n\r\nAfter an official release of a new stable series, bug fixes may become available at\r\nhttps://github.com/lxml/lxml/tree/lxml-6.0 .\r\nRunning ``pip install https://github.com/lxml/lxml/archive/refs/heads/lxml-6.0.tar.gz``\r\nwill install the unreleased branch state as soon as a maintenance branch has been established.\r\nNote that this requires Cython to be installed at an appropriate version for the build.\r\n\r\n6.0.2 (2025-09-21)\r\n==================\r\n\r\nBugs fixed\r\n----------\r\n\r\n* LP#2125278: Compilation with libxml2 2.15.0 failed.\r\n  Original patch by Xi Ruoyao.\r\n\r\n* Setting ``decompress=True`` in the parser had no effect in libxml2 2.15.\r\n\r\n* Binary wheels on Linux and macOS use the library version libxml2 2.14.6.\r\n  See https://gitlab.gnome.org/GNOME/libxml2/-/releases/v2.14.6\r\n\r\n* Test failures in libxml2 2.15.0 were fixed.\r\n\r\nOther changes\r\n-------------\r\n\r\n* Binary wheels for Py3.9-3.11 on the ``riscv64`` architecture were added.\r\n\r\n* Error constants were updated to match libxml2 2.15.0.\r\n\r\n* Built using Cython 3.1.4.\r\n\r\n\r\n",
+        "home_page": "https://lxml.de/",
+        "author": "lxml dev team",
+        "author_email": "lxml@lxml.de",
+        "maintainer": "lxml dev team",
+        "maintainer_email": "lxml@lxml.de",
+        "license": "BSD-3-Clause",
+        "classifier": [
+          "Development Status :: 5 - Production/Stable",
+          "Intended Audience :: Developers",
+          "Intended Audience :: Information Technology",
+          "Programming Language :: Cython",
+          "Programming Language :: Python :: 3",
+          "Programming Language :: Python :: 3.8",
+          "Programming Language :: Python :: 3.9",
+          "Programming Language :: Python :: 3.10",
+          "Programming Language :: Python :: 3.11",
+          "Programming Language :: Python :: 3.12",
+          "Programming Language :: Python :: 3.13",
+          "Programming Language :: Python :: 3.14",
+          "Programming Language :: C",
+          "Operating System :: OS Independent",
+          "Topic :: Text Processing :: Markup :: HTML",
+          "Topic :: Text Processing :: Markup :: XML",
+          "Topic :: Software Development :: Libraries :: Python Modules"
+        ],
+        "requires_dist": [
+          "cssselect>=0.7; extra == \"cssselect\"",
+          "html5lib; extra == \"html5\"",
+          "BeautifulSoup4; extra == \"htmlsoup\"",
+          "lxml_html_clean; extra == \"html-clean\""
+        ],
+        "requires_python": ">=3.8",
+        "project_url": [
+          "Source, https://github.com/lxml/lxml",
+          "Bug Tracker, https://bugs.launchpad.net/lxml"
+        ],
+        "provides_extra": [
+          "source",
+          "cssselect",
+          "html5",
+          "htmlsoup",
+          "html-clean"
+        ]
+      }
+    }
+  ],
+  "environment": {
+    "implementation_name": "cpython",
+    "implementation_version": "3.12.8",
+    "os_name": "nt",
+    "platform_machine": "AMD64",
+    "platform_release": "11",
+    "platform_system": "Windows",
+    "platform_version": "10.0.26200",
+    "python_full_version": "3.12.8",
+    "platform_python_implementation": "CPython",
+    "python_version": "3.12",
+    "sys_platform": "win32"
+  }
+}

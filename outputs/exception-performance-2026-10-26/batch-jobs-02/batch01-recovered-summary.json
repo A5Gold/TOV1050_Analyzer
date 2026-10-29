@@ -1,0 +1,764 @@
+{
+  "status": "failed_validation_original_run_preserved",
+  "source_events": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\exception-performance-2026-10-26\\batch-jobs-01\\events.jsonl",
+  "event_counts": {
+    "environment": 1,
+    "poll": 1857,
+    "mean_oracle_verified": 3,
+    "analysis_complete": 3,
+    "report_verified": 5,
+    "case_passed": 2,
+    "verified_rows": 8,
+    "failed": 1
+  },
+  "environment": {
+    "event": "environment",
+    "wall_time": 1792984053.5185003,
+    "python": "3.12.8",
+    "pandas": "2.3.3",
+    "openpyxl": "3.1.5",
+    "lxml": false,
+    "cpu_count": 12,
+    "platform": "Windows-11-10.0.26200-SP0",
+    "metadata_sha256": "ac96e8d32b2ac7ccc3aea8c5bea68e450355fe4fb285febd43f43356c020d2ab",
+    "rss_scope": "same process: localhost server, HTTP client and verification; sampled each 250ms",
+    "latency_scope": "HTTP status request duration, includes local scheduling/GIL",
+    "float_tolerance": "xlsx rel=1e-14 abs=1e-9; independent mean oracle rel=1e-13 abs=1e-9",
+    "limitations": "No independent historical full detector baseline; snapshot is complete raw correctness oracle. Background load uncontrolled."
+  },
+  "passed_cases": [
+    {
+      "event": "case_passed",
+      "wall_time": 1792984270.2300172,
+      "label": "partial-warmup",
+      "source": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\Raw data\\TWL\\test file partial.csv",
+      "input_bytes": 7073160,
+      "source_sha256": "5a5bf1cc4a78fc03ef6cbf6f301c76305e9ff415ae718c4cc94546dfbcdc1866",
+      "analysis_seconds": 5.985559499999908,
+      "create_seconds": 0.026332899999943038,
+      "raw_rows": 50904,
+      "grouped_rows": 4949,
+      "reduction_ratio": 10.285714285714286,
+      "reports": {
+        "raw": {
+          "bytes": 5979991,
+          "sha256": "797c45bd93d0b27f392a2a1b22f09d5646c2e50ca7b37119abb53e8096ed773d",
+          "chart_rows": 50904,
+          "metadata": {
+            "analysis_revision": "b489269d5d04447e9c708cddda9380be",
+            "chart_data_mode": "raw",
+            "raw_row_count": "50904",
+            "metadata_capabilities": "{\"schema_version\": \"tov1050-metadata-capabilities-v1\", \"workbook\": \"C:\\\\Smart Maintanence\\\\TOV1050_Analyzer\\\\config\\\\TWL metadata.xlsx\", \"workbook_sha256\": \"ac96e8d32b2ac7ccc3aea8c5bea68e450355fe4fb285febd43f43356c020d2ab\", \"line\": \"TWL\", \"session\": \"Mainline\", \"direction\": \"UT\", \"chainage_unit\": \"m\", \"enrichment_version\": \"tov640-first-nonempty-v1\", \"overlap_state\": \"unknown\", \"capabilities\": {\"thresholds\": {\"status\": \"available\", \"count\": 30, \"reason\": \"\"}, \"class_intervals\": {\"status\": \"available\", \"count\": 5, \"reason\": \"\"}, \"track_intervals\": {\"status\": \"available\", \"count\": 83, \"reason\": \"\"}, \"bracket_points\": {\"status\": \"available\", \"count\": 1176, \"reason\": \"\"}, \"landmark_points\": {\"status\": \"unavailable\", \"count\": 0, \"reason\": \"No classified point records\"}, \"tension_length_intervals\": {\"status\": \"unavailable\", \"count\": 0, \"reason\": \"No approved physical interval source; observed bracket envelopes and landmark points are not intervals\"}, \"overlap_intervals\": {\"status\": \"unavailable\", \"count\": 0, \"reason\": \"No approved physical interval source; observed bracket envelopes and landmark points are not intervals\"}, \"landmark_intervals\": {\"status\": \"unavailable\", \"count\": 0, \"reason\": \"No approved physical interval source; observed bracket envelopes and landmark points are not intervals\"}}}",
+            "enrichment_version": "tov640-first-nonempty-v1"
+          },
+          "export_seconds": 70.97595850000016,
+          "download_seconds": 0.7044101000001319,
+          "validation_seconds": 51.808778300000085,
+          "observed_stages": [
+            {
+              "stage": "exporting",
+              "observed_seconds": 1.0796477000003506
+            },
+            {
+              "stage": "exporting_ChartData",
+              "observed_seconds": 66.87271109999983
+            },
+            {
+              "stage": "finalizing",
+              "observed_seconds": 3.018490500000553
+            },
+            {
+              "stage": "ready",
+              "observed_seconds": 0.00018180000006395858
+            }
+          ]
+        },
+        "chainage_mean": {
+          "bytes": 2568455,
+          "sha256": "ca5f090c4327fa07bcefc6c66a45117bb3aac46b58c47cef7f62c9e0492d43a8",
+          "chart_rows": 4949,
+          "metadata": {
+            "analysis_revision": "b489269d5d04447e9c708cddda9380be",
+            "chart_data_mode": "chainage_mean",
+            "raw_row_count": "50904",
+            "metadata_capabilities": "{\"schema_version\": \"tov1050-metadata-capabilities-v1\", \"workbook\": \"C:\\\\Smart Maintanence\\\\TOV1050_Analyzer\\\\config\\\\TWL metadata.xlsx\", \"workbook_sha256\": \"ac96e8d32b2ac7ccc3aea8c5bea68e450355fe4fb285febd43f43356c020d2ab\", \"line\": \"TWL\", \"session\": \"Mainline\", \"direction\": \"UT\", \"chainage_unit\": \"m\", \"enrichment_version\": \"tov640-first-nonempty-v1\", \"overlap_state\": \"unknown\", \"capabilities\": {\"thresholds\": {\"status\": \"available\", \"count\": 30, \"reason\": \"\"}, \"class_intervals\": {\"status\": \"available\", \"count\": 5, \"reason\": \"\"}, \"track_intervals\": {\"status\": \"available\", \"count\": 83, \"reason\": \"\"}, \"bracket_points\": {\"status\": \"available\", \"count\": 1176, \"reason\": \"\"}, \"landmark_points\": {\"status\": \"unavailable\", \"count\": 0, \"reason\": \"No classified point records\"}, \"tension_length_intervals\": {\"status\": \"unavailable\", \"count\": 0, \"reason\": \"No approved physical interval source; observed bracket envelopes and landmark points are not intervals\"}, \"overlap_intervals\": {\"status\": \"unavailable\", \"count\": 0, \"reason\": \"No approved physical interval source; observed bracket envelopes and landmark points are not intervals\"}, \"landmark_intervals\": {\"status\": \"unavailable\", \"count\": 0, \"reason\": \"No approved physical interval source; observed bracket envelopes and landmark points are not intervals\"}}}",
+            "enrichment_version": "tov640-first-nonempty-v1",
+            "aggregation": "chainage_mean",
+            "aggregation_version": "exact_chainage_channel_mean_v1",
+            "raw_points": "50904",
+            "grouped_points": "4949",
+            "grouping_columns": "['Chainage', 'Line', 'line', 'Track', 'track', 'Class', 'Track Type', 'Overlap', 'Tension Length', 'Landmark', 'task_run_date', 'Section', 'task_no', 'station_start', 'station_end']",
+            "pass_rule": "SampleCount decrease",
+            "source_row_unit": "source row number or one-based retained row",
+            "grouped_row_count": "4949"
+          },
+          "export_seconds": 42.41929640000035,
+          "download_seconds": 0.9842037999997046,
+          "validation_seconds": 38.03013180000016,
+          "observed_stages": [
+            {
+              "stage": "aggregating_chainage",
+              "observed_seconds": 1.025882900000397
+            },
+            {
+              "stage": "exporting_ChartData",
+              "observed_seconds": 10.995764999999665
+            },
+            {
+              "stage": "exporting_ChainageStatistics",
+              "observed_seconds": 28.361478100000568
+            },
+            {
+              "stage": "finalizing",
+              "observed_seconds": 2.0279311000003872
+            },
+            {
+              "stage": "ready",
+              "observed_seconds": 0.00031209999997372506
+            }
+          ]
+        }
+      },
+      "sampled_peak_rss_bytes": 189935616
+    },
+    {
+      "event": "case_passed",
+      "wall_time": 1792984515.5927384,
+      "label": "partial-normal",
+      "source": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\Raw data\\TWL\\test file partial.csv",
+      "input_bytes": 7073160,
+      "source_sha256": "5a5bf1cc4a78fc03ef6cbf6f301c76305e9ff415ae718c4cc94546dfbcdc1866",
+      "analysis_seconds": 14.4015330000002,
+      "create_seconds": 0.010903700000199024,
+      "raw_rows": 50904,
+      "grouped_rows": 4949,
+      "reduction_ratio": 10.285714285714286,
+      "reports": {
+        "raw": {
+          "bytes": 5979989,
+          "sha256": "f4b449deee71f9de3b0db1aaf2c8a39c2b7338e9771a14046121053429ded7cc",
+          "chart_rows": 50904,
+          "metadata": {
+            "analysis_revision": "a5cf2b215b414e8b993b8c033c755d38",
+            "chart_data_mode": "raw",
+            "raw_row_count": "50904",
+            "metadata_capabilities": "{\"schema_version\": \"tov1050-metadata-capabilities-v1\", \"workbook\": \"C:\\\\Smart Maintanence\\\\TOV1050_Analyzer\\\\config\\\\TWL metadata.xlsx\", \"workbook_sha256\": \"ac96e8d32b2ac7ccc3aea8c5bea68e450355fe4fb285febd43f43356c020d2ab\", \"line\": \"TWL\", \"session\": \"Mainline\", \"direction\": \"UT\", \"chainage_unit\": \"m\", \"enrichment_version\": \"tov640-first-nonempty-v1\", \"overlap_state\": \"unknown\", \"capabilities\": {\"thresholds\": {\"status\": \"available\", \"count\": 30, \"reason\": \"\"}, \"class_intervals\": {\"status\": \"available\", \"count\": 5, \"reason\": \"\"}, \"track_intervals\": {\"status\": \"available\", \"count\": 83, \"reason\": \"\"}, \"bracket_points\": {\"status\": \"available\", \"count\": 1176, \"reason\": \"\"}, \"landmark_points\": {\"status\": \"unavailable\", \"count\": 0, \"reason\": \"No classified point records\"}, \"tension_length_intervals\": {\"status\": \"unavailable\", \"count\": 0, \"reason\": \"No approved physical interval source; observed bracket envelopes and landmark points are not intervals\"}, \"overlap_intervals\": {\"status\": \"unavailable\", \"count\": 0, \"reason\": \"No approved physical interval source; observed bracket envelopes and landmark points are not intervals\"}, \"landmark_intervals\": {\"status\": \"unavailable\", \"count\": 0, \"reason\": \"No approved physical interval source; observed bracket envelopes and landmark points are not intervals\"}}}",
+            "enrichment_version": "tov640-first-nonempty-v1"
+          },
+          "export_seconds": 98.03411589999996,
+          "download_seconds": 1.0660654000002978,
+          "validation_seconds": 54.93213839999953,
+          "observed_stages": [
+            {
+              "stage": "exporting",
+              "observed_seconds": 1.1471286999994845
+            },
+            {
+              "stage": "exporting_ChartData",
+              "observed_seconds": 92.79519440000058
+            },
+            {
+              "stage": "finalizing",
+              "observed_seconds": 4.026144700000259
+            },
+            {
+              "stage": "ready",
+              "observed_seconds": 0.00022139999964565504
+            }
+          ]
+        },
+        "chainage_mean": {
+          "bytes": 2568453,
+          "sha256": "9728b4d84c3ffbcb748ff59c5ba100fb5c796abe12139e54eef893dc1035339a",
+          "chart_rows": 4949,
+          "metadata": {
+            "analysis_revision": "a5cf2b215b414e8b993b8c033c755d38",
+            "chart_data_mode": "chainage_mean",
+            "raw_row_count": "50904",
+            "metadata_capabilities": "{\"schema_version\": \"tov1050-metadata-capabilities-v1\", \"workbook\": \"C:\\\\Smart Maintanence\\\\TOV1050_Analyzer\\\\config\\\\TWL metadata.xlsx\", \"workbook_sha256\": \"ac96e8d32b2ac7ccc3aea8c5bea68e450355fe4fb285febd43f43356c020d2ab\", \"line\": \"TWL\", \"session\": \"Mainline\", \"direction\": \"UT\", \"chainage_unit\": \"m\", \"enrichment_version\": \"tov640-first-nonempty-v1\", \"overlap_state\": \"unknown\", \"capabilities\": {\"thresholds\": {\"status\": \"available\", \"count\": 30, \"reason\": \"\"}, \"class_intervals\": {\"status\": \"available\", \"count\": 5, \"reason\": \"\"}, \"track_intervals\": {\"status\": \"available\", \"count\": 83, \"reason\": \"\"}, \"bracket_points\": {\"status\": \"available\", \"count\": 1176, \"reason\": \"\"}, \"landmark_points\": {\"status\": \"unavailable\", \"count\": 0, \"reason\": \"No classified point records\"}, \"tension_length_intervals\": {\"status\": \"unavailable\", \"count\": 0, \"reason\": \"No approved physical interval source; observed bracket envelopes and landmark points are not intervals\"}, \"overlap_intervals\": {\"status\": \"unavailable\", \"count\": 0, \"reason\": \"No approved physical interval source; observed bracket envelopes and landmark points are not intervals\"}, \"landmark_intervals\": {\"status\": \"unavailable\", \"count\": 0, \"reason\": \"No approved physical interval source; observed bracket envelopes and landmark points are not intervals\"}}}",
+            "enrichment_version": "tov640-first-nonempty-v1",
+            "aggregation": "chainage_mean",
+            "aggregation_version": "exact_chainage_channel_mean_v1",
+            "raw_points": "50904",
+            "grouped_points": "4949",
+            "grouping_columns": "['Chainage', 'Line', 'line', 'Track', 'track', 'Class', 'Track Type', 'Overlap', 'Tension Length', 'Landmark', 'task_run_date', 'Section', 'task_no', 'station_start', 'station_end']",
+            "pass_rule": "SampleCount decrease",
+            "source_row_unit": "source row number or one-based retained row",
+            "grouped_row_count": "4949"
+          },
+          "export_seconds": 43.22438289999991,
+          "download_seconds": 0.545864700000493,
+          "validation_seconds": 27.1657095999999,
+          "observed_stages": [
+            {
+              "stage": "aggregating_chainage",
+              "observed_seconds": 1.0637347000001682
+            },
+            {
+              "stage": "exporting_ChartData",
+              "observed_seconds": 10.73505269999987
+            },
+            {
+              "stage": "exporting_ChainageStatistics",
+              "observed_seconds": 28.371705999999904
+            },
+            {
+              "stage": "finalizing",
+              "observed_seconds": 3.0291056999994908
+            },
+            {
+              "stage": "ready",
+              "observed_seconds": 0.0015456000000995118
+            }
+          ]
+        }
+      },
+      "sampled_peak_rss_bytes": 209567744
+    }
+  ],
+  "analysis_complete": [
+    {
+      "event": "analysis_complete",
+      "wall_time": 1792984064.7165725,
+      "label": "partial-warmup",
+      "seconds": 5.985559499999908,
+      "create_seconds": 0.026332899999943038,
+      "stages": [
+        {
+          "stage": "queued",
+          "observed_seconds": 1.08555350000006
+        },
+        {
+          "stage": "cleaning",
+          "observed_seconds": 2.8684112999999343
+        },
+        {
+          "stage": "metadata_mapping",
+          "observed_seconds": 1.0196196999995664
+        },
+        {
+          "stage": "aggregating_chainage",
+          "observed_seconds": 1.004783999999745
+        },
+        {
+          "stage": "ready",
+          "observed_seconds": 0.0002798999994411133
+        }
+      ],
+      "raw_rows": 50904,
+      "aggregation": {
+        "aggregation": "chainage_mean",
+        "aggregation_version": "exact_chainage_channel_mean_v1",
+        "raw_points": 50904,
+        "grouped_points": 4949,
+        "grouping_columns": [
+          "Chainage",
+          "Line",
+          "line",
+          "Track",
+          "track",
+          "Class",
+          "Track Type",
+          "Overlap",
+          "Tension Length",
+          "Landmark",
+          "task_run_date",
+          "Section",
+          "task_no",
+          "station_start",
+          "station_end"
+        ],
+        "pass_rule": "SampleCount decrease",
+        "source_row_unit": "source row number or one-based retained row"
+      },
+      "validation_aggregation_seconds": 0.9403882999995403,
+      "exceptions": {
+        "Low Height": 0,
+        "High Height": 0,
+        "Wire Wear": 0,
+        "Stagger Left": 0,
+        "Stagger Right": 2
+      }
+    },
+    {
+      "event": "analysis_complete",
+      "wall_time": 1792984290.2829275,
+      "label": "partial-normal",
+      "seconds": 14.4015330000002,
+      "create_seconds": 0.010903700000199024,
+      "stages": [
+        {
+          "stage": "reading",
+          "observed_seconds": 1.253432900000007
+        },
+        {
+          "stage": "cleaning",
+          "observed_seconds": 9.959670199999891
+        },
+        {
+          "stage": "metadata_mapping",
+          "observed_seconds": 1.0139739999995072
+        },
+        {
+          "stage": "detecting",
+          "observed_seconds": 1.16089219999958
+        },
+        {
+          "stage": "aggregating_chainage",
+          "observed_seconds": 1.0070517000003747
+        },
+        {
+          "stage": "ready",
+          "observed_seconds": 0.00033819999953266233
+        }
+      ],
+      "raw_rows": 50904,
+      "aggregation": {
+        "aggregation": "chainage_mean",
+        "aggregation_version": "exact_chainage_channel_mean_v1",
+        "raw_points": 50904,
+        "grouped_points": 4949,
+        "grouping_columns": [
+          "Chainage",
+          "Line",
+          "line",
+          "Track",
+          "track",
+          "Class",
+          "Track Type",
+          "Overlap",
+          "Tension Length",
+          "Landmark",
+          "task_run_date",
+          "Section",
+          "task_no",
+          "station_start",
+          "station_end"
+        ],
+        "pass_rule": "SampleCount decrease",
+        "source_row_unit": "source row number or one-based retained row"
+      },
+      "validation_aggregation_seconds": 2.3472003000006225,
+      "exceptions": {
+        "Low Height": 0,
+        "High Height": 0,
+        "Wire Wear": 0,
+        "Stagger Left": 0,
+        "Stagger Right": 2
+      }
+    },
+    {
+      "event": "analysis_complete",
+      "wall_time": 1792984646.7865396,
+      "label": "full-normal",
+      "seconds": 94.10587979999946,
+      "create_seconds": 0.007618700000421086,
+      "stages": [
+        {
+          "stage": "reading",
+          "observed_seconds": 2.0213222000002133
+        },
+        {
+          "stage": "cleaning",
+          "observed_seconds": 61.09056429999964
+        },
+        {
+          "stage": "metadata_mapping",
+          "observed_seconds": 6.806635000000824
+        },
+        {
+          "stage": "detecting",
+          "observed_seconds": 6.453853200000594
+        },
+        {
+          "stage": "aggregating_chainage",
+          "observed_seconds": 5.294448300000113
+        },
+        {
+          "stage": "preparing_chart",
+          "observed_seconds": 12.433476199999859
+        },
+        {
+          "stage": "ready",
+          "observed_seconds": 0.00014029999965714524
+        }
+      ],
+      "raw_rows": 838859,
+      "aggregation": {
+        "aggregation": "chainage_mean",
+        "aggregation_version": "exact_chainage_channel_mean_v1",
+        "raw_points": 838859,
+        "grouped_points": 82144,
+        "grouping_columns": [
+          "Chainage",
+          "Line",
+          "line",
+          "Track",
+          "track",
+          "Class",
+          "Track Type",
+          "Overlap",
+          "Tension Length",
+          "Landmark",
+          "task_run_date",
+          "Section",
+          "task_no",
+          "station_start",
+          "station_end"
+        ],
+        "pass_rule": "SampleCount decrease",
+        "source_row_unit": "source row number or one-based retained row"
+      },
+      "validation_aggregation_seconds": 14.98437709999962,
+      "exceptions": {
+        "Low Height": 57,
+        "High Height": 2,
+        "Wire Wear": 1,
+        "Stagger Left": 0,
+        "Stagger Right": 95
+      }
+    }
+  ],
+  "verified_reports": [
+    {
+      "event": "report_verified",
+      "wall_time": 1792984188.2198436,
+      "label": "partial-warmup",
+      "mode": "raw",
+      "bytes": 5979991,
+      "sha256": "797c45bd93d0b27f392a2a1b22f09d5646c2e50ca7b37119abb53e8096ed773d",
+      "chart_rows": 50904,
+      "metadata": {
+        "analysis_revision": "b489269d5d04447e9c708cddda9380be",
+        "chart_data_mode": "raw",
+        "raw_row_count": "50904",
+        "metadata_capabilities": "{\"schema_version\": \"tov1050-metadata-capabilities-v1\", \"workbook\": \"C:\\\\Smart Maintanence\\\\TOV1050_Analyzer\\\\config\\\\TWL metadata.xlsx\", \"workbook_sha256\": \"ac96e8d32b2ac7ccc3aea8c5bea68e450355fe4fb285febd43f43356c020d2ab\", \"line\": \"TWL\", \"session\": \"Mainline\", \"direction\": \"UT\", \"chainage_unit\": \"m\", \"enrichment_version\": \"tov640-first-nonempty-v1\", \"overlap_state\": \"unknown\", \"capabilities\": {\"thresholds\": {\"status\": \"available\", \"count\": 30, \"reason\": \"\"}, \"class_intervals\": {\"status\": \"available\", \"count\": 5, \"reason\": \"\"}, \"track_intervals\": {\"status\": \"available\", \"count\": 83, \"reason\": \"\"}, \"bracket_points\": {\"status\": \"available\", \"count\": 1176, \"reason\": \"\"}, \"landmark_points\": {\"status\": \"unavailable\", \"count\": 0, \"reason\": \"No classified point records\"}, \"tension_length_intervals\": {\"status\": \"unavailable\", \"count\": 0, \"reason\": \"No approved physical interval source; observed bracket envelopes and landmark points are not intervals\"}, \"overlap_intervals\": {\"status\": \"unavailable\", \"count\": 0, \"reason\": \"No approved physical interval source; observed bracket envelopes and landmark points are not intervals\"}, \"landmark_intervals\": {\"status\": \"unavailable\", \"count\": 0, \"reason\": \"No approved physical interval source; observed bracket envelopes and landmark points are not intervals\"}}}",
+        "enrichment_version": "tov640-first-nonempty-v1"
+      },
+      "export_seconds": 70.97595850000016,
+      "download_seconds": 0.7044101000001319,
+      "validation_seconds": 51.808778300000085,
+      "observed_stages": [
+        {
+          "stage": "exporting",
+          "observed_seconds": 1.0796477000003506
+        },
+        {
+          "stage": "exporting_ChartData",
+          "observed_seconds": 66.87271109999983
+        },
+        {
+          "stage": "finalizing",
+          "observed_seconds": 3.018490500000553
+        },
+        {
+          "stage": "ready",
+          "observed_seconds": 0.00018180000006395858
+        }
+      ]
+    },
+    {
+      "event": "report_verified",
+      "wall_time": 1792984269.662669,
+      "label": "partial-warmup",
+      "mode": "chainage_mean",
+      "bytes": 2568455,
+      "sha256": "ca5f090c4327fa07bcefc6c66a45117bb3aac46b58c47cef7f62c9e0492d43a8",
+      "chart_rows": 4949,
+      "metadata": {
+        "analysis_revision": "b489269d5d04447e9c708cddda9380be",
+        "chart_data_mode": "chainage_mean",
+        "raw_row_count": "50904",
+        "metadata_capabilities": "{\"schema_version\": \"tov1050-metadata-capabilities-v1\", \"workbook\": \"C:\\\\Smart Maintanence\\\\TOV1050_Analyzer\\\\config\\\\TWL metadata.xlsx\", \"workbook_sha256\": \"ac96e8d32b2ac7ccc3aea8c5bea68e450355fe4fb285febd43f43356c020d2ab\", \"line\": \"TWL\", \"session\": \"Mainline\", \"direction\": \"UT\", \"chainage_unit\": \"m\", \"enrichment_version\": \"tov640-first-nonempty-v1\", \"overlap_state\": \"unknown\", \"capabilities\": {\"thresholds\": {\"status\": \"available\", \"count\": 30, \"reason\": \"\"}, \"class_intervals\": {\"status\": \"available\", \"count\": 5, \"reason\": \"\"}, \"track_intervals\": {\"status\": \"available\", \"count\": 83, \"reason\": \"\"}, \"bracket_points\": {\"status\": \"available\", \"count\": 1176, \"reason\": \"\"}, \"landmark_points\": {\"status\": \"unavailable\", \"count\": 0, \"reason\": \"No classified point records\"}, \"tension_length_intervals\": {\"status\": \"unavailable\", \"count\": 0, \"reason\": \"No approved physical interval source; observed bracket envelopes and landmark points are not intervals\"}, \"overlap_intervals\": {\"status\": \"unavailable\", \"count\": 0, \"reason\": \"No approved physical interval source; observed bracket envelopes and landmark points are not intervals\"}, \"landmark_intervals\": {\"status\": \"unavailable\", \"count\": 0, \"reason\": \"No approved physical interval source; observed bracket envelopes and landmark points are not intervals\"}}}",
+        "enrichment_version": "tov640-first-nonempty-v1",
+        "aggregation": "chainage_mean",
+        "aggregation_version": "exact_chainage_channel_mean_v1",
+        "raw_points": "50904",
+        "grouped_points": "4949",
+        "grouping_columns": "['Chainage', 'Line', 'line', 'Track', 'track', 'Class', 'Track Type', 'Overlap', 'Tension Length', 'Landmark', 'task_run_date', 'Section', 'task_no', 'station_start', 'station_end']",
+        "pass_rule": "SampleCount decrease",
+        "source_row_unit": "source row number or one-based retained row",
+        "grouped_row_count": "4949"
+      },
+      "export_seconds": 42.41929640000035,
+      "download_seconds": 0.9842037999997046,
+      "validation_seconds": 38.03013180000016,
+      "observed_stages": [
+        {
+          "stage": "aggregating_chainage",
+          "observed_seconds": 1.025882900000397
+        },
+        {
+          "stage": "exporting_ChartData",
+          "observed_seconds": 10.995764999999665
+        },
+        {
+          "stage": "exporting_ChainageStatistics",
+          "observed_seconds": 28.361478100000568
+        },
+        {
+          "stage": "finalizing",
+          "observed_seconds": 2.0279311000003872
+        },
+        {
+          "stage": "ready",
+          "observed_seconds": 0.00031209999997372506
+        }
+      ]
+    },
+    {
+      "event": "report_verified",
+      "wall_time": 1792984444.398996,
+      "label": "partial-normal",
+      "mode": "raw",
+      "bytes": 5979989,
+      "sha256": "f4b449deee71f9de3b0db1aaf2c8a39c2b7338e9771a14046121053429ded7cc",
+      "chart_rows": 50904,
+      "metadata": {
+        "analysis_revision": "a5cf2b215b414e8b993b8c033c755d38",
+        "chart_data_mode": "raw",
+        "raw_row_count": "50904",
+        "metadata_capabilities": "{\"schema_version\": \"tov1050-metadata-capabilities-v1\", \"workbook\": \"C:\\\\Smart Maintanence\\\\TOV1050_Analyzer\\\\config\\\\TWL metadata.xlsx\", \"workbook_sha256\": \"ac96e8d32b2ac7ccc3aea8c5bea68e450355fe4fb285febd43f43356c020d2ab\", \"line\": \"TWL\", \"session\": \"Mainline\", \"direction\": \"UT\", \"chainage_unit\": \"m\", \"enrichment_version\": \"tov640-first-nonempty-v1\", \"overlap_state\": \"unknown\", \"capabilities\": {\"thresholds\": {\"status\": \"available\", \"count\": 30, \"reason\": \"\"}, \"class_intervals\": {\"status\": \"available\", \"count\": 5, \"reason\": \"\"}, \"track_intervals\": {\"status\": \"available\", \"count\": 83, \"reason\": \"\"}, \"bracket_points\": {\"status\": \"available\", \"count\": 1176, \"reason\": \"\"}, \"landmark_points\": {\"status\": \"unavailable\", \"count\": 0, \"reason\": \"No classified point records\"}, \"tension_length_intervals\": {\"status\": \"unavailable\", \"count\": 0, \"reason\": \"No approved physical interval source; observed bracket envelopes and landmark points are not intervals\"}, \"overlap_intervals\": {\"status\": \"unavailable\", \"count\": 0, \"reason\": \"No approved physical interval source; observed bracket envelopes and landmark points are not intervals\"}, \"landmark_intervals\": {\"status\": \"unavailable\", \"count\": 0, \"reason\": \"No approved physical interval source; observed bracket envelopes and landmark points are not intervals\"}}}",
+        "enrichment_version": "tov640-first-nonempty-v1"
+      },
+      "export_seconds": 98.03411589999996,
+      "download_seconds": 1.0660654000002978,
+      "validation_seconds": 54.93213839999953,
+      "observed_stages": [
+        {
+          "stage": "exporting",
+          "observed_seconds": 1.1471286999994845
+        },
+        {
+          "stage": "exporting_ChartData",
+          "observed_seconds": 92.79519440000058
+        },
+        {
+          "stage": "finalizing",
+          "observed_seconds": 4.026144700000259
+        },
+        {
+          "stage": "ready",
+          "observed_seconds": 0.00022139999964565504
+        }
+      ]
+    },
+    {
+      "event": "report_verified",
+      "wall_time": 1792984515.3524778,
+      "label": "partial-normal",
+      "mode": "chainage_mean",
+      "bytes": 2568453,
+      "sha256": "9728b4d84c3ffbcb748ff59c5ba100fb5c796abe12139e54eef893dc1035339a",
+      "chart_rows": 4949,
+      "metadata": {
+        "analysis_revision": "a5cf2b215b414e8b993b8c033c755d38",
+        "chart_data_mode": "chainage_mean",
+        "raw_row_count": "50904",
+        "metadata_capabilities": "{\"schema_version\": \"tov1050-metadata-capabilities-v1\", \"workbook\": \"C:\\\\Smart Maintanence\\\\TOV1050_Analyzer\\\\config\\\\TWL metadata.xlsx\", \"workbook_sha256\": \"ac96e8d32b2ac7ccc3aea8c5bea68e450355fe4fb285febd43f43356c020d2ab\", \"line\": \"TWL\", \"session\": \"Mainline\", \"direction\": \"UT\", \"chainage_unit\": \"m\", \"enrichment_version\": \"tov640-first-nonempty-v1\", \"overlap_state\": \"unknown\", \"capabilities\": {\"thresholds\": {\"status\": \"available\", \"count\": 30, \"reason\": \"\"}, \"class_intervals\": {\"status\": \"available\", \"count\": 5, \"reason\": \"\"}, \"track_intervals\": {\"status\": \"available\", \"count\": 83, \"reason\": \"\"}, \"bracket_points\": {\"status\": \"available\", \"count\": 1176, \"reason\": \"\"}, \"landmark_points\": {\"status\": \"unavailable\", \"count\": 0, \"reason\": \"No classified point records\"}, \"tension_length_intervals\": {\"status\": \"unavailable\", \"count\": 0, \"reason\": \"No approved physical interval source; observed bracket envelopes and landmark points are not intervals\"}, \"overlap_intervals\": {\"status\": \"unavailable\", \"count\": 0, \"reason\": \"No approved physical interval source; observed bracket envelopes and landmark points are not intervals\"}, \"landmark_intervals\": {\"status\": \"unavailable\", \"count\": 0, \"reason\": \"No approved physical interval source; observed bracket envelopes and landmark points are not intervals\"}}}",
+        "enrichment_version": "tov640-first-nonempty-v1",
+        "aggregation": "chainage_mean",
+        "aggregation_version": "exact_chainage_channel_mean_v1",
+        "raw_points": "50904",
+        "grouped_points": "4949",
+        "grouping_columns": "['Chainage', 'Line', 'line', 'Track', 'track', 'Class', 'Track Type', 'Overlap', 'Tension Length', 'Landmark', 'task_run_date', 'Section', 'task_no', 'station_start', 'station_end']",
+        "pass_rule": "SampleCount decrease",
+        "source_row_unit": "source row number or one-based retained row",
+        "grouped_row_count": "4949"
+      },
+      "export_seconds": 43.22438289999991,
+      "download_seconds": 0.545864700000493,
+      "validation_seconds": 27.1657095999999,
+      "observed_stages": [
+        {
+          "stage": "aggregating_chainage",
+          "observed_seconds": 1.0637347000001682
+        },
+        {
+          "stage": "exporting_ChartData",
+          "observed_seconds": 10.73505269999987
+        },
+        {
+          "stage": "exporting_ChainageStatistics",
+          "observed_seconds": 28.371705999999904
+        },
+        {
+          "stage": "finalizing",
+          "observed_seconds": 3.0291056999994908
+        },
+        {
+          "stage": "ready",
+          "observed_seconds": 0.0015456000000995118
+        }
+      ]
+    },
+    {
+      "event": "report_verified",
+      "wall_time": 1792986596.3562334,
+      "label": "full-normal",
+      "mode": "raw",
+      "bytes": 98655329,
+      "sha256": "444b35da6263c95a8d0fcd7bb7cce1b50a790895727a1933b8cb340e3ecfe508",
+      "chart_rows": 838859,
+      "metadata": {
+        "analysis_revision": "bc70678cdd0e4263aaa514d9334da0da",
+        "chart_data_mode": "raw",
+        "raw_row_count": "838859",
+        "metadata_capabilities": "{\"schema_version\": \"tov1050-metadata-capabilities-v1\", \"workbook\": \"C:\\\\Smart Maintanence\\\\TOV1050_Analyzer\\\\config\\\\TWL metadata.xlsx\", \"workbook_sha256\": \"ac96e8d32b2ac7ccc3aea8c5bea68e450355fe4fb285febd43f43356c020d2ab\", \"line\": \"TWL\", \"session\": \"Mainline\", \"direction\": \"UT\", \"chainage_unit\": \"m\", \"enrichment_version\": \"tov640-first-nonempty-v1\", \"overlap_state\": \"unknown\", \"capabilities\": {\"thresholds\": {\"status\": \"available\", \"count\": 30, \"reason\": \"\"}, \"class_intervals\": {\"status\": \"available\", \"count\": 5, \"reason\": \"\"}, \"track_intervals\": {\"status\": \"available\", \"count\": 83, \"reason\": \"\"}, \"bracket_points\": {\"status\": \"available\", \"count\": 1176, \"reason\": \"\"}, \"landmark_points\": {\"status\": \"unavailable\", \"count\": 0, \"reason\": \"No classified point records\"}, \"tension_length_intervals\": {\"status\": \"unavailable\", \"count\": 0, \"reason\": \"No approved physical interval source; observed bracket envelopes and landmark points are not intervals\"}, \"overlap_intervals\": {\"status\": \"unavailable\", \"count\": 0, \"reason\": \"No approved physical interval source; observed bracket envelopes and landmark points are not intervals\"}, \"landmark_intervals\": {\"status\": \"unavailable\", \"count\": 0, \"reason\": \"No approved physical interval source; observed bracket envelopes and landmark points are not intervals\"}}}",
+        "enrichment_version": "tov640-first-nonempty-v1"
+      },
+      "export_seconds": 1310.1829173999995,
+      "download_seconds": 13.09374310000021,
+      "validation_seconds": 626.2575302000005,
+      "observed_stages": [
+        {
+          "stage": "exporting",
+          "observed_seconds": 3.1275542000003043
+        },
+        {
+          "stage": "exporting_ChartData",
+          "observed_seconds": 1262.7974723000007
+        },
+        {
+          "stage": "finalizing",
+          "observed_seconds": 44.25091629999952
+        },
+        {
+          "stage": "ready",
+          "observed_seconds": 0.0002306000005773967
+        }
+      ]
+    }
+  ],
+  "failure": [
+    {
+      "event": "failed",
+      "wall_time": 1792987016.7104924,
+      "traceback": "Traceback (most recent call last):\n  File \"C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\exception-performance-2026-10-26\\batch-jobs-01\\validate_http_jobs.py\", line 326, in main\n    cases.append(run_case(client, \"full-normal\", \"full\", args.job_limit_seconds))\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\exception-performance-2026-10-26\\batch-jobs-01\\validate_http_jobs.py\", line 272, in run_case\n    reports[mode] = validate_workbook(destination, raw, mean, mode, snapshot[\"results\"], result[\"analysis_revision\"])\n                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\exception-performance-2026-10-26\\batch-jobs-01\\validate_http_jobs.py\", line 216, in validate_workbook\n    verify_frame(book[\"ChainageStatistics\"], mean)\n  File \"C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\exception-performance-2026-10-26\\batch-jobs-01\\validate_http_jobs.py\", line 158, in verify_frame\n    equal(value, expected_value, (sheet.title, count, column))\n  File \"C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\exception-performance-2026-10-26\\batch-jobs-01\\validate_http_jobs.py\", line 146, in equal\n    assert actual == expected, (location, actual, expected)\n           ^^^^^^^^^^^^^^^^^^\nAssertionError: (('ChainageStatistics', 1, 'Last Pole Code [---]'), None, '')\n"
+    }
+  ],
+  "observed_jobs": [
+    {
+      "job_id": "e2eec2412dfb436793bb34865e008ec4",
+      "kind": "analysis",
+      "session": "http-benchmark-partial-warmup-1792984055205165200",
+      "first_poll_wall_time": 1792984055.2391763,
+      "last_poll_wall_time": 1792984061.2168977,
+      "last_status": "ready",
+      "reported_elapsed_seconds": 5.75,
+      "poll_count": 6,
+      "note": "reported elapsed from job state; not HTTP request duration"
+    },
+    {
+      "job_id": "695136f3e227458991c436036d756d90",
+      "kind": "export",
+      "session": "http-benchmark-partial-warmup-1792984055205165200",
+      "first_poll_wall_time": 1792984064.7355886,
+      "last_poll_wall_time": 1792984135.7061183,
+      "last_status": "ready",
+      "reported_elapsed_seconds": 70.563,
+      "poll_count": 67,
+      "note": "reported elapsed from job state; not HTTP request duration"
+    },
+    {
+      "job_id": "0b173369510f4e51bbce3fdfaa4f241a",
+      "kind": "export",
+      "session": "http-benchmark-partial-warmup-1792984055205165200",
+      "first_poll_wall_time": 1792984188.2368653,
+      "last_poll_wall_time": 1792984230.6485157,
+      "last_status": "ready",
+      "reported_elapsed_seconds": 42.312,
+      "poll_count": 40,
+      "note": "reported elapsed from job state; not HTTP request duration"
+    },
+    {
+      "job_id": "311455125cff40c1822aae74b73c0cb2",
+      "kind": "analysis",
+      "session": "http-benchmark-partial-normal-1792984270257012000",
+      "first_poll_wall_time": 1792984270.2740235,
+      "last_poll_wall_time": 1792984284.6694732,
+      "last_status": "ready",
+      "reported_elapsed_seconds": 13.406,
+      "poll_count": 13,
+      "note": "reported elapsed from job state; not HTTP request duration"
+    },
+    {
+      "job_id": "0ceae1b1012d423dbbb7e5f82fd0220c",
+      "kind": "export",
+      "session": "http-benchmark-partial-normal-1792984270257012000",
+      "first_poll_wall_time": 1792984290.4319046,
+      "last_poll_wall_time": 1792984388.4010527,
+      "last_status": "ready",
+      "reported_elapsed_seconds": 97.312,
+      "poll_count": 91,
+      "note": "reported elapsed from job state; not HTTP request duration"
+    },
+    {
+      "job_id": "9e99f0c6d87c4f4cad251ce28343eeb3",
+      "kind": "export",
+      "session": "http-benchmark-partial-normal-1792984270257012000",
+      "first_poll_wall_time": 1792984444.4393408,
+      "last_poll_wall_time": 1792984487.6387684,
+      "last_status": "ready",
+      "reported_elapsed_seconds": 42.406,
+      "poll_count": 41,
+      "note": "reported elapsed from job state; not HTTP request duration"
+    },
+    {
+      "job_id": "8955c57c2ca04163b347a74e6ea0ce0f",
+      "kind": "analysis",
+      "session": "http-benchmark-full-normal-1792984515601369700",
+      "first_poll_wall_time": 1792984515.6144307,
+      "last_poll_wall_time": 1792984609.7152839,
+      "last_status": "ready",
+      "reported_elapsed_seconds": 93.812,
+      "poll_count": 73,
+      "note": "reported elapsed from job state; not HTTP request duration"
+    },
+    {
+      "job_id": "b4c407227a7842d288364a6191ca8af7",
+      "kind": "export",
+      "session": "http-benchmark-full-normal-1792984515601369700",
+      "first_poll_wall_time": 1792984646.8339806,
+      "last_poll_wall_time": 1792985957.003918,
+      "last_status": "ready",
+      "reported_elapsed_seconds": 1310.203,
+      "poll_count": 1210,
+      "note": "reported elapsed from job state; not HTTP request duration"
+    },
+    {
+      "job_id": "900a333c76684d2ba9fc58dd12ec9dac",
+      "kind": "export",
+      "session": "http-benchmark-full-normal-1792984515601369700",
+      "first_poll_wall_time": 1792986596.3799338,
+      "last_poll_wall_time": 1792986933.945333,
+      "last_status": "ready",
+      "reported_elapsed_seconds": 336.766,
+      "poll_count": 316,
+      "note": "reported elapsed from job state; not HTTP request duration"
+    }
+  ],
+  "create_latencies": [
+    {
+      "label": "partial-warmup",
+      "seconds": 0.026332899999943038
+    },
+    {
+      "label": "partial-normal",
+      "seconds": 0.010903700000199024
+    },
+    {
+      "label": "full-normal",
+      "seconds": 0.007618700000421086
+    }
+  ],
+  "poll_latency": {
+    "available": false,
+    "reason": "Durations existed only in in-memory LATENCIES; failed run never serialized them. Poll timestamps/intervals cannot recover request latency."
+  },
+  "sampled_peak_rss_bytes": 1078661120,
+  "rss_samples": 10492,
+  "rss_scope": "same process server+client+validation, nominal 250ms; sampled peak may miss transient spikes",
+  "full_compact_validation": "Generated and downloaded; ChartData completed before failure at statistics first-row exact empty string vs Excel blank. All statistics/metadata not yet validated in original run. Follow-up batch-02 required.",
+  "limitations": "No new performance measurement or XLSX validation performed by this evidence-extraction script; original batch-01 artifacts remain unchanged."
+}

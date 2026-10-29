@@ -10,10 +10,11 @@ ALLOWED_TYPES = {"Stagger Left", "Stagger Right"}
 
 
 def _normalize_track(value: object) -> str:
-    raw = str(value or "").strip().lower()
-    if raw in {"down", "dn"}:
-        return "down"
-    return "up"
+    from app.core.line_registry import normalize_direction
+    direction = normalize_direction(value)
+    if not direction:
+        raise ValueError('Stagger requires an explicit track/direction')
+    return direction.lower()
 
 
 def _normalize_id(value: object) -> str:
@@ -106,8 +107,9 @@ def select_stagger_candidates(
     col_track = _find_column(summary_df, "Track")
     col_section = _find_column(summary_df, "Section")
     col_task_no = _find_column(summary_df, "Task No", "task_no")
-    col_station_start = _find_column(summary_df, "St. Start", "station_start")
-    col_station_end = _find_column(summary_df, "St. End", "station_end")
+    col_station_start = _find_column(summary_df, "St. Start", "Stn Start", "station_start")
+    col_station_end = _find_column(summary_df, "St. End", "Stn End", "station_end")
+    col_branch = _find_column(summary_df, "Branch", "branch", "session")
     col_id = _find_column(summary_df, "ID")
     col_from_m = _find_column(summary_df, "FromM", "From")
     col_to_m = _find_column(summary_df, "ToM", "To")
@@ -145,6 +147,7 @@ def select_stagger_candidates(
                 run_date=None if _get_value(row, col_run_date) is None else str(_get_value(row, col_run_date)),
                 line="" if _get_value(row, col_line) is None else str(_get_value(row, col_line)),
                 track=_normalize_track(_get_value(row, col_track)),
+                branch=str(_get_value(row, col_branch, "") or "").strip(),
                 section=None if _get_value(row, col_section) is None else str(_get_value(row, col_section)),
                 task_no=None if _get_value(row, col_task_no) is None else str(_get_value(row, col_task_no)),
                 station_start=None if _get_value(row, col_station_start) is None else str(_get_value(row, col_station_start)),

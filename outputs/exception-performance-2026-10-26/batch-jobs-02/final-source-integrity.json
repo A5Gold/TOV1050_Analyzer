@@ -1,0 +1,12 @@
+{
+  "source_sha256": {
+    "unchanged": true,
+    "sha256": "54ab7ede00922f56e29919518882381520d7181a9f233d4440b6726abea44e37",
+    "path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\Raw data\\TWL\\test file full.csv"
+  },
+  "metadata_sha256": {
+    "unchanged": true,
+    "sha256": "ac96e8d32b2ac7ccc3aea8c5bea68e450355fe4fb285febd43f43356c020d2ab",
+    "path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\TWL metadata.xlsx"
+  }
+}

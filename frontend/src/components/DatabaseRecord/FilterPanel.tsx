@@ -40,13 +40,13 @@ import ClearIcon from '@mui/icons-material/Clear';
 import { useDatabaseStore } from '../../store/useDatabaseStore';
 import { DatabaseFilters } from '../../types/api';
 import { formatDateToCompact } from '../../utils/dateFormatter';
-import { TOV1050_DIRECTIONS, Tov1050Line, Tov1050Session } from '../../config/tov1050';
+import { lineDefinition, branchOptionsForLine } from '../../config/lineCatalog';
 
 // =============================================================================
 // CONSTANTS
 // =============================================================================
 
-const TRACK_OPTIONS = ['All', ...TOV1050_DIRECTIONS] as const;
+
 const LEVEL_OPTIONS = ['All', 'L1', 'L2', 'L3'] as const;
 const ACTION_OPTIONS = [
   'Pending',
@@ -90,9 +90,9 @@ const SELECT_FILTER_KEYS = new Set([
 
 interface FilterPanelProps {
   /** Current TOV1050 line from parent tab */
-  line: Tov1050Line;
+  line: string;
   /** Current section from parent sub-tab (null = All Sections) */
-  section: Tov1050Session | null;
+  section: string | null;
   /** Loading state from parent */
   loading: boolean;
 }
@@ -149,13 +149,14 @@ function countActiveFilters(filters: LocalFilterState): number {
  */
 function buildApiFilters(
   localFilters: LocalFilterState,
-  line: Tov1050Line,
-  section: Tov1050Session | null,
+  line: string,
+  section: string | null,
 ): DatabaseFilters {
   const apiFilters: DatabaseFilters = { line };
 
   if (section) {
-    apiFilters.section = section;
+    if (branchOptionsForLine(line).some(item => item.value === section)) apiFilters.session = section;
+    else apiFilters.section = section;
   }
   
   if (localFilters.track !== 'All') {
@@ -368,7 +369,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
                 label="Track"
                 onChange={(e) => handleFilterChange('track', e.target.value)}
               >
-                {TRACK_OPTIONS.map((opt) => (
+                {['All', ...(lineDefinition(line)?.directions ?? [])].map((opt) => (
                   <MenuItem key={opt} value={opt}>
                     {opt}
                   </MenuItem>

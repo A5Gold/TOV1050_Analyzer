@@ -1,0 +1,1351 @@
+{
+  "status": "completed_read_only_median_and_noise_sensitivity_study",
+  "semantics": "actual central raw sample per channel; Hampel flags AFTER reduction; no interpolation; flags are not confirmed noise",
+  "median_even_rule": "two central order-statistic values: earliest original acquisition whose value equals either central value",
+  "noise_profiles": [
+    [
+      "tight",
+      {
+        "height": 0.5,
+        "stagger": 2.0,
+        "wear": 0.01
+      },
+      3.0
+    ],
+    [
+      "middle",
+      {
+        "height": 1.0,
+        "stagger": 4.0,
+        "wear": 0.02
+      },
+      3.0
+    ],
+    [
+      "wide",
+      {
+        "height": 2.0,
+        "stagger": 8.0,
+        "wear": 0.05
+      },
+      3.0
+    ],
+    [
+      "middle_k5",
+      {
+        "height": 1.0,
+        "stagger": 4.0,
+        "wear": 0.02
+      },
+      5.0
+    ]
+  ],
+  "noise_window": "11 median positions, center excluded, >=6 finite neighbors, context/source/direction and >0.11m gap isolation",
+  "metadata_path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\TWL metadata.xlsx",
+  "metadata_sha256_before": "ac96e8d32b2ac7ccc3aea8c5bea68e450355fe4fb285febd43f43356c020d2ab",
+  "datasets": {
+    "partial": {
+      "source_path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\Raw data\\TWL\\test file partial.csv",
+      "source_sha256_before": "5a5bf1cc4a78fc03ef6cbf6f301c76305e9ff415ae718c4cc94546dfbcdc1866",
+      "cleaning": {
+        "raw_row_count": 51170,
+        "retained_row_count": 50904,
+        "trimmed_leading_count": 100,
+        "trimmed_trailing_count": 100,
+        "io_value_count": 306792,
+        "invalid_chainage_count": 0,
+        "no_valid_measurement_count": 66,
+        "delimiter": ",",
+        "chunk_size": 50000,
+        "chainage_unit": "m",
+        "chainage_scale": 1000.0
+      },
+      "raw_counts": {
+        "Low Height": 0,
+        "High Height": 0,
+        "Wire Wear": 0,
+        "Stagger Left": 0,
+        "Stagger Right": 2
+      },
+      "baseline_seconds": 2.873440799998207,
+      "runs": 5086,
+      "run_sizes": {
+        "1": 1,
+        "4": 1,
+        "9": 1,
+        "10": 5079,
+        "20": 2,
+        "30": 2
+      },
+      "reduction_pct": 90.008643721515,
+      "median_seconds_including_all_row_oracle": 0.4454617999981565,
+      "median_detector_seconds": 0.21802840000236756,
+      "median_channels": {
+        "height1": {
+          "populated_runs": 5086,
+          "missing_runs": 0,
+          "even_medians_with_distinct_central_values": 5006
+        },
+        "height2": {
+          "populated_runs": 5083,
+          "missing_runs": 3,
+          "even_medians_with_distinct_central_values": 4999
+        },
+        "height3": {
+          "populated_runs": 15,
+          "missing_runs": 5071,
+          "even_medians_with_distinct_central_values": 14
+        },
+        "height4": {
+          "populated_runs": 12,
+          "missing_runs": 5074,
+          "even_medians_with_distinct_central_values": 8
+        },
+        "stagger1": {
+          "populated_runs": 5086,
+          "missing_runs": 0,
+          "even_medians_with_distinct_central_values": 5073
+        },
+        "stagger2": {
+          "populated_runs": 5083,
+          "missing_runs": 3,
+          "even_medians_with_distinct_central_values": 5069
+        },
+        "stagger3": {
+          "populated_runs": 15,
+          "missing_runs": 5071,
+          "even_medians_with_distinct_central_values": 14
+        },
+        "stagger4": {
+          "populated_runs": 12,
+          "missing_runs": 5074,
+          "even_medians_with_distinct_central_values": 8
+        },
+        "wear1": {
+          "populated_runs": 5086,
+          "missing_runs": 0,
+          "even_medians_with_distinct_central_values": 2838
+        },
+        "wear2": {
+          "populated_runs": 5083,
+          "missing_runs": 3,
+          "even_medians_with_distinct_central_values": 2727
+        },
+        "wear3": {
+          "populated_runs": 15,
+          "missing_runs": 5071,
+          "even_medians_with_distinct_central_values": 12
+        },
+        "wear4": {
+          "populated_runs": 12,
+          "missing_runs": 5074,
+          "even_medians_with_distinct_central_values": 10
+        }
+      },
+      "median_impacts": {
+        "Low Height": {
+          "raw_count": 0,
+          "candidate_count": 0,
+          "raw_without_overlap": 0,
+          "candidate_without_overlap": 0,
+          "exact_geometry_peak_level": 0,
+          "raw_with_changed_overlaps": 0,
+          "raw_with_multiple_overlaps": 0
+        },
+        "Wire Wear": {
+          "raw_count": 0,
+          "candidate_count": 0,
+          "raw_without_overlap": 0,
+          "candidate_without_overlap": 0,
+          "exact_geometry_peak_level": 0,
+          "raw_with_changed_overlaps": 0,
+          "raw_with_multiple_overlaps": 0
+        },
+        "Stagger Left": {
+          "raw_count": 0,
+          "candidate_count": 0,
+          "raw_without_overlap": 0,
+          "candidate_without_overlap": 0,
+          "exact_geometry_peak_level": 0,
+          "raw_with_changed_overlaps": 0,
+          "raw_with_multiple_overlaps": 0
+        },
+        "Stagger Right": {
+          "raw_count": 2,
+          "candidate_count": 2,
+          "raw_without_overlap": 0,
+          "candidate_without_overlap": 0,
+          "exact_geometry_peak_level": 0,
+          "raw_with_changed_overlaps": 2,
+          "raw_with_multiple_overlaps": 0
+        },
+        "High Height": {
+          "raw_count": 0,
+          "candidate_count": 0,
+          "raw_without_overlap": 0,
+          "candidate_without_overlap": 0,
+          "exact_geometry_peak_level": 0,
+          "raw_with_changed_overlaps": 0,
+          "raw_with_multiple_overlaps": 0
+        }
+      },
+      "noise_profiles": {
+        "tight": {
+          "candidate_flags": {
+            "height1": {
+              "flagged": 0,
+              "evaluated": 4988,
+              "absolute_floor_mm": 0.5,
+              "k": 3.0
+            },
+            "height2": {
+              "flagged": 3,
+              "evaluated": 4985,
+              "absolute_floor_mm": 0.5,
+              "k": 3.0
+            },
+            "height3": {
+              "flagged": 0,
+              "evaluated": 13,
+              "absolute_floor_mm": 0.5,
+              "k": 3.0
+            },
+            "height4": {
+              "flagged": 0,
+              "evaluated": 8,
+              "absolute_floor_mm": 0.5,
+              "k": 3.0
+            },
+            "stagger1": {
+              "flagged": 0,
+              "evaluated": 4988,
+              "absolute_floor_mm": 2.0,
+              "k": 3.0
+            },
+            "stagger2": {
+              "flagged": 0,
+              "evaluated": 4985,
+              "absolute_floor_mm": 2.0,
+              "k": 3.0
+            },
+            "stagger3": {
+              "flagged": 0,
+              "evaluated": 13,
+              "absolute_floor_mm": 2.0,
+              "k": 3.0
+            },
+            "stagger4": {
+              "flagged": 0,
+              "evaluated": 8,
+              "absolute_floor_mm": 2.0,
+              "k": 3.0
+            },
+            "wear1": {
+              "flagged": 19,
+              "evaluated": 4988,
+              "absolute_floor_mm": 0.01,
+              "k": 3.0
+            },
+            "wear2": {
+              "flagged": 8,
+              "evaluated": 4985,
+              "absolute_floor_mm": 0.01,
+              "k": 3.0
+            },
+            "wear3": {
+              "flagged": 0,
+              "evaluated": 13,
+              "absolute_floor_mm": 0.01,
+              "k": 3.0
+            },
+            "wear4": {
+              "flagged": 0,
+              "evaluated": 8,
+              "absolute_floor_mm": 0.01,
+              "k": 3.0
+            }
+          },
+          "hypothetical_mask_impacts_vs_median": {
+            "Low Height": {
+              "raw_count": 0,
+              "candidate_count": 0,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 0,
+              "raw_with_changed_overlaps": 0,
+              "raw_with_multiple_overlaps": 0
+            },
+            "Wire Wear": {
+              "raw_count": 0,
+              "candidate_count": 0,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 0,
+              "raw_with_changed_overlaps": 0,
+              "raw_with_multiple_overlaps": 0
+            },
+            "Stagger Left": {
+              "raw_count": 0,
+              "candidate_count": 0,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 0,
+              "raw_with_changed_overlaps": 0,
+              "raw_with_multiple_overlaps": 0
+            },
+            "Stagger Right": {
+              "raw_count": 2,
+              "candidate_count": 2,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 2,
+              "raw_with_changed_overlaps": 0,
+              "raw_with_multiple_overlaps": 0
+            },
+            "High Height": {
+              "raw_count": 0,
+              "candidate_count": 0,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 0,
+              "raw_with_changed_overlaps": 0,
+              "raw_with_multiple_overlaps": 0
+            }
+          },
+          "detector_seconds": 0.17209770000044955
+        },
+        "middle": {
+          "candidate_flags": {
+            "height1": {
+              "flagged": 0,
+              "evaluated": 4988,
+              "absolute_floor_mm": 1.0,
+              "k": 3.0
+            },
+            "height2": {
+              "flagged": 3,
+              "evaluated": 4985,
+              "absolute_floor_mm": 1.0,
+              "k": 3.0
+            },
+            "height3": {
+              "flagged": 0,
+              "evaluated": 13,
+              "absolute_floor_mm": 1.0,
+              "k": 3.0
+            },
+            "height4": {
+              "flagged": 0,
+              "evaluated": 8,
+              "absolute_floor_mm": 1.0,
+              "k": 3.0
+            },
+            "stagger1": {
+              "flagged": 0,
+              "evaluated": 4988,
+              "absolute_floor_mm": 4.0,
+              "k": 3.0
+            },
+            "stagger2": {
+              "flagged": 0,
+              "evaluated": 4985,
+              "absolute_floor_mm": 4.0,
+              "k": 3.0
+            },
+            "stagger3": {
+              "flagged": 0,
+              "evaluated": 13,
+              "absolute_floor_mm": 4.0,
+              "k": 3.0
+            },
+            "stagger4": {
+              "flagged": 0,
+              "evaluated": 8,
+              "absolute_floor_mm": 4.0,
+              "k": 3.0
+            },
+            "wear1": {
+              "flagged": 11,
+              "evaluated": 4988,
+              "absolute_floor_mm": 0.02,
+              "k": 3.0
+            },
+            "wear2": {
+              "flagged": 3,
+              "evaluated": 4985,
+              "absolute_floor_mm": 0.02,
+              "k": 3.0
+            },
+            "wear3": {
+              "flagged": 0,
+              "evaluated": 13,
+              "absolute_floor_mm": 0.02,
+              "k": 3.0
+            },
+            "wear4": {
+              "flagged": 0,
+              "evaluated": 8,
+              "absolute_floor_mm": 0.02,
+              "k": 3.0
+            }
+          },
+          "hypothetical_mask_impacts_vs_median": {
+            "Low Height": {
+              "raw_count": 0,
+              "candidate_count": 0,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 0,
+              "raw_with_changed_overlaps": 0,
+              "raw_with_multiple_overlaps": 0
+            },
+            "Wire Wear": {
+              "raw_count": 0,
+              "candidate_count": 0,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 0,
+              "raw_with_changed_overlaps": 0,
+              "raw_with_multiple_overlaps": 0
+            },
+            "Stagger Left": {
+              "raw_count": 0,
+              "candidate_count": 0,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 0,
+              "raw_with_changed_overlaps": 0,
+              "raw_with_multiple_overlaps": 0
+            },
+            "Stagger Right": {
+              "raw_count": 2,
+              "candidate_count": 2,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 2,
+              "raw_with_changed_overlaps": 0,
+              "raw_with_multiple_overlaps": 0
+            },
+            "High Height": {
+              "raw_count": 0,
+              "candidate_count": 0,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 0,
+              "raw_with_changed_overlaps": 0,
+              "raw_with_multiple_overlaps": 0
+            }
+          },
+          "detector_seconds": 0.1707163999999466
+        },
+        "wide": {
+          "candidate_flags": {
+            "height1": {
+              "flagged": 0,
+              "evaluated": 4988,
+              "absolute_floor_mm": 2.0,
+              "k": 3.0
+            },
+            "height2": {
+              "flagged": 2,
+              "evaluated": 4985,
+              "absolute_floor_mm": 2.0,
+              "k": 3.0
+            },
+            "height3": {
+              "flagged": 0,
+              "evaluated": 13,
+              "absolute_floor_mm": 2.0,
+              "k": 3.0
+            },
+            "height4": {
+              "flagged": 0,
+              "evaluated": 8,
+              "absolute_floor_mm": 2.0,
+              "k": 3.0
+            },
+            "stagger1": {
+              "flagged": 0,
+              "evaluated": 4988,
+              "absolute_floor_mm": 8.0,
+              "k": 3.0
+            },
+            "stagger2": {
+              "flagged": 0,
+              "evaluated": 4985,
+              "absolute_floor_mm": 8.0,
+              "k": 3.0
+            },
+            "stagger3": {
+              "flagged": 0,
+              "evaluated": 13,
+              "absolute_floor_mm": 8.0,
+              "k": 3.0
+            },
+            "stagger4": {
+              "flagged": 0,
+              "evaluated": 8,
+              "absolute_floor_mm": 8.0,
+              "k": 3.0
+            },
+            "wear1": {
+              "flagged": 4,
+              "evaluated": 4988,
+              "absolute_floor_mm": 0.05,
+              "k": 3.0
+            },
+            "wear2": {
+              "flagged": 2,
+              "evaluated": 4985,
+              "absolute_floor_mm": 0.05,
+              "k": 3.0
+            },
+            "wear3": {
+              "flagged": 0,
+              "evaluated": 13,
+              "absolute_floor_mm": 0.05,
+              "k": 3.0
+            },
+            "wear4": {
+              "flagged": 0,
+              "evaluated": 8,
+              "absolute_floor_mm": 0.05,
+              "k": 3.0
+            }
+          },
+          "hypothetical_mask_impacts_vs_median": {
+            "Low Height": {
+              "raw_count": 0,
+              "candidate_count": 0,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 0,
+              "raw_with_changed_overlaps": 0,
+              "raw_with_multiple_overlaps": 0
+            },
+            "Wire Wear": {
+              "raw_count": 0,
+              "candidate_count": 0,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 0,
+              "raw_with_changed_overlaps": 0,
+              "raw_with_multiple_overlaps": 0
+            },
+            "Stagger Left": {
+              "raw_count": 0,
+              "candidate_count": 0,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 0,
+              "raw_with_changed_overlaps": 0,
+              "raw_with_multiple_overlaps": 0
+            },
+            "Stagger Right": {
+              "raw_count": 2,
+              "candidate_count": 2,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 2,
+              "raw_with_changed_overlaps": 0,
+              "raw_with_multiple_overlaps": 0
+            },
+            "High Height": {
+              "raw_count": 0,
+              "candidate_count": 0,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 0,
+              "raw_with_changed_overlaps": 0,
+              "raw_with_multiple_overlaps": 0
+            }
+          },
+          "detector_seconds": 0.22470430000248598
+        },
+        "middle_k5": {
+          "candidate_flags": {
+            "height1": {
+              "flagged": 0,
+              "evaluated": 4988,
+              "absolute_floor_mm": 1.0,
+              "k": 5.0
+            },
+            "height2": {
+              "flagged": 0,
+              "evaluated": 4985,
+              "absolute_floor_mm": 1.0,
+              "k": 5.0
+            },
+            "height3": {
+              "flagged": 0,
+              "evaluated": 13,
+              "absolute_floor_mm": 1.0,
+              "k": 5.0
+            },
+            "height4": {
+              "flagged": 0,
+              "evaluated": 8,
+              "absolute_floor_mm": 1.0,
+              "k": 5.0
+            },
+            "stagger1": {
+              "flagged": 0,
+              "evaluated": 4988,
+              "absolute_floor_mm": 4.0,
+              "k": 5.0
+            },
+            "stagger2": {
+              "flagged": 0,
+              "evaluated": 4985,
+              "absolute_floor_mm": 4.0,
+              "k": 5.0
+            },
+            "stagger3": {
+              "flagged": 0,
+              "evaluated": 13,
+              "absolute_floor_mm": 4.0,
+              "k": 5.0
+            },
+            "stagger4": {
+              "flagged": 0,
+              "evaluated": 8,
+              "absolute_floor_mm": 4.0,
+              "k": 5.0
+            },
+            "wear1": {
+              "flagged": 2,
+              "evaluated": 4988,
+              "absolute_floor_mm": 0.02,
+              "k": 5.0
+            },
+            "wear2": {
+              "flagged": 1,
+              "evaluated": 4985,
+              "absolute_floor_mm": 0.02,
+              "k": 5.0
+            },
+            "wear3": {
+              "flagged": 0,
+              "evaluated": 13,
+              "absolute_floor_mm": 0.02,
+              "k": 5.0
+            },
+            "wear4": {
+              "flagged": 0,
+              "evaluated": 8,
+              "absolute_floor_mm": 0.02,
+              "k": 5.0
+            }
+          },
+          "hypothetical_mask_impacts_vs_median": {
+            "Low Height": {
+              "raw_count": 0,
+              "candidate_count": 0,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 0,
+              "raw_with_changed_overlaps": 0,
+              "raw_with_multiple_overlaps": 0
+            },
+            "Wire Wear": {
+              "raw_count": 0,
+              "candidate_count": 0,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 0,
+              "raw_with_changed_overlaps": 0,
+              "raw_with_multiple_overlaps": 0
+            },
+            "Stagger Left": {
+              "raw_count": 0,
+              "candidate_count": 0,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 0,
+              "raw_with_changed_overlaps": 0,
+              "raw_with_multiple_overlaps": 0
+            },
+            "Stagger Right": {
+              "raw_count": 2,
+              "candidate_count": 2,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 2,
+              "raw_with_changed_overlaps": 0,
+              "raw_with_multiple_overlaps": 0
+            },
+            "High Height": {
+              "raw_count": 0,
+              "candidate_count": 0,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 0,
+              "raw_with_changed_overlaps": 0,
+              "raw_with_multiple_overlaps": 0
+            }
+          },
+          "detector_seconds": 0.23299079999924288
+        }
+      },
+      "noise_segments": 54,
+      "nominal_step_m": 0.2000000000007276,
+      "noise_local_stats_seconds": 0.9805974999981117,
+      "source_sha256_after": "5a5bf1cc4a78fc03ef6cbf6f301c76305e9ff415ae718c4cc94546dfbcdc1866"
+    },
+    "full": {
+      "source_path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\Raw data\\TWL\\test file full.csv",
+      "source_sha256_before": "54ab7ede00922f56e29919518882381520d7181a9f233d4440b6726abea44e37",
+      "cleaning": {
+        "raw_row_count": 843623,
+        "retained_row_count": 838859,
+        "trimmed_leading_count": 100,
+        "trimmed_trailing_count": 100,
+        "io_value_count": 5084046,
+        "invalid_chainage_count": 0,
+        "no_valid_measurement_count": 4564,
+        "delimiter": ",",
+        "chunk_size": 50000,
+        "chainage_unit": "m",
+        "chainage_scale": 1000.0
+      },
+      "raw_counts": {
+        "Low Height": 57,
+        "High Height": 2,
+        "Wire Wear": 1,
+        "Stagger Left": 0,
+        "Stagger Right": 95
+      },
+      "baseline_seconds": 33.78759259999788,
+      "runs": 83963,
+      "run_sizes": {
+        "1": 19,
+        "2": 15,
+        "3": 16,
+        "4": 27,
+        "5": 17,
+        "6": 29,
+        "7": 23,
+        "8": 27,
+        "9": 22,
+        "10": 83756,
+        "20": 10,
+        "30": 2
+      },
+      "reduction_pct": 89.99080894405377,
+      "median_seconds_including_all_row_oracle": 4.6440375999991375,
+      "median_detector_seconds": 1.4017118000010669,
+      "median_channels": {
+        "height1": {
+          "populated_runs": 83963,
+          "missing_runs": 0,
+          "even_medians_with_distinct_central_values": 82688
+        },
+        "height2": {
+          "populated_runs": 83176,
+          "missing_runs": 787,
+          "even_medians_with_distinct_central_values": 81739
+        },
+        "height3": {
+          "populated_runs": 750,
+          "missing_runs": 83213,
+          "even_medians_with_distinct_central_values": 686
+        },
+        "height4": {
+          "populated_runs": 362,
+          "missing_runs": 83601,
+          "even_medians_with_distinct_central_values": 330
+        },
+        "stagger1": {
+          "populated_runs": 83963,
+          "missing_runs": 0,
+          "even_medians_with_distinct_central_values": 83610
+        },
+        "stagger2": {
+          "populated_runs": 83176,
+          "missing_runs": 787,
+          "even_medians_with_distinct_central_values": 82758
+        },
+        "stagger3": {
+          "populated_runs": 750,
+          "missing_runs": 83213,
+          "even_medians_with_distinct_central_values": 691
+        },
+        "stagger4": {
+          "populated_runs": 362,
+          "missing_runs": 83601,
+          "even_medians_with_distinct_central_values": 330
+        },
+        "wear1": {
+          "populated_runs": 83963,
+          "missing_runs": 0,
+          "even_medians_with_distinct_central_values": 50545
+        },
+        "wear2": {
+          "populated_runs": 83176,
+          "missing_runs": 787,
+          "even_medians_with_distinct_central_values": 49860
+        },
+        "wear3": {
+          "populated_runs": 750,
+          "missing_runs": 83213,
+          "even_medians_with_distinct_central_values": 485
+        },
+        "wear4": {
+          "populated_runs": 362,
+          "missing_runs": 83601,
+          "even_medians_with_distinct_central_values": 259
+        }
+      },
+      "median_impacts": {
+        "Low Height": {
+          "raw_count": 57,
+          "candidate_count": 55,
+          "raw_without_overlap": 1,
+          "candidate_without_overlap": 0,
+          "exact_geometry_peak_level": 1,
+          "raw_with_changed_overlaps": 55,
+          "raw_with_multiple_overlaps": 0
+        },
+        "Wire Wear": {
+          "raw_count": 1,
+          "candidate_count": 1,
+          "raw_without_overlap": 0,
+          "candidate_without_overlap": 0,
+          "exact_geometry_peak_level": 0,
+          "raw_with_changed_overlaps": 1,
+          "raw_with_multiple_overlaps": 0
+        },
+        "Stagger Left": {
+          "raw_count": 0,
+          "candidate_count": 0,
+          "raw_without_overlap": 0,
+          "candidate_without_overlap": 0,
+          "exact_geometry_peak_level": 0,
+          "raw_with_changed_overlaps": 0,
+          "raw_with_multiple_overlaps": 0
+        },
+        "Stagger Right": {
+          "raw_count": 95,
+          "candidate_count": 87,
+          "raw_without_overlap": 1,
+          "candidate_without_overlap": 0,
+          "exact_geometry_peak_level": 4,
+          "raw_with_changed_overlaps": 90,
+          "raw_with_multiple_overlaps": 3
+        },
+        "High Height": {
+          "raw_count": 2,
+          "candidate_count": 2,
+          "raw_without_overlap": 0,
+          "candidate_without_overlap": 0,
+          "exact_geometry_peak_level": 0,
+          "raw_with_changed_overlaps": 2,
+          "raw_with_multiple_overlaps": 0
+        }
+      },
+      "noise_profiles": {
+        "tight": {
+          "candidate_flags": {
+            "height1": {
+              "flagged": 143,
+              "evaluated": 82787,
+              "absolute_floor_mm": 0.5,
+              "k": 3.0
+            },
+            "height2": {
+              "flagged": 85,
+              "evaluated": 81944,
+              "absolute_floor_mm": 0.5,
+              "k": 3.0
+            },
+            "height3": {
+              "flagged": 8,
+              "evaluated": 603,
+              "absolute_floor_mm": 0.5,
+              "k": 3.0
+            },
+            "height4": {
+              "flagged": 2,
+              "evaluated": 294,
+              "absolute_floor_mm": 0.5,
+              "k": 3.0
+            },
+            "stagger1": {
+              "flagged": 113,
+              "evaluated": 82787,
+              "absolute_floor_mm": 2.0,
+              "k": 3.0
+            },
+            "stagger2": {
+              "flagged": 17,
+              "evaluated": 81944,
+              "absolute_floor_mm": 2.0,
+              "k": 3.0
+            },
+            "stagger3": {
+              "flagged": 13,
+              "evaluated": 603,
+              "absolute_floor_mm": 2.0,
+              "k": 3.0
+            },
+            "stagger4": {
+              "flagged": 0,
+              "evaluated": 294,
+              "absolute_floor_mm": 2.0,
+              "k": 3.0
+            },
+            "wear1": {
+              "flagged": 403,
+              "evaluated": 82787,
+              "absolute_floor_mm": 0.01,
+              "k": 3.0
+            },
+            "wear2": {
+              "flagged": 294,
+              "evaluated": 81944,
+              "absolute_floor_mm": 0.01,
+              "k": 3.0
+            },
+            "wear3": {
+              "flagged": 17,
+              "evaluated": 603,
+              "absolute_floor_mm": 0.01,
+              "k": 3.0
+            },
+            "wear4": {
+              "flagged": 10,
+              "evaluated": 294,
+              "absolute_floor_mm": 0.01,
+              "k": 3.0
+            }
+          },
+          "hypothetical_mask_impacts_vs_median": {
+            "Low Height": {
+              "raw_count": 55,
+              "candidate_count": 52,
+              "raw_without_overlap": 4,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 48,
+              "raw_with_changed_overlaps": 3,
+              "raw_with_multiple_overlaps": 1
+            },
+            "Wire Wear": {
+              "raw_count": 1,
+              "candidate_count": 1,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 1,
+              "raw_with_changed_overlaps": 0,
+              "raw_with_multiple_overlaps": 0
+            },
+            "Stagger Left": {
+              "raw_count": 0,
+              "candidate_count": 0,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 0,
+              "raw_with_changed_overlaps": 0,
+              "raw_with_multiple_overlaps": 0
+            },
+            "Stagger Right": {
+              "raw_count": 87,
+              "candidate_count": 90,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 83,
+              "raw_with_changed_overlaps": 4,
+              "raw_with_multiple_overlaps": 6
+            },
+            "High Height": {
+              "raw_count": 2,
+              "candidate_count": 2,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 2,
+              "raw_with_changed_overlaps": 0,
+              "raw_with_multiple_overlaps": 0
+            }
+          },
+          "detector_seconds": 2.3103016000022762
+        },
+        "middle": {
+          "candidate_flags": {
+            "height1": {
+              "flagged": 110,
+              "evaluated": 82787,
+              "absolute_floor_mm": 1.0,
+              "k": 3.0
+            },
+            "height2": {
+              "flagged": 50,
+              "evaluated": 81944,
+              "absolute_floor_mm": 1.0,
+              "k": 3.0
+            },
+            "height3": {
+              "flagged": 8,
+              "evaluated": 603,
+              "absolute_floor_mm": 1.0,
+              "k": 3.0
+            },
+            "height4": {
+              "flagged": 2,
+              "evaluated": 294,
+              "absolute_floor_mm": 1.0,
+              "k": 3.0
+            },
+            "stagger1": {
+              "flagged": 112,
+              "evaluated": 82787,
+              "absolute_floor_mm": 4.0,
+              "k": 3.0
+            },
+            "stagger2": {
+              "flagged": 14,
+              "evaluated": 81944,
+              "absolute_floor_mm": 4.0,
+              "k": 3.0
+            },
+            "stagger3": {
+              "flagged": 13,
+              "evaluated": 603,
+              "absolute_floor_mm": 4.0,
+              "k": 3.0
+            },
+            "stagger4": {
+              "flagged": 0,
+              "evaluated": 294,
+              "absolute_floor_mm": 4.0,
+              "k": 3.0
+            },
+            "wear1": {
+              "flagged": 267,
+              "evaluated": 82787,
+              "absolute_floor_mm": 0.02,
+              "k": 3.0
+            },
+            "wear2": {
+              "flagged": 180,
+              "evaluated": 81944,
+              "absolute_floor_mm": 0.02,
+              "k": 3.0
+            },
+            "wear3": {
+              "flagged": 14,
+              "evaluated": 603,
+              "absolute_floor_mm": 0.02,
+              "k": 3.0
+            },
+            "wear4": {
+              "flagged": 10,
+              "evaluated": 294,
+              "absolute_floor_mm": 0.02,
+              "k": 3.0
+            }
+          },
+          "hypothetical_mask_impacts_vs_median": {
+            "Low Height": {
+              "raw_count": 55,
+              "candidate_count": 51,
+              "raw_without_overlap": 4,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 50,
+              "raw_with_changed_overlaps": 1,
+              "raw_with_multiple_overlaps": 0
+            },
+            "Wire Wear": {
+              "raw_count": 1,
+              "candidate_count": 1,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 1,
+              "raw_with_changed_overlaps": 0,
+              "raw_with_multiple_overlaps": 0
+            },
+            "Stagger Left": {
+              "raw_count": 0,
+              "candidate_count": 0,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 0,
+              "raw_with_changed_overlaps": 0,
+              "raw_with_multiple_overlaps": 0
+            },
+            "Stagger Right": {
+              "raw_count": 87,
+              "candidate_count": 90,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 83,
+              "raw_with_changed_overlaps": 4,
+              "raw_with_multiple_overlaps": 6
+            },
+            "High Height": {
+              "raw_count": 2,
+              "candidate_count": 2,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 2,
+              "raw_with_changed_overlaps": 0,
+              "raw_with_multiple_overlaps": 0
+            }
+          },
+          "detector_seconds": 3.156875900000159
+        },
+        "wide": {
+          "candidate_flags": {
+            "height1": {
+              "flagged": 75,
+              "evaluated": 82787,
+              "absolute_floor_mm": 2.0,
+              "k": 3.0
+            },
+            "height2": {
+              "flagged": 24,
+              "evaluated": 81944,
+              "absolute_floor_mm": 2.0,
+              "k": 3.0
+            },
+            "height3": {
+              "flagged": 7,
+              "evaluated": 603,
+              "absolute_floor_mm": 2.0,
+              "k": 3.0
+            },
+            "height4": {
+              "flagged": 2,
+              "evaluated": 294,
+              "absolute_floor_mm": 2.0,
+              "k": 3.0
+            },
+            "stagger1": {
+              "flagged": 110,
+              "evaluated": 82787,
+              "absolute_floor_mm": 8.0,
+              "k": 3.0
+            },
+            "stagger2": {
+              "flagged": 14,
+              "evaluated": 81944,
+              "absolute_floor_mm": 8.0,
+              "k": 3.0
+            },
+            "stagger3": {
+              "flagged": 13,
+              "evaluated": 603,
+              "absolute_floor_mm": 8.0,
+              "k": 3.0
+            },
+            "stagger4": {
+              "flagged": 0,
+              "evaluated": 294,
+              "absolute_floor_mm": 8.0,
+              "k": 3.0
+            },
+            "wear1": {
+              "flagged": 144,
+              "evaluated": 82787,
+              "absolute_floor_mm": 0.05,
+              "k": 3.0
+            },
+            "wear2": {
+              "flagged": 60,
+              "evaluated": 81944,
+              "absolute_floor_mm": 0.05,
+              "k": 3.0
+            },
+            "wear3": {
+              "flagged": 10,
+              "evaluated": 603,
+              "absolute_floor_mm": 0.05,
+              "k": 3.0
+            },
+            "wear4": {
+              "flagged": 6,
+              "evaluated": 294,
+              "absolute_floor_mm": 0.05,
+              "k": 3.0
+            }
+          },
+          "hypothetical_mask_impacts_vs_median": {
+            "Low Height": {
+              "raw_count": 55,
+              "candidate_count": 51,
+              "raw_without_overlap": 4,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 51,
+              "raw_with_changed_overlaps": 0,
+              "raw_with_multiple_overlaps": 0
+            },
+            "Wire Wear": {
+              "raw_count": 1,
+              "candidate_count": 1,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 1,
+              "raw_with_changed_overlaps": 0,
+              "raw_with_multiple_overlaps": 0
+            },
+            "Stagger Left": {
+              "raw_count": 0,
+              "candidate_count": 0,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 0,
+              "raw_with_changed_overlaps": 0,
+              "raw_with_multiple_overlaps": 0
+            },
+            "Stagger Right": {
+              "raw_count": 87,
+              "candidate_count": 90,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 83,
+              "raw_with_changed_overlaps": 4,
+              "raw_with_multiple_overlaps": 6
+            },
+            "High Height": {
+              "raw_count": 2,
+              "candidate_count": 2,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 2,
+              "raw_with_changed_overlaps": 0,
+              "raw_with_multiple_overlaps": 0
+            }
+          },
+          "detector_seconds": 3.137188299999252
+        },
+        "middle_k5": {
+          "candidate_flags": {
+            "height1": {
+              "flagged": 45,
+              "evaluated": 82787,
+              "absolute_floor_mm": 1.0,
+              "k": 5.0
+            },
+            "height2": {
+              "flagged": 16,
+              "evaluated": 81944,
+              "absolute_floor_mm": 1.0,
+              "k": 5.0
+            },
+            "height3": {
+              "flagged": 3,
+              "evaluated": 603,
+              "absolute_floor_mm": 1.0,
+              "k": 5.0
+            },
+            "height4": {
+              "flagged": 2,
+              "evaluated": 294,
+              "absolute_floor_mm": 1.0,
+              "k": 5.0
+            },
+            "stagger1": {
+              "flagged": 83,
+              "evaluated": 82787,
+              "absolute_floor_mm": 4.0,
+              "k": 5.0
+            },
+            "stagger2": {
+              "flagged": 10,
+              "evaluated": 81944,
+              "absolute_floor_mm": 4.0,
+              "k": 5.0
+            },
+            "stagger3": {
+              "flagged": 13,
+              "evaluated": 603,
+              "absolute_floor_mm": 4.0,
+              "k": 5.0
+            },
+            "stagger4": {
+              "flagged": 0,
+              "evaluated": 294,
+              "absolute_floor_mm": 4.0,
+              "k": 5.0
+            },
+            "wear1": {
+              "flagged": 96,
+              "evaluated": 82787,
+              "absolute_floor_mm": 0.02,
+              "k": 5.0
+            },
+            "wear2": {
+              "flagged": 61,
+              "evaluated": 81944,
+              "absolute_floor_mm": 0.02,
+              "k": 5.0
+            },
+            "wear3": {
+              "flagged": 7,
+              "evaluated": 603,
+              "absolute_floor_mm": 0.02,
+              "k": 5.0
+            },
+            "wear4": {
+              "flagged": 4,
+              "evaluated": 294,
+              "absolute_floor_mm": 0.02,
+              "k": 5.0
+            }
+          },
+          "hypothetical_mask_impacts_vs_median": {
+            "Low Height": {
+              "raw_count": 55,
+              "candidate_count": 51,
+              "raw_without_overlap": 4,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 51,
+              "raw_with_changed_overlaps": 0,
+              "raw_with_multiple_overlaps": 0
+            },
+            "Wire Wear": {
+              "raw_count": 1,
+              "candidate_count": 1,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 1,
+              "raw_with_changed_overlaps": 0,
+              "raw_with_multiple_overlaps": 0
+            },
+            "Stagger Left": {
+              "raw_count": 0,
+              "candidate_count": 0,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 0,
+              "raw_with_changed_overlaps": 0,
+              "raw_with_multiple_overlaps": 0
+            },
+            "Stagger Right": {
+              "raw_count": 87,
+              "candidate_count": 89,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 84,
+              "raw_with_changed_overlaps": 3,
+              "raw_with_multiple_overlaps": 5
+            },
+            "High Height": {
+              "raw_count": 2,
+              "candidate_count": 2,
+              "raw_without_overlap": 0,
+              "candidate_without_overlap": 0,
+              "exact_geometry_peak_level": 2,
+              "raw_with_changed_overlaps": 0,
+              "raw_with_multiple_overlaps": 0
+            }
+          },
+          "detector_seconds": 3.152362600001652
+        }
+      },
+      "noise_segments": 622,
+      "nominal_step_m": 0.19999999999998863,
+      "noise_local_stats_seconds": 13.8226401000029,
+      "source_sha256_after": "54ab7ede00922f56e29919518882381520d7181a9f233d4440b6726abea44e37"
+    }
+  },
+  "metadata_sha256_after": "ac96e8d32b2ac7ccc3aea8c5bea68e450355fe4fb285febd43f43356c020d2ab"
+}

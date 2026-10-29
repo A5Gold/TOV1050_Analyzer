@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "lines": [
+    {"line": "EAL", "source_system": "TOV640", "directions": ["UP", "DN"], "sections": ["Mainline", "RAC", "LOW S1", "LMC"], "branches": [{"branch": "Mainline", "legacy_session": "Mainline", "metadata_file": "EAL metadata.xlsx", "stagger_profile": "EAL"}, {"branch": "LMC", "legacy_session": "LMC", "metadata_file": "EAL metadata.xlsx", "stagger_profile": null}]},
+    {"line": "TML", "source_system": "TOV640", "directions": ["UP", "DN"], "sections": ["Mainline"], "branches": [{"branch": "Mainline", "legacy_session": "Mainline", "metadata_file": "TML metadata.xlsx", "stagger_profile": "TML"}]},
+    {"line": "AEL", "source_system": "TOV1050", "directions": ["UT", "DT"], "sections": ["Mainline"], "branches": [{"branch": "Mainline", "legacy_session": "Mainline", "metadata_file": "LAR_AEL metadata.xlsx", "stagger_profile": null}]},
+    {"line": "TCL", "source_system": "TOV1050", "directions": ["UT", "DT"], "sections": ["Mainline"], "branches": [{"branch": "Mainline", "legacy_session": "Mainline", "metadata_file": "LAR_TCL metadata.xlsx", "stagger_profile": null}]},
+    {"line": "KTL", "source_system": "TOV1050", "directions": ["UT", "DT"], "sections": ["Mainline"], "branches": [{"branch": "Mainline", "legacy_session": "Mainline", "metadata_file": "KTL metadata.xlsx", "stagger_profile": null}]},
+    {"line": "ISL", "source_system": "TOV1050", "directions": ["UT", "DT"], "sections": ["Mainline"], "branches": [{"branch": "Mainline", "legacy_session": "Mainline", "metadata_file": "ISL metadata.xlsx", "stagger_profile": null}]},
+    {"line": "TWL", "source_system": "TOV1050", "directions": ["UT", "DT"], "sections": ["Mainline"], "branches": [{"branch": "Mainline", "legacy_session": "Mainline", "metadata_file": "TWL metadata.xlsx", "stagger_profile": null}]},
+    {"line": "TKL", "source_system": "TOV1050", "directions": ["UT", "DT"], "sections": ["Mainline", "TKS"], "branches": [{"branch": "Mainline", "legacy_session": "Mainline", "metadata_file": "TKL metadata.xlsx", "stagger_profile": null}, {"branch": "TKS", "legacy_session": "TKS", "metadata_file": "TKS metadata.xlsx", "stagger_profile": null}]},
+    {"line": "DRL", "source_system": "TOV1050", "directions": ["UT", "DT"], "sections": ["Mainline", "PL"], "branches": [{"branch": "UT", "legacy_session": "Mainline", "metadata_file": "DRL metadata.xlsx", "stagger_profile": null}, {"branch": "PL", "legacy_session": "PL", "metadata_file": "DRL metadata.xlsx", "stagger_profile": null}]}
+  ]
+}

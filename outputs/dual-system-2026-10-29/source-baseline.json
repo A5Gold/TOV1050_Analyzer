@@ -1,0 +1,70 @@
+{
+  "head": "2f6f1731715cf2b3345a74d6a8570870759296f0",
+  "git_status": " M \"00 Reference Document/Raw data/AEL/20260822_AEL_UT_SHO_AWE.csv\"\n M \"00 Reference Document/TOV1050 TL-BK No.xlsx\"\n M \"00 Reference Document/config/ISL metadata.xlsx\"\n M \"00 Reference Document/config/KTL metadata.xlsx\"\n M \"00 Reference Document/config/LAR_AEL metadata.xlsx\"\n M \"00 Reference Document/config/LAR_TCL metadata.xlsx\"\n D \"01 Screenshot/Exception Generator - Filename error.png\"\n D \"01 Screenshot/Wear Calculator - Config is still EAL TML from TOV640.png\"\n D \"01 Screenshot/config (metadata) - different format from TOV1050 and TOV640.png\"\n D \"02 Output Document/20260829_DRL_UT_PL_DIS_DIS_Exception_Report.xlsx\"\n M backend/app/api/endpoints/analysis.py\n M backend/app/core/analyzers.py\n M backend/app/core/chart_sampling.py\n M backend/app/core/data_ingestion.py\n M backend/app/core/exporter.py\n M backend/app/core/tov1050_data_ingestion.py\n M backend/app/core/tov1050_report_export.py\n M backend/app/main.py\n M backend/tests/test_chart_sampling.py\n M backend/tests/test_tov1050_report_export.py\n M \"config/ISL metadata.xlsx\"\n M \"config/LAR_AEL metadata.xlsx\"\n M \"config/LAR_TCL metadata.xlsx\"\n M frontend/src/api/__tests__/clientErrorLogging.test.ts\n M frontend/src/api/client.ts\n M frontend/src/components/ChartComponent.tsx\n M frontend/src/components/ExceptionTable.tsx\n M frontend/src/components/TaskLoadingState.tsx\n M frontend/src/store/useAnalysisStore.ts\n M frontend/src/types/api.ts\n M frontend/src/views/ExceptionGeneratorView.tsx\n M frontend/src/views/__tests__/ExceptionGeneratorView.test.tsx\n M \"outputs/metadata-review-2026-09-23/candidates/ISL metadata (wide candidate).xlsx\"\n?? \"00 Reference Document/Raw data/AEL/20260603_AEL_UT_SHO_AWE.csv\"\n?? \"00 Reference Document/Raw data/AEL/20260628_AEL_UT_AWE_SHO.csv\"\n?? \"00 Reference Document/Raw data/EAL/\"\n?? \"00 Reference Document/Raw data/TCL/\"\n?? \"00 Reference Document/Raw data/TKS/\"\n?? \"00 Reference Document/Raw data/TML/\"\n?? \"00 Reference Document/Raw data/TWL/\"\n?? \"01 Screenshot/Exception Generator graph.png\"\n?? \"01 Screenshot/graph (dot, missing after zoom out).png\"\n?? \"01 Screenshot/noise filtering method.png\"\n?? \"01 Screenshot/noise filtering type.png\"\n?? \"01 Screenshot/zigzag graph.png\"\n?? \"02 Output Document/AEL/\"\n?? \"02 Output Document/TWL/\"\n?? \"03 Graph/\"\n?? backend/app/api/endpoints/line_catalog.py\n?? backend/app/core/background_jobs.py\n?? backend/app/core/chainage_aggregation.py\n?? backend/app/core/chainage_reduction.py\n?? backend/app/core/chart_cache.py\n?? backend/app/core/chart_thresholds.py\n?? backend/app/core/line_registry.py\n?? backend/app/core/report_context.py\n?? backend/tests/test_background_analysis_jobs.py\n?? backend/tests/test_chainage_aggregation.py\n?? backend/tests/test_chainage_reduction.py\n?? backend/tests/test_median_analysis_snapshot.py\n?? config/line_catalog.json\n?? docs/plans/2026-10-29-dual-system-development-plan.md\n?? docs/requests/2026-10-23-exception-generator-start-action.md\n?? docs/requests/2026-10-26-exception-consensus-median-proposal.md\n?? docs/requests/2026-10-26-exception-generator-design-and-test-proposal.md\n?? docs/requests/2026-10-26-exception-generator-large-export-and-chainage.md\n?? docs/requests/2026-10-26-exception-generator-large-export-and-chart.md\n?? docs/requests/2026-10-26-exception-graph-extrema-and-reset-proposal.md\n?? docs/requests/2026-10-26-exception-median-sample-proposal.md\n?? docs/requests/2026-10-29-dual-system-test-feedback.md\n?? docs/superpowers/specs/2026-10-29-dual-system-support-design.md\n?? frontend/src/api/__tests__/analysisJobs.test.ts\n?? frontend/src/api/analysisJobs.ts\n?? frontend/src/components/__tests__/\n?? frontend/test-results/\n?? frontend/tests/exception-chart-browser-qa.mjs\n?? frontend/tests/exception-generator.spec.ts\n?? outputs/consensus-filter-study-2026-10-26/\n?? outputs/contract-regression-2026-10-23/batch-01/\n?? outputs/contract-regression-2026-10-23/batch-03/\n?? outputs/contract-regression-2026-10-23/batch-04/\n?? outputs/contract-regression-2026-10-23/batch-08/\n?? outputs/contract-regression-2026-10-23/batch-10/real-TKL-TKS-DT-0-summary.json\n?? outputs/contract-regression-2026-10-23/batch-10/real-fixture-coverage.csv\n?? outputs/contract-regression-2026-10-23/batch-10/real-results.json\n?? outputs/contract-regression-2026-10-23/batch-10/real-run-checkpoint.json\n?? outputs/contract-regression-2026-10-23/batch-10/tcl-unassigned-diagnostic.json\n?? outputs/contract-regression-2026-10-23/batch-10/tcl-uncovered-row-review.json\n?? outputs/contract-regression-2026-10-23/batch-10/tml-input.json\n?? outputs/contract-regression-2026-10-23/batch-10/tml-tov1050.json.gz\n?? outputs/contract-regression-2026-10-23/batch-10/tml-tov640.json.gz\n?? outputs/contract-regression-2026-10-23/batch-11/real-fixture-coverage.csv\n?? outputs/contract-regression-2026-10-23/batch-11/real-results.json\n?? outputs/contract-regression-2026-10-23/batch-11/real-run-checkpoint.json\n?? outputs/contract-regression-2026-10-23/batch-12/\n?? outputs/contract-regression-2026-10-23/batch-15/real-run-checkpoint.json\n?? outputs/contract-regression-2026-10-23/batch-16/canonical-asc-default-tov1050.json.gz\n?? outputs/contract-regression-2026-10-23/batch-16/canonical-asc-default-tov640.json.gz\n?? outputs/contract-regression-2026-10-23/batch-16/canonical-desc-custom-tov1050.json.gz\n?? outputs/contract-regression-2026-10-23/batch-16/canonical-desc-custom-tov640.json.gz\n?? outputs/contract-regression-2026-10-23/batch-16/canonical-isolated-levels-tov1050.json.gz\n?? outputs/contract-regression-2026-10-23/batch-16/canonical-isolated-levels-tov640.json.gz\n?? outputs/dual-system-2026-10-29/\n?? outputs/exception-performance-2026-10-26/\n?? \"outputs/metadata-capabilities-2026-10-23/batch-01/ISL metadata (compatibility review).png\"\n?? \"outputs/metadata-capabilities-2026-10-23/batch-01/KTL metadata (compatibility review).png\"\n?? \"outputs/metadata-capabilities-2026-10-23/batch-01/LAR_AEL metadata (compatibility review).png\"\n?? \"outputs/metadata-capabilities-2026-10-23/batch-01/LAR_TCL metadata (compatibility review).png\"\n?? \"outputs/metadata-capabilities-2026-10-23/batch-01/TKL metadata (compatibility review).png\"\n?? \"outputs/metadata-capabilities-2026-10-23/batch-01/TKS metadata (compatibility review).png\"\n?? \"outputs/metadata-capabilities-2026-10-23/batch-01/TWL metadata (compatibility review).png\"\n?? outputs/metadata-capabilities-2026-10-23/batch-01/candidate-readback-validation.json\n?? outputs/metadata-capabilities-2026-10-23/batch-01/candidates/\n?? outputs/metadata-capabilities-2026-10-23/batch-01/compatibility-layouts.json\n?? outputs/metadata-capabilities-2026-10-23/batch-01/drl-pl-inventory.json\n?? outputs/metadata-capabilities-2026-10-23/batch-01/metadata-capability-matrix.csv\n?? outputs/metadata-capabilities-2026-10-23/batch-01/runtime/\n?? outputs/metadata-capabilities-2026-10-23/batch-01/source-digest-check.csv\n?? outputs/metadata-capabilities-2026-10-23/batch-01/summary.json\n?? outputs/metadata-capabilities-2026-10-23/batch-01/tl-boundary-review.csv\n?? outputs/metadata-capabilities-2026-10-23/batch-01/workbook-build-manifest.json\n?? \"outputs/metadata-capabilities-2026-10-23/batch-02/ISL metadata (compatibility review).png\"\n?? \"outputs/metadata-capabilities-2026-10-23/batch-02/KTL metadata (compatibility review).png\"\n?? \"outputs/metadata-capabilities-2026-10-23/batch-02/LAR_AEL metadata (compatibility review).png\"\n?? \"outputs/metadata-capabilities-2026-10-23/batch-02/LAR_TCL metadata (compatibility review).png\"\n?? \"outputs/metadata-capabilities-2026-10-23/batch-02/TKL metadata (compatibility review).png\"\n?? \"outputs/metadata-capabilities-2026-10-23/batch-02/TKS metadata (compatibility review).png\"\n?? \"outputs/metadata-capabilities-2026-10-23/batch-02/TWL metadata (compatibility review).png\"\n?? \"outputs/metadata-capabilities-2026-10-23/batch-02/candidates/ISL metadata (compatibility review).xlsx.inspect.ndjson\"\n?? \"outputs/metadata-capabilities-2026-10-23/batch-02/candidates/KTL metadata (compatibility review).xlsx.inspect.ndjson\"\n?? \"outputs/metadata-capabilities-2026-10-23/batch-02/candidates/LAR_AEL metadata (compatibility review).xlsx.inspect.ndjson\"\n?? \"outputs/metadata-capabilities-2026-10-23/batch-02/candidates/LAR_TCL metadata (compatibility review).xlsx.inspect.ndjson\"\n?? \"outputs/metadata-capabilities-2026-10-23/batch-02/candidates/TKL metadata (compatibility review).xlsx.inspect.ndjson\"\n?? \"outputs/metadata-capabilities-2026-10-23/batch-02/candidates/TKS metadata (compatibility review).xlsx.inspect.ndjson\"\n?? \"outputs/metadata-capabilities-2026-10-23/batch-02/candidates/TWL metadata (compatibility review).xlsx.inspect.ndjson\"\n?? outputs/metadata-capabilities-2026-10-23/batch-02/compatibility-layouts.json\n?? outputs/metadata-review-2026-10-23/batch-03/\n",
+  "files": {
+    "00 Reference Document/Raw data/TML/TML_D1_260410.datac": {
+      "sha256": "da226284648bbec7c9e16c2d5d709aa6a39fb96fc6059c0ae88e9d85a54f48e0",
+      "bytes": 7494585
+    },
+    "00 Reference Document/Raw data/TWL/20260907_TWL_UT.csv": {
+      "sha256": "54ab7ede00922f56e29919518882381520d7181a9f233d4440b6726abea44e37",
+      "bytes": 117229324
+    },
+    "00 Reference Document/Raw data/TWL/20260630_TWL_UT.csv": {
+      "sha256": "e2ab667196694f07023ceb273e4fe7014fcab6a76165b5a0fec592ea55fbe251",
+      "bytes": 116478369
+    },
+    "02 Output Document/TWL/20260907_TWL_UT_MAINLINE_CEN_TSW_Exception_Report_MedianSample.xlsx": {
+      "sha256": "6fc93cf086fc04967fc0a292e87142decea52de3e4140d251d02f1b85e109887",
+      "bytes": 20624362
+    },
+    "02 Output Document/TWL/20260630_TWL_UT_MAINLINE_CEN_TSW_Exception_Report_MedianSample.xlsx": {
+      "sha256": "644aaef322666522d8cc51bb04b26000ce392ce2cb368f14be63e3389fe2ce21",
+      "bytes": 20386631
+    },
+    "02 Output Document/AEL/20260603_AEL_UT_MAINLINE_SHR_AWE_Exception_Report_MedianSample.xlsx": {
+      "sha256": "a3e0a3817d8cda5a8cedd2ffe51a2969bbafb47983956eafd043ec9516c99171",
+      "bytes": 13316521
+    },
+    "config/DRL metadata.xlsx": {
+      "sha256": "641477e23e3f9afae7b4d63a4829286f2f93680153d077f987b538367a4902cc",
+      "bytes": 32144
+    },
+    "config/EAL metadata.xlsx": {
+      "sha256": "089a5d26698bc93f78999b7bbe50bff4d3f583c231b8932f034c7ca74a866c77",
+      "bytes": 28273
+    },
+    "config/ISL metadata.xlsx": {
+      "sha256": "9545824187e6ed88fb2a43d56bd40e9371f62bd532a4193332ef4bd34c83aaf2",
+      "bytes": 259537
+    },
+    "config/KTL metadata.xlsx": {
+      "sha256": "441a91e9619c7582589759cc780ec1145089c9f10fa7ea4ae96bf09f19f153fa",
+      "bytes": 470934
+    },
+    "config/LAR_AEL metadata.xlsx": {
+      "sha256": "bb917e1952dfc94b1af340bd2aa01caff053341bf3835178f7d40ff203ffb6c7",
+      "bytes": 241590
+    },
+    "config/LAR_TCL metadata.xlsx": {
+      "sha256": "c5c7ed7d5fedbd2d3aeccb27a98cdc9b405fc32c6c7fd49d411dc2a35c19a362",
+      "bytes": 214330
+    },
+    "config/TKL metadata.xlsx": {
+      "sha256": "0ed287f48438c7b2ad60baab81e19597163b6c54e326115c17af6fef833fe4b4",
+      "bytes": 145794
+    },
+    "config/TKS metadata.xlsx": {
+      "sha256": "40a6979ed72c99fa5582d574e99f0c75f17f92bc9e07705989084ec5c69f5f6e",
+      "bytes": 53028
+    },
+    "config/TML metadata.xlsx": {
+      "sha256": "4529134e1b95fb614e5f72faaf0e40bf4483f8196de78d54e076cd615a49e1b5",
+      "bytes": 37703
+    },
+    "config/TWL metadata.xlsx": {
+      "sha256": "ac96e8d32b2ac7ccc3aea8c5bea68e450355fe4fb285febd43f43356c020d2ab",
+      "bytes": 246891
+    }
+  }
+}

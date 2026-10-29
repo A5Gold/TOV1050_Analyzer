@@ -1,5 +1,7 @@
 import pandas as pd
 import io
+import math
+from numbers import Real
 from typing import Dict, Any, List, Optional
 from datetime import datetime
 
@@ -15,6 +17,15 @@ DATE_COLUMNS = [
 
 # Columns that should be formatted as YYYY/MM/DD HH:mm:ss
 DATETIME_COLUMNS = ['saved_at', 'last_updated']
+
+
+def report_number_format(value, decimal_format: Optional[str]) -> Optional[str]:
+    """Keep integer cells free of a trailing decimal separator without rounding values."""
+    if decimal_format and isinstance(value, Real) and not isinstance(value, bool):
+        numeric = float(value)
+        if math.isfinite(numeric) and numeric.is_integer():
+            return "0"
+    return decimal_format
 
 
 def format_date_for_excel(value) -> str | None:
@@ -70,6 +81,29 @@ def format_datetime_for_excel(value) -> str | None:
 
 
 class ExcelExporter:
+    EXCEPTION_PROVENANCE_COLUMNS = [
+        'Line', 'Track',
+        'id', 'exception type', 'FromM', 'ToM', 'maxValue', 'maxLocation',
+        'peak_channel', 'peak_source_row', 'peak_sample_counter',
+    ]
+
+    @staticmethod
+    def chart_report_columns(frame: pd.DataFrame) -> List[str]:
+        """Keep legacy column order and append median sample lineage when present."""
+        columns = [name for name in ExcelExporter.CATENARY_COLUMNS if name in frame]
+        columns.extend(name for name in ('branch', 'source_line', 'source_track')
+                       if name in frame and name not in columns)
+        # A reduced row contains independent channel samples, rather than one raw row.
+        if any(name.endswith('_source_row') for name in frame.columns):
+            lineage = {
+                'group_id', 'pass_id', 'segment_id', 'sample_count',
+                'source_row_first', 'source_row_last', 'SampleCount_first', 'SampleCount_last',
+            }
+            columns.extend(name for name in frame.columns if name not in columns and (
+                name in lineage or name.endswith(('_source_row', '_sample_counter', '_valid_count'))
+            ))
+        return columns
+
     # Phase 10.10-F: Strict column order per spec 12.3 (matches ExceptionTable frontend)
     REPORT_COLUMNS = [
         # Task Run Data (#1-#7)
@@ -158,7 +192,7 @@ class ExcelExporter:
             if isinstance(data, list): # handle list of dicts
                 df = pd.DataFrame(data)
             elif isinstance(data, pd.DataFrame):
-                df = data
+                df = data.copy(deep=True)
             else:
                 continue
                 
@@ -186,7 +220,7 @@ class ExcelExporter:
             # Write Individual Sheets
             for exc_type, data in results.items():
                 if isinstance(data, pd.DataFrame):
-                    df = data
+                    df = data.copy(deep=True)
                 else:
                     df = pd.DataFrame(data)
                 
@@ -203,17 +237,45 @@ class ExcelExporter:
             # Phase 11 Issue 1 (12.3): ChartData uses same column order as
             # Catenary Report (CATENARY_COLUMNS) so all 31 columns are present.
             if chart_df is not None and not chart_df.empty:
-                ordered_cols = [
-                    c for c in ExcelExporter.CATENARY_COLUMNS
-                    if c in chart_df.columns
-                ]
+                ordered_cols = ExcelExporter.chart_report_columns(chart_df)
                 chart_df[ordered_cols].to_excel(
                     writer, sheet_name='ChartData', index=False
+                )
+
+            # Retain peak lineage separately so the established Summary layout stays stable.
+            provenance = []
+            default_line = ""
+            default_track = ""
+            if isinstance(chart_df, pd.DataFrame) and not chart_df.empty:
+                if "line" in chart_df:
+                    values = chart_df["line"].dropna()
+                    if not values.empty:
+                        default_line = values.iloc[0]
+                if "track" in chart_df:
+                    values = chart_df["track"].dropna()
+                    if not values.empty:
+                        default_track = values.iloc[0]
+            for exc_type, data in results.items():
+                df = data.copy(deep=True) if isinstance(data, pd.DataFrame) else pd.DataFrame(data)
+                if not df.empty and any(name in df for name in (
+                    'peak_channel', 'peak_source_row', 'peak_sample_counter'
+                )):
+                    if 'exception type' not in df:
+                        df['exception type'] = exc_type
+                    if 'Line' not in df:
+                        df['Line'] = df.get('line', default_line)
+                    if 'Track' not in df:
+                        df['Track'] = df.get('track', default_track)
+                    provenance.append(df.reindex(columns=ExcelExporter.EXCEPTION_PROVENANCE_COLUMNS))
+            if provenance:
+                pd.concat(provenance, ignore_index=True).to_excel(
+                    writer, sheet_name='ExceptionProvenance', index=False
                 )
             
             if numeric_format:
                 numeric_columns = {
                     "FromM", "ToM", "Length", "MaxValue", "MaxLocation", "Threshold Value",
+                    "maxValue", "maxLocation",
                     "Chainage", "stg_max", "stg_min", "height_min", "height_max", "wear_min", "wear_max",
                     *[f"{kind}{index}" for kind in ("height", "wear", "stagger") for index in range(1, 5)],
                 }
@@ -221,7 +283,7 @@ class ExcelExporter:
                     for column in sheet.iter_cols():
                         if column[0].value in numeric_columns:
                             for cell in column[1:]:
-                                cell.number_format = numeric_format
+                                cell.number_format = report_number_format(cell.value, numeric_format)
 
             # Write hidden _Metadata sheet if metadata provided
             if metadata:

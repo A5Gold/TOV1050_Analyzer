@@ -49,7 +49,7 @@ describe('useTrendStore', () => {
     expect(activeTab.error).toBeNull();
   });
 
-  it('infers the uploaded line from TML filenames and passes it to the trend API', async () => {
+  it('leaves line inference to the report reader without an EAL default', async () => {
     mockedUploadTrendFiles.mockResolvedValueOnce({ trend_results: [] });
 
     const reportA = new File(['a'], '20260130_TML_U2_TAW-HUH_Exception_Report.xlsx');
@@ -61,6 +61,6 @@ describe('useTrendStore', () => {
 
     await useTrendStore.getState().analyze();
 
-    expect(mockedUploadTrendFiles).toHaveBeenCalledWith([reportA, reportB], repeated, 'TML');
+    expect(mockedUploadTrendFiles).toHaveBeenCalledWith([reportA, reportB], repeated);
   });
 });

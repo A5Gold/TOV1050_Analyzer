@@ -1,0 +1,79 @@
+[
+  {
+    "file": "20260603_AEL_UT_MAINLINE_SHR_AWE_Exception_Report_MedianSample.xlsx",
+    "context": {
+      "line": "AEL",
+      "branch": "Mainline",
+      "direction": "UP",
+      "track": "UT",
+      "section": "Mainline",
+      "task_no": "U3",
+      "station_start": "SHR",
+      "station_end": "AWE",
+      "run_date": "20260603",
+      "legacy_session": "Mainline",
+      "source_line": "AEL",
+      "source_track": "UT",
+      "algorithm": "same_chainage_median_sample_v1",
+      "algorithm_mode": "chainage_median"
+    },
+    "preflight_seconds": 0.048,
+    "stagger": {
+      "status": 422,
+      "detail": {
+        "code": "STAGGER_CONFIG_UNAVAILABLE",
+        "message": "Stagger calculation is unavailable for AEL/Mainline/UP: approved branch support metadata, approved Keq strategy/coefficients",
+        "context": {
+          "line": "AEL",
+          "branch": "Mainline",
+          "direction": "UP"
+        },
+        "missing_configuration": [
+          "approved branch support metadata",
+          "approved Keq strategy/coefficients"
+        ]
+      },
+      "elapsed_seconds": 0.08
+    }
+  },
+  {
+    "file": "20260907_TWL_UT_MAINLINE_CEN_TSW_Exception_Report_MedianSample.xlsx",
+    "context": {
+      "line": "TWL",
+      "branch": "Mainline",
+      "direction": "UP",
+      "track": "UT",
+      "section": "Mainline",
+      "task_no": "U1",
+      "station_start": "CEN",
+      "station_end": "TSW",
+      "run_date": "20260907",
+      "legacy_session": "Mainline",
+      "source_line": "TWL",
+      "source_track": "UT",
+      "algorithm": "same_chainage_median_sample_v1",
+      "algorithm_mode": "chainage_median"
+    },
+    "preflight_seconds": 0.151
+  },
+  {
+    "file": "20260630_TWL_UT_MAINLINE_CEN_TSW_Exception_Report_MedianSample.xlsx",
+    "context": {
+      "line": "TWL",
+      "branch": "Mainline",
+      "direction": "UP",
+      "track": "UT",
+      "section": "Mainline",
+      "task_no": "U1",
+      "station_start": "CEN",
+      "station_end": "TSW",
+      "run_date": "20260630",
+      "legacy_session": "Mainline",
+      "source_line": "TWL",
+      "source_track": "UT",
+      "algorithm": "same_chainage_median_sample_v1",
+      "algorithm_mode": "chainage_median"
+    },
+    "preflight_seconds": 0.214
+  }
+]

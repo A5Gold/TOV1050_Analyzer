@@ -1,3 +1,4 @@
+import { normalizeReportIdentity } from '../config/lineCatalog';
 /**
  * Database Record View
  * =====================
@@ -355,9 +356,10 @@ const DatabaseRecordView: React.FC = () => {
 
       // Use first record to determine line/track/date or use defaults
       const firstRecord = jsonData[0];
-      const defaultLine = (firstRecord.line as string) || 'AEL';
-      const defaultTrack = (firstRecord.track as string) || 'UT';
-      const defaultDate = (firstRecord.date_str as string) || new Date().toISOString().slice(0, 10).replace(/-/g, '');
+      const defaultLine = normalizeReportIdentity(String(firstRecord.line || firstRecord.Line || ''), String(firstRecord.section || firstRecord.Section || '')).line;
+      const defaultTrack = String(firstRecord.track || firstRecord.Track || '');
+      const defaultDate = String(firstRecord.date_str || firstRecord['Run Date'] || firstRecord.task_run_date || '');
+      if (!defaultLine || !defaultTrack || !defaultDate) throw new Error('匯入資料缺少路線、方向或量測日期，不能使用預設值。');
 
       setToast({ open: true, message: 'Importing records...', severity: 'info' });
 

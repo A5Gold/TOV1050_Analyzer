@@ -126,7 +126,7 @@ describe('LineTabPanel', () => {
     await waitFor(() => {
       expect(fetchRepeatedRecords).toHaveBeenLastCalledWith({
         line: 'EAL',
-        section: 'LMC',
+        session: 'LMC',
         date_type: 'saved_at',
       });
     });

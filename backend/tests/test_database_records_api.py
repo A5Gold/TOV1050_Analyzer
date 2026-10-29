@@ -484,6 +484,8 @@ class TestRepeatedRecordsAPI:
             "rac": 1,
             "low_s1": 2,
             "lmc": 1,
+            'pl': 0,
+            'tks': 0,
             "unknown": 2,
         }
 
@@ -514,6 +516,8 @@ class TestRepeatedRecordsAPI:
             "rac": 1,
             "low_s1": 2,
             "lmc": 1,
+            'pl': 0,
+            'tks': 0,
             "unknown": 2,
         }
 
@@ -925,7 +929,7 @@ def test_save_approved_review_link_is_idempotent_and_version_guarded(test_client
         "line": "EAL",
         "track": "UP",
         "date_str": "20260220",
-        "repeated_exceptions": [{"id": current_id, "exception type": "Low Height", "level": "L1", "FromM": 1, "ToM": 2}],
+        "repeated_exceptions": [{"id": current_id, "Section": "Mainline", "exception type": "Low Height", "level": "L1", "FromM": 1, "ToM": 2}],
         "approved_recurrence_links": [{
             "exception_id": current_id,
             "target_record_id": target_id,

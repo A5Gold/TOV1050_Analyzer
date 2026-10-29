@@ -1,3 +1,4 @@
+import { apiErrorMessage } from '../api/errorMessage';
 import { create } from 'zustand';
 import { analyzeVersionDifference } from '../api/client';
 import {
@@ -138,10 +139,9 @@ export const useVersionDifferenceStore = create<VersionDifferenceStoreState>((se
         tabs: updateTab(current.tabs, tabId, { response, loading: false }),
       }));
     } catch (requestError: any) {
-      const detail = requestError?.response?.data?.detail;
       set(current => ({
         tabs: updateTab(current.tabs, tabId, {
-          error: typeof detail === 'string' ? detail : 'Version Difference analysis failed.',
+          error: apiErrorMessage(requestError, 'Version Difference analysis failed.'),
           loading: false,
         }),
       }));

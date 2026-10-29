@@ -1,0 +1,49 @@
+{
+  "baseURL": "http://127.0.0.1:5179",
+  "output": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\exception-performance-2026-10-26\\browser-qa-2026-10-26T03-15-59-391Z",
+  "fixture": "API fixtures, real React/Plotly/WebGL",
+  "results": [
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "checks": {},
+      "console": [
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 418 (I'm a teapot)"
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 418 (I'm a teapot)"
+        }
+      ],
+      "errors": [],
+      "details": [],
+      "status": "failed",
+      "failure": "locator.click: Timeout 25000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Exception Generator', exact: true })\u001b[22m\n\n    at C:\\Smart Maintanence\\TOV1050_Analyzer\\frontend\\tests\\exception-chart-browser-qa.mjs:81:84"
+    },
+    {
+      "viewport": {
+        "width": 1033,
+        "height": 640
+      },
+      "checks": {},
+      "console": [
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 418 (I'm a teapot)"
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 418 (I'm a teapot)"
+        }
+      ],
+      "errors": [],
+      "details": [],
+      "status": "failed",
+      "failure": "locator.click: Timeout 25000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Exception Generator', exact: true })\u001b[22m\n\n    at C:\\Smart Maintanence\\TOV1050_Analyzer\\frontend\\tests\\exception-chart-browser-qa.mjs:81:84"
+    }
+  ]
+}

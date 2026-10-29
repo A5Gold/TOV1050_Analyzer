@@ -1052,7 +1052,7 @@ def test_upload_wear_partitions_dedupe_and_metadata_lookup_by_identity(monkeypat
         ),
     ]
 
-    def fake_parse_exception_report(_file_bytes):
+    def fake_parse_exception_report(_file_bytes, filename=''):
         return [], chart_data
 
     class FakeMetadataManager:

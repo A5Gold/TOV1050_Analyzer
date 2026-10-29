@@ -1,0 +1,82 @@
+{
+  "source_rows": 41178,
+  "trimmed_each_end": 20,
+  "retained_rows": 41138,
+  "representative_rows": 41138,
+  "chainage_expected": "numeric KM*1000+LOCATION, agrees with legacy formatted composition at this source precision",
+  "measurement_oracle": {
+    "height1": {
+      "numeric_values_match": true,
+      "legacy_6_56_invalid_count": 0
+    },
+    "height2": {
+      "numeric_values_match": true,
+      "legacy_6_56_invalid_count": 0
+    },
+    "height3": {
+      "numeric_values_match": true,
+      "legacy_6_56_invalid_count": 0
+    },
+    "height4": {
+      "numeric_values_match": true,
+      "legacy_6_56_invalid_count": 0
+    },
+    "stagger1": {
+      "numeric_values_match": true,
+      "legacy_6_56_invalid_count": 0
+    },
+    "stagger2": {
+      "numeric_values_match": true,
+      "legacy_6_56_invalid_count": 0
+    },
+    "stagger3": {
+      "numeric_values_match": true,
+      "legacy_6_56_invalid_count": 0
+    },
+    "stagger4": {
+      "numeric_values_match": true,
+      "legacy_6_56_invalid_count": 0
+    },
+    "wear1": {
+      "numeric_values_match": true,
+      "legacy_6_56_invalid_count": 16
+    },
+    "wear2": {
+      "numeric_values_match": true,
+      "legacy_6_56_invalid_count": 21
+    },
+    "wear3": {
+      "numeric_values_match": true,
+      "legacy_6_56_invalid_count": 3
+    },
+    "wear4": {
+      "numeric_values_match": true,
+      "legacy_6_56_invalid_count": 0
+    }
+  },
+  "all_representative_values_equal_retained_values": true,
+  "first_retained": [
+    {
+      "Chainage": 91512.0,
+      "height1": 5310.98,
+      "stagger1": -263.98,
+      "wear1": 11.8,
+      "source_row_number": 22
+    },
+    {
+      "Chainage": 91511.75,
+      "height1": 5311.99,
+      "stagger1": -263.98,
+      "wear1": 11.76,
+      "source_row_number": 23
+    },
+    {
+      "Chainage": 91511.5,
+      "height1": 5311.99,
+      "stagger1": -265.98,
+      "wear1": 11.8,
+      "source_row_number": 24
+    }
+  ],
+  "algorithm": "same_chainage_median_sample_v1"
+}

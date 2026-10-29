@@ -1,0 +1,114 @@
+[
+  {
+    "path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\Raw data\\TKS\\20260902_TKS_DT.csv",
+    "sha256": "9263b95b8fdf705a805fc7d196943b83c61f7e58d4b31881509c8e0cdfae7d11",
+    "context": {
+      "file_path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\Raw data\\TKS\\20260902_TKS_DT.csv",
+      "line": "TKL",
+      "track": "DT",
+      "session": "TKS",
+      "section": "TKS",
+      "date_str": "20260902",
+      "station_start": "NOT_PROVIDED",
+      "station_end": "NOT_PROVIDED",
+      "client_session_id": "regression-TKL-TKS-DT-0"
+    },
+    "api_status": 400,
+    "report_status": "not_run",
+    "raw_status": "not_run",
+    "error": "TKS metadata.xlsx/TKL/TKS/DT: metadata coverage incomplete; track_intervals sheet=TKS DT: 10/130825 uncovered rows; Chainage_m=[64522.0, 64522.0, 64522.0, 64522.0, 64522.0, 64522.0, 64522.0, 64522.0, 64522.0, 64522.0]. Supply reviewed intervals; detector fallback is not permitted.",
+    "acceptance_status": "blocked_metadata_coverage",
+    "cleaning": {
+      "raw_row_count": 131222,
+      "retained_row_count": 130825,
+      "trimmed_leading_count": 100,
+      "trimmed_trailing_count": 100,
+      "io_value_count": 774765,
+      "invalid_chainage_count": 0,
+      "no_valid_measurement_count": 197,
+      "delimiter": ",",
+      "chunk_size": 50000,
+      "chainage_unit": "m",
+      "chainage_scale": 1000.0
+    },
+    "mapping_coverage": {
+      "class_intervals": {
+        "sheet": "Exception Boundarys",
+        "total_rows": 130825,
+        "uncovered_rows": 0,
+        "first_uncovered_chainages_m": []
+      },
+      "track_intervals": {
+        "sheet": "TKS DT",
+        "total_rows": 130825,
+        "uncovered_rows": 10,
+        "first_uncovered_chainages_m": [
+          64522.0,
+          64522.0,
+          64522.0,
+          64522.0,
+          64522.0,
+          64522.0,
+          64522.0,
+          64522.0,
+          64522.0,
+          64522.0
+        ]
+      }
+    },
+    "metadata_capabilities": {
+      "schema_version": "tov1050-metadata-capabilities-v1",
+      "workbook": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\TKS metadata.xlsx",
+      "workbook_sha256": "40a6979ed72c99fa5582d574e99f0c75f17f92bc9e07705989084ec5c69f5f6e",
+      "line": "TKL",
+      "session": "TKS",
+      "direction": "DT",
+      "chainage_unit": "m",
+      "enrichment_version": "tov640-first-nonempty-v1",
+      "overlap_state": "unknown",
+      "capabilities": {
+        "thresholds": {
+          "status": "available",
+          "count": 30,
+          "reason": ""
+        },
+        "class_intervals": {
+          "status": "available",
+          "count": 1,
+          "reason": ""
+        },
+        "track_intervals": {
+          "status": "available",
+          "count": 12,
+          "reason": ""
+        },
+        "bracket_points": {
+          "status": "available",
+          "count": 175,
+          "reason": ""
+        },
+        "landmark_points": {
+          "status": "available",
+          "count": 5,
+          "reason": ""
+        },
+        "tension_length_intervals": {
+          "status": "unavailable",
+          "count": 0,
+          "reason": "No approved physical interval source; observed bracket envelopes and landmark points are not intervals"
+        },
+        "overlap_intervals": {
+          "status": "unavailable",
+          "count": 0,
+          "reason": "No approved physical interval source; observed bracket envelopes and landmark points are not intervals"
+        },
+        "landmark_intervals": {
+          "status": "unavailable",
+          "count": 0,
+          "reason": "No approved physical interval source; observed bracket envelopes and landmark points are not intervals"
+        }
+      }
+    },
+    "fixture_context_confirmation": "Filename 20260902_TKS_DT.csv plus existing product contract: TKS is a TKL session"
+  }
+]

@@ -1,5 +1,6 @@
 import React from 'react';
-import exceptionDetectorImage from '../../assets/exception-detector-algorithm.png';
+import { GuideFlow } from '../About/GuideVisuals';
+import { measurementFlow } from '../About/aboutGuideContent';
 import {
     Dialog,
     DialogTitle,
@@ -40,7 +41,6 @@ const ExceptionAlgorithmDialog: React.FC<ExceptionAlgorithmDialogProps> = ({ ope
         alignItems: 'center',
         justifyContent: 'center',
         bgcolor: 'background.paper',
-        boxShadow: theme.shadows[1]
     };
 
     const arrowStyle = { 
@@ -67,9 +67,10 @@ const ExceptionAlgorithmDialog: React.FC<ExceptionAlgorithmDialogProps> = ({ ope
             <DialogContent sx={{ p: 4 }}>
                 <Grid container spacing={4}>
                     <Grid item xs={12}>
-                        <Box component="figure" sx={{ m: 0, display: 'flex', justifyContent: 'center' }}>
-                            <Box component="img" src={exceptionDetectorImage} alt="Exception detector algorithm flow" sx={{ width: '100%', maxWidth: 720, maxHeight: 260, objectFit: 'contain', borderRadius: 1 }} />
-                        </Box>
+                        <GuideFlow steps={measurementFlow} label="雙系統中位實測樣本與例外判定" desktopColumns={4} />
+                        <Typography variant="body2" sx={{ mt: 2 }}>
+                            DATAC 與 CSV 各用原格式清洗規則，再將相鄰精確同 chainage 群的各 channel 選為真實中位樣本；偶數取中間兩樣本中採集較早者。各 channel 可來自不同來源列，不取平均，不加入 noise filter。Detector、圖表與 Excel 使用同 revision 代表資料；圖表 envelope 只影響顯示。原始資料概覽略過中位精簡及判定，不能匯出例外報表。
+                        </Typography>
                     </Grid>
                     
                     {/* Section 1: Threshold Determination Flow */}
@@ -87,10 +88,10 @@ const ExceptionAlgorithmDialog: React.FC<ExceptionAlgorithmDialogProps> = ({ ope
                                 <Paper sx={flowBoxStyle}>
                                     <Typography variant="subtitle2" color="primary" gutterBottom>1. 上下文 (Context)</Typography>
                                     <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', justifyContent: 'center' }}>
-                                        <Chip label="Line (TOV1050)" size="small" color="default" />
+                                        <Chip label="Line + Branch" size="small" color="default" />
                                         <Chip label="Direction (UT / DT)" size="small" color="default" />
                                     </Box>
-                                    <Typography variant="caption" sx={{ mt: 1, display: 'block' }}>用戶選擇</Typography>
+                                    <Typography variant="caption" sx={{ mt: 1, display: 'block' }}>TOV640 / TOV1050 的選定 context</Typography>
                                 </Paper>
                             </Grid>
 
@@ -140,13 +141,15 @@ const ExceptionAlgorithmDialog: React.FC<ExceptionAlgorithmDialogProps> = ({ ope
                                 <Paper sx={{ ...flowBoxStyle, border: '2px solid', borderColor: 'success.main' }}>
                                     <Typography variant="subtitle2" color="success.main" gutterBottom>4. 輸出閾值</Typography>
                                     <Stack spacing={0.5} alignItems="center">
-                                        <Typography variant="caption" fontWeight="bold">L1 Limit</Typography>
-                                        <Typography variant="caption" fontWeight="bold">L2 Limit</Typography>
-                                        <Typography variant="caption" fontWeight="bold">L3 Limit</Typography>
+                                        <Typography variant="caption" fontWeight="bold">實際配置的 L1 / L2 / L3</Typography>
+                                        <Typography variant="caption">空白 level 不補值</Typography>
                                     </Stack>
                                 </Paper>
                             </Grid>
                         </Grid>
+                        <Typography variant="body2" sx={{ mt: 2 }}>
+                            門檻線與是否選取例外無關，預設可見並可關閉；使用同 revision metadata 的分段門檻，stagger 正負值分開保存。Class 未定義才 fallback both，Class 已定義但門檻空白則不 fallback。缺 Overlap／Tension Length／Landmark 的核准區間會保留 unknown 與原因，不補 N／0。
+                        </Typography>
                     </Grid>
 
                     <Grid item xs={12}>

@@ -57,6 +57,15 @@ interface ExceptionTableProps {
 }
 
 const ExceptionTable = ({ result, taskRunData }: ExceptionTableProps) => {
+  const enrichmentCapabilities: Record<string, string> = {
+    Overlap: 'overlap_intervals', 'Tension Length': 'tension_length_intervals', Landmark: 'landmark_intervals',
+  };
+  const missingEnrichment = (field: string) => {
+    const capability = result?.metadata_capabilities?.capabilities[enrichmentCapabilities[field]];
+    return capability?.status === 'unavailable'
+      ? { label: '未有核准資料', reason: capability.reason || '尚未提供核准的實體區間資料。' }
+      : { label: '未提供資料', reason: capability?.reason || '此位置沒有可用的對應資料；不代表已確認沒有 overlap。' };
+  };
   
   // Sort State
   const [order, setOrder] = useState<Order>('asc');
@@ -112,7 +121,7 @@ const ExceptionTable = ({ result, taskRunData }: ExceptionTableProps) => {
       if (filterClass !== 'All' && row.Class !== filterClass) return false;
       
       // Tension Length Filter
-      if (filterTL !== 'All' && row['Tension Length'] !== filterTL) return false;
+      if (filterTL !== 'All' && String(row['Tension Length']) !== filterTL) return false;
       
       // Range Filter (FromM / ToM logic)
       // Requirement: "filter by input the 'FromM and ToM' value"
@@ -275,7 +284,7 @@ const ExceptionTable = ({ result, taskRunData }: ExceptionTableProps) => {
       </Box>
 
       {/* Table */}
-      <TableContainer sx={{ flexGrow: 1 }}>
+      <TableContainer sx={{ flexGrow: 1, overflowX: 'auto' }}>
         <Table stickyHeader size="small">
           <TableHead>
             <TableRow>
@@ -337,9 +346,14 @@ const ExceptionTable = ({ result, taskRunData }: ExceptionTableProps) => {
                           }
                         }
                         
+                        const missing = column.id in enrichmentCapabilities &&
+                          (displayValue === null || displayValue === undefined || (typeof displayValue === 'string' && !displayValue.trim()));
+                        const missingState = missing ? missingEnrichment(column.id) : null;
                         return (
                             <TableCell key={column.id}>
-                            {displayValue}
+                            {missingState ? <Tooltip title={missingState.reason}>
+                              <Typography component="span" variant="body2" sx={{ whiteSpace: 'nowrap' }}>{missingState.label}</Typography>
+                            </Tooltip> : displayValue}
                             </TableCell>
                         );
                         })}

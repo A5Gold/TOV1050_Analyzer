@@ -1,0 +1,180 @@
+{
+  "engine": "stdlib",
+  "LXML": false,
+  "openpyxl": "3.1.5",
+  "python": "3.12.8 (tags/v3.12.8:2dc476b, Dec  3 2024, 19:30:04) [MSC v.1942 64 bit (AMD64)]",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "records": [
+    {
+      "iteration": 0,
+      "warmup": true,
+      "seconds": 16.837526600000274,
+      "bytes": 1047807,
+      "stages": [
+        [
+          "exporting",
+          0.5168141000012838
+        ],
+        [
+          "exporting_ChartData",
+          0.5846509000002698
+        ],
+        [
+          "exporting_ChainageStatistics",
+          15.937769300000582
+        ],
+        [
+          "finalizing",
+          15.955732300000818
+        ]
+      ]
+    },
+    {
+      "iteration": 1,
+      "warmup": false,
+      "seconds": 15.418015599998398,
+      "bytes": 1047809,
+      "stages": [
+        [
+          "exporting",
+          0.1586091999997734
+        ],
+        [
+          "exporting_ChartData",
+          0.20963729999857605
+        ],
+        [
+          "exporting_ChainageStatistics",
+          14.842096699998365
+        ],
+        [
+          "finalizing",
+          14.854474599998866
+        ]
+      ]
+    },
+    {
+      "iteration": 2,
+      "warmup": false,
+      "seconds": 18.480342400000154,
+      "bytes": 1047807,
+      "stages": [
+        [
+          "exporting",
+          0.18010190000131843
+        ],
+        [
+          "exporting_ChartData",
+          0.24074800000016694
+        ],
+        [
+          "exporting_ChainageStatistics",
+          17.742113500000414
+        ],
+        [
+          "finalizing",
+          17.75601749999987
+        ]
+      ]
+    },
+    {
+      "iteration": 3,
+      "warmup": false,
+      "seconds": 15.914158999999927,
+      "bytes": 1047807,
+      "stages": [
+        [
+          "exporting",
+          0.19786700000076962
+        ],
+        [
+          "exporting_ChartData",
+          0.25618910000048345
+        ],
+        [
+          "exporting_ChainageStatistics",
+          15.373863599999822
+        ],
+        [
+          "finalizing",
+          15.383379599999898
+        ]
+      ]
+    }
+  ],
+  "median_seconds": 15.914158999999927,
+  "fingerprint": [
+    {
+      "name": "Summary",
+      "state": "visible",
+      "rows": 6,
+      "columns": 21,
+      "cells": 126,
+      "sha256": "18fd18f46d3453f887b35a5e853853f9fcd9156bee81644f50d0c5a0a7db629a"
+    },
+    {
+      "name": "Low Height",
+      "state": "visible",
+      "rows": 2,
+      "columns": 21,
+      "cells": 42,
+      "sha256": "7353f373390d1a802bf52cc5fc09e968d6ab79b028eb297ea7319a57b1087dbc"
+    },
+    {
+      "name": "High Height",
+      "state": "visible",
+      "rows": 2,
+      "columns": 21,
+      "cells": 42,
+      "sha256": "9840b0b29112daa4a8c8a9b87f8bab8ebdf2640b4c9dc3ebd59495e2eef485f3"
+    },
+    {
+      "name": "Wire Wear",
+      "state": "visible",
+      "rows": 2,
+      "columns": 21,
+      "cells": 42,
+      "sha256": "0dd658a5ab1c775538f5b52a2cc88ce9d5345f9ffdee083e88274b1c2c2904b7"
+    },
+    {
+      "name": "Stagger Left",
+      "state": "visible",
+      "rows": 2,
+      "columns": 21,
+      "cells": 42,
+      "sha256": "17dabc27bbfd98b6d00bbbadf001e7604ae1d832e00dfbbc43a08b74947ef3bd"
+    },
+    {
+      "name": "Stagger Right",
+      "state": "visible",
+      "rows": 2,
+      "columns": 21,
+      "cells": 42,
+      "sha256": "171288a93f01d655e1eec5d46306ede60f6455daefdad8d845662db41f677316"
+    },
+    {
+      "name": "ChartData",
+      "state": "visible",
+      "rows": 10001,
+      "columns": 31,
+      "cells": 310031,
+      "sha256": "ba2474f0c855dd2c6b99f01c16405dd2c49e2e076116c764d733534508251662"
+    },
+    {
+      "name": "ChainageStatistics",
+      "state": "visible",
+      "rows": 21,
+      "columns": 10,
+      "cells": 202,
+      "sha256": "e635d12fc07466378a713a50ddca297267ee6fcdf04e432515cf3f7e14888b31"
+    },
+    {
+      "name": "_Metadata",
+      "state": "hidden",
+      "rows": 8,
+      "columns": 2,
+      "cells": 16,
+      "sha256": "5d25e292bfe5034f6e117631d3af5d91f1e273006f27ac5487b29be7d84bed65"
+    }
+  ]
+}

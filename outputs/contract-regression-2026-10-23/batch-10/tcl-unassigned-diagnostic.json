@@ -1,0 +1,116 @@
+{
+  "path": "00 Reference Document\\Raw data\\TCL\\20260618_032025_olpar.csv",
+  "source_sha256": "13efae7caa2e22b066d33f72c3b0bf1ad94a8436820ce3b182d52fa4157d51bc",
+  "cleaning": {
+    "raw_row_count": 601804,
+    "retained_row_count": 598044,
+    "trimmed_leading_count": 100,
+    "trimmed_trailing_count": 100,
+    "io_value_count": 3685467,
+    "invalid_chainage_count": 0,
+    "no_valid_measurement_count": 3560,
+    "delimiter": ",",
+    "chunk_size": 50000,
+    "chainage_unit": "m",
+    "chainage_scale": 1000.0
+  },
+  "retained_rows": 598044,
+  "chainage_min_m": 24352.8,
+  "chainage_max_m": 36341.2,
+  "line_values": {
+    "ORANGE LINE": 598044
+  },
+  "diagnostic_only": "filename and raw Line column do not encode direction/session; no detector/API pass inferred",
+  "UT": {
+    "class_intervals": {
+      "sheet": "Exception Boundarys",
+      "total_rows": 598044,
+      "uncovered_rows": 100,
+      "first_uncovered_chainages_m": [
+        33445.799999999996,
+        33445.799999999996,
+        33445.799999999996,
+        33445.799999999996,
+        33445.799999999996,
+        33445.799999999996,
+        33445.799999999996,
+        33445.799999999996,
+        33445.799999999996,
+        33445.799999999996,
+        33445.6,
+        33445.6,
+        33445.6,
+        33445.6,
+        33445.6,
+        33445.6,
+        33445.6,
+        33445.6,
+        33445.6,
+        33445.6
+      ]
+    },
+    "track_intervals": {
+      "sheet": "LAR_TCL UT",
+      "total_rows": 598044,
+      "uncovered_rows": 10,
+      "first_uncovered_chainages_m": [
+        32430.999999999996,
+        32430.999999999996,
+        32430.999999999996,
+        32430.999999999996,
+        32430.999999999996,
+        32430.999999999996,
+        32430.999999999996,
+        32430.999999999996,
+        32430.999999999996,
+        32430.999999999996
+      ]
+    }
+  },
+  "DT": {
+    "class_intervals": {
+      "sheet": "Exception Boundarys",
+      "total_rows": 598044,
+      "uncovered_rows": 100,
+      "first_uncovered_chainages_m": [
+        33445.799999999996,
+        33445.799999999996,
+        33445.799999999996,
+        33445.799999999996,
+        33445.799999999996,
+        33445.799999999996,
+        33445.799999999996,
+        33445.799999999996,
+        33445.799999999996,
+        33445.799999999996,
+        33445.6,
+        33445.6,
+        33445.6,
+        33445.6,
+        33445.6,
+        33445.6,
+        33445.6,
+        33445.6,
+        33445.6,
+        33445.6
+      ]
+    },
+    "track_intervals": {
+      "sheet": "LAR_TCL DT",
+      "total_rows": 598044,
+      "uncovered_rows": 10,
+      "first_uncovered_chainages_m": [
+        32430.999999999996,
+        32430.999999999996,
+        32430.999999999996,
+        32430.999999999996,
+        32430.999999999996,
+        32430.999999999996,
+        32430.999999999996,
+        32430.999999999996,
+        32430.999999999996,
+        32430.999999999996
+      ]
+    }
+  }
+}

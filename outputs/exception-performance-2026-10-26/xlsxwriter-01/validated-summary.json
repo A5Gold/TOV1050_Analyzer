@@ -1,0 +1,612 @@
+{
+  "python": "3.12.8 (tags/v3.12.8:2dc476b, Dec  3 2024, 19:30:04) [MSC v.1942 64 bit (AMD64)]",
+  "openpyxl": "3.1.5",
+  "LXML": false,
+  "xlsxwriter": "3.2.9",
+  "xlsxwriter_file": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\exception-performance-2026-10-26\\xlsxwriter-01\\target\\xlsxwriter\\__init__.py",
+  "fixture": {
+    "rows": 10000,
+    "columns": 31,
+    "numeric_columns": 19
+  },
+  "records": [
+    {
+      "engine": "openpyxl",
+      "iteration": 0,
+      "warmup": true,
+      "seconds": 15.616107699999702,
+      "bytes": 1047808
+    },
+    {
+      "engine": "xlsxwriter",
+      "iteration": 0,
+      "warmup": true,
+      "seconds": 8.632077800000843,
+      "bytes": 1067895
+    },
+    {
+      "engine": "openpyxl",
+      "iteration": 1,
+      "warmup": false,
+      "seconds": 19.057931900000767,
+      "bytes": 1047807
+    },
+    {
+      "engine": "xlsxwriter",
+      "iteration": 1,
+      "warmup": false,
+      "seconds": 12.867005000000063,
+      "bytes": 1067895
+    },
+    {
+      "engine": "xlsxwriter",
+      "iteration": 2,
+      "warmup": false,
+      "seconds": 11.74097939999956,
+      "bytes": 1067896
+    },
+    {
+      "engine": "openpyxl",
+      "iteration": 2,
+      "warmup": false,
+      "seconds": 21.87985420000041,
+      "bytes": 1047809
+    },
+    {
+      "engine": "openpyxl",
+      "iteration": 3,
+      "warmup": false,
+      "seconds": 19.70298659999935,
+      "bytes": 1047807
+    },
+    {
+      "engine": "xlsxwriter",
+      "iteration": 3,
+      "warmup": false,
+      "seconds": 12.261798399998952,
+      "bytes": 1067895
+    }
+  ],
+  "fingerprints": {
+    "openpyxl-0.xlsx": [
+      {
+        "name": "Summary",
+        "state": "visible",
+        "rows": 6,
+        "columns": 21,
+        "sha256": "938f36754b7ee6ea1f4428649d563e503782c9c4653adf6e6dacc0fd0c697fa1"
+      },
+      {
+        "name": "Low Height",
+        "state": "visible",
+        "rows": 2,
+        "columns": 21,
+        "sha256": "ae52af319fb29d6660c31d9e20ccae363c88e5a020d7bd127f220846510e1ab6"
+      },
+      {
+        "name": "High Height",
+        "state": "visible",
+        "rows": 2,
+        "columns": 21,
+        "sha256": "a4df5ac19a017de13e91a20ee8e4659b8e1345117e0d30dfcacc73b5e96acab9"
+      },
+      {
+        "name": "Wire Wear",
+        "state": "visible",
+        "rows": 2,
+        "columns": 21,
+        "sha256": "1432ce3ff149021cccc4e1ca48802d95ccbe97e2b0eebe49fce5355405e97f5b"
+      },
+      {
+        "name": "Stagger Left",
+        "state": "visible",
+        "rows": 2,
+        "columns": 21,
+        "sha256": "45a348bc9617d9cd7c81ba4b7d58feb8dd2ee8bf067e7f182dee662d59790fda"
+      },
+      {
+        "name": "Stagger Right",
+        "state": "visible",
+        "rows": 2,
+        "columns": 21,
+        "sha256": "77729f8df4901dbb0a5c15c86d8f8bf26dedae02677c3717636bb76519f8973c"
+      },
+      {
+        "name": "ChartData",
+        "state": "visible",
+        "rows": 10001,
+        "columns": 31,
+        "sha256": "e54703395b5eac1bbd7b32a4c612cd26dbb71a063a8c4980339e0d80967fb70e"
+      },
+      {
+        "name": "ChainageStatistics",
+        "state": "visible",
+        "rows": 21,
+        "columns": 10,
+        "sha256": "c4000b4f2c31805b1b4ac3da09e940d98cb7e0398167c67b79baca46bb2bba6a"
+      },
+      {
+        "name": "_Metadata",
+        "state": "hidden",
+        "rows": 8,
+        "columns": 2,
+        "sha256": "97ac876cf00e3ff29ed11c0a21a38dce439af4a3263157ff2723b8712f469b31"
+      }
+    ],
+    "xlsxwriter-0.xlsx": [
+      {
+        "name": "Summary",
+        "state": "visible",
+        "rows": 6,
+        "columns": 21,
+        "sha256": "938f36754b7ee6ea1f4428649d563e503782c9c4653adf6e6dacc0fd0c697fa1"
+      },
+      {
+        "name": "Low Height",
+        "state": "visible",
+        "rows": 2,
+        "columns": 21,
+        "sha256": "ae52af319fb29d6660c31d9e20ccae363c88e5a020d7bd127f220846510e1ab6"
+      },
+      {
+        "name": "High Height",
+        "state": "visible",
+        "rows": 2,
+        "columns": 21,
+        "sha256": "a4df5ac19a017de13e91a20ee8e4659b8e1345117e0d30dfcacc73b5e96acab9"
+      },
+      {
+        "name": "Wire Wear",
+        "state": "visible",
+        "rows": 2,
+        "columns": 21,
+        "sha256": "1432ce3ff149021cccc4e1ca48802d95ccbe97e2b0eebe49fce5355405e97f5b"
+      },
+      {
+        "name": "Stagger Left",
+        "state": "visible",
+        "rows": 2,
+        "columns": 21,
+        "sha256": "45a348bc9617d9cd7c81ba4b7d58feb8dd2ee8bf067e7f182dee662d59790fda"
+      },
+      {
+        "name": "Stagger Right",
+        "state": "visible",
+        "rows": 2,
+        "columns": 21,
+        "sha256": "77729f8df4901dbb0a5c15c86d8f8bf26dedae02677c3717636bb76519f8973c"
+      },
+      {
+        "name": "ChartData",
+        "state": "visible",
+        "rows": 10001,
+        "columns": 31,
+        "sha256": "e54703395b5eac1bbd7b32a4c612cd26dbb71a063a8c4980339e0d80967fb70e"
+      },
+      {
+        "name": "ChainageStatistics",
+        "state": "visible",
+        "rows": 21,
+        "columns": 10,
+        "sha256": "c4000b4f2c31805b1b4ac3da09e940d98cb7e0398167c67b79baca46bb2bba6a"
+      },
+      {
+        "name": "_Metadata",
+        "state": "hidden",
+        "rows": 8,
+        "columns": 2,
+        "sha256": "97ac876cf00e3ff29ed11c0a21a38dce439af4a3263157ff2723b8712f469b31"
+      }
+    ],
+    "openpyxl-1.xlsx": [
+      {
+        "name": "Summary",
+        "state": "visible",
+        "rows": 6,
+        "columns": 21,
+        "sha256": "938f36754b7ee6ea1f4428649d563e503782c9c4653adf6e6dacc0fd0c697fa1"
+      },
+      {
+        "name": "Low Height",
+        "state": "visible",
+        "rows": 2,
+        "columns": 21,
+        "sha256": "ae52af319fb29d6660c31d9e20ccae363c88e5a020d7bd127f220846510e1ab6"
+      },
+      {
+        "name": "High Height",
+        "state": "visible",
+        "rows": 2,
+        "columns": 21,
+        "sha256": "a4df5ac19a017de13e91a20ee8e4659b8e1345117e0d30dfcacc73b5e96acab9"
+      },
+      {
+        "name": "Wire Wear",
+        "state": "visible",
+        "rows": 2,
+        "columns": 21,
+        "sha256": "1432ce3ff149021cccc4e1ca48802d95ccbe97e2b0eebe49fce5355405e97f5b"
+      },
+      {
+        "name": "Stagger Left",
+        "state": "visible",
+        "rows": 2,
+        "columns": 21,
+        "sha256": "45a348bc9617d9cd7c81ba4b7d58feb8dd2ee8bf067e7f182dee662d59790fda"
+      },
+      {
+        "name": "Stagger Right",
+        "state": "visible",
+        "rows": 2,
+        "columns": 21,
+        "sha256": "77729f8df4901dbb0a5c15c86d8f8bf26dedae02677c3717636bb76519f8973c"
+      },
+      {
+        "name": "ChartData",
+        "state": "visible",
+        "rows": 10001,
+        "columns": 31,
+        "sha256": "e54703395b5eac1bbd7b32a4c612cd26dbb71a063a8c4980339e0d80967fb70e"
+      },
+      {
+        "name": "ChainageStatistics",
+        "state": "visible",
+        "rows": 21,
+        "columns": 10,
+        "sha256": "c4000b4f2c31805b1b4ac3da09e940d98cb7e0398167c67b79baca46bb2bba6a"
+      },
+      {
+        "name": "_Metadata",
+        "state": "hidden",
+        "rows": 8,
+        "columns": 2,
+        "sha256": "97ac876cf00e3ff29ed11c0a21a38dce439af4a3263157ff2723b8712f469b31"
+      }
+    ],
+    "xlsxwriter-1.xlsx": [
+      {
+        "name": "Summary",
+        "state": "visible",
+        "rows": 6,
+        "columns": 21,
+        "sha256": "938f36754b7ee6ea1f4428649d563e503782c9c4653adf6e6dacc0fd0c697fa1"
+      },
+      {
+        "name": "Low Height",
+        "state": "visible",
+        "rows": 2,
+        "columns": 21,
+        "sha256": "ae52af319fb29d6660c31d9e20ccae363c88e5a020d7bd127f220846510e1ab6"
+      },
+      {
+        "name": "High Height",
+        "state": "visible",
+        "rows": 2,
+        "columns": 21,
+        "sha256": "a4df5ac19a017de13e91a20ee8e4659b8e1345117e0d30dfcacc73b5e96acab9"
+      },
+      {
+        "name": "Wire Wear",
+        "state": "visible",
+        "rows": 2,
+        "columns": 21,
+        "sha256": "1432ce3ff149021cccc4e1ca48802d95ccbe97e2b0eebe49fce5355405e97f5b"
+      },
+      {
+        "name": "Stagger Left",
+        "state": "visible",
+        "rows": 2,
+        "columns": 21,
+        "sha256": "45a348bc9617d9cd7c81ba4b7d58feb8dd2ee8bf067e7f182dee662d59790fda"
+      },
+      {
+        "name": "Stagger Right",
+        "state": "visible",
+        "rows": 2,
+        "columns": 21,
+        "sha256": "77729f8df4901dbb0a5c15c86d8f8bf26dedae02677c3717636bb76519f8973c"
+      },
+      {
+        "name": "ChartData",
+        "state": "visible",
+        "rows": 10001,
+        "columns": 31,
+        "sha256": "e54703395b5eac1bbd7b32a4c612cd26dbb71a063a8c4980339e0d80967fb70e"
+      },
+      {
+        "name": "ChainageStatistics",
+        "state": "visible",
+        "rows": 21,
+        "columns": 10,
+        "sha256": "c4000b4f2c31805b1b4ac3da09e940d98cb7e0398167c67b79baca46bb2bba6a"
+      },
+      {
+        "name": "_Metadata",
+        "state": "hidden",
+        "rows": 8,
+        "columns": 2,
+        "sha256": "97ac876cf00e3ff29ed11c0a21a38dce439af4a3263157ff2723b8712f469b31"
+      }
+    ],
+    "xlsxwriter-2.xlsx": [
+      {
+        "name": "Summary",
+        "state": "visible",
+        "rows": 6,
+        "columns": 21,
+        "sha256": "938f36754b7ee6ea1f4428649d563e503782c9c4653adf6e6dacc0fd0c697fa1"
+      },
+      {
+        "name": "Low Height",
+        "state": "visible",
+        "rows": 2,
+        "columns": 21,
+        "sha256": "ae52af319fb29d6660c31d9e20ccae363c88e5a020d7bd127f220846510e1ab6"
+      },
+      {
+        "name": "High Height",
+        "state": "visible",
+        "rows": 2,
+        "columns": 21,
+        "sha256": "a4df5ac19a017de13e91a20ee8e4659b8e1345117e0d30dfcacc73b5e96acab9"
+      },
+      {
+        "name": "Wire Wear",
+        "state": "visible",
+        "rows": 2,
+        "columns": 21,
+        "sha256": "1432ce3ff149021cccc4e1ca48802d95ccbe97e2b0eebe49fce5355405e97f5b"
+      },
+      {
+        "name": "Stagger Left",
+        "state": "visible",
+        "rows": 2,
+        "columns": 21,
+        "sha256": "45a348bc9617d9cd7c81ba4b7d58feb8dd2ee8bf067e7f182dee662d59790fda"
+      },
+      {
+        "name": "Stagger Right",
+        "state": "visible",
+        "rows": 2,
+        "columns": 21,
+        "sha256": "77729f8df4901dbb0a5c15c86d8f8bf26dedae02677c3717636bb76519f8973c"
+      },
+      {
+        "name": "ChartData",
+        "state": "visible",
+        "rows": 10001,
+        "columns": 31,
+        "sha256": "e54703395b5eac1bbd7b32a4c612cd26dbb71a063a8c4980339e0d80967fb70e"
+      },
+      {
+        "name": "ChainageStatistics",
+        "state": "visible",
+        "rows": 21,
+        "columns": 10,
+        "sha256": "c4000b4f2c31805b1b4ac3da09e940d98cb7e0398167c67b79baca46bb2bba6a"
+      },
+      {
+        "name": "_Metadata",
+        "state": "hidden",
+        "rows": 8,
+        "columns": 2,
+        "sha256": "97ac876cf00e3ff29ed11c0a21a38dce439af4a3263157ff2723b8712f469b31"
+      }
+    ],
+    "openpyxl-2.xlsx": [
+      {
+        "name": "Summary",
+        "state": "visible",
+        "rows": 6,
+        "columns": 21,
+        "sha256": "938f36754b7ee6ea1f4428649d563e503782c9c4653adf6e6dacc0fd0c697fa1"
+      },
+      {
+        "name": "Low Height",
+        "state": "visible",
+        "rows": 2,
+        "columns": 21,
+        "sha256": "ae52af319fb29d6660c31d9e20ccae363c88e5a020d7bd127f220846510e1ab6"
+      },
+      {
+        "name": "High Height",
+        "state": "visible",
+        "rows": 2,
+        "columns": 21,
+        "sha256": "a4df5ac19a017de13e91a20ee8e4659b8e1345117e0d30dfcacc73b5e96acab9"
+      },
+      {
+        "name": "Wire Wear",
+        "state": "visible",
+        "rows": 2,
+        "columns": 21,
+        "sha256": "1432ce3ff149021cccc4e1ca48802d95ccbe97e2b0eebe49fce5355405e97f5b"
+      },
+      {
+        "name": "Stagger Left",
+        "state": "visible",
+        "rows": 2,
+        "columns": 21,
+        "sha256": "45a348bc9617d9cd7c81ba4b7d58feb8dd2ee8bf067e7f182dee662d59790fda"
+      },
+      {
+        "name": "Stagger Right",
+        "state": "visible",
+        "rows": 2,
+        "columns": 21,
+        "sha256": "77729f8df4901dbb0a5c15c86d8f8bf26dedae02677c3717636bb76519f8973c"
+      },
+      {
+        "name": "ChartData",
+        "state": "visible",
+        "rows": 10001,
+        "columns": 31,
+        "sha256": "e54703395b5eac1bbd7b32a4c612cd26dbb71a063a8c4980339e0d80967fb70e"
+      },
+      {
+        "name": "ChainageStatistics",
+        "state": "visible",
+        "rows": 21,
+        "columns": 10,
+        "sha256": "c4000b4f2c31805b1b4ac3da09e940d98cb7e0398167c67b79baca46bb2bba6a"
+      },
+      {
+        "name": "_Metadata",
+        "state": "hidden",
+        "rows": 8,
+        "columns": 2,
+        "sha256": "97ac876cf00e3ff29ed11c0a21a38dce439af4a3263157ff2723b8712f469b31"
+      }
+    ],
+    "openpyxl-3.xlsx": [
+      {
+        "name": "Summary",
+        "state": "visible",
+        "rows": 6,
+        "columns": 21,
+        "sha256": "938f36754b7ee6ea1f4428649d563e503782c9c4653adf6e6dacc0fd0c697fa1"
+      },
+      {
+        "name": "Low Height",
+        "state": "visible",
+        "rows": 2,
+        "columns": 21,
+        "sha256": "ae52af319fb29d6660c31d9e20ccae363c88e5a020d7bd127f220846510e1ab6"
+      },
+      {
+        "name": "High Height",
+        "state": "visible",
+        "rows": 2,
+        "columns": 21,
+        "sha256": "a4df5ac19a017de13e91a20ee8e4659b8e1345117e0d30dfcacc73b5e96acab9"
+      },
+      {
+        "name": "Wire Wear",
+        "state": "visible",
+        "rows": 2,
+        "columns": 21,
+        "sha256": "1432ce3ff149021cccc4e1ca48802d95ccbe97e2b0eebe49fce5355405e97f5b"
+      },
+      {
+        "name": "Stagger Left",
+        "state": "visible",
+        "rows": 2,
+        "columns": 21,
+        "sha256": "45a348bc9617d9cd7c81ba4b7d58feb8dd2ee8bf067e7f182dee662d59790fda"
+      },
+      {
+        "name": "Stagger Right",
+        "state": "visible",
+        "rows": 2,
+        "columns": 21,
+        "sha256": "77729f8df4901dbb0a5c15c86d8f8bf26dedae02677c3717636bb76519f8973c"
+      },
+      {
+        "name": "ChartData",
+        "state": "visible",
+        "rows": 10001,
+        "columns": 31,
+        "sha256": "e54703395b5eac1bbd7b32a4c612cd26dbb71a063a8c4980339e0d80967fb70e"
+      },
+      {
+        "name": "ChainageStatistics",
+        "state": "visible",
+        "rows": 21,
+        "columns": 10,
+        "sha256": "c4000b4f2c31805b1b4ac3da09e940d98cb7e0398167c67b79baca46bb2bba6a"
+      },
+      {
+        "name": "_Metadata",
+        "state": "hidden",
+        "rows": 8,
+        "columns": 2,
+        "sha256": "97ac876cf00e3ff29ed11c0a21a38dce439af4a3263157ff2723b8712f469b31"
+      }
+    ],
+    "xlsxwriter-3.xlsx": [
+      {
+        "name": "Summary",
+        "state": "visible",
+        "rows": 6,
+        "columns": 21,
+        "sha256": "938f36754b7ee6ea1f4428649d563e503782c9c4653adf6e6dacc0fd0c697fa1"
+      },
+      {
+        "name": "Low Height",
+        "state": "visible",
+        "rows": 2,
+        "columns": 21,
+        "sha256": "ae52af319fb29d6660c31d9e20ccae363c88e5a020d7bd127f220846510e1ab6"
+      },
+      {
+        "name": "High Height",
+        "state": "visible",
+        "rows": 2,
+        "columns": 21,
+        "sha256": "a4df5ac19a017de13e91a20ee8e4659b8e1345117e0d30dfcacc73b5e96acab9"
+      },
+      {
+        "name": "Wire Wear",
+        "state": "visible",
+        "rows": 2,
+        "columns": 21,
+        "sha256": "1432ce3ff149021cccc4e1ca48802d95ccbe97e2b0eebe49fce5355405e97f5b"
+      },
+      {
+        "name": "Stagger Left",
+        "state": "visible",
+        "rows": 2,
+        "columns": 21,
+        "sha256": "45a348bc9617d9cd7c81ba4b7d58feb8dd2ee8bf067e7f182dee662d59790fda"
+      },
+      {
+        "name": "Stagger Right",
+        "state": "visible",
+        "rows": 2,
+        "columns": 21,
+        "sha256": "77729f8df4901dbb0a5c15c86d8f8bf26dedae02677c3717636bb76519f8973c"
+      },
+      {
+        "name": "ChartData",
+        "state": "visible",
+        "rows": 10001,
+        "columns": 31,
+        "sha256": "e54703395b5eac1bbd7b32a4c612cd26dbb71a063a8c4980339e0d80967fb70e"
+      },
+      {
+        "name": "ChainageStatistics",
+        "state": "visible",
+        "rows": 21,
+        "columns": 10,
+        "sha256": "c4000b4f2c31805b1b4ac3da09e940d98cb7e0398167c67b79baca46bb2bba6a"
+      },
+      {
+        "name": "_Metadata",
+        "state": "hidden",
+        "rows": 8,
+        "columns": 2,
+        "sha256": "97ac876cf00e3ff29ed11c0a21a38dce439af4a3263157ff2723b8712f469b31"
+      }
+    ]
+  },
+  "all_equal": true,
+  "matches": {
+    "openpyxl-0.xlsx": true,
+    "xlsxwriter-0.xlsx": true,
+    "openpyxl-1.xlsx": true,
+    "xlsxwriter-1.xlsx": true,
+    "xlsxwriter-2.xlsx": true,
+    "openpyxl-2.xlsx": true,
+    "openpyxl-3.xlsx": true,
+    "xlsxwriter-3.xlsx": true
+  },
+  "limitations": [
+    "Concurrent full benchmark creates background load; synthetic fixture only.",
+    "Compares values, nonblank data types, number formats, row/column order and hidden state; blank XML type is normalized.",
+    "Full header styles/layout contract, cancellation/temp cleanup, ZIP64/large-file, packaging remain unvalidated; prototype is disposable."
+  ],
+  "openpyxl_median_seconds": 19.70298659999935,
+  "xlsxwriter_median_seconds": 12.261798399998952,
+  "speedup": 1.606859447305954,
+  "validation_correction": "Absent openpyxl EmptyCell.number_format=None normalized to Excel General; first failed summary retained unchanged. No workbook or timing rerun."
+}

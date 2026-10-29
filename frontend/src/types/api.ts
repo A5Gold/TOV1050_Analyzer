@@ -1,4 +1,6 @@
 // Request Types
+export type AnalysisMode = 'median' | 'raw_overview';
+
 export interface AnalyzeRequest {
   file_path: string;
   line: string;
@@ -10,6 +12,22 @@ export interface AnalyzeRequest {
   station_start?: string;
   station_end?: string;
   client_session_id?: string;
+  analysis_mode?: AnalysisMode;
+  chart_data_mode?: 'raw' | 'chainage_mean' | 'chainage_median';
+}
+
+export interface BackgroundJob {
+  job_id: string;
+  kind: 'analysis' | 'report' | string;
+  status: 'queued' | 'running' | 'cancelling' | 'ready' | 'failed' | 'cancelled' | 'timed_out';
+  stage: string;
+  processed?: number | null;
+  total?: number | null;
+  unit?: string | null;
+  stage_percent?: number | null;
+  elapsed_seconds: number;
+  error?: string | null;
+  analysis_revision?: string | null;
 }
 
 // Response Types
@@ -30,8 +48,22 @@ export interface MetadataCapabilities {
   }>;
 }
 
+export interface ChartThresholdSegment {
+  from_m: number;
+  to_m: number;
+  metric: string;
+  exception_type: string;
+  level: string;
+  value: number;
+}
+
 export interface AnalysisResponse {
+  threshold_segments?: ChartThresholdSegment[];
+  chart_domain?: { from_m: number; to_m: number } | null;
   status: string;
+  analysis_mode?: AnalysisMode;
+  chart_view?: 'chainage_median' | 'raw';
+  aggregation_metadata?: Record<string, unknown>;
   params: AnalyzeRequest;
   exceptions: Record<string, ExceptionRecord[]>;
   boundaries: BoundaryRecord[];
@@ -43,8 +75,12 @@ export interface AnalysisResponse {
     strategy: 'raw' | 'min_max_envelope' | 'empty' | 'none';
     from_m?: number | null;
     to_m?: number | null;
+    aggregation?: 'chainage_mean' | 'chainage_median' | 'raw';
+    raw_points?: number;
+    grouped_points?: number;
   };
   client_session_id?: string;
+  analysis_revision?: string;
   metadata_capabilities?: MetadataCapabilities | null;
 }
 
@@ -65,6 +101,9 @@ export interface ExceptionRecord {
   'Threshold Value': number | null;
   Section: string;
   'Previous ID'?: string;
+  peak_channel?: string;
+  peak_source_row?: number | null;
+  peak_sample_counter?: number | null;
 }
 
 export interface BoundaryRecord {
@@ -223,7 +262,8 @@ export interface DatabaseFilters {
   line?: string;
   track?: string;
   section?: string;
-  session?: import('../config/tov1050').Tov1050Session;
+  /** Branch/session key supplied by the shared line catalog. */
+  session?: string;
   date_from?: string;
   date_to?: string;
   level?: string;
@@ -258,6 +298,8 @@ export interface DatabaseFilters {
  * Enhanced (2026-01-31): Added 9 new workflow columns
  */
 export interface SavedRepeatedRecord {
+  /** Stored branch, independent of the geographical section. */
+  session?: string;
   record_id: number;
   exception_id: string;
   exception_type: string;
@@ -314,6 +356,7 @@ export interface SavedRepeatedRecord {
  * Request to save repeated records (Sub-module 2)
  */
 export interface SaveRepeatedRecordsRequest {
+  session?: string;
   line: string;
   track: string;
   date_str: string;
@@ -380,6 +423,8 @@ export interface SaveRecordsResponse {
  * Repeated records list API response
  */
 export interface RepeatedRecordSectionCounts {
+  pl?: number;
+  tks?: number;
   all: number;
   mainline: number;
   rac: number;
@@ -389,6 +434,7 @@ export interface RepeatedRecordSectionCounts {
 }
 
 export interface RepeatedRecordsResponse {
+  branch_counts?: Record<string, number>;
   status: string;
   total: number;
   section_counts: RepeatedRecordSectionCounts;
@@ -442,6 +488,7 @@ export interface Check1YearException {
  * Request for Check 1 Year Record feature
  */
 export interface Check1YearRequest {
+  session?: string;
   current_date: string;
   line: string;
   track: string;

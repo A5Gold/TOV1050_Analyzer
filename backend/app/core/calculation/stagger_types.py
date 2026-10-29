@@ -31,6 +31,7 @@ class SelectedSummaryRecord:
     max_value: float | None = None
     max_location: float = 0.0
     chi_source: str = "exception_report"
+    branch: str = ""
 
 
 @dataclass(slots=True)
@@ -88,3 +89,4 @@ class StaggerSummaryResult:
     trace_status: str = "partial"
     chi_source: str = "exception_report"
     remark: list[str] = field(default_factory=list)
+    branch: str = ""

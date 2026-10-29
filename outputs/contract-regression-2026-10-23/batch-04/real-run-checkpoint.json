@@ -1,0 +1,158 @@
+[
+  {
+    "path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\Raw data\\AEL\\20260822_AEL_UT_SHO_AWE.csv",
+    "sha256": "6bea775cc19eb19a9d2124cff5a828d15879c431e90f1933689d914dfedeff93",
+    "context": {
+      "file_path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\Raw data\\AEL\\20260822_AEL_UT_SHO_AWE.csv",
+      "line": "AEL",
+      "track": "UT",
+      "session": "Mainline",
+      "section": "Mainline",
+      "date_str": "20260822",
+      "station_start": "SHO",
+      "station_end": "AWE",
+      "client_session_id": "regression-AEL-Mainline-UT-0"
+    },
+    "cleaning": {
+      "raw_row_count": 476,
+      "retained_row_count": 276,
+      "trimmed_leading_count": 100,
+      "trimmed_trailing_count": 100,
+      "io_value_count": 3309,
+      "invalid_chainage_count": 0,
+      "no_valid_measurement_count": 0,
+      "delimiter": ",",
+      "chunk_size": 50000,
+      "chainage_unit": "m",
+      "chainage_scale": 1000.0
+    },
+    "exception_counts": {
+      "Low Height": 0,
+      "High Height": 0,
+      "Wire Wear": 0,
+      "Stagger Left": 0,
+      "Stagger Right": 0
+    },
+    "api_status": 200,
+    "report_status": 200,
+    "raw_status": 200,
+    "raw_rows": 276,
+    "verified_columns": [
+      "Chainage",
+      "height1",
+      "height2",
+      "height3",
+      "height4",
+      "stagger1",
+      "stagger2",
+      "stagger3",
+      "stagger4",
+      "wear1",
+      "wear2",
+      "wear3",
+      "wear4",
+      "source_row_number",
+      "source_chainage_km",
+      "height_min",
+      "height_max",
+      "wear_min",
+      "wear_max",
+      "stg_max",
+      "stg_min"
+    ],
+    "report_sha256": "9a5f155c089daebe7231e047f55ff4db63949f28c41b377096a35dc807bcf3fb",
+    "raw_sha256": "d46f935d4bd557b01933ed8be6476eec720883a924fab7946a32ddaa642bd026",
+    "report_bytes": 42757,
+    "raw_bytes": 57982,
+    "chart_rows_verified": 276,
+    "chart_columns_verified": [
+      "task_run_date",
+      "line",
+      "track",
+      "Section",
+      "task_no",
+      "station_start",
+      "station_end",
+      "Chainage",
+      "height1",
+      "height2",
+      "height3",
+      "height4",
+      "stagger1",
+      "stagger2",
+      "stagger3",
+      "stagger4",
+      "wear1",
+      "wear2",
+      "wear3",
+      "wear4",
+      "Track Type",
+      "Overlap",
+      "Tension Length",
+      "Landmark",
+      "Class",
+      "height_min",
+      "height_max",
+      "wear_min",
+      "wear_max",
+      "stg_max",
+      "stg_min"
+    ],
+    "summary_rows_verified": 0,
+    "station_context": "source filename",
+    "metadata_capabilities": {
+      "schema_version": "tov1050-metadata-capabilities-v1",
+      "workbook": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\LAR_AEL metadata.xlsx",
+      "workbook_sha256": "e462ea9cf72620846be28a390091c3433a6bf91c77d28f70aef00e14848b67b7",
+      "line": "AEL",
+      "session": "Mainline",
+      "direction": "UT",
+      "chainage_unit": "m",
+      "enrichment_version": "tov640-first-nonempty-v1",
+      "overlap_state": "unknown",
+      "capabilities": {
+        "thresholds": {
+          "status": "available",
+          "count": 30,
+          "reason": ""
+        },
+        "class_intervals": {
+          "status": "available",
+          "count": 6,
+          "reason": ""
+        },
+        "track_intervals": {
+          "status": "available",
+          "count": 77,
+          "reason": ""
+        },
+        "bracket_points": {
+          "status": "available",
+          "count": 1422,
+          "reason": ""
+        },
+        "landmark_points": {
+          "status": "unavailable",
+          "count": 0,
+          "reason": "No classified point records"
+        },
+        "tension_length_intervals": {
+          "status": "unavailable",
+          "count": 0,
+          "reason": "No approved physical interval source; observed bracket envelopes and landmark points are not intervals"
+        },
+        "overlap_intervals": {
+          "status": "unavailable",
+          "count": 0,
+          "reason": "No approved physical interval source; observed bracket envelopes and landmark points are not intervals"
+        },
+        "landmark_intervals": {
+          "status": "unavailable",
+          "count": 0,
+          "reason": "No approved physical interval source; observed bracket envelopes and landmark points are not intervals"
+        }
+      }
+    },
+    "limitation": "Zero-exception fixture cannot establish real peak/level/ID acceptance"
+  }
+]

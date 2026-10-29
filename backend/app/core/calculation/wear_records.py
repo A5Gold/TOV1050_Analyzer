@@ -52,11 +52,13 @@ class WireWearSaveResult:
 def normalize_line_group(line_group: str, line_class: str) -> tuple[str, str]:
     normalized_group = (line_group or "").strip().upper()
     normalized_class = (line_class or normalized_group).strip().upper()
-    if normalized_class == "LMC":
+    if normalized_class == "LMC" and normalized_group in {'EAL', 'LMC'}:
         return "EAL", "LMC"
-    if normalized_class == "TML" or normalized_group == "TML":
+    if normalized_class == "TML" and normalized_group == "TML":
         return "TML", "TML"
-    return "EAL", "EAL"
+    if normalized_group == 'EAL' and normalized_class == 'EAL':
+        return 'EAL', 'EAL'
+    raise WireWearValidationError(f'Unsupported wear line/class: {normalized_group}/{normalized_class}')
 
 
 def _parse_cycle_date(value: str) -> str:

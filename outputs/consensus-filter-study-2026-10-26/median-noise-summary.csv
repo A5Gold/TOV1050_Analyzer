@@ -1,0 +1,9 @@
+dataset,profile,median_rows,height1_flags,height2_flags,stagger1_flags,stagger2_flags,wear1_flags,wear2_flags,Low_Height_count,High_Height_count,Wire_Wear_count,Stagger_Left_count,Stagger_Right_count
+partial,tight,5086,0,3,0,0,19,8,0,0,0,0,2
+partial,middle,5086,0,3,0,0,11,3,0,0,0,0,2
+partial,wide,5086,0,2,0,0,4,2,0,0,0,0,2
+partial,middle_k5,5086,0,0,0,0,2,1,0,0,0,0,2
+full,tight,83963,143,85,113,17,403,294,52,2,1,0,90
+full,middle,83963,110,50,112,14,267,180,51,2,1,0,90
+full,wide,83963,75,24,110,14,144,60,51,2,1,0,90
+full,middle_k5,83963,45,16,83,10,96,61,51,2,1,0,89

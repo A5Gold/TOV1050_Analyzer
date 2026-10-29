@@ -1,0 +1,18 @@
+[
+  {
+    "id": "ISL-DT-support-row298-2026-10-23",
+    "line": "ISL",
+    "sheet": "DT track type",
+    "source_row": 298,
+    "label": "Support",
+    "expected": {
+      "start": 99126,
+      "end": 99126
+    },
+    "replacement": {
+      "start": 99.126,
+      "end": 99.126
+    },
+    "authorization": "使用者於2026-10-23確認：正確值是 99.126 km；候選可更正並記錄原值"
+  }
+]

@@ -1,0 +1,15 @@
+{
+  "equivalent_all_cells_and_styles": true,
+  "fixture": {
+    "chart_rows": 10000,
+    "chart_columns": 31,
+    "statistics_rows": 20,
+    "warmup_per_engine": 1,
+    "measured_repeats_per_engine": 3
+  },
+  "stdlib_median_seconds": 15.914158999999927,
+  "lxml_median_seconds": 15.312698899999305,
+  "speedup": 1.0392785167349337,
+  "limitation": "Lightweight synthetic A/B while full benchmark runs; not a full-data or packaging validation.",
+  "writer_sha256": "ac133ec36f5456969515915a975aa01539bf35f209408faf1da42b033887715c"
+}

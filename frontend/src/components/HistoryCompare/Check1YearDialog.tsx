@@ -40,6 +40,8 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs, { Dayjs } from 'dayjs';
 
+import { PARENT_LINES, sectionOptionsForLine, normalizeReportIdentity } from '../../config/lineCatalog';
+
 // --- Types ---
 export interface Check1YearDialogProps {
   open: boolean;
@@ -64,21 +66,7 @@ export interface CheckFilters {
 }
 
 // --- Constants ---
-const LINE_OPTIONS = [
-  { value: 'EAL', label: 'EAL' },
-  { value: 'TML', label: 'TML' },
-];
-
-const EAL_SECTION_OPTIONS = [
-  { value: 'Mainline', label: 'Mainline' },
-  { value: 'RAC', label: 'RAC' },
-  { value: 'LOW S1', label: 'LOW S1' },
-  { value: 'LMC', label: 'LMC' },
-];
-
-const TML_SECTION_OPTIONS = [
-  { value: 'Mainline', label: 'Mainline' },
-];
+const LINE_OPTIONS = PARENT_LINES.map(value => ({ value, label: value }));
 
 // --- Component ---
 const Check1YearDialog: React.FC<Check1YearDialogProps> = ({
@@ -86,8 +74,8 @@ const Check1YearDialog: React.FC<Check1YearDialogProps> = ({
   onClose,
   onCheck,
   recordCount,
-  detectedLine = 'EAL',
-  detectedSection = 'Mainline',
+  detectedLine = '',
+  detectedSection = '',
   isChecking = false,
 }) => {
   // State
@@ -101,28 +89,25 @@ const Check1YearDialog: React.FC<Check1YearDialogProps> = ({
   useEffect(() => {
     if (open) {
       setScope('all');
-      setSelectedLine(detectedLine || 'EAL');
-      setSelectedSection(detectedSection || 'Mainline');
+      const identity = normalizeReportIdentity(detectedLine, detectedSection);
+      setSelectedLine(identity.line);
+      setSelectedSection(identity.section);
       setDateFrom(null);
       setDateTo(null);
     }
   }, [open, detectedLine, detectedSection]);
 
-  // Get available sections based on selected line
-  const sectionOptions = useMemo(() => {
-    return selectedLine === 'TML' ? TML_SECTION_OPTIONS : EAL_SECTION_OPTIONS;
-  }, [selectedLine]);
+  const sectionOptions = useMemo(() => sectionOptionsForLine(selectedLine), [selectedLine]);
 
-  // Reset section to Mainline when changing to TML
   useEffect(() => {
-    if (selectedLine === 'TML' && selectedSection !== 'Mainline') {
-      setSelectedSection('Mainline');
+    if (selectedSection && !sectionOptions.some(item => item.value === selectedSection)) {
+      setSelectedSection('');
     }
-  }, [selectedLine, selectedSection]);
+  }, [sectionOptions, selectedSection]);
 
   // Validation
   const hasNoRecords = recordCount === 0;
-  const canCheck = !hasNoRecords && !isChecking;
+  const canCheck = !hasNoRecords && !isChecking && (scope === 'all' || (!!selectedLine && !!selectedSection));
 
   // Handlers
   const handleScopeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -130,7 +115,9 @@ const Check1YearDialog: React.FC<Check1YearDialogProps> = ({
   };
 
   const handleLineChange = (event: any) => {
-    setSelectedLine(event.target.value as string);
+    const nextLine = event.target.value as string;
+    setSelectedLine(nextLine);
+    setSelectedSection(sectionOptionsForLine(nextLine)[0]?.value || '');
   };
 
   const handleSectionChange = (event: any) => {

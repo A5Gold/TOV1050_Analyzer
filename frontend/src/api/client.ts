@@ -53,7 +53,6 @@ import {
   VERSION_DIFFERENCE_CYCLES,
   type VersionDifferenceFiles,
 } from '../constants/versionDifferenceCycles';
-import { TOV1050_LINES } from '../config/tov1050';
 
 // Python Backend URL
 // In dev mode, use a relative path so Vite proxy handles the request server-side
@@ -69,10 +68,14 @@ const apiClient = axios.create({
 });
 
 export const shouldSuppressApiErrorLog = (error: any): boolean => {
+  if (axios.isCancel(error) || error?.code === 'ERR_CANCELED') return true;
   const status = error?.response?.status;
   const method = String(error?.config?.method ?? '').toLowerCase();
   const url = String(error?.config?.url ?? '');
   const params = error?.config?.params ?? {};
+  const code = error?.response?.data?.detail?.code;
+  if (status === 409 && code === 'CHART_REQUEST_SUPERSEDED') return true;
+  if ([409, 410].includes(status) && url.includes('/analyze/chart-cache/release')) return true;
 
   return status === 409
     && method === 'post'
@@ -124,14 +127,14 @@ export const uploadCalculationFiles = async (
 
 export const uploadWearFiles = async (
   files: File[],
-  lineOrOptions: string | { line?: string; cycleDate?: string; acceptedConflictIds?: string[] } = TOV1050_LINES[0],
+  lineOrOptions: string | { line?: string; cycleDate?: string; acceptedConflictIds?: string[] } = '',
   track?: string,
   section?: string,
 ): Promise<WearResponse> => {
   const options = typeof lineOrOptions === 'string' ? { line: lineOrOptions } : lineOrOptions;
   const formData = new FormData();
   files.forEach(file => formData.append('files', file));
-  formData.append('line', options.line ?? TOV1050_LINES[0]);
+  formData.append('line', options.line ?? '');
   if (track) formData.append('track', track);
   if (section) formData.append('section', section);
   if (options.cycleDate) formData.append('cycle_date', options.cycleDate);
@@ -931,11 +934,11 @@ export const fetchDiagnostics = async (): Promise<DiagnosticsResponse> => {
 export const uploadTrendFiles = async (
   files: File[],
   repeatedFile?: File | null,
-  line: string = TOV1050_LINES[0],
+  line: string = '',
 ): Promise<TrendResponse> => {
   const formData = new FormData();
   files.forEach(file => formData.append('files', file));
-  formData.append('line', line);
+  if (line) formData.append('line', line);
   if (repeatedFile) formData.append('repeated_file', repeatedFile);
   const response = await apiClient.post<TrendResponse>('/calculation/trend', formData, {
     headers: { 'Content-Type': 'multipart/form-data' },

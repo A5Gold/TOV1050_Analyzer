@@ -1,0 +1,3 @@
+kind,raw_index,candidate_index,raw_from,raw_to,raw_peak,raw_peak_m,raw_level,candidate_from,candidate_to,candidate_peak,candidate_peak_m,candidate_level,exact
+Stagger Right,0,0,9382.8,9390.4,-226.775,9386.4,L3,9383.0,9390.2,-226.756,9386.4,L3,False
+Stagger Right,1,1,9141.4,9142.0,-200.844,9141.8,L3,9141.6,9142.0,-200.809,9141.8,L3,False

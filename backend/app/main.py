@@ -1,15 +1,36 @@
 import os
 import shutil
 import sys
+import asyncio
+from contextlib import asynccontextmanager
 from pathlib import Path
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 from app.api.endpoints import analysis, metadata, sessions, database_records, calculation, wear_records, diagnostics, version_difference
+from app.core.background_jobs import JobManager
+from app.api.endpoints import line_catalog
 
 APP_VERSION = "2.0.0"
 
-app = FastAPI(title="TOV Analyzer API", version=APP_VERSION)
+@asynccontextmanager
+async def lifespan(app):
+    # Test clients and embedded servers can start the same app more than once.
+    if analysis.JOBS.closed:
+        analysis.JOBS = JobManager(
+            ttl_seconds=analysis.JOBS.ttl_seconds,
+            execution_timeout_seconds=analysis.JOBS.execution_timeout_seconds,
+        )
+    manager = analysis.JOBS
+    try:
+        yield
+    finally:
+        # ThreadPoolExecutor joins before ordinary atexit callbacks; cancel now.
+        await asyncio.to_thread(manager.close)
+        analysis.close_chart_caches()
+
+
+app = FastAPI(title="TOV Analyzer API", version=APP_VERSION, lifespan=lifespan)
 
 # CORS Configuration
 # Allow all origins for local desktop app (no security risk for localhost)
@@ -33,6 +54,7 @@ app.include_router(database_records.router, prefix="/api", tags=["database-recor
 app.include_router(calculation.router, prefix="/api", tags=["calculation"])
 app.include_router(wear_records.router, prefix="/api", tags=["calculation"])
 app.include_router(diagnostics.router, prefix="/api", tags=["diagnostics"])
+app.include_router(line_catalog.router, prefix="/api", tags=["line-catalog"])
 
 @app.get("/api/health")
 def health_check():

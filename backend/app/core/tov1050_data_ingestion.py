@@ -71,9 +71,13 @@ class TOV1050DataLoader:
             return ","
 
     @staticmethod
-    def _raw_row_count(path: Path) -> int:
+    def _raw_row_count(path: Path, progress=None) -> int:
+        count = 0
         with path.open("r", encoding="utf-8-sig", errors="replace", newline="") as handle:
-            return max(sum(1 for _ in handle) - 1, 0)
+            for count, _ in enumerate(handle, 1):
+                if progress and count % 50_000 == 0:
+                    progress("reading", count - 1, None, "rows")
+        return max(count - 1, 0)
 
     @staticmethod
     def _clean_headers(columns: Iterator[Any]) -> list[str]:
@@ -85,13 +89,17 @@ class TOV1050DataLoader:
         if missing:
             raise ValueError(f"TOV1050 CSV missing required columns: {', '.join(missing)}")
 
-    def load_data(self, file_path: str | Path) -> pd.DataFrame:
+    def load_data(self, file_path: str | Path, *, progress=None) -> pd.DataFrame:
         path = Path(file_path)
         if not path.exists():
             raise FileNotFoundError(f"Data file not found: {path}")
 
         delimiter = self._detect_delimiter(path)
-        raw_rows = self._raw_row_count(path)
+        if progress:
+            progress("reading")
+        raw_rows = self._raw_row_count(path, progress)
+        if progress:
+            progress("cleaning", 0, raw_rows, "rows")
         leading = min(100, raw_rows)
         trailing = min(100, max(raw_rows - leading, 0))
         retained_start = leading
@@ -120,6 +128,8 @@ class TOV1050DataLoader:
             chunksize=self.chunk_size,
         )
         for chunk in reader:
+            if progress:
+                progress("cleaning", rows_read, raw_rows, "rows")
             chunk.columns = headers
             chunk_size = len(chunk)
             source_rows = np.arange(rows_read + 2, rows_read + chunk_size + 2, dtype=np.int64)
@@ -149,6 +159,8 @@ class TOV1050DataLoader:
             if not chunk.empty:
                 parts.append(chunk)
 
+        if progress:
+            progress("cleaning", rows_read, raw_rows, "rows")
         if parts:
             result = pd.concat(parts, ignore_index=True, copy=False)
         else:

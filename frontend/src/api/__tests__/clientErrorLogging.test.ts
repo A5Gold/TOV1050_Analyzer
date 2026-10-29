@@ -13,6 +13,12 @@ describe('shouldSuppressApiErrorLog', () => {
     })).toBe(true);
   });
 
+  it('suppresses normal cancellation but keeps timeouts visible', () => {
+    expect(shouldSuppressApiErrorLog({ code: 'ERR_CANCELED' })).toBe(true);
+    expect(shouldSuppressApiErrorLog({ __CANCEL__: true })).toBe(true);
+    expect(shouldSuppressApiErrorLog({ code: 'ECONNABORTED' })).toBe(false);
+  });
+
   it('keeps logging unexpected API errors', () => {
     expect(shouldSuppressApiErrorLog({
       response: { status: 500 },

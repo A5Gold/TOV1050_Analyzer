@@ -1,3 +1,4 @@
+import { apiErrorMessage } from '../api/errorMessage';
 import { create } from 'zustand';
 import { uploadStaggerFile } from '../api/client';
 import type { StaggerResult, StaggerTrace } from '../types/api';
@@ -178,10 +179,7 @@ export const useCalculationStore = create<CalculationStoreState>((set, get) => (
         selectedResultId: response.results[0]?.id ?? null,
       })));
     } catch (error: any) {
-      const detail = error.response?.data?.detail;
-      const errorMessage = Array.isArray(detail)
-        ? detail.map((item: any) => item.msg ?? JSON.stringify(item)).join('; ')
-        : (typeof detail === 'string' ? detail : error.message) || 'Analysis failed';
+      const errorMessage = apiErrorMessage(error, 'Analysis failed');
 
       set((state) => updateCycleById(state, targetCycleId, (cycle) => ({
         ...cycle,

@@ -2,12 +2,18 @@
 Excel parser for Exception Report files.
 Parses Wire Wear sheet and ChartData sheet.
 """
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass, replace
 from typing import Optional, List, Tuple
 import io
+import hashlib
 import logging
 import pandas as pd
 from openpyxl import load_workbook
+from app.core.report_context import (
+    CONTEXT_ALIASES, ReportContext, ReportContextError, context_values,
+    ensure_compatible_scopes, filename_context, normalize_report_row, read_report_context, sheet_records,
+    text_value,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -23,6 +29,18 @@ class WireWearRecord:
     level: str
     action: Optional[str]
     max_location: float = 0.0
+    line: str = ''
+    track: str = ''
+    section: str = ''
+    task_no: str = ''
+    station_start: str = ''
+    station_end: str = ''
+    branch: str = ''
+    direction: str = ''
+    source_line: str = ''
+    algorithm: str = ''
+    algorithm_mode: str = ''
+    source_id: str = ''
 
 
 @dataclass(frozen=True)
@@ -39,6 +57,12 @@ class ChartDataRecord:
     wear_min: float
     track_type: str
     overlap: Optional[str]
+    branch: str = ''
+    direction: str = ''
+    source_line: str = ''
+    algorithm: str = ''
+    algorithm_mode: str = ''
+    source_id: str = ''
 
 
 @dataclass(frozen=True)
@@ -125,13 +149,15 @@ def parse_wire_wear_sheet(df: pd.DataFrame) -> List[WireWearRecord]:
         records.append(WireWearRecord(
             run_date=run_date,
             exception_id=exception_id,
-            tension_length=str(_get_val(row, col_tension_length) or '').strip(),
+            tension_length=text_value(_get_val(row, col_tension_length)),
             from_m=_float_or_zero(_get_val(row, col_from_m)),
             to_m=_float_or_zero(_get_val(row, col_to_m)),
             max_value=_float_or_zero(_get_val(row, col_max_value)),
             max_location=_float_or_zero(_get_val(row, col_max_location)),
             level=str(_get_val(row, col_level) or '').strip(),
             action=action,
+            source_line=text_value(row.get('source_line')),
+            **{key: value for key, value in context_values(row).items() if key != 'run_date'},
         ))
     return records
 
@@ -150,8 +176,8 @@ def parse_chart_data_sheet(df: pd.DataFrame, fallback_task_run_date: str = '') -
     col_track = _find_column(df, 'track', 'Track')
     col_section = _find_column(df, 'Section', 'section')
     col_task_no = _find_column(df, 'task_no', 'Task No')
-    col_station_start = _find_column(df, 'station_start', 'St. Start')
-    col_station_end = _find_column(df, 'station_end', 'St. End')
+    col_station_start = _find_column(df, *CONTEXT_ALIASES['station_start'])
+    col_station_end = _find_column(df, *CONTEXT_ALIASES['station_end'])
     col_tension_length = _find_column(df, 'Tension Length', 'tension_length')
     col_chainage = _find_column(df, 'Chainage', 'chainage')
     col_track_type = _find_column(df, 'Track Type', 'track_type')
@@ -198,11 +224,12 @@ def parse_chart_data_sheet(df: pd.DataFrame, fallback_task_run_date: str = '') -
             task_no=_str_or_empty(_get_val(row, col_task_no)),
             station_start=_str_or_empty(_get_val(row, col_station_start)),
             station_end=_str_or_empty(_get_val(row, col_station_end)),
-            tension_length=str(_get_val(row, col_tension_length) or '').strip(),
+            tension_length=text_value(_get_val(row, col_tension_length)),
             chainage=float(_get_val(row, col_chainage) or 0),
             wear_min=float(wear_min_raw),
             track_type=str(_get_val(row, col_track_type) or '').strip(),
             overlap=overlap,
+            branch=str(_get_val(row, _find_column(df, 'branch', 'session', 'legacy_session')) or '').strip(),
         ))
     return records
 
@@ -265,10 +292,12 @@ def parse_stagger_chart_data_sheet(df: pd.DataFrame) -> list[dict]:
     return rows
 
 
-def parse_exception_report(file_bytes: bytes) -> Tuple[List[WireWearRecord], List[ChartDataRecord]]:
+def parse_exception_report(file_bytes: bytes, filename: str = '') -> Tuple[List[WireWearRecord], List[ChartDataRecord]]:
     """Parse full Exception Report Excel, return (wire_wear_records, chart_data_records)."""
     try:
-        return _parse_exception_report_streaming(file_bytes)
+        return _parse_exception_report_streaming(file_bytes, filename=filename)
+    except ReportContextError:
+        raise
     except Exception as exc:
         logger.info("Streaming parser failed; falling back to pandas parser: %s", exc)
         xl = pd.ExcelFile(io.BytesIO(file_bytes))
@@ -278,23 +307,59 @@ def parse_exception_report(file_bytes: bytes) -> Tuple[List[WireWearRecord], Lis
             xl.parse('ChartData'),
             fallback_task_run_date=fallback_task_run_date,
         )
-        return wire_wear, chart_data
+        fallback = filename_context(filename)
+        if 'Summary' in xl.sheet_names:
+            summary_contexts = [normalize_report_row(row, source='Summary')
+                                for row in xl.parse('Summary').to_dict('records')]
+            summary_context = ensure_compatible_scopes(summary_contexts)
+            fallback = normalize_report_row(asdict(summary_context), fallback
+                                            if not summary_context.line or summary_context.line == fallback.line else None)
+        return _apply_report_context(wire_wear, chart_data, fallback, hashlib.sha256(file_bytes).hexdigest())
 
 
-def _parse_exception_report_streaming(file_bytes: bytes) -> Tuple[List[WireWearRecord], List[ChartDataRecord]]:
+def _parse_exception_report_streaming(file_bytes: bytes, filename: str = '') -> Tuple[List[WireWearRecord], List[ChartDataRecord]]:
     workbook = load_workbook(io.BytesIO(file_bytes), read_only=True, data_only=True)
     try:
         if 'Wire Wear' not in workbook.sheetnames or 'ChartData' not in workbook.sheetnames:
             raise KeyError('Wire Wear or ChartData')
 
+        fallback = read_report_context(workbook, filename)
         wire_rows = _sheet_to_records(workbook['Wire Wear'])
+        # Current reports already carry candidate context on Summary. Preserve
+        # it even when TL is unavailable, instead of joining solely on TL.
+        summary_by_id = {}
+        if 'Summary' in workbook.sheetnames:
+            for row in sheet_records(workbook['Summary']):
+                columns = {str(key).strip().lower(): value for key, value in row.items()}
+                key = _normalize_identifier(columns.get('id'))
+                if key:
+                    summary_by_id.setdefault(key, []).append(row)
+        for row in wire_rows:
+            columns = {str(key).strip().lower(): value for key, value in row.items()}
+            row_values = context_values(row)
+            run_date = _normalize_date(row_values['run_date']) or _derive_run_date_from_identifier(columns.get('id'))
+            summaries = [summary for summary in summary_by_id.get(_normalize_identifier(columns.get('id')), [])
+                         if (not run_date or not context_values(summary)['run_date']
+                             or _normalize_date(context_values(summary)['run_date']) == run_date)
+                         and all(not row_values[key] or not context_values(summary)[key]
+                                 or row_values[key] == context_values(summary)[key]
+                                 for key in ('task_no', 'section', 'station_start', 'station_end'))]
+            if summaries:
+                summary_context = ensure_compatible_scopes(normalize_report_row(summary, source='Summary') for summary in summaries)
+                for field in ('task_no', 'station_start', 'station_end'):
+                    if len({context_values(summary)[field] for summary in summaries if context_values(summary)[field]}) > 1:
+                        raise ReportContextError(f'Wire Wear ID {columns.get("id")}: ambiguous Summary {field} in this acquisition')
+                row['source_line'] = text_value(row.get('source_line')) or summary_context.source_line
+                for key, value in context_values(asdict(summary_context)).items():
+                    if value and not context_values(row)[key]:
+                        row[key] = value
         wire_wear = parse_wire_wear_sheet(pd.DataFrame(wire_rows))
         fallback_task_run_date = next((record.run_date for record in wire_wear if record.run_date), '')
         chart_data = _parse_chart_data_sheet_streaming(
             workbook['ChartData'],
             fallback_task_run_date=fallback_task_run_date,
         )
-        return wire_wear, chart_data
+        return _apply_report_context(wire_wear, chart_data, fallback, hashlib.sha256(file_bytes).hexdigest())
     finally:
         workbook.close()
 
@@ -341,8 +406,9 @@ def _parse_chart_data_sheet_streaming(sheet, fallback_task_run_date: str = '') -
     col_track = _find_index('track', 'Track')
     col_section = _find_index('Section', 'section')
     col_task_no = _find_index('task_no', 'Task No')
-    col_station_start = _find_index('station_start', 'St. Start')
-    col_station_end = _find_index('station_end', 'St. End')
+    col_station_start = _find_index(*CONTEXT_ALIASES['station_start'])
+    col_station_end = _find_index(*CONTEXT_ALIASES['station_end'])
+    col_branch = _find_index('branch', 'session', 'legacy_session')
     col_tension_length = _find_index('Tension Length', 'tension_length')
     col_chainage = _find_index('Chainage', 'chainage')
     col_track_type = _find_index('Track Type', 'track_type')
@@ -403,8 +469,45 @@ def _parse_chart_data_sheet_streaming(sheet, fallback_task_run_date: str = '') -
             wear_min=float(wear_min_raw),
             track_type=_str_or_empty(_row_value(row, col_track_type)),
             overlap=overlap,
+            branch=_str_or_empty(_row_value(row, col_branch)),
         ))
     return records
+
+
+def _apply_report_context(wire_wear, chart_data, fallback=None, source_id=''):
+    """Normalize each acquisition context once; never overwrite an explicit line."""
+    fallback = fallback or ReportContext()
+    cache = {}
+
+    def resolve(record):
+        values = {key: getattr(record, key, '') for key in CONTEXT_ALIASES}
+        values['run_date'] = getattr(record, 'run_date', '') or getattr(record, 'task_run_date', '')
+        values['source_line'] = getattr(record, 'source_line', '')
+        key = tuple(values.values())
+        if key not in cache:
+            cache[key] = normalize_report_row(values, fallback, source='Summary/ChartData')
+        return cache[key]
+
+    contexts = [resolve(record) for record in chart_data]
+    shared = ensure_compatible_scopes([fallback, *contexts])
+    normalized_chart = []
+    for record, context in zip(chart_data, contexts):
+        normalized_chart.append(replace(record, line=context.line or None,
+            branch=context.branch, direction=context.direction,
+            source_line=context.source_line, track=context.track or record.track,
+            section=context.section or record.section, task_no=context.task_no,
+            station_start=context.station_start, station_end=context.station_end,
+            algorithm=fallback.algorithm, algorithm_mode=fallback.algorithm_mode, source_id=source_id))
+    normalized_wire = []
+    for record in wire_wear:
+        context = normalize_report_row(asdict(record), shared, source='Wire Wear')
+        ensure_compatible_scopes([shared, context])
+        normalized_wire.append(replace(record, line=context.line, branch=context.branch,
+            direction=context.direction, source_line=context.source_line,
+            track=context.track, section=context.section, task_no=context.task_no,
+            station_start=context.station_start, station_end=context.station_end,
+            algorithm=fallback.algorithm, algorithm_mode=fallback.algorithm_mode, source_id=source_id))
+    return normalized_wire, normalized_chart
 
 
 def _find_column(df: pd.DataFrame, *names: str) -> str | None:

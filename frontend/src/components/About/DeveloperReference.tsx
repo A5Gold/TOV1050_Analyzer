@@ -24,11 +24,12 @@ import {
   versionDifferenceLimits,
   verificationRows,
   metadataCanonicalRows,
+  measurementFlow,
+  dualSystemCleaningRows,
+  chartContractRows,
 } from './aboutGuideContent';
 import DiagnosticsPanel from './DiagnosticsPanel';
 import { GuideFlow } from './GuideVisuals';
-import architectureOverview from '../../assets/tov1050-architecture-overview.png';
-import dataFlowDiagram from '../../assets/tov1050-data-flow.png';
 
 interface DeveloperReferenceProps {
   diagnostics: DiagnosticsResponse | null;
@@ -57,34 +58,23 @@ const DeveloperReference: React.FC<DeveloperReferenceProps> = ({
         <Typography variant="body2" color="text.secondary" sx={{ maxWidth: '76ch', mb: 2 }}>
           Desktop shell 與 browser UI 分離；frontend 不直接讀取 SQLite 或 metadata workbook，所有業務資料均通過本機 FastAPI。About guide 本身是 React runtime，不再依賴 iframe 內容。
         </Typography>
-        <GuideFlow steps={architectureLayers} label="TOV640 Analyzer runtime layers" desktopColumns={3} />
-        <Box
-          component="img"
-          src={architectureOverview}
-          alt="TOV1050 Analyzer architecture: inputs, metadata adapter, full-fidelity detector, chart envelope and Electron React frontend"
-          sx={{ display: 'block', width: '100%', maxWidth: 980, height: 'auto', mt: 2, border: 1, borderColor: 'divider' }}
-        />
+        <GuideFlow steps={architectureLayers} label="雙系統 Analyzer runtime layers" desktopColumns={3} />
         <Typography variant="caption" color="text.secondary" display="block" sx={{ mt: 0.75 }}>
-          圖中顯示五層 runtime 邊界；告警判定使用完整資料，Graph 才採 envelope 與 zoom LOD。
+          正常分析使用完整的中位代表資料偵測例外並匯出；只有圖表 payload 使用 envelope。Raw overview 是獨立模式，不進行例外偵測。
         </Typography>
         <Typography variant="subtitle1" component="h4" fontWeight={700} sx={{ mt: 3, mb: 1 }}>
           端到端資料流
         </Typography>
-        <Box
-          component="img"
-          src={dataFlowDiagram}
-          alt="TOV1050 Analyzer data flow from raw CSV through streaming loader, Chainage metre adapter, metadata mapping, detector and chart payload"
-          sx={{ display: 'block', width: '100%', maxWidth: 980, height: 'auto', mb: 2, border: 1, borderColor: 'divider' }}
-        />
+        <GuideFlow steps={measurementFlow} label="共同量測與分析資料流" desktopColumns={4} />
         <TableContainer>
           <Table size="small" aria-label="端到端資料流">
             <TableHead><TableRow><TableCell>入口</TableCell><TableCell>主要處理</TableCell><TableCell>輸出</TableCell></TableRow></TableHead>
             <TableBody>
-              <TableRow><TableCell>.datac</TableCell><TableCell>DataLoader → MetadataManager → ExceptionDetector</TableCell><TableCell>異常表、Boundary、ChartData</TableCell></TableRow>
+              <TableRow><TableCell>.datac / .csv</TableCell><TableCell>格式 loader → context/metadata → median → detector</TableCell><TableCell>同 revision 異常表、Boundary、ChartData、_Metadata</TableCell></TableRow>
               <TableRow><TableCell>多期 Exception Reports</TableCell><TableCell>compare → repeated chain → 1 Year check</TableCell><TableCell>Previous N、action、reoccurrence_id</TableCell></TableRow>
               <TableRow><TableCell>Wear complete cycle</TableCell><TableCell>parse → resolver index → scope → conflict → coverage</TableCell><TableCell>preview、cycle records、segments、digest</TableCell></TableRow>
               <TableRow><TableCell>Trend files</TableCell><TableCell>L2 candidate → daily minimum → regression</TableCell><TableCell>trend points、logic_1/2、recommendation</TableCell></TableRow>
-              <TableRow><TableCell>Stagger workbook</TableCell><TableCell>candidate → support lookup → span formulas</TableCell><TableCell>results、traces、warnings</TableCell></TableRow>
+              <TableRow><TableCell>Stagger workbook</TableCell><TableCell>ReportContext → capability preflight → candidate/support/span</TableCell><TableCell>已配置 results/traces；未配置明確列缺項</TableCell></TableRow>
             </TableBody>
           </Table>
         </TableContainer>
@@ -109,9 +99,9 @@ const DeveloperReference: React.FC<DeveloperReferenceProps> = ({
       </Box>
 
       <Box component="section" id="developer-tov1050-contract" sx={sectionSx}>
-        <Typography variant="h6" component="h3" gutterBottom>TOV1050 metadata 與分析契約</Typography>
+        <Typography variant="h6" component="h3" gutterBottom>雙系統 metadata 與分析契約</Typography>
         <Typography variant="body2" color="text.secondary" sx={{ maxWidth: '76ch', mb: 2 }}>
-          Metadata adapter 將現場 workbook 正規化為 detector canonical model。分析與匯出則以 request 的表格 context 為 source of truth，原始 filename 只保留作 lineage。
+          路線 registry 有九個 parent Line。LMC 是 EAL 分支、TKS 是 TKL 分支、DRL branch UT 對應 legacy Mainline；branch UT 與 direction UT 分別保存。Metadata adapter 將各格式 workbook 正規化為 detector model；原始資料採表單 context，下游採 workbook context，衝突不可由 filename 靜默覆蓋。
         </Typography>
         <TableContainer>
           <Table size="small" aria-label="TOV1050 canonical metadata contract">
@@ -124,6 +114,35 @@ const DeveloperReference: React.FC<DeveloperReferenceProps> = ({
         <Alert severity="info" sx={{ mt: 2 }}>
           Canonical filename parser 仍保留給標準報表與單元測試；任意合法 CSV basename 不應成為分析的阻擋條件。
         </Alert>
+      </Box>
+
+      <Box component="section" id="developer-cleaning" sx={sectionSx}>
+        <Typography variant="h6" component="h3" gutterBottom>格式清洗與中位實測樣本</Typography>
+        <TableContainer><Table size="small" aria-label="DATAC CSV cleaning differences">
+          <TableHead><TableRow><TableCell>規則</TableCell><TableCell>TOV640 DATAC</TableCell><TableCell>TOV1050 CSV</TableCell></TableRow></TableHead>
+          <TableBody>{dualSystemCleaningRows.map(row => (
+            <TableRow key={row.cells[0]}>{row.cells.map(cell => <TableCell key={cell}>{cell}</TableCell>)}</TableRow>
+          ))}</TableBody>
+        </Table></TableContainer>
+        <Typography variant="body2" sx={{ mt: 2, maxWidth: '76ch' }}>
+          same_chainage_median_sample_v1 按採集次序建立相鄰、精確同 chainage 群，遇 context／pass／segment／來源連續性改變便分群；非相鄰重訪不合併。每 channel 排除 nonfinite 後選真實中位樣本，偶數在中間兩個來源樣本取採集較早者，不求平均。保留 channel_source_row、sample counter、valid_count 及群樣本數；各 channel 可以來自不同列。
+        </Typography>
+        <Typography variant="body2" sx={{ mt: 1.5, maxWidth: '76ch' }}>
+          Detector、threshold crossing、peak、Excel 與 ChartData 消費同一份代表資料；min/max envelope 只縮小 UI payload。來源行數、清洗保留行數、代表群數、圖表顯示點數是不同指標，不能共用同一個 raw_row_count 解讀。
+        </Typography>
+      </Box>
+
+      <Box component="section" id="developer-chart" sx={sectionSx}>
+        <Typography variant="h6" component="h3" gutterBottom>圖表、背景工作與快照生命週期</Typography>
+        <TableContainer><Table size="small" aria-label="Chart snapshot and cache contract">
+          <TableHead><TableRow><TableCell>邊界</TableCell><TableCell>行為</TableCell></TableRow></TableHead>
+          <TableBody>{chartContractRows.map(row => (
+            <TableRow key={row.cells[0]}><TableCell>{row.cells[0]}</TableCell><TableCell>{row.cells[1]}</TableCell></TableRow>
+          ))}</TableBody>
+        </Table></TableContainer>
+        <Typography variant="body2" sx={{ mt: 2, maxWidth: '76ch' }}>
+          分析及報表匯出以 background job 回報 stage/progress；匯出只提交 client_session_id、analysis_revision 及 mode，由後端快照重建完整報表。detail 的有限 range 正規化後與 chart_domain 取交集；UI debounce 250ms、AbortController 與 generation guard 隔離舊回覆。後端數值索引每 revision 準備一次，window cache 有界。Raw 快取過期需重讀完整來源，detail timeout 為 120 秒並提供載入提示與取消；median 維持 30 秒。冷／熱效能須分開量度。
+        </Typography>
       </Box>
 
       <Box component="section" id="developer-check-1-year" sx={sectionSx}>
@@ -169,7 +188,7 @@ const DeveloperReference: React.FC<DeveloperReferenceProps> = ({
       <Box component="section" id="developer-contracts" sx={sectionSx}>
         <Typography variant="h6" component="h3" gutterBottom>不可弱化的資料合約</Typography>
         <Alert severity="warning" sx={{ mb: 2 }}>
-          不可轉換 Chainage、擴闊 interval、使用 nearest interval、加入一般 Mainline fallback，或只以 canonical Track 判斷 MAINLINE。
+          原始座標只在格式 adapter 轉成公尺一次；下游不可重複換算、擴闊 interval、使用 nearest interval、加入一般 Mainline fallback，或只以 canonical Track 判斷 MAINLINE。
         </Alert>
         <TableContainer>
           <Table size="small" aria-label="資料合約矩陣">

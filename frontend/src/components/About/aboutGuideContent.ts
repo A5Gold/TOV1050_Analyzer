@@ -14,7 +14,8 @@ export interface GuideMatrixRow {
 
 export const operatorNavItems: GuideNavItem[] = [
   { id: 'operator-workflow', label: '工作流程' },
-  { id: 'operator-tov1050-input', label: 'TOV1050 輸入' },
+  { id: 'operator-tov1050-input', label: '雙系統輸入' },
+  { id: 'operator-chart', label: '圖表與資料品質' },
   { id: 'operator-version-difference', label: 'Version Difference' },
   { id: 'operator-threshold', label: 'Threshold' },
   { id: 'operator-repeat', label: 'Repeat' },
@@ -26,7 +27,9 @@ export const operatorNavItems: GuideNavItem[] = [
 
 export const developerNavItems: GuideNavItem[] = [
   { id: 'developer-architecture', label: '架構' },
-  { id: 'developer-tov1050-contract', label: 'TOV1050 契約' },
+  { id: 'developer-tov1050-contract', label: '雙系統資料契約' },
+  { id: 'developer-cleaning', label: '格式清洗與中位樣本' },
+  { id: 'developer-chart', label: '圖表與快照生命週期' },
   { id: 'developer-version-difference', label: 'Version Difference API' },
   { id: 'developer-check-1-year', label: 'Check 1 Year API' },
   { id: 'developer-api-state', label: 'API 與 state' },
@@ -39,11 +42,11 @@ export const developerNavItems: GuideNavItem[] = [
 export const operatorWorkflowSteps: GuideFlowStep[] = [
   {
     title: '匯入量測',
-    detail: '選取 .datac、Exception Report 或 n_Repeated Report，保留原始檔案與日期身份。',
+    detail: '原始資料選 .datac 或 .csv；下游選 Exception Report 或 n_Repeated Report，保留來源與日期身份。',
   },
   {
     title: '對齊 metadata',
-    detail: '以 Line、Section、Track、Chainage、threshold、support 及張力段資料建立可追溯位置。',
+    detail: '確認主 Line、Branch、Direction、Section 與公尺 Chainage；功能依核准 metadata 與工程配置開放。',
   },
   {
     title: '執行判斷',
@@ -113,27 +116,55 @@ export const architectureLayers: GuideFlowStep[] = [
   },
   {
     title: 'SQLite 與 config workbooks',
-    detail: 'SQLite 保存分析與追蹤紀錄；EAL/TML metadata workbooks 提供受版本控制的業務設定。',
+    detail: 'SQLite 保存分析與追蹤紀錄；各 line/branch/direction 的 metadata workbooks 提供門檻與可用能力。',
   },
 ];
 
 export const tov1050InputRows: GuideMatrixRow[] = [
-  { cells: ['CSV basename', '只保留為來源 lineage；不要求符合報表命名格式。'] },
-  { cells: ['表格 context', 'Date、Line、Direction、Section、Station Start／End 是分析與輸出的 authoritative 參數。'] },
-  { cells: ['Filename parser', '只在表格欄位缺漏時 best-effort 補值；解析失敗不阻擋合法 CSV。'] },
-  { cells: ['輸出命名', '使用 canonical `YYYYMMDD_LINE_TRACK_SESSION_START_END_<artifact>` 格式，供其他模組穩定引用。'] },
+  { cells: ['TOV640', 'EAL、TML；原始 .datac。LMC 是 EAL 的分支，不是獨立主 Line。'] },
+  { cells: ['TOV1050', 'AEL、TCL、KTL、ISL、TWL、TKL、DRL；原始 .csv。TKS 是 TKL 分支；DRL 分支 UT／PL，UT 對應舊 Mainline。'] },
+  { cells: ['分支與方向', '先選 Line，再選 Branch 與 Direction。UT／UP 為上行、DT／DN／DOWN 為下行；DRL branch UT 與 track UT 是不同維度。保留既有 LOW／RAC Section 語義。'] },
+  { cells: ['原始檔 context', '確認 Date、Line、Branch、Direction、Section、Task、Station Start／End；原始設備 Line 標籤及 basename 只作來源證據。'] },
+  { cells: ['既有報表 context', '下游讀取 workbook 欄位與 _Metadata；缺值才以檔名補正，衝突須處理，不能把 AEL 自動改成 EAL。'] },
+  { cells: ['輸出命名', 'YYYYMMDD_LINE_TRACK_SESSION_START_END_Exception_Report.xlsx；省去 _MedianSample，演算法仍記在 workbook metadata。舊檔名仍可匯入。'] },
+];
+
+export const measurementFlow: GuideFlowStep[] = [
+  { title: '格式專屬清洗', detail: 'DATAC 與 CSV 分別處理 header、invalid、修剪及座標，統一公尺與 channel 名稱。' },
+  { title: 'Context 與 metadata', detail: '保存主線／分支／方向、來源列、pass/segment；依核准範圍取得 Class、Track Type 與門檻。' },
+  { title: '中位實測樣本', detail: '相鄰精確同 chainage 群內，每個 channel 選一個真實 finite 中位樣本；不跨 gap、pass 或 context 混合。' },
+  { title: '判定與報表', detail: 'detector、Excel 與 ChartData 使用同 revision 的代表資料；圖表顯示取樣不改判定或匯出。' },
+];
+
+export const dualSystemCleaningRows: GuideMatrixRow[] = [
+  { cells: ['來源與 header', '分號 DATAC；LINE/TRACK/KM/LOCATION、WHGT1c/STG1c/RWH1mm 等映射為共同欄。', 'UTF-8 BOM CSV，偵測逗號／分號／tab；Line、Km、HeightWire1 [mm] 等完整量測 headers 必須存在。'] },
+  { cells: ['修剪', '資料超過 40 行才移除首尾各 20 行；40 行或以下保留。', '首 100 行及其餘尾部最多 100 行移除；過短或清洗後無量測會回具體錯誤。'] },
+  { cells: ['公尺座標', '沿用 KM 整數與格式化 LOCATION 合成 Chainage 的 legacy 規則。', 'Decimal Km × 1000 後才轉 float，只換算一次；保留 source_chainage_km。'] },
+  { cells: ['Invalid 與空值', '移除重複 KM header；數值不可解析為 NaN；wear 精確 6.56 設 NaN；缺 KM/LOCATION 的列移除。', '精確字串 1.#IO 設為 NaN；各 channel 數值解析；移除無效 Km 或全部量測無值的列。'] },
+  { cells: ['高度', '有效 height1–4 各加 5300 mm 的既有校正。', '已是毫米實測值，不套 DATAC 的 +5300 校正；不套 6.56 wear 特例。'] },
+  { cells: ['處理與來源', '保留 source_row_number 與來源標籤；不覆寫原檔。', '50,000 行 chunks；保留來源列、SampleCount（若有）及 cleaning summary；不加入 noise filter。'] },
+];
+
+export const chartContractRows: GuideMatrixRow[] = [
+  { cells: ['Overview / detail', 'Overview 保留 min/max envelope、首尾、段界及例外位置；detail 用相同代表資料切 window，再取樣，不改量測值。'] },
+  { cells: ['Marker 焦點', '點 marker 或右側例外清單，以 maxLocation ±100m 顯示；邊界取資料 domain 交集，三 panel 共用 X；同 dot 可再次聚焦。'] },
+  { cells: ['門檻線', '預設顯示，可獨立開關；threshold_segments 使用同 revision 的 detector resolver 與 signed value，只畫實際配置 level，不靠已發生例外推算全線門檻。'] },
+  { cells: ['快照隔離', 'client_session_id 是分析分頁身份，與 railway branch/session 不同。detail 以 analysis_revision、mode、window、max_points 隔離；取消或舊 response 不能覆蓋新結果。'] },
+  { cells: ['Raw overview', '略過中位精簡與例外偵測，只供清洗後原始量測概覽；不可匯出例外報表。detail cache 有界且有 TTL，離開 raw view 釋放；快取過期需重讀來源檔，可取消並保留現圖。'] },
+  { cells: ['來源漂移與重試', 'Raw cache 檢查來源 identity/size/mtime，變動重驗 SHA；來源變更／刪除要求重新匯入。範圍外回空資料；一般失敗保留最後圖，可重試此範圍。'] },
 ];
 
 export const metadataCanonicalRows: GuideMatrixRow[] = [
   { cells: ['Threshold schema', '`Class`、`Track Type`、`Exc Type` 與各異常 L1/L2/L3 欄位。'] },
   { cells: ['Input formats', 'TOV1050 long table 與 TOV640 legacy wide table 都先轉成 canonical model。'] },
   { cells: ['Mixed workbook', '混合欄位、缺欄、非數值或 threshold 順序錯誤會 fail closed，錯誤需帶 sheet／列號。'] },
-  { cells: ['Write-back', '只寫回 canonical 欄位並保留備份，避免舊欄位殘留造成 detector 與 UI 不一致。'] },
+  { cells: ['Threshold 空值', 'Class 未定義才 fallback both；Class 已定義但 threshold 為 NaN 不 fallback。沒有配置的 level 不偵測亦不畫線。'] },
+  { cells: ['Write-back', '原 metadata 不靜默覆寫；先輸出候選、provenance 與 audit，確認核准來源及端點政策後再安排寫回。'] },
 ];
 
 export const apiOwnershipRows: GuideMatrixRow[] = [
   {
-    cells: ['Exception 分析', 'useAnalysisStore', 'POST /api/analyze', 'DataLoader、MetadataManager、ExceptionDetector'],
+    cells: ['Exception 分析', 'useAnalysisStore', 'POST /api/analysis/jobs；GET /api/jobs/{id}；GET /api/jobs/{id}/result', '格式 loader、metadata、median、detector 與 revision snapshot；legacy /api/analyze 保留相容'],
   },
   {
     cells: ['歷史比對', 'useHistoryStore', 'POST /api/analyze/compare', 'RepeatedExceptionFinder 與 comparison export'],
@@ -156,6 +187,9 @@ export const apiOwnershipRows: GuideMatrixRow[] = [
 ];
 
 export const contractRows: GuideMatrixRow[] = [
+  { cells: ['共同報表 context', '逐筆保留主 line＋branch＋direction＋section、task/stations 與來源標籤；來源系統與 run/date context 由 catalog／_Metadata 保存。LMC/TKS legacy aliases 由來源 adapter 解析，不全域替換 line 字串。'] },
+  { cells: ['Algorithm provenance', '_Metadata 保存 algorithm、來源／metadata digest 與 revision；代表樣本的來源列在 ChartData 保留。表格、ChartData、Excel 同 revision；不以 _MedianSample 檔名後綴辨認演算法。'] },
+  { cells: ['比較 scope', '同一次比較限相容主線／分支／方向；History／Version 遇多 Section 或不同 Section 明確拒絕，須先分拆。跨期以物理身份配對，日期作時間軸；不同 raw/median 模式不得混淆。舊 provenance 缺失標 unknown，可相容不代表 algorithm verified。'] },
   {
     cells: ['Section-aware resolution', '先以 Section、Track 與原始 Chainage 做 strict match；只有真正 gap 才可做 exact transition。'],
   },
@@ -177,6 +211,8 @@ export const contractRows: GuideMatrixRow[] = [
 ];
 
 export const blockingErrorRows: GuideMatrixRow[] = [
+  { cells: ['工程配置尚未核准', '報表可辨識不代表可運算；Stagger 缺該主線／分支／方向的係數或 support，須補核准配置，不借用另一條線的公式。'] },
+  { cells: ['Enrichment 缺區間', 'Overlap／Tension Length／Landmark 顯示缺資料原因；observed bracket envelope 或單一點不是核准實體區間。unknown 不能補 N／0。'] },
   { cells: ['UNKNOWN TL identity', '列出 Line、sheet row、raw signature 與 identity，修正 metadata 或來源欄位。'] },
   { cells: ['位置或來源無效', '檢查 Section、Track、Chainage、source bounds 與 ordered source signature。'] },
   { cells: ['解析不唯一', '多個 exact transition rows 或多個 primary TL 一律 HTTP 422，不自動選最近值。'] },
@@ -195,6 +231,9 @@ export const verificationRows: GuideMatrixRow[] = [
 ];
 
 export const guideSourceReferences = [
+  'backend/app/core/data_ingestion.py',
+  'backend/app/core/tov1050_data_ingestion.py',
+  'backend/app/core/chainage_reduction.py',
   'backend/app/core/analyzers.py',
   'backend/app/core/comparison.py',
   'backend/app/core/calculation/',

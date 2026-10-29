@@ -1,5 +1,7 @@
 from fastapi import APIRouter, HTTPException, BackgroundTasks, UploadFile, File, Query
-from fastapi.responses import StreamingResponse
+from fastapi.responses import StreamingResponse, FileResponse
+from starlette.concurrency import run_in_threadpool
+from starlette.background import BackgroundTask
 from pydantic import BaseModel
 from pathlib import Path
 import pandas as pd
@@ -10,6 +12,16 @@ import json
 import re
 import urllib.parse
 import logging
+import threading
+import uuid
+import os
+import hashlib
+import time
+from functools import partial
+import anyio
+from copy import deepcopy
+from typing import Literal
+from app.core.background_jobs import (JobManager, JobCancelled, JobTimedOut, JobCapacityError, JobMissing, JobExpired, JobNotReady)
 
 from app.core.data_ingestion import DataLoader
 from app.core.tov1050_contract import (
@@ -27,7 +39,12 @@ from app.core.analyzers import ExceptionDetector
 from app.core.exporter import ExcelExporter
 from app.core.tov1050_report_export import export_analysis_report
 from app.core.repeated_finder import RepeatedExceptionFinder
-from app.core.chart_sampling import build_chart_payload
+from app.core.chart_sampling import build_chart_payload, MEASUREMENT_COLUMNS, normalize_chart_window
+from app.core.chart_cache import ChartSource, WindowCache
+from app.core.chart_thresholds import build_threshold_segments, clip_threshold_segments
+from app.core.report_context import (ReportContextError, read_report_context,
+                                     ensure_compatible_scopes, validate_algorithm_compatibility)
+from app.core.line_registry import normalize_context, normalize_line
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -83,7 +100,7 @@ def generate_filename(
         ...                   task_no="U1", station_start="HUH", station_end="RAC")
         "20260127_EAL_U1_HUH-RAC_Exception_Report.xlsx"
     """
-    tov1050_lines = {"AEL", "TCL", "DRL", "ISL", "KTL", "TKL", "TWL"}
+    tov1050_lines = LINE_WORKBOOKS
     # Accept legacy UI direction aliases when generating a filename.
     if str(line).strip().upper() in tov1050_lines:
         track = {"UP": "UT", "DN": "DT"}.get(str(track).strip().upper(), track)
@@ -94,7 +111,7 @@ def generate_filename(
         raise ValueError("TOV1050 export requires station_start and station_end")
 
     # TOV1050 format is selected when a session is present.
-    if session:
+    if session and str(line).strip().upper() in tov1050_lines:
         artifact = {
             'raw': 'Catenary_Report',
             'report': 'Exception_Report',
@@ -139,6 +156,7 @@ def generate_filename(
 # Global Cache for Single-User Desktop App
 LAST_ANALYSIS_RESULTS = {}
 LAST_RAW_DF = pd.DataFrame()
+LAST_ANALYSIS_SNAPSHOT = None
 LAST_ANALYSIS_SOURCE_PATH: Optional[str] = None
 LAST_COMPARE_RESULTS = pd.DataFrame()
 LAST_COMPARE_FILES = []
@@ -152,6 +170,14 @@ LAST_METADATA_CAPABILITIES = None
 # compatible fallback for API clients that predate this contract.
 ANALYSIS_SESSIONS: dict[str, dict[str, Any]] = {}
 MAX_ANALYSIS_SESSIONS = 8
+STATE_LOCK = threading.RLock()
+JOBS = JobManager(
+    ttl_seconds=float(os.environ.get("TOV1050_JOB_TTL_SECONDS", "3600")),
+    execution_timeout_seconds=(float(os.environ["TOV1050_JOB_TIMEOUT_SECONDS"])
+                               if os.environ.get("TOV1050_JOB_TIMEOUT_SECONDS") else None),
+)
+DETAIL_LIMITER = anyio.CapacityLimiter(1)
+RAW_CHART_TTL_SECONDS = 120
 
 
 def _session_key(client_session_id: Optional[str]) -> str:
@@ -171,6 +197,7 @@ class AnalyzeRequest(BaseModel):
     track: str     # e.g., "UP", "DN"
     date_str: str  # e.g., "20251212"
     session: Optional[str] = None  # Mainline, PL, or TKS
+    branch: Optional[str] = None
     # Optional fields for custom file naming
     task_no: Optional[str] = None        # e.g., "U1", "D3", "S1"
     station_start: Optional[str] = None  # e.g., "HUH", "LOW"
@@ -178,6 +205,13 @@ class AnalyzeRequest(BaseModel):
     # Frontend analysis-tab identity.  This is distinct from the railway
     # metadata ``session`` (Mainline/PL/TKS).
     client_session_id: Optional[str] = None
+    analysis_mode: Literal["median", "raw_overview"] = "median"
+    chart_data_mode: Literal["raw", "chainage_mean", "chainage_median"] = "chainage_median"
+
+class ReportJobRequest(BaseModel):
+    client_session_id: str
+    analysis_revision: str
+    chart_data_mode: Literal["raw", "chainage_mean", "chainage_median"] = "chainage_median"
 
 class GenerateExportRequest(BaseModel):
     data: List[Dict[str, Any]]
@@ -205,7 +239,8 @@ def _chart_columns(frame: pd.DataFrame) -> list[str]:
     columns += [column for column in frame.columns if "wear" in column.lower()]
     columns += [column for column in ("Track Type", "Overlap", "Tension Length", "Landmark", "Class") if column in frame.columns]
     columns += [column for column in ("stg_max", "stg_min") if column in frame.columns]
-    columns += [column for column in ("task_run_date", "line", "track", "Section", "task_no", "station_start", "station_end") if column in frame.columns]
+    columns += [column for column in ("task_run_date", "line", "branch", "track", "Section", "task_no", "station_start", "station_end") if column in frame.columns]
+    columns += [c for c in frame.columns if c in ("source_row_number", "SampleCount", "group_id", "pass_id", "segment_id", "sample_count", "source_row_first", "source_row_last") or c.endswith(("_source_row", "_sample_counter", "_valid_count"))]
     return list(dict.fromkeys(columns))
 
 
@@ -220,8 +255,208 @@ def _exception_chainages(results: dict[str, pd.DataFrame], boundaries: pd.DataFr
             values.extend(pd.to_numeric(boundaries[column], errors="coerce").dropna().tolist())
     return values
 
-@router.post("/analyze")
-async def analyze_data(request: AnalyzeRequest):
+
+def _exception_group_ids(results: dict[str, pd.DataFrame]) -> list[Any]:
+    """Return compact sample groups that must remain visible in an overview."""
+    values: list[Any] = []
+    for frame in results.values():
+        if not isinstance(frame, pd.DataFrame) or "peak_group_id" not in frame.columns:
+            continue
+        values.extend(frame["peak_group_id"].dropna().tolist())
+    return values
+
+def _file_digest(path):
+    digest = hashlib.sha256()
+    if not Path(path).exists():
+        # Unit-test loaders may provide an in-memory frame while mocking Path.exists.
+        return hashlib.sha256(str(Path(path)).encode()).hexdigest()
+    try:
+        with open(path, "rb") as stream:
+            for chunk in iter(lambda: stream.read(1024 * 1024), b""):
+                digest.update(chunk)
+    except OSError:
+        return hashlib.sha256(str(Path(path)).encode()).hexdigest()
+    return digest.hexdigest()
+
+
+def _snapshot_frame(snapshot):
+    frame = snapshot.get("analysis_df", snapshot.get("raw_df"))
+    return frame if isinstance(frame, pd.DataFrame) else pd.DataFrame()
+
+
+def _assert_reportable(snapshot):
+    if snapshot.get("analysis_mode") == "raw_overview":
+        raise HTTPException(status_code=403, detail="Raw overview does not support exception report export")
+
+
+def _validate_chart_mode(snapshot, mode):
+    if snapshot.get("analysis_mode"):
+        expected = "raw" if snapshot["analysis_mode"] == "raw_overview" else "chainage_median"
+        if mode != expected:
+            raise HTTPException(status_code=409, detail=f"This analysis uses {expected}; import again to change mode")
+
+
+def _reload_overview_source(snapshot):
+    path = Path(snapshot["source_path"])
+    if not path.exists() or _file_digest(path) != snapshot["source_sha256"]:
+        raise HTTPException(status_code=409, detail="Source file changed; import it again")
+    params = snapshot["params"]
+    is_csv = params.get("line") in LINE_WORKBOOKS and path.suffix.lower() != ".datac"
+    frame = (TOV1050DataLoader() if is_csv else DataLoader()).load_data(str(path))
+    if _file_digest(path) != snapshot["source_sha256"]:
+        raise HTTPException(status_code=409, detail="Source file changed during reading; import it again")
+    snapshot["source_stat"] = _source_stat(path)
+    # A cold raw detail must preserve the same chart context as its overview.
+    # Never infer it from the device's display line (e.g. RED LINE).
+    if snapshot.get("metadata_path"):
+        metadata_path = Path(snapshot["metadata_path"])
+        if _file_digest(metadata_path) != snapshot.get("metadata_sha256"):
+            raise HTTPException(status_code=409, detail="Metadata changed; import it again")
+        manager = (TOV1050MetadataManager(metadata_path) if params.get("line") in LINE_WORKBOOKS
+                   else MetadataManager(metadata_path))
+        detector = ExceptionDetector(manager)
+        session = params.get("session") or params.get("section")
+        frame = detector._map_class_info(frame, params["line"], params["track"], session)
+        frame = detector._map_track_info(frame, params["line"], session, params["track"])
+        for column, value in {"line": params["line"], "branch": params.get("branch"), "track": params["track"], "Section": session,
+                              "task_no": params.get("task_no"), "station_start": params.get("station_start"),
+                              "station_end": params.get("station_end"), "task_run_date": params.get("date_str")}.items():
+            frame[column] = value
+        if _file_digest(metadata_path) != snapshot.get("metadata_sha256"):
+            raise HTTPException(status_code=409, detail="Metadata changed during reading; import it again")
+    _validate_raw_source(snapshot)
+    return frame
+
+
+def _source_stat(path):
+    try:
+        value = Path(path).stat()
+        return value.st_dev, value.st_ino, value.st_size, value.st_mtime_ns, value.st_ctime_ns
+    except OSError as exc:
+        raise HTTPException(status_code=409, detail="Source file unavailable; import it again") from exc
+
+
+def _validate_raw_source(snapshot):
+    """Cheap on every cache hit; a stat change requires a digest recheck."""
+    if "source_sha256" not in snapshot:
+        return  # Backwards-compatible in-memory/legacy snapshots.
+    path = Path(snapshot["source_path"])
+    current = _source_stat(path)
+    if current != snapshot.get("source_stat"):
+        if _file_digest(path) != snapshot["source_sha256"]:
+            _release_chart_cache(snapshot)
+            raise HTTPException(status_code=409, detail="Source file changed; import it again")
+        snapshot["source_stat"] = current
+
+
+def _release_chart_cache(snapshot):
+    for source in snapshot.pop("chart_sources", {}).values():
+        source.close()
+    snapshot.pop("chart_windows", None)
+
+
+def close_chart_caches():
+    """Release temporary mmap files when the embedded server shuts down."""
+    with STATE_LOCK:
+        snapshots = list(ANALYSIS_SESSIONS.values())
+    for snapshot in snapshots:
+        with snapshot.setdefault("chart_lock", threading.RLock()):
+            _release_chart_cache(snapshot)
+
+
+def _snapshot_chart_payload(snapshot, mode, *, progress=None, request_ticket=None, queued_at=None, **sampling_kwargs):
+    # A snapshot owns its cache/lock. Different tabs cannot share mutable state.
+    with STATE_LOCK:
+        lock = snapshot.setdefault("chart_lock", threading.RLock())
+    with lock:
+        started = time.monotonic()
+        payload, resolution = _snapshot_chart_payload_locked(snapshot, mode, progress=progress,
+                                                            request_ticket=request_ticket, **sampling_kwargs)
+        if queued_at is not None:
+            resolution = {**resolution, "server_queue_ms": 1000 * (started - queued_at),
+                          "server_sampling_ms": 1000 * (time.monotonic() - started)}
+        return payload, resolution
+
+
+def _snapshot_chart_payload_locked(snapshot, mode, *, progress=None, request_ticket=None, **sampling_kwargs):
+    """Cache one full derived chart per revision, before applying detail windows.
+
+    Detail callers use DETAIL_LIMITER to serialize cache misses. Grouping the
+    complete raw frame first preserves pass IDs and nonadjacent memberships.
+    """
+    _validate_chart_mode(snapshot, mode)
+    def check_current():
+        if request_ticket is not None and snapshot.get("chart_request_ticket") != request_ticket:
+            raise HTTPException(status_code=409, detail={"code": "CHART_REQUEST_SUPERSEDED",
+                                                        "message": "A newer chart viewport was requested"})
+    check_current()
+    is_raw = snapshot.get("analysis_mode") == "raw_overview"
+    if is_raw:
+        _validate_raw_source(snapshot)
+    overview = sampling_kwargs.get("from_m") is None and sampling_kwargs.get("to_m") is None
+    if overview and snapshot.get("overview_payload") is not None:
+        return snapshot["overview_payload"], snapshot["overview_resolution"]
+    aggregation = None
+    sources = snapshot.setdefault("chart_sources", {})
+    source = sources.get(mode)
+    if source is not None and source.closed:
+        sources.pop(mode)
+        snapshot.pop("chart_windows", None)
+        source = None
+    frame = None
+    if source is None:
+        frame = _reload_overview_source(snapshot) if is_raw else _snapshot_frame(snapshot)
+    columns = list(source.columns) if source is not None else _chart_columns(frame)
+    if mode == "chainage_mean" and "analysis_mode" not in snapshot:
+        frame = snapshot.get("mean_chart_frame")
+        aggregation = snapshot.get("mean_chart_metadata")
+        if frame is None:
+            from app.core.chainage_aggregation import aggregate_chainage, CHANNELS
+            derived, aggregation = aggregate_chainage(snapshot["raw_df"], progress=progress)
+            statistics = [f"{channel}_{stat}" for channel in CHANNELS for stat in ("min", "max", "count")]
+            provenance = ["group_id", "pass_id", "sample_count", "source_row_first", "source_row_last",
+                          "SampleCount_first", "SampleCount_last"]
+            selected = list(dict.fromkeys(c for c in [*columns, *statistics, *provenance] if c in derived))
+            frame = derived[selected]
+            snapshot["mean_chart_frame"], snapshot["mean_chart_metadata"] = frame, aggregation
+        columns = frame.columns
+    if source is None:
+        source = ChartSource(frame, columns, numeric_columns=MEASUREMENT_COLUMNS,
+                             disk=is_raw, ttl=RAW_CHART_TTL_SECONDS, lifecycle_lock=snapshot["chart_lock"])
+        sources[mode] = source
+        snapshot["chart_domain"] = source.domain
+    from_m, to_m, empty = normalize_chart_window(source.domain, sampling_kwargs.get("from_m"), sampling_kwargs.get("to_m"))
+    sampling_kwargs.update(from_m=from_m, to_m=to_m)
+    key = (mode, from_m, to_m, sampling_kwargs.get("max_points", 6000))
+    windows = snapshot.setdefault("chart_windows", WindowCache())
+    cached = windows.get(key)
+    if cached is not None:
+        source.last_access = time.monotonic()
+        check_current()
+        return cached
+    def chart_progress(*args):
+        check_current()
+        if progress:
+            progress(*args)
+    payload, resolution = build_chart_payload(source, columns, progress=chart_progress, **sampling_kwargs)
+    if aggregation is not None:
+        resolution.update(aggregation)
+        resolution["display_mode"] = "chainage_mean"
+    if snapshot.get("analysis_mode"):
+        resolution["window_source_points"] = resolution["source_points"]
+        resolution.update(display_mode=mode, **snapshot.get("aggregation_metadata", {}))
+    resolution["chart_domain"] = source.domain
+    if is_raw:
+        _validate_raw_source(snapshot)
+    check_current()
+    if overview:
+        snapshot["overview_payload"], snapshot["overview_resolution"] = payload, resolution
+    else:
+        windows.put(key, (payload, resolution))
+    return payload, resolution
+
+
+def _analyze_sync(request: AnalyzeRequest, progress=None, publish=None):
     """
     Core Analysis Endpoint.
     Loads data, applies metadata mapping, and detects exceptions.
@@ -234,14 +469,25 @@ async def analyze_data(request: AnalyzeRequest):
     if not data_path.exists():
         raise HTTPException(status_code=404, detail=f"Data file not found: {request.file_path}")
     
-    request = request.model_copy(update={"line": request.line.strip().upper(), "track": request.track.strip().upper()})
-    is_tov1050 = request.line.strip().upper() in {"AEL", "TCL", "DRL", "ISL", "KTL", "TKL", "TWL"}
+    source_context = {"line": request.line, "track": request.track,
+                      "section": request.section, "session": request.session, "branch": request.branch}
     try:
+        parent = normalize_line(request.line)
+        identity = normalize_context(parent, branch=request.branch, direction=request.track,
+                                     section=request.session or request.section)
+        if not identity.branch or not identity.direction:
+            raise ValueError("Analysis requires an explicit valid branch/section and direction")
+        # Explicit session and Section must agree about the branch. Geographical
+        # EAL RAC/LOW subdivisions keep their existing Section-specific rules.
+        normalize_context(parent, branch=identity.branch, direction=request.track, section=request.section)
+        is_tov1050 = parent in LINE_WORKBOOKS
         if is_tov1050:
-            session = normalize_session(request.session or request.section or "Mainline")
-            metadata_track_sheet(session, request.track)
+            session = identity.legacy_session
+            metadata_track_sheet(session, identity.wire_track)
         else:
-            session = request.session or request.section or "Mainline"
+            session = request.section or identity.legacy_session
+        request = request.model_copy(update={"line": parent, "track": identity.wire_track,
+                                             "branch": identity.branch, "session": session})
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
 
@@ -262,8 +508,11 @@ async def analyze_data(request: AnalyzeRequest):
     normalized_params = {
         **request.model_dump(),
         "session": session,
+        "section": session if is_tov1050 else request.section,
         "station_start": station_start,
         "station_end": station_end,
+        "branch": identity.branch, "direction": identity.direction,
+        "source_context": source_context,
     }
     try:
         metadata_file = (
@@ -277,13 +526,18 @@ async def analyze_data(request: AnalyzeRequest):
         raise HTTPException(status_code=404, detail=f"Metadata file not found: {metadata_file}")
 
     try:
+        source_sha256, metadata_sha256 = _file_digest(data_path), _file_digest(metadata_file)
         # 2. Initialize Components
         loader = TOV1050DataLoader() if is_tov1050 and data_path.suffix.lower() != ".datac" else DataLoader()
         meta_mgr = TOV1050MetadataManager(metadata_file) if is_tov1050 else MetadataManager(metadata_file)
         detector = ExceptionDetector(meta_mgr)
 
         # 3. Load & Process Data
-        df = loader.load_data(str(data_path))
+        if progress:
+            progress("reading")
+        df = (loader.load_data(str(data_path), progress=progress)
+              if is_tov1050 and data_path.suffix.lower() != ".datac" and progress
+              else loader.load_data(str(data_path)))
         
         # 3.1 Validate required columns
         if df.empty:
@@ -322,57 +576,78 @@ async def analyze_data(request: AnalyzeRequest):
                                  f"required metadata unavailable: {', '.join(missing_required)}")
             meta_mgr.require_measurement_coverage(df['Chainage'], request.line, session, request.track)
         
-        # 4. Run Analysis
-        results, boundary_df = detector.analyze(
-            df, 
-            line=request.line, 
-            section=session,
-            track=request.track,
-            date_str=request.date_str,
-            task_no=request.task_no,
-            station_start=station_start,
-            station_end=station_end
-        )
-
-        # Preserve task-run context on the complete raw frame used by report
-        # and CSV export.  The chart payload is derived from this frame and
-        # may be downsampled independently for rendering.
+        # Map context before reduction so different metadata intervals never merge.
+        if progress:
+            progress("metadata_mapping", 0, 2, "steps")
+        mapped = detector._map_class_info(df, request.line, request.track, session)
+        # A few legacy integrations provide a detector double that does not
+        # return the frame from its mapping hook.  Keep the loaded frame in
+        # that case; the production detector always returns a DataFrame.
+        if isinstance(mapped, pd.DataFrame):
+            df = mapped
+        if progress:
+            progress("metadata_mapping", 1, 2, "steps")
+        mapped = detector._map_track_info(df, request.line, session, request.track)
+        if isinstance(mapped, pd.DataFrame):
+            df = mapped
         task_run_cols = {
-            'task_run_date': request.date_str,
-            'line': request.line,
-            'track': request.track,
-            'Section': session,
-            'task_no': request.task_no,
-            'station_start': station_start,
-            'station_end': station_end,
+            'task_run_date': request.date_str, 'line': request.line, 'track': request.track,
+            'branch': identity.branch,
+            'Section': session, 'task_no': request.task_no,
+            'station_start': station_start, 'station_end': station_end,
         }
         for col, val in task_run_cols.items():
             df[col] = val
-        
-        # Cache results for export
+        source_points = len(df)
+        mode = "raw" if request.analysis_mode == "raw_overview" else "chainage_median"
+        normalized_params.update(analysis_mode=request.analysis_mode, chart_data_mode=mode)
+        aggregation_metadata = {}
+        if request.analysis_mode == "median":
+            from app.core.chainage_reduction import reduce_chainage
+            df, aggregation_metadata = reduce_chainage(df, progress=progress)
+            results, boundary_df = detector.analyze(
+                df, line=request.line, section=session, track=request.track,
+                date_str=request.date_str, task_no=request.task_no,
+                station_start=station_start, station_end=station_end,
+                metadata_mapped=True,
+                **({"progress": progress} if progress else {}))
+        else:
+            results = {}
+            boundary_df = meta_mgr.get_boundaries_for_plot(request.line, request.track, session)
+        if _file_digest(data_path) != source_sha256 or _file_digest(metadata_file) != metadata_sha256:
+            raise HTTPException(status_code=409, detail="Source or metadata changed during analysis; import again")
+        aggregation_metadata.update(source_sha256=source_sha256, metadata_sha256=metadata_sha256,
+                                    source_points=source_points, representative_points=len(df),
+                                    analysis_mode=request.analysis_mode)
         source_path = str(data_path.resolve())
-        # Keep a per-client-tab snapshot.  Copy the frame so subsequent
-        # requests cannot mutate the data referenced by an existing tab.
-        client_key = _session_key(request.client_session_id)
-        ANALYSIS_SESSIONS[client_key] = {
-            "results": results,
-            "raw_df": df.copy(deep=True),
-            "source_path": source_path,
-            "params": normalized_params,
-            "metadata_capabilities": metadata_capabilities,
+        revision = uuid.uuid4().hex
+        snapshot = {
+            "results": results, "source_path": source_path, "source_sha256": source_sha256,
+            "params": normalized_params, "metadata_capabilities": metadata_capabilities,
+            "analysis_revision": revision, "analysis_mode": request.analysis_mode,
+            "aggregation_metadata": aggregation_metadata,
+            "metadata_path": str(metadata_file.resolve()), "metadata_sha256": metadata_sha256,
+            "source_stat": _source_stat(data_path) if data_path.is_file() else None,
+            "threshold_segments": build_threshold_segments(df, meta_mgr.get_all_thresholds()),
+            "chart_lock": threading.RLock(),
         }
-        # Bound process memory when a user opens many tabs with large CSVs.
-        # Dict insertion order makes the oldest completed tab the eviction
-        # candidate; active frontend tabs retain their own response data.
-        while len(ANALYSIS_SESSIONS) > MAX_ANALYSIS_SESSIONS:
-            ANALYSIS_SESSIONS.pop(next(iter(ANALYSIS_SESSIONS)))
-        # Legacy globals are retained for clients that do not send a tab id.
-        LAST_ANALYSIS_RESULTS = results
-        LAST_RAW_DF = df
-        LAST_ANALYSIS_SOURCE_PATH = source_path
-        LAST_ANALYSIS_PARAMS = normalized_params
-        LAST_METADATA_CAPABILITIES = metadata_capabilities
-        
+        if request.analysis_mode == "median":
+            snapshot["analysis_df"] = df
+            # Compatibility alias: this is the compact representative frame,
+            # never the discarded full source frame.
+            snapshot["raw_df"] = df
+        else:
+            # Only this local variable holds the complete raw frame.
+            payload, resolution = build_chart_payload(df, _chart_columns(df), progress=progress)
+            resolution.update(display_mode="raw", **aggregation_metadata)
+            snapshot["overview_payload"], snapshot["overview_resolution"] = payload, resolution
+            source = ChartSource(df, _chart_columns(df), numeric_columns=MEASUREMENT_COLUMNS,
+                                 disk=True, ttl=RAW_CHART_TTL_SECONDS, lifecycle_lock=snapshot["chart_lock"])
+            snapshot["chart_sources"] = {"raw": source}
+            snapshot["chart_domain"] = source.domain
+            resolution["chart_domain"] = source.domain
+            del df
+
         # 5. Format Response
         def df_to_records(d: pd.DataFrame):
             return d.replace({np.nan: None}).to_dict(orient='records')
@@ -385,14 +660,20 @@ async def analyze_data(request: AnalyzeRequest):
         
         # 6. Prepare Chart Data (Column-oriented for Plotly performance)
         # Phase 10.10.I: Inject Task Run Data into DataFrame for Catenary Report export
-        chart_data, chart_resolution = build_chart_payload(
-            df,
-            _chart_columns(df),
+        if progress:
+            progress("preparing_chart")
+        chart_data, chart_resolution = _snapshot_chart_payload(
+            snapshot, mode,
             preserve_chainage=_exception_chainages(results, boundary_df),
+            preserve_group_ids=_exception_group_ids(results),
+            **({"progress": progress} if progress else {}),
         )
 
-        return {
+        response = {
             "status": "success",
+            "analysis_revision": revision,
+            "analysis_mode": request.analysis_mode, "chart_view": mode,
+            "aggregation_metadata": aggregation_metadata,
             "params": normalized_params,
             "exceptions": formatted_results,
             "boundaries": formatted_boundaries,
@@ -401,27 +682,198 @@ async def analyze_data(request: AnalyzeRequest):
             "client_session_id": request.client_session_id,
             "cleaning_summary": getattr(loader, "last_cleaning_summary", None),
             "metadata_capabilities": metadata_capabilities,
+            "chart_domain": snapshot.get("chart_domain"),
+            "threshold_segments": snapshot.get("threshold_segments", []),
         }
 
+        def commit():
+            global LAST_ANALYSIS_RESULTS, LAST_RAW_DF, LAST_ANALYSIS_PARAMS, LAST_ANALYSIS_SOURCE_PATH
+            global LAST_METADATA_CAPABILITIES, LAST_ANALYSIS_SNAPSHOT
+            with STATE_LOCK:
+                client_key = _session_key(request.client_session_id)
+                # Published frames are immutable. Jobs retain old versions by reference.
+                previous = ANALYSIS_SESSIONS.pop(client_key, None)
+                if previous:
+                    _release_chart_cache(previous)
+                ANALYSIS_SESSIONS[client_key] = snapshot
+                while len(ANALYSIS_SESSIONS) > MAX_ANALYSIS_SESSIONS:
+                    _release_chart_cache(ANALYSIS_SESSIONS.pop(next(iter(ANALYSIS_SESSIONS))))
+                LAST_ANALYSIS_RESULTS, LAST_RAW_DF = results, pd.DataFrame()
+                LAST_ANALYSIS_SNAPSHOT = snapshot
+                LAST_ANALYSIS_SOURCE_PATH, LAST_ANALYSIS_PARAMS = source_path, normalized_params
+                LAST_METADATA_CAPABILITIES = metadata_capabilities
+            return response
+        return publish(commit) if publish else commit()
+
+    except (JobCancelled, JobTimedOut):
+        if "snapshot" in locals():
+            _release_chart_cache(snapshot)
+        raise
     except HTTPException:
+        if "snapshot" in locals():
+            _release_chart_cache(snapshot)
         # Re-raise HTTPException as-is (preserves 400, 404, etc.)
         raise
     except ValueError as e:
+        if "snapshot" in locals():
+            _release_chart_cache(snapshot)
         raise HTTPException(status_code=400, detail=str(e)) from e
     except Exception as e:
+        if "snapshot" in locals():
+            _release_chart_cache(snapshot)
         import traceback
         traceback.print_exc()
         raise HTTPException(status_code=500, detail=str(e))
 
 
+@router.post("/analyze")
+async def analyze_data(request: AnalyzeRequest):
+    return await run_in_threadpool(_analyze_sync, request)
+
+
+def _require_snapshot(client_session_id, analysis_revision):
+    if not client_session_id:
+        raise HTTPException(status_code=422, detail="client_session_id is required")
+    with STATE_LOCK:
+        state = _state_for(client_session_id)
+        if state is None or (_snapshot_frame(state).empty and state.get("analysis_mode") != "raw_overview"):
+            raise HTTPException(status_code=410, detail="Analysis expired; run analysis again")
+        if not analysis_revision or state.get("analysis_revision") != analysis_revision:
+            raise HTTPException(status_code=409, detail="Analysis revision changed; use the completed analysis version")
+        return state
+
+
+def _job_error(exc):
+    codes = {JobCapacityError: 429, JobMissing: 404, JobExpired: 410, JobNotReady: 409}
+    raise HTTPException(status_code=codes[type(exc)], detail=str(exc)) from exc
+
+
+@router.post("/analysis/jobs", status_code=202)
+async def create_analysis_job(request: AnalyzeRequest):
+    if not request.client_session_id or not request.client_session_id.strip():
+        raise HTTPException(status_code=422, detail="client_session_id is required")
+    try:
+        return JOBS.submit("analysis", request.client_session_id,
+                           lambda: lambda context: _analyze_sync(
+                               request.model_copy(deep=True), context.progress, context.publish))
+    except JobCapacityError as exc:
+        _job_error(exc)
+
+
+def _export_job_work(snapshot, mode):
+    # No frame copy: completed analysis frames/results are immutable. Holding
+    # this version pins it independently of session eviction or replacement.
+    params = deepcopy(snapshot["params"])
+    capabilities = deepcopy(snapshot.get("metadata_capabilities"))
+    revision = snapshot["analysis_revision"]
+    _assert_reportable(snapshot)
+    _validate_chart_mode(snapshot, mode)
+    raw_df, results = _snapshot_frame(snapshot), snapshot["results"]
+
+    def work(context):
+        context.progress("exporting", 0, len(raw_df), "rows")
+        chart_df, statistics = raw_df, None
+        metadata = {"analysis_revision": revision, "chart_data_mode": mode,
+                    "raw_row_count": len(raw_df), **snapshot.get("aggregation_metadata", {})}
+        metadata.update({key: params.get(key) for key in ("line", "branch", "direction", "track", "section",
+                         "session", "date_str", "task_no", "station_start", "station_end") if params.get(key) is not None})
+        if capabilities:
+            metadata.update(metadata_capabilities=json.dumps(capabilities, ensure_ascii=False),
+                            enrichment_version="tov640-first-nonempty-v1")
+        if mode == "chainage_mean" and "analysis_mode" not in snapshot:
+            from app.core.chainage_aggregation import aggregate_chainage
+            chart_df, aggregation_metadata = aggregate_chainage(raw_df, progress=context.progress)
+            statistics = chart_df
+            metadata.update(aggregation_metadata)
+            metadata["grouped_row_count"] = len(chart_df)
+        output = context.output_path()
+        export_analysis_report(results, chart_df=chart_df, metadata=metadata,
+                               line=params.get("line", ""), output_path=output,
+                               chart_statistics_df=statistics, progress=context.progress)
+        context.check_cancelled()
+        filename = generate_filename(
+            date_str=params.get("date_str", "UnknownDate"), line=params.get("line", "UnknownLine"),
+            track=params.get("track", "UnknownTrack"), section=params.get("section", "UnknownSection"),
+            file_type="report", task_no=params.get("task_no"), station_start=params.get("station_start"),
+            station_end=params.get("station_end"), session=params.get("session") or params.get("section"))
+        if mode == "chainage_mean":
+            filename = f"{Path(filename).stem}_ChainageMean.xlsx"
+        context.job.path, context.job.filename = output, filename
+        return {"analysis_revision": revision, "chart_data_mode": mode, "filename": filename}
+    return work
+
+
+@router.post("/export/report/jobs", status_code=202)
+async def create_report_job(request: ReportJobRequest):
+    try:
+        def capture():
+            with STATE_LOCK:
+                snapshot = _require_snapshot(request.client_session_id, request.analysis_revision)
+                return _export_job_work(snapshot, request.chart_data_mode)
+        return JOBS.submit("export", request.client_session_id, capture, request.analysis_revision)
+    except JobCapacityError as exc:
+        _job_error(exc)
+
+
+@router.get("/jobs/{job_id}")
+async def get_job(job_id: str, client_session_id: str = Query(..., min_length=1)):
+    try:
+        with JOBS.lock:
+            return JOBS.describe(JOBS.get(job_id, client_session_id))
+    except (JobMissing, JobExpired) as exc:
+        _job_error(exc)
+
+
+@router.get("/jobs/{job_id}/result")
+async def get_job_result(job_id: str, client_session_id: str = Query(..., min_length=1)):
+    try:
+        with JOBS.lock:
+            job = JOBS.get(job_id, client_session_id)
+            if job.status != "ready":
+                raise JobNotReady(job.error or "Job has not completed")
+            return job.result
+    except (JobMissing, JobExpired, JobNotReady) as exc:
+        _job_error(exc)
+
+
+@router.post("/jobs/{job_id}/cancel")
+async def cancel_job(job_id: str, client_session_id: str = Query(..., min_length=1)):
+    try:
+        return JOBS.cancel_job(job_id, client_session_id)
+    except (JobMissing, JobExpired) as exc:
+        _job_error(exc)
+
+
+class _LeasedFileResponse(FileResponse):
+    async def __call__(self, scope, receive, send):
+        try:
+            await super().__call__(scope, receive, send)
+        finally:
+            self._release()
+
+
+@router.get("/jobs/{job_id}/download")
+async def download_job(job_id: str, client_session_id: str = Query(..., min_length=1)):
+    try:
+        job = JOBS.acquire_download(job_id, client_session_id)
+        response = _LeasedFileResponse(job.path, filename=job.filename,
+                                      media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+        response._release = lambda: JOBS.release_download(job)
+        return response
+    except (JobMissing, JobExpired, JobNotReady) as exc:
+        _job_error(exc)
+
+
 @router.get("/analyze/chart-data")
 async def get_chart_data(
-    from_m: Optional[float] = Query(default=None, ge=0),
-    to_m: Optional[float] = Query(default=None, ge=0),
+    from_m: Optional[float] = Query(default=None, allow_inf_nan=False),
+    to_m: Optional[float] = Query(default=None, allow_inf_nan=False),
     max_points: int = Query(default=6000, ge=500, le=100000),
     file_path: Optional[str] = Query(default=None),
     line: Optional[str] = Query(default=None),
     client_session_id: Optional[str] = Query(default=None),
+    analysis_revision: Optional[str] = Query(default=None),
+    chart_data_mode: Literal["raw", "chainage_mean", "chainage_median"] = Query(default="chainage_median"),
 ):
     """Return a higher-resolution chart window for the selected analysis tab.
 
@@ -430,16 +882,44 @@ async def get_chart_data(
     source differs from that cache, reload its CSV locally so detail requests
     cannot display another tab's data.
     """
+    try:
+        from_m, to_m, _ = normalize_chart_window(None, from_m, to_m)
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
     state = _state_for(client_session_id)
-    source_df = state["raw_df"] if state is not None else LAST_RAW_DF
+    if client_session_id and state is None:
+        raise HTTPException(status_code=410, detail="Analysis expired; run analysis again")
+    if analysis_revision is not None:
+        state = _require_snapshot(client_session_id, analysis_revision)
+    elif state and state.get("analysis_revision"):
+        raise HTTPException(status_code=409, detail="analysis_revision is required for this analysis")
+    if state and state.get("analysis_mode"):
+        _validate_chart_mode(state, chart_data_mode)
+        key = (chart_data_mode, from_m, to_m, max_points)
+        with STATE_LOCK:
+            if state.get("chart_request_key") != key:
+                state["chart_request_key"] = key
+                state["chart_request_ticket"] = state.get("chart_request_ticket", 0) + 1
+            ticket = state["chart_request_ticket"]
+        payload, resolution = await anyio.to_thread.run_sync(
+            partial(_snapshot_chart_payload, state, chart_data_mode, max_points=max_points,
+                    from_m=from_m, to_m=to_m, request_ticket=ticket, queued_at=time.monotonic(),
+                    preserve_chainage=_exception_chainages(state.get("results", {}), pd.DataFrame()),
+                    preserve_group_ids=_exception_group_ids(state.get("results", {}))), limiter=DETAIL_LIMITER)
+        _require_snapshot(client_session_id, analysis_revision)
+        if state.get("chart_request_ticket") != ticket:
+            raise HTTPException(status_code=409, detail={"code": "CHART_REQUEST_SUPERSEDED",
+                                                        "message": "A newer chart viewport was requested"})
+        return _chart_response(state, analysis_revision, payload, resolution)
+    source_df = _snapshot_frame(state) if state is not None else LAST_RAW_DF
     cached_source_path = state.get("source_path") if state is not None else LAST_ANALYSIS_SOURCE_PATH
-    if file_path:
+    if file_path and analysis_revision is None:
         requested_path = Path(file_path).resolve()
         cached_path = Path(cached_source_path).resolve() if cached_source_path else None
         if cached_path != requested_path:
             if not requested_path.exists():
                 raise HTTPException(status_code=404, detail=f"Data file not found: {file_path}")
-            is_tov1050 = (line or "").strip().upper() in {"AEL", "TCL", "DRL", "ISL", "KTL", "TKL", "TWL"}
+            is_tov1050 = (line or "").strip().upper() in LINE_WORKBOOKS
             loader = TOV1050DataLoader() if is_tov1050 else DataLoader()
             try:
                 source_df = loader.load_data(str(requested_path))
@@ -448,17 +928,34 @@ async def get_chart_data(
 
     if source_df.empty:
         raise HTTPException(status_code=409, detail="No completed analysis is available")
-    if from_m is not None and to_m is not None and from_m > to_m:
-        raise HTTPException(status_code=400, detail="from_m must be less than or equal to to_m")
-    chart_data, chart_resolution = build_chart_payload(
-        source_df,
-        _chart_columns(source_df),
-        max_points=max_points,
-        from_m=from_m,
-        to_m=to_m,
-        preserve_chainage=(),
-    )
-    return {"status": "success", "chart_data": chart_data, "chart_resolution": chart_resolution}
+    snapshot = state if state is not None and source_df is _snapshot_frame(state) else {"raw_df": source_df}
+    chart_data, chart_resolution = await anyio.to_thread.run_sync(
+        partial(_snapshot_chart_payload, snapshot, chart_data_mode, max_points=max_points,
+                from_m=from_m, to_m=to_m, preserve_chainage=(), queued_at=time.monotonic()),
+        limiter=DETAIL_LIMITER)
+    return _chart_response(snapshot, analysis_revision, chart_data, chart_resolution)
+
+
+def _chart_response(snapshot, revision, payload, resolution):
+    return {"status": "success", "analysis_revision": revision, "chart_data": payload,
+            "chart_resolution": resolution, "chart_domain": snapshot.get("chart_domain"),
+            "threshold_segments": clip_threshold_segments(snapshot.get("threshold_segments", []),
+                                                            resolution.get("from_m"), resolution.get("to_m"))}
+
+
+@router.post("/analyze/chart-cache/release")
+async def release_chart_cache(request: ReportJobRequest):
+    snapshot = _require_snapshot(request.client_session_id, request.analysis_revision)
+    with STATE_LOCK:
+        snapshot["chart_request_ticket"] = snapshot.get("chart_request_ticket", 0) + 1
+        snapshot.pop("chart_request_key", None)
+    def release():
+        with snapshot.setdefault("chart_lock", threading.RLock()):
+            _release_chart_cache(snapshot)
+    await run_in_threadpool(release)
+    return {"status": "success"}
+
+
 @router.post("/analyze/compare")
 async def compare_history(files: List[UploadFile] = File(...)):
     """
@@ -479,6 +976,51 @@ async def compare_history(files: List[UploadFile] = File(...)):
         file_names = [f.filename for f in sorted_files]
         print(f"Comparing chain (Newest -> Oldest): {file_names}")
 
+        def context_from_bytes(content, filename):
+            from openpyxl import load_workbook
+            workbook = load_workbook(io.BytesIO(content), read_only=True, data_only=True)
+            sections = set()
+            class ObservedSheet:
+                def __init__(self, sheet):
+                    self.sheet = sheet
+
+                def iter_rows(self, **kwargs):
+                    rows = self.sheet.iter_rows(**kwargs)
+                    headers = next(rows, ())
+                    yield headers
+                    section_column = next((i for i, value in enumerate(headers)
+                                           if str(value).strip().lower() == "section"), None)
+                    for row in rows:
+                        if section_column is not None and section_column < len(row) and row[section_column]:
+                            sections.add(str(row[section_column]).strip().upper())
+                        yield row
+
+            class ObservedWorkbook:
+                sheetnames = workbook.sheetnames
+
+                def __getitem__(self, name):
+                    return ObservedSheet(workbook[name])
+            try:
+                context = read_report_context(ObservedWorkbook(), filename, include_chart=True)
+                if len(sections) > 1:
+                    raise ReportContextError(f"{filename}: multiple Section values; compare each section separately.",
+                                             "INCOMPATIBLE_REPORT_SCOPE")
+                return context
+            finally:
+                workbook.close()
+
+        contexts = []
+        for uploaded in sorted_files:
+            content = await uploaded.read()
+            await uploaded.seek(0)
+            contexts.append(await run_in_threadpool(context_from_bytes, content, uploaded.filename or ""))
+        report_context = ensure_compatible_scopes(contexts, source="History Comparison")
+        known_sections = {context.section.strip().upper() for context in contexts if context.section}
+        if len(known_sections) > 1:
+            raise ReportContextError("History Comparison: incompatible Section. Compare each section separately.",
+                                     "INCOMPATIBLE_REPORT_SCOPE")
+        algorithms_verified = validate_algorithm_compatibility(contexts)
+
         # Helper to load all sheets into one DF
         async def load_combined_df(file: UploadFile) -> pd.DataFrame:
             content = await file.read()
@@ -487,7 +1029,9 @@ async def compare_history(files: List[UploadFile] = File(...)):
             
             dfs = []
             for sheet in excel.sheet_names:
-                if sheet in ['Summary', 'Previous', 'Comparison Report', 'ChartData']: continue
+                if sheet in ['Summary', 'Previous', 'Comparison Report', 'ChartData',
+                             'ExceptionProvenance', 'ChainageStatistics'] or sheet.startswith('_'):
+                    continue
                 
                 df = pd.read_excel(excel, sheet_name=sheet)
                 if df.empty: continue
@@ -565,19 +1109,14 @@ async def compare_history(files: List[UploadFile] = File(...)):
         LAST_COMPARE_RESULTS = accumulator_df
         LAST_COMPARE_FILES = file_names
         
-        # Try to infer params from the newest file (Slot 1)
-        try:
-            latest_name = file_names[0]
-            parts = latest_name.split('_')
-            if len(parts) >= 4:
-                LAST_ANALYSIS_PARAMS = {
-                    'date_str': parts[0],
-                    'line': parts[1],
-                    'track': parts[2],
-                    'section': parts[3] # Approximation
-                }
-        except:
-            pass
+        # Workbook identity is authoritative; filename is only the reader's
+        # validated fallback. Unknown legacy fields remain unknown.
+        latest = contexts[0]
+        LAST_ANALYSIS_PARAMS = {
+            'date_str': latest.run_date, 'line': latest.line, 'track': latest.track,
+            'section': latest.section, 'session': latest.legacy_session, 'branch': latest.branch,
+            'task_no': latest.task_no, 'station_start': latest.station_start, 'station_end': latest.station_end,
+        }
         
         # 4. Process Results & Stats
         final_results = {}
@@ -604,9 +1143,14 @@ async def compare_history(files: List[UploadFile] = File(...)):
                 "breakdown": stats_breakdown
             },
             "chain_order": file_names,
-            "chart_data": all_charts # Return List of chart data
+            "chart_data": all_charts,
+            "context": {"line": report_context.line, "branch": report_context.branch,
+                         "direction": report_context.direction, "section": report_context.section},
+            "algorithm_provenance": "verified" if algorithms_verified else "unknown",
         }
 
+    except ReportContextError as exc:
+        raise HTTPException(status_code=422, detail=exc.detail()) from exc
     except ValueError as e:
         raise HTTPException(status_code=422, detail=str(e)) from e
     except HTTPException:
@@ -743,7 +1287,7 @@ async def export_compare_report():
             task_no=p.get('task_no'),
             station_start=p.get('station_start'),
             station_end=p.get('station_end'),
-            session=(p.get('session') or (p.get('section') if str(line).strip().upper() in {"AEL", "TCL", "DRL", "ISL", "KTL", "TKL", "TWL"} else None))
+            session=(p.get('session') or (p.get('section') if str(line).strip().upper() in LINE_WORKBOOKS else None))
         )
         encoded_filename = urllib.parse.quote(filename)
         
@@ -761,6 +1305,8 @@ async def export_report():
     """
     Download the last analysis result.
     """
+    if LAST_ANALYSIS_SNAPSHOT:
+        _assert_reportable(LAST_ANALYSIS_SNAPSHOT)
     if not LAST_ANALYSIS_RESULTS:
         raise HTTPException(status_code=400, detail="No analysis results available. Run analysis first.")
     
@@ -769,7 +1315,9 @@ async def export_report():
             "metadata_capabilities": json.dumps(LAST_METADATA_CAPABILITIES, ensure_ascii=False),
             "enrichment_version": "tov640-first-nonempty-v1",
         } if LAST_METADATA_CAPABILITIES else None)
-        excel_file = export_analysis_report(LAST_ANALYSIS_RESULTS, chart_df=LAST_RAW_DF,
+        if LAST_ANALYSIS_SNAPSHOT:
+            report_metadata = {**(report_metadata or {}), **LAST_ANALYSIS_SNAPSHOT.get("aggregation_metadata", {})}
+        excel_file = export_analysis_report(LAST_ANALYSIS_RESULTS, chart_df=(_snapshot_frame(LAST_ANALYSIS_SNAPSHOT) if LAST_ANALYSIS_SNAPSHOT else LAST_RAW_DF),
                                            metadata=report_metadata, line=LAST_ANALYSIS_PARAMS.get('line', ''))
         
         p = LAST_ANALYSIS_PARAMS
@@ -811,8 +1359,11 @@ async def generate_report_from_data(request: GenerateAnalysisReportRequest):
         # not become the report's raw ChartData.
         chart_df = None
         state = _state_for(request.client_session_id)
-        if state is not None and isinstance(state.get("raw_df"), pd.DataFrame):
-            chart_df = state["raw_df"].copy(deep=True)
+        if state is not None:
+            _assert_reportable(state)
+            chart_df = _snapshot_frame(state)
+        elif request.client_session_id:
+            raise HTTPException(status_code=410, detail="Analysis expired; run analysis again before exporting")
         elif request.chart_data:
             chart_df = pd.DataFrame(request.chart_data)
         
@@ -823,17 +1374,20 @@ async def generate_report_from_data(request: GenerateAnalysisReportRequest):
                 "metadata_capabilities": json.dumps(state["metadata_capabilities"], ensure_ascii=False),
                 "enrichment_version": "tov640-first-nonempty-v1",
             }
-        excel_file = export_analysis_report(request.exceptions, chart_df=chart_df,
-                                           metadata=report_metadata, line=request.params.get('line', ''))
+        if state:
+            report_metadata = {**(report_metadata or {}), **state.get("aggregation_metadata", {})}
+        export_params = {**(state.get("params", {}) if state else {}), **request.params}
+        excel_file = await run_in_threadpool(export_analysis_report, state["results"] if state else request.exceptions, chart_df=chart_df,
+                                             metadata=report_metadata, line=export_params.get('line', ''))
         
         # Construct Filename from params using conditional naming logic
-        p = request.params
+        p = export_params
         date_s = p.get('date_str', 'UnknownDate')
         line = p.get('line', 'UnknownLine')
         track = p.get('track', 'UnknownTrack')
         section = p.get('section', 'UnknownSection')
         
-        filename = generate_filename(
+        filename_args = dict(
             date_str=date_s,
             line=line,
             track=track,
@@ -842,8 +1396,21 @@ async def generate_report_from_data(request: GenerateAnalysisReportRequest):
             task_no=p.get('task_no'),
             station_start=p.get('station_start'),
             station_end=p.get('station_end'),
-            session=(p.get('session') or (p.get('section') if str(line).strip().upper() in {"AEL", "TCL", "DRL", "ISL", "KTL", "TKL", "TWL"} else None))
+            session=(p.get('session') or (p.get('section') if str(line).strip().upper() in LINE_WORKBOOKS else None)),
         )
+        try:
+            filename = generate_filename(**filename_args)
+        except ValueError as exc:
+            # Stateful exports normally carry the station range captured at
+            # import.  Legacy callers may submit only line/track/section;
+            # preserve their export by using the documented default name.
+            if "requires station_start and station_end" not in str(exc):
+                raise
+            # TOV1050's canonical name requires a station range.  If a
+            # legacy caller omitted it, emit the same safe default shape used
+            # by the non-TOV exporter instead of failing after the workbook
+            # has already been generated.
+            filename = f"{date_s}_{line}_{track}_{section}_Exception_Report.xlsx"
         
         # Encode filename
         encoded_filename = urllib.parse.quote(filename)
@@ -876,11 +1443,21 @@ async def export_raw_data(
     """
     Download the last cleaned raw data.
     """
-    if LAST_RAW_DF.empty:
-        raise HTTPException(status_code=400, detail="No raw data available. Run analysis first.")
+    if LAST_ANALYSIS_SNAPSHOT:
+        _assert_reportable(LAST_ANALYSIS_SNAPSHOT)
+    # Keep the legacy global cache usable for callers that populated it
+    # directly (older clients and integrations do not publish a snapshot).
+    # A committed analysis clears LAST_RAW_DF, so a non-empty value here is
+    # an explicit legacy export source and must take precedence over any
+    # stale snapshot left by an earlier request.
+    export_frame = (LAST_RAW_DF if isinstance(LAST_RAW_DF, pd.DataFrame) and not LAST_RAW_DF.empty
+                    else _snapshot_frame(LAST_ANALYSIS_SNAPSHOT) if LAST_ANALYSIS_SNAPSHOT
+                    else LAST_RAW_DF)
+    if export_frame.empty:
+        raise HTTPException(status_code=400, detail="No data available. Run analysis first.")
         
     try:
-        csv_file = ExcelExporter.export_raw_csv(LAST_RAW_DF)
+        csv_file = await run_in_threadpool(ExcelExporter.export_raw_csv, export_frame)
         
         p = LAST_ANALYSIS_PARAMS.copy()
         
@@ -978,8 +1555,13 @@ async def export_raw_data_generate(request: ExportRawRequest):
         # frontend chart payload may be envelope-sampled, so it is only a
         # backward-compatible fallback when no tab state exists.
         state = _state_for(request.client_session_id)
-        if state is not None and isinstance(state.get("raw_df"), pd.DataFrame) and not state["raw_df"].empty:
-            df = state["raw_df"].copy(deep=True)
+        if state is not None and not _snapshot_frame(state).empty:
+            _assert_reportable(state)
+            df = _snapshot_frame(state)
+        elif state and state.get("analysis_mode") == "raw_overview":
+            raise HTTPException(status_code=403, detail="CSV export is disabled in raw overview")
+        elif request.client_session_id:
+            raise HTTPException(status_code=410, detail="Analysis expired; run analysis again before exporting")
         else:
             # BUG 10.8-2: Check for empty fallback data (both formats)
             if request.client_session_id is None and request.chart_data is None:
@@ -995,7 +1577,7 @@ async def export_raw_data_generate(request: ExportRawRequest):
             df = pd.DataFrame(request.chart_data)
         
         # Export to CSV
-        csv_file = ExcelExporter.export_raw_csv(df)
+        csv_file = await run_in_threadpool(ExcelExporter.export_raw_csv, df)
         
         # Extract parameters for filename generation
         p = request.params

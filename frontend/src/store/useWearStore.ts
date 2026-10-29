@@ -1,3 +1,4 @@
+import { apiErrorMessage } from '../api/errorMessage';
 import { create } from 'zustand';
 import { previewWearCycle, saveWearCycle, uploadWearFiles } from '../api/client';
 import type { WearCyclePreview, WearCycleSaveResponse, WearResult, WireWearLineClass } from '../types/api';
@@ -248,10 +249,7 @@ export const useWearStore = create<WearStoreState>((set, get) => ({
         acceptedConflictIds: tab.acceptedConflictIds.filter((id) => validConflictIds.has(id)),
       }) });
     } catch (err: any) {
-      const detail = err.response?.data?.detail;
-      const msg = Array.isArray(detail)
-        ? detail.map((item: any) => item.msg ?? JSON.stringify(item)).join('; ')
-        : (typeof detail === 'string' ? detail : err.message) || 'Analysis failed';
+      const msg = apiErrorMessage(err, 'Analysis failed');
       const current = get();
       if (!current.tabs.some((item) => item.id === tabId)) return;
       set({ tabs: updateTab(current.tabs, tabId, { error: msg, hasAnalyzed: false, isLoading: false }) });
