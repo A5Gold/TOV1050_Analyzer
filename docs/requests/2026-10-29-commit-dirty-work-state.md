@@ -4,7 +4,7 @@
 - Linear project：TOV1050_Analyzer
 - Linear issue：[DAV-25](https://linear.app/david-chu/issue/DAV-25)
 - 負責人：Codex
-- 狀態：In Progress
+- 狀態：Done
 
 ## 需求與目的
 
@@ -68,3 +68,12 @@
 - 主提交：74f49ee3726574554f76d4b0944a168f4dba8f46（618 檔）；第一次 HTTPS push 回 HTTP 408、exit 1，遠端仍是起點 2f6f173。
 - 初次提交後，外部操作持續更新 runtime metadata（ISL／KTL／LAR_AEL／LAR_TCL／TKL／TKS）及刪除 Excel 鎖定檔；依「包含全部 dirty」授權以後續提交保存實際快照。先前逐檔 SHA 結論只代表檢查當刻。
 - 下一動作：以命令範圍 `http.postBuffer=524288000` 重試 HTTPS push，不變更永久環境／TLS 憑證驗證；以 ls-remote 核實遠端 SHA。原始 CSV／DATAC 持續排除。
+
+## 最終驗收
+
+- 重試 `git -c http.postBuffer=524288000 push --progress origin master`：exit 0，master 從 2f6f173 更新為 0c26a71acf4313a9f1363f6d18e63543e6e35913。
+- `git ls-remote origin refs/heads/master` 與本機 `git rev-parse HEAD` 均為上述完整 SHA。
+- GitHub 接受 94.09 MiB 驗收 workbook，僅有建議 50 MiB 警告；無單檔上限阻塞。
+- 最終 `git status --short --branch`：master 與 origin/master 一致，僅原始 `00 Reference Document/Raw data/AEL/20260822_AEL_UT_SHO_AWE.csv` 保留 modified；其餘可追蹤變更已提交。新來源 CSV／DATAC 依 ignore 保留本機。
+- 此收尾紀錄以後續小型文件提交保存，再推送同一 master；實際最終 commit URL 同步至 DAV-25。
+- 本次 Git 保存／推送工作完成；DAV-25 仍 In Review，既定 Electron／原生 Excel 人工驗收及工程配置依賴維持原狀。

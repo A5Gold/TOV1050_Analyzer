@@ -63,3 +63,8 @@
 ## 相關檔案
 
 主要production／測試／新增檔及原有dirty基線詳見驗收紀錄與 `outputs/dual-system-2026-10-29/source-baseline.json`。需求／設計／計劃／驗收均為本機未提交文件，不宣稱GitHub blob已存在。
+
+
+## 2026-10-29 GitHub 保存補記
+
+使用者後續授權保存全部工作狀態，並排除原始 CSV／DATAC。主提交與後續 metadata 快照已推送至 GitHub master：`74f49ee`、`0c26a71`。需求／設計／計劃／驗收文件現已存在 GitHub；上文「未提交／未推送」描述保留作原驗收當刻紀錄。完整範圍、檢查差異、HTTP 408 重試與剩餘 raw 修改見 [提交需求紀錄](2026-10-29-commit-dirty-work-state.md)。本次未重跑功能驗收，也未封裝版本。
