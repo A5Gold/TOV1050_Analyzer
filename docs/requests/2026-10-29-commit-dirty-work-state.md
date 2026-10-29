@@ -62,3 +62,9 @@
 - `.gitignore`
 - 本文件與 `docs/requests/2026-10-29-dual-system-test-feedback.md`
 - 全部提交檔案可由本次 commit 的 `git show --stat`／GitHub 變更清單查閱。
+
+## 推送與後續快照
+
+- 主提交：74f49ee3726574554f76d4b0944a168f4dba8f46（618 檔）；第一次 HTTPS push 回 HTTP 408、exit 1，遠端仍是起點 2f6f173。
+- 初次提交後，外部操作持續更新 runtime metadata（ISL／KTL／LAR_AEL／LAR_TCL／TKL／TKS）及刪除 Excel 鎖定檔；依「包含全部 dirty」授權以後續提交保存實際快照。先前逐檔 SHA 結論只代表檢查當刻。
+- 下一動作：以命令範圍 `http.postBuffer=524288000` 重試 HTTPS push，不變更永久環境／TLS 憑證驗證；以 ls-remote 核實遠端 SHA。原始 CSV／DATAC 持續排除。
