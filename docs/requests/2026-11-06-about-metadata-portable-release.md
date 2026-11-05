@@ -78,3 +78,9 @@ History工具列檔以 --testTimeout=30000 重驗8 passed（47.01s），原超�
 Next action：完成最終backend、electron-builder dir及實機封裝啟動驗收，將測試DB移至本輪驗收目錄，交付乾淨portable資料夾與SHA紀錄。
 
 子代理說明覆核發現Class來源敘述需精確化：Class實際由Exception Boundarys頁讀取，方向頁是三組enrichment／Track Type區間，已修正文案並補K支援left/right端點。因此再做最終frontend build（frontend-build-final.log），確保交付包含更正。其餘wide欄組、DRL及History metadata沿用規則覆核一致。
+
+
+最終backend已完成（backend-build-final.log，156.137s）；PYZ確認sitecustomize不存在，wide provider及history reader皆存在。Standalone frozen backend啟動與health2.0.1成功，但第一個diagnostics請求的輔助測試5秒timeout過短，測試finally已關閉自建程序，未算完整通過。Portable smoke把首次diagnostics等候改120秒（DB可能需首次載入seed），不改產品timeout或seed行為；最終以完整EXE驗收結果為準。
+
+
+最終frontend-build-final.log通過（2m30s，assets/index-f97bdf44.js）。Electron builder首次嘗試重建gitnexus的13項tree-sitter原生套件；code graph與electron/frontend/backend/scripts字串查找均無產品使用gitnexus，僅package依賴宣告。已停止自建builder樹，將gitnexus從dependencies移至devDependencies，使用NODE_USE_SYSTEM_CA=1 npm install --package-lock-only --ignore-scripts --offline成功（576 packages、0 vulnerabilities），不更新其版本或執行安裝腳本。正式runtime依賴仍保留axios／docx／util；前後端來源與已完成bundle無變更。再次electron-builder組裝使用最後建置。

@@ -78,12 +78,12 @@
     "cross-env": "^7.0.3",
     "electron": "^25.3.0",
     "electron-builder": "^24.13.3",
-    "wait-on": "^7.0.1"
+    "wait-on": "^7.0.1",
+    "gitnexus": "^1.6.4-rc.48"
   },
   "dependencies": {
     "axios": "^1.4.0",
     "docx": "^9.5.1",
-    "gitnexus": "^1.6.4-rc.48",
     "util": "^0.12.5"
   }
 }

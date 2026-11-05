@@ -12,7 +12,8 @@ const base = 'http://127.0.0.1:8000';
 const debuggerPort = 9337;
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 const request = async (url, options = {}) => {
-  const response = await fetch(url, { ...options, signal: AbortSignal.timeout(5000) });
+  const { timeoutMs = 5000, ...fetchOptions } = options;
+  const response = await fetch(url, { ...fetchOptions, signal: AbortSignal.timeout(timeoutMs) });
   if (!response.ok) throw new Error(`${response.status} ${await response.text()}`);
   return response.json();
 };
@@ -41,7 +42,7 @@ try {
   }
   if (health?.version !== '2.0.1') throw new Error(`Unexpected health: ${JSON.stringify(health)}`);
   evidence.health = health;
-  const diagnostics = await request(`${base}/api/diagnostics`);
+  const diagnostics = await request(`${base}/api/diagnostics`, { timeoutMs: 120000 });
   if (path.resolve(diagnostics.config_directory) !== path.join(portable, 'resources/config')) throw new Error('Wrong config directory');
   if (path.resolve(diagnostics.database_path) !== path.join(portable, 'data/analysis.db')) throw new Error('Wrong database path');
   evidence.diagnostics = diagnostics;
@@ -80,6 +81,9 @@ try {
     if (!clicked) throw new Error(`Button not found: ${label}`);
     await sleep(700);
   };
+  // Re-enter About after backend readiness so diagnostics are fetched afresh.
+  await click('Generate');
+  await click('About');
   for (let i = 0; i < 60; i++) {
     if ((await body()).includes('Wide Excel') || (await body()).includes('Metadata 格式、區間與設定路徑')) break;
     await sleep(1000);
@@ -93,6 +97,7 @@ try {
   await sleep(400);
   await fs.writeFile(path.join(output, 'about.png'), Buffer.from((await cdp('Page.captureScreenshot', { format: 'png' })).data, 'base64'));
   await click('開發者參考');
+  for (let i = 0; i < 30 && !(await body()).includes(diagnostics.config_directory); i++) await sleep(1000);
   if (!(await body()).includes(diagnostics.config_directory)) throw new Error('Diagnostics path not shown in UI');
   evidence.developer_diagnostics = 'actual packaged config path visible';
   await click('Generate');
