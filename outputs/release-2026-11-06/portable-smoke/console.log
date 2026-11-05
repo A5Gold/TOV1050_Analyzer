@@ -1,0 +1,31 @@
+
+
+DevTools listening on ws://127.0.0.1:9337/devtools/browser/ca33fa51-92bb-43a8-8ee0-004fbb6f22f5
+[Electron] Starting Python Backend (Production)...
+[Electron] Backend Path: C:\Smart Maintanence\TOV1050_Analyzer\dist\portable-2.0.1-20261106\win-unpacked\resources\backend\backend_server.exe
+[Electron] App Root: C:\Smart Maintanence\TOV1050_Analyzer\dist\portable-2.0.1-20261106\win-unpacked
+[Electron] Config Path: C:\Smart Maintanence\TOV1050_Analyzer\dist\portable-2.0.1-20261106\win-unpacked\resources\config
+[Electron] DB Path: C:\Smart Maintanence\TOV1050_Analyzer\dist\portable-2.0.1-20261106\win-unpacked\data\analysis.db
+[Electron] Loading: C:\Smart Maintanence\TOV1050_Analyzer\dist\portable-2.0.1-20261106\win-unpacked\resources\app.asar\frontend\dist\index.html
+[Electron] Waiting for backend to be ready...
+[Python Error]: INFO:     Started server process [29188]
+
+[Python Error]: INFO:     Waiting for application startup.
+
+[Python Error]: INFO:     Application startup complete.
+
+[Python Error]: INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+
+[Python]: INFO:     127.0.0.1:59941 - "GET /api/diagnostics HTTP/1.1" 200 OK
+
+[Python]: INFO:     127.0.0.1:59941 - "GET /api/health HTTP/1.1" 200 OK
+
+[Python]: INFO:     127.0.0.1:55016 - "GET /api/health HTTP/1.1" 200 OK
+
+[Python]: INFO:     127.0.0.1:55025 - "GET /api/health HTTP/1.1" 200 OK
+
+[Electron] Backend ready after 47897ms
+[Python]: INFO:     127.0.0.1:55031 - "GET /api/diagnostics HTTP/1.1" 200 OK
+
+[Python]: INFO:     127.0.0.1:59941 - "GET /api/diagnostics HTTP/1.1" 200 OK
+

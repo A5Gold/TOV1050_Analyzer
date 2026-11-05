@@ -4,7 +4,7 @@
 - Linear project：TOV1050_Analyzer
 - Linear issue：DAV-29
 - 負責人：Codex
-- 狀態：In Progress
+- 狀態：Done
 
 ## 需求與目的
 
@@ -103,3 +103,4 @@ Next action：完成最終backend、electron-builder dir及實機封裝啟動驗
 相關修改：本request、outputs/release-2026-11-06/README.md、package-verification.json、asar-verification.json、portable-smoke/result.json、console.log、about.png；portable與測試DB/profile留本機，不提交。原有AEL CSV及TWL輸出Exception Report仍保留未提交，符合使用者排除要求。
 
 剩餘範圍：本次打包無阻塞；大型資料分析／Excel匯出效能仍依原需求追蹤，不屬本輪發佈驗收。Next action：使用者複製完整資料夾進行業務資料驗收，若有問題提供重現步驟。Linear DAV-29同步完成後標記Done。
+
