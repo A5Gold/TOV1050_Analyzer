@@ -40,6 +40,12 @@ def main():
     assert not forbidden, forbidden
     source_backend = ROOT / "backend/dist/backend_server"
     packed_backend = portable / "resources/backend"
+    # The build-only WMI fallback must never enter the frozen runtime.
+    from PyInstaller.archive.readers import ZlibArchiveReader
+    archive = ZlibArchiveReader(str(ROOT / "backend/build/backend_server/PYZ-00.pyz"))
+    assert "sitecustomize" not in archive.toc, "Build-only sitecustomize leaked into runtime"
+    assert "app.core.tov1050_wide_enrichment" in archive.toc
+    assert "app.core.history_report_reader" in archive.toc
     backend = []
     for source in source_backend.rglob("*"):
         if not source.is_file():

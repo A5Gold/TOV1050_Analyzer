@@ -67,3 +67,12 @@ PyInstaller首次卡在Python3.12 platform._wmi_query（py-spy唯讀確認），
 提交範圍約558檔／377MiB（含歷次候選、inspect及audit），selection清單位於outputs/release-2026-11-06/commit-selection.json。忽略CSV／DATAC／Exception及Repeated輸出、DevelopmentValidation報表、user-data、diagnostic-tools與暫存DB；2個原已tracked的排除檔仍保持本機dirty。必要變更及使用者修訂TL-BK workbook納入。秘密樣式掃描未命中；暫存stage無raw／report／profile／DB。未刪除本機排除檔。
 
 History工具列檔以 --testTimeout=30000 重驗8 passed（47.01s），原超時案例4.058秒完成，前端本批5檔共43項通過；無功能修正。
+
+
+### GitHub與最終建置
+
+已提交並推送master：d6fd3a7d3512443ff2d37acc08cac64675e12c22，559檔。git ls-remote讀回origin/master完全相同。包含原本本機4e50d90設計commit一併推送；沒有force push。剩餘tracked dirty只有使用者排除的AEL CSV及既有TWL Exception Report。
+
+提交後frontend以bundled Node執行vite build通過（4m1s，assets/index-a108f626.js）；只含既有bundle warnings。首次backend完成後檢查PYZ發現build-only sitecustomize被自動收錄，因此spec明確excludes sitecustomize並重新建置，verify腳本亦斷言PYZ不含此模組且必須有wide provider與history reader。新增raw CDP portable smoke腳本，直接啟動封裝EXE、實際health／diagnostics及About／兩個Logic Dialog，不使用API攔截；避開新版Playwright與Electron25的context指令相容性問題。
+
+Next action：完成最終backend、electron-builder dir及實機封裝啟動驗收，將測試DB移至本輪驗收目錄，交付乾淨portable資料夾與SHA紀錄。
