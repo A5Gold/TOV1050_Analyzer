@@ -76,3 +76,5 @@ History工具列檔以 --testTimeout=30000 重驗8 passed（47.01s），原超�
 提交後frontend以bundled Node執行vite build通過（4m1s，assets/index-a108f626.js）；只含既有bundle warnings。首次backend完成後檢查PYZ發現build-only sitecustomize被自動收錄，因此spec明確excludes sitecustomize並重新建置，verify腳本亦斷言PYZ不含此模組且必須有wide provider與history reader。新增raw CDP portable smoke腳本，直接啟動封裝EXE、實際health／diagnostics及About／兩個Logic Dialog，不使用API攔截；避開新版Playwright與Electron25的context指令相容性問題。
 
 Next action：完成最終backend、electron-builder dir及實機封裝啟動驗收，將測試DB移至本輪驗收目錄，交付乾淨portable資料夾與SHA紀錄。
+
+子代理說明覆核發現Class來源敘述需精確化：Class實際由Exception Boundarys頁讀取，方向頁是三組enrichment／Track Type區間，已修正文案並補K支援left/right端點。因此再做最終frontend build（frontend-build-final.log），確保交付包含更正。其餘wide欄組、DRL及History metadata沿用規則覆核一致。

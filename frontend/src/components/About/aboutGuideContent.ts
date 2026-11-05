@@ -247,11 +247,11 @@ export const guideSourceReferences = [
 
 
 export const metadataFormatRows: GuideMatrixRow[] = [
-  { cells: ['正式格式', 'TOV1050 為 wide Excel：ISL、KTL、LAR_AEL、LAR_TCL、TKL、TKS、TWL、DRL metadata.xlsx；TOV640 的 EAL／TML 保留既有格式。Threshold 頁提供門檻，方向頁提供 Class 與區間。'] },
+  { cells: ['正式格式', 'TOV1050 為 wide Excel：ISL、KTL、LAR_AEL、LAR_TCL、TKL、TKS、TWL、DRL metadata.xlsx；TOV640 的 EAL／TML 保留既有格式。threshold 頁提供門檻；Exception Boundarys 頁提供 Class 區間；方向頁提供 Landmark、Overlap／Tension Length 與 Track Type。'] },
   { cells: ['A:C 地標', 'Landmark FromM、Landmark ToM、Landmark。實際範圍直接使用；單點 X 只擴張一次成 [X−100, X+100]m。同時命中多個名稱，以「 / 」分隔。'] },
   { cells: ['D:G 張力段與重疊', 'Overlap FromM、Overlap ToM、Overlap、Tension Length。全部實體支架與 Contact termination（BWA／Spring／Fixed）共同取 min/max；單有效 TL=N，多有效 TL=Y，無 TL 維持未知。'] },
   { cells: ['H:J 軌道類型', 'Track Type、Track Type FromM、Track Type ToM。與 A:C、D:G 為獨立清單；同一列不代表相互對應。'] },
-  { cells: ['K 端點', 'Interval Closed 只控制 D:E 區間端點：both 為兩端包含，neither 為兩端不含。所有 FromM／ToM 及 Chainage 均為公尺；CSV Km × 1000 只換算一次。'] },
+  { cells: ['K 端點', 'Interval Closed 只控制 D:E 區間端點：both 為兩端包含，neither 為兩端不含，left 只含起點，right 只含終點。所有 FromM／ToM 及 Chainage 均為公尺；CSV Km × 1000 只換算一次。'] },
   { cells: ['方向與來源', 'Brackets／Landmark Points 與 provenance 保留來源證據。DRL 只有 UT 與獨立 PL，沒有 DT，PL 不借用 UT 資料；DRL Wire Wear L1=9.1。'] },
   { cells: ['缺值與維護', '只在有來源且峰值命中區間時補值；無地標來源或 TL 空隙會留空，不自動延長。手修 Brackets 後須重建衍生區間並驗證，不能只改支架點便視為 D:G 已同步。Wear 計算範圍仍需另行核准。'] },
 ];
