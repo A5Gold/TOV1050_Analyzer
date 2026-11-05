@@ -1,0 +1,114 @@
+Process 30480: "C:\Users\chusiukd\AppData\Local\Programs\Python\Python312\python.exe" scripts/validate_wide_reports_20261105.py
+Python v3.12.8 (C:\Users\chusiukd\AppData\Local\Programs\Python\Python312\python.exe)
+
+Thread 27408 (active+gil): "MainThread"
+    Cell.coordinate (openpyxl\cell\cell.py:127)
+        Arguments:
+            self: <Cell at 0x1e441a317e0>
+        Locals:
+            col: "A"
+    Cell.__repr__ (openpyxl\cell\cell.py:151)
+        Arguments:
+            self: <Cell at 0x1e441a317e0>
+    Cell._bind_value (openpyxl\cell\cell.py:187)
+        Arguments:
+            self: <Cell at 0x1e441a32f80>
+            value: <Cell at 0x1e441a317e0>
+        Locals:
+            t: 7
+            dt: None
+    Cell.value (openpyxl\cell\cell.py:218)
+        Arguments:
+            self: <Cell at 0x1e441a32f80>
+            value: <Cell at 0x1e441a317e0>
+    WriteOnlyWorksheet._values_to_row (openpyxl\worksheet\_write_only.py:133)
+        Arguments:
+            self: <WriteOnlyWorksheet at 0x1e44a55b980>
+            values: ["20260907", "TWL", "UT", "Mainline", None, "CEN", "TSW", <Cell at 0x1e444763b50>, <Cell at 0x1e441a30ba0>, ...]
+            row_idx: 82132
+        Locals:
+            cell: <Cell at 0x1e441a32f80>
+            col_idx: 31
+            value: <Cell at 0x1e441a317e0>
+    WorksheetWriter.write_row (openpyxl\worksheet\_writer.py:137)
+        Arguments:
+            self: <WorksheetWriter at 0x1e44a54ffe0>
+            xf: <_IncrementalFileWriter at 0x1e44a535df0>
+            row: <generator at 0x1e447355940>
+            row_idx: 82132
+        Locals:
+            attrs: {"r": "82132"}
+            dims: {}
+            cell: <Cell at 0x1e441a33b50>
+    WriteOnlyWorksheet._write_rows (openpyxl\worksheet\_write_only.py:72)
+        Arguments:
+            self: <WriteOnlyWorksheet at 0x1e44a55b980>
+        Locals:
+            xf: <_IncrementalFileWriter at 0x1e44a535df0>
+            row_idx: 82132
+            row: <generator at 0x1e447355940>
+    WriteOnlyWorksheet.append (openpyxl\worksheet\_write_only.py:120)
+        Arguments:
+            self: <WriteOnlyWorksheet at 0x1e44a55b980>
+            row: ["20260907", "TWL", "UT", "Mainline", None, "CEN", "TSW", <Cell at 0x1e444763b50>, <Cell at 0x1e441a30ba0>, ...]
+    export_tov1050_report.<locals>.write_frame (tov1050_report_export.py:85)
+        Arguments:
+            title: "ChartData"
+            frame: <DataFrame at 0x1e44835fc20>
+            columns: ["task_run_date", "line", "track", "Section", "task_no", "station_start", "station_end", "Chainage", "height1", ...]
+        Locals:
+            sheet: <WriteOnlyWorksheet at 0x1e44a55b980>
+            formatted: [False, False, False, False, False, False, False, True, True, True, True, True, True, True, True, True, True, True, ...]
+            total: 83963
+            index: 82131
+            row: ("20260907", "TWL", "UT", "Mainline", None, "CEN", "TSW", 506.6, 3967.399, 3970.976, NaN, NaN, 217.07, 174.728, NaN, ...)
+            cells: ["20260907", "TWL", "UT", "Mainline", None, "CEN", "TSW", <Cell at 0x1e444763b50>, <Cell at 0x1e441a30ba0>, ...]
+            value: 0
+            should_format: False
+            cell: <Cell at 0x1e441a317e0>
+    export_tov1050_report (tov1050_report_export.py:109)
+        Arguments:
+            results: {"Low Height": <DataFrame at 0x1e43fdcc980>, "High Height": <DataFrame at 0x1e44804c0b0>, ...}
+            chart_df: <DataFrame at 0x1e44835fc20>
+            metadata: {"analysis_revision": "264b4465483943a9939241d25ff60f9d", "chart_data_mode": "chainage_median", ...}
+        Locals:
+            chart_statistics_df: None
+            output_path: <WindowsPath at 0x1e44002f760>
+            progress: <cell at 0x1e44ed4a4d0>
+            _numeric_format: <cell at 0x1e44ed4b700>
+            report_results: {"Low Height": <DataFrame at 0x1e44ed7afc0>, "High Height": <DataFrame at 0x1e44a503c20>, ...}
+            boundary_review: <DataFrame at 0x1e44ecdd250>
+            small: <_io.BytesIO at 0x1e4400db470>
+            source: <Workbook at 0x1e44ecfd790>
+            original_header: <ReadOnlyCell at 0x1e441a379c0>
+            prototype: <Cell at 0x1e441a31b60>
+            attribute: "alignment"
+            write_frame: <function at 0x1e44ec91300>
+            original: <ReadOnlyWorksheet at 0x1e44a5145c0>
+            sheet: <WriteOnlyWorksheet at 0x1e44a522e40>
+            index: 289
+            row: (<ReadOnlyCell at 0x1e44e763380>, <ReadOnlyCell at 0x1e44e763920>, <ReadOnlyCell at 0x1e44e762ed0>, ...)
+            cell: <Cell at 0x1e444763a70>
+            cells: [<Cell at 0x1e444763d10>, <Cell at 0x1e444763d80>, <Cell at 0x1e444763ca0>, <Cell at 0x1e444763e60>, ...]
+            original_cell: <ReadOnlyCell at 0x1e44e762de0>
+    export_analysis_report (tov1050_report_export.py:144)
+        Arguments:
+            results: {"Low Height": <DataFrame at 0x1e43fdcc980>, "High Height": <DataFrame at 0x1e44804c0b0>, ...}
+            chart_df: <DataFrame at 0x1e44835fc20>
+            metadata: {"analysis_revision": "264b4465483943a9939241d25ff60f9d", "chart_data_mode": "chainage_median", ...}
+            line: "TWL"
+        Locals:
+            chart_statistics_df: None
+            output_path: <WindowsPath at 0x1e44002f760>
+            progress: <function at 0x1e4483fee80>
+    _export_job_work.<locals>.work (analysis.py:878)
+        Arguments:
+            context: <types.SimpleNamespace at 0x1e422a22fb0>
+        Locals:
+            chart_df: <DataFrame at 0x1e44835fc20>
+            statistics: None
+            metadata: {"analysis_revision": "264b4465483943a9939241d25ff60f9d", "chart_data_mode": "chainage_median", ...}
+            output: <WindowsPath at 0x1e44002f760>
+    <module> (validate_wide_reports_20261105.py:62)
+        Locals:
+            key: <cell at 0x1e42270a620>

@@ -1,0 +1,46 @@
+{
+  "status": "passed",
+  "rule": "all distinct landmark names joined by /",
+  "checks": [
+    {
+      "sheet": "ISL UT",
+      "positions": 3,
+      "multiple_match_positions": 0
+    },
+    {
+      "sheet": "ISL DT",
+      "positions": 6,
+      "multiple_match_positions": 0
+    },
+    {
+      "sheet": "KTL UT",
+      "positions": 12,
+      "multiple_match_positions": 0
+    },
+    {
+      "sheet": "KTL DT",
+      "positions": 3,
+      "multiple_match_positions": 0
+    },
+    {
+      "sheet": "TKL UT",
+      "positions": 69,
+      "multiple_match_positions": 33
+    },
+    {
+      "sheet": "TKL DT",
+      "positions": 63,
+      "multiple_match_positions": 30
+    },
+    {
+      "sheet": "TKS UT",
+      "positions": 3,
+      "multiple_match_positions": 0
+    },
+    {
+      "sheet": "TKS DT",
+      "positions": 13,
+      "multiple_match_positions": 6
+    }
+  ]
+}

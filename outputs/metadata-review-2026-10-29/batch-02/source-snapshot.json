@@ -1,0 +1,127 @@
+[
+  {
+    "path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\config\\DRL metadata.xlsx",
+    "sha256": "a386100bb6f47ab9d2a61e7e80c40ad5e87a91cc614e1659584ea41a0161ecff",
+    "bytes": 34003
+  },
+  {
+    "path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\config\\ISL metadata.xlsx",
+    "sha256": "afa1b1e6246bb2d9c2096c36bb8a4cbfa16b36185bf8d357d57c6847f4e0a22f",
+    "bytes": 58297
+  },
+  {
+    "path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\config\\KTL metadata.xlsx",
+    "sha256": "1f4f256906ccfdc934ebf4a9a4fccdf5deda8cc5b0255e67d81097688e6d99cf",
+    "bytes": 58434
+  },
+  {
+    "path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\config\\LAR_AEL metadata.xlsx",
+    "sha256": "3b60ed47162f0991af36e99c37cdfedb5acea907a04e488ba3c83bdc77dd7f2d",
+    "bytes": 43498
+  },
+  {
+    "path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\config\\LAR_TCL metadata.xlsx",
+    "sha256": "7c7453191e082b76b1bed137459b2e05b4ce149e0e6540df7a4dc2bfe4154ae3",
+    "bytes": 33102
+  },
+  {
+    "path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\config\\TKL metadata.xlsx",
+    "sha256": "12632a1c2e4365a06b6587feb3e2c53d4994f4b998a1be3e794e01b93d5cd77e",
+    "bytes": 33374
+  },
+  {
+    "path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\config\\TKS metadata.xlsx",
+    "sha256": "f5d65130b46db133db4280c67ce8d9248b033edbd32b1f5d5cede825f9e8ad69",
+    "bytes": 33073
+  },
+  {
+    "path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\config\\TWL metadata.xlsx",
+    "sha256": "9de8ea8f247d16b8f0bbebeac1020db06f648a6919ee9197d7cb7eef457d4ad5",
+    "bytes": 29982
+  },
+  {
+    "path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\TOV1050 TL-BK No.xlsx",
+    "sha256": "3e7954907508ee393d8541f0bcb9dbe1a79bea36fe9ccfe540666c0fa53af056",
+    "bytes": 362886
+  },
+  {
+    "path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\DRL metadata.xlsx",
+    "sha256": "641477e23e3f9afae7b4d63a4829286f2f93680153d077f987b538367a4902cc",
+    "bytes": 32144
+  },
+  {
+    "path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\ISL metadata.xlsx",
+    "sha256": "cd65e09b69d2f59eab283a8b30b7dd00503ad99f803611d8cef14878981ed809",
+    "bytes": 259661
+  },
+  {
+    "path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\KTL metadata.xlsx",
+    "sha256": "82af451a3124aa578de146883b6baf07356e12270c969244307dc93fe074df08",
+    "bytes": 376037
+  },
+  {
+    "path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\LAR_AEL metadata.xlsx",
+    "sha256": "bea986379f0584d648b90b19f513746e613e6917a8525568a2db111fa49f586a",
+    "bytes": 241627
+  },
+  {
+    "path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\LAR_TCL metadata.xlsx",
+    "sha256": "baa09191a3b4eea07f9d8e6c500a57b7c218ce1eeccdd2ea99ee34d7de35f112",
+    "bytes": 214366
+  },
+  {
+    "path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\TKL metadata.xlsx",
+    "sha256": "fdad42c797c84af15f4e28ae22f004d2ad4b7daace8cd09bb4c760161beff44d",
+    "bytes": 121007
+  },
+  {
+    "path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\TKS metadata.xlsx",
+    "sha256": "0b2eefb27a3a29bb3e4a98f259e25a7ee01b7c76ef99c16f5975c82eeefa238c",
+    "bytes": 48303
+  },
+  {
+    "path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\tov1050-metadata-release.json",
+    "sha256": "2619ccd1b0aeb90d415d9757872d28f97f30251a68564097c8f12312289dc259",
+    "bytes": 7006
+  },
+  {
+    "path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\TWL metadata.xlsx",
+    "sha256": "9b582dc72f1eb9b14d819fb816082cd9972274bb2e57b6663915eeac108ff3d5",
+    "bytes": 203525
+  },
+  {
+    "path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\metadata-review-2026-10-23\\batch-04\\candidates\\ISL metadata (wide candidate).xlsx",
+    "sha256": "c55332cd30d8d0d68c8c656af727a86fc510064502cc0f0a8123ce6303cdea6b",
+    "bytes": 317223
+  },
+  {
+    "path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\metadata-review-2026-10-23\\batch-04\\candidates\\KTL metadata (wide candidate).xlsx",
+    "sha256": "441a91e9619c7582589759cc780ec1145089c9f10fa7ea4ae96bf09f19f153fa",
+    "bytes": 470934
+  },
+  {
+    "path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\metadata-review-2026-10-23\\batch-04\\candidates\\LAR_AEL metadata (wide candidate).xlsx",
+    "sha256": "e462ea9cf72620846be28a390091c3433a6bf91c77d28f70aef00e14848b67b7",
+    "bytes": 296390
+  },
+  {
+    "path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\metadata-review-2026-10-23\\batch-04\\candidates\\LAR_TCL metadata (wide candidate).xlsx",
+    "sha256": "690d5a133601bf717c014b6c70ab4e9a0dd221aa862b964318e607e1212f916a",
+    "bytes": 261689
+  },
+  {
+    "path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\metadata-review-2026-10-23\\batch-04\\candidates\\TKL metadata (wide candidate).xlsx",
+    "sha256": "0ed287f48438c7b2ad60baab81e19597163b6c54e326115c17af6fef833fe4b4",
+    "bytes": 145794
+  },
+  {
+    "path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\metadata-review-2026-10-23\\batch-04\\candidates\\TKS metadata (wide candidate).xlsx",
+    "sha256": "40a6979ed72c99fa5582d574e99f0c75f17f92bc9e07705989084ec5c69f5f6e",
+    "bytes": 53028
+  },
+  {
+    "path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\metadata-review-2026-10-23\\batch-04\\candidates\\TWL metadata (wide candidate).xlsx",
+    "sha256": "ac96e8d32b2ac7ccc3aea8c5bea68e450355fe4fb285febd43f43356c020d2ab",
+    "bytes": 246891
+  }
+]

@@ -1,0 +1,303 @@
+{
+  "directions": [
+    {
+      "file": "ISL metadata.xlsx",
+      "sheet": "ISL UT",
+      "landmarks": 1,
+      "first_landmark": [
+        [
+          2,
+          [
+            100512.0,
+            100512.0,
+            "SI-211",
+            99731.0,
+            99731.0,
+            "N",
+            "CR289",
+            "non-support",
+            97000,
+            97261.9,
+            "both"
+          ]
+        ]
+      ]
+    },
+    {
+      "file": "ISL metadata.xlsx",
+      "sheet": "ISL DT",
+      "landmarks": 2,
+      "first_landmark": [
+        [
+          2,
+          [
+            97890.0,
+            97890.0,
+            "SI-CR272",
+            97781.0,
+            97781.0,
+            "N",
+            "CR272",
+            "non-support",
+            97000,
+            97780.9,
+            "both"
+          ]
+        ]
+      ]
+    },
+    {
+      "file": "KTL metadata.xlsx",
+      "sheet": "KTL UT",
+      "landmarks": 4,
+      "first_landmark": [
+        [
+          2,
+          [
+            98278.0,
+            98278.0,
+            "Mid Point",
+            98052.0,
+            98052.0,
+            "N",
+            "CR181",
+            "non-support",
+            97000,
+            98051.9,
+            "both"
+          ]
+        ]
+      ]
+    },
+    {
+      "file": "KTL metadata.xlsx",
+      "sheet": "KTL DT",
+      "landmarks": 1,
+      "first_landmark": [
+        [
+          2,
+          [
+            98402.0,
+            98402.0,
+            "SI-CR186",
+            97410.0,
+            97410.0,
+            "N",
+            "CR180",
+            "non-support",
+            97000,
+            97409.9,
+            "both"
+          ]
+        ]
+      ]
+    },
+    {
+      "file": "LAR_AEL metadata.xlsx",
+      "sheet": "LAR_AEL UT",
+      "landmarks": 0,
+      "first_landmark": []
+    },
+    {
+      "file": "LAR_AEL metadata.xlsx",
+      "sheet": "LAR_AEL DT",
+      "landmarks": 0,
+      "first_landmark": []
+    },
+    {
+      "file": "LAR_TCL metadata.xlsx",
+      "sheet": "LAR_TCL UT",
+      "landmarks": 0,
+      "first_landmark": []
+    },
+    {
+      "file": "LAR_TCL metadata.xlsx",
+      "sheet": "LAR_TCL DT",
+      "landmarks": 0,
+      "first_landmark": []
+    },
+    {
+      "file": "TKL metadata.xlsx",
+      "sheet": "TKL UT",
+      "landmarks": 22,
+      "first_landmark": [
+        [
+          2,
+          [
+            65319.0,
+            65319.0,
+            "POA804",
+            126.0,
+            126.0,
+            "N",
+            "555",
+            "Tangent",
+            54500,
+            55114.9,
+            "both"
+          ]
+        ]
+      ]
+    },
+    {
+      "file": "TKL metadata.xlsx",
+      "sheet": "TKL DT",
+      "landmarks": 19,
+      "first_landmark": [
+        [
+          2,
+          [
+            65336.0,
+            65336.0,
+            "POA802",
+            -108.0,
+            -108.0,
+            "N",
+            "570",
+            "Tangent",
+            54500,
+            55112.89999999999,
+            "both"
+          ]
+        ]
+      ]
+    },
+    {
+      "file": "TKS metadata.xlsx",
+      "sheet": "TKS UT",
+      "landmarks": 1,
+      "first_landmark": [
+        [
+          2,
+          [
+            63724.0,
+            63724.0,
+            "TIS903",
+            63603.0,
+            63603.0,
+            "N",
+            "583",
+            "Tangent",
+            62500,
+            63380.89999999999,
+            "both"
+          ]
+        ]
+      ]
+    },
+    {
+      "file": "TKS metadata.xlsx",
+      "sheet": "TKS DT",
+      "landmarks": 5,
+      "first_landmark": [
+        [
+          2,
+          [
+            66040.0,
+            66040.0,
+            "LHP902",
+            63276.0,
+            63276.0,
+            "N",
+            "580",
+            "Curve",
+            62500,
+            63589.9,
+            "both"
+          ]
+        ]
+      ]
+    },
+    {
+      "file": "TWL metadata.xlsx",
+      "sheet": "TWL UT",
+      "landmarks": 0,
+      "first_landmark": []
+    },
+    {
+      "file": "TWL metadata.xlsx",
+      "sheet": "TWL DT",
+      "landmarks": 0,
+      "first_landmark": []
+    }
+  ],
+  "source_warnings": [
+    {
+      "file": "ISL metadata.xlsx",
+      "sheet": "ISL UT",
+      "cell": "E1362",
+      "bracket": "251-027",
+      "value_m": 113948.0,
+      "tension_length": "251",
+      "domain_m": [
+        97000,
+        113500
+      ],
+      "candidate_cell": "ISL UT Brackets!A665",
+      "original_mapping_sheet": "ISL UT",
+      "original_mapping_row": 659
+    },
+    {
+      "file": "TKL metadata.xlsx",
+      "sheet": "TKL UT",
+      "cell": "E377",
+      "bracket": "555-040",
+      "value_m": 126.0,
+      "tension_length": "555",
+      "domain_m": [
+        54500,
+        66000
+      ],
+      "candidate_cell": "TKL UT Brackets!A341",
+      "original_mapping_sheet": "TKL UT",
+      "original_mapping_row": 341
+    },
+    {
+      "file": "TKL metadata.xlsx",
+      "sheet": "TKL DT",
+      "cell": "E234",
+      "bracket": "570-017",
+      "value_m": -108.0,
+      "tension_length": "570",
+      "domain_m": [
+        54500,
+        66000
+      ],
+      "candidate_cell": "TKL DT Brackets!A207",
+      "original_mapping_sheet": "TKL DT",
+      "original_mapping_row": 207
+    }
+  ],
+  "single_point_tls": [
+    {
+      "file": "ISL metadata.xlsx",
+      "sheet": "TL Boundaries",
+      "row": 18,
+      "record": [
+        "ISL UT",
+        "254",
+        112865.0,
+        112865.0,
+        1,
+        "physical bracket min/max; excludes explicit Messenger",
+        "review_required: single_point",
+        "1359"
+      ]
+    },
+    {
+      "file": "ISL metadata.xlsx",
+      "sheet": "TL Boundaries",
+      "row": 39,
+      "record": [
+        "ISL DT",
+        "255",
+        112772.0,
+        112772.0,
+        1,
+        "physical bracket min/max; excludes explicit Messenger",
+        "review_required: single_point",
+        "1358"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,93 @@
+{
+  "status": "passed",
+  "job_id": "94bdbb6b5ab348618d20c81582a3c6c1",
+  "database_path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\validation-2026-11-03\\median-electron-history-retry\\isolated.db",
+  "repeated_rows": 15,
+  "overviews": [
+    {
+      "source_points": 83963,
+      "returned_points": 1378,
+      "strategy": "min_max_envelope",
+      "from_m": 146.2,
+      "to_m": 16851.0,
+      "target_points": 5000
+    },
+    {
+      "source_points": 83244,
+      "returned_points": 1427,
+      "strategy": "min_max_envelope",
+      "from_m": 318.0,
+      "to_m": 16829.2,
+      "target_points": 5000
+    }
+  ],
+  "details": [
+    {
+      "source_points": 279,
+      "returned_points": 279,
+      "strategy": "raw",
+      "from_m": 5257.8,
+      "to_m": 5314.0,
+      "target_points": 5000
+    },
+    {
+      "source_points": 282,
+      "returned_points": 282,
+      "strategy": "raw",
+      "from_m": 5257.8,
+      "to_m": 5314.0,
+      "target_points": 5000
+    }
+  ],
+  "export_bytes": 7903,
+  "save": {
+    "status": "success",
+    "message": "Saved 15 repeated records",
+    "saved_count": 15,
+    "filtered_mock_count": 0
+  },
+  "api_query_total": 15,
+  "read_only_sqlite_reopen": true,
+  "cached_request_timings": [
+    {
+      "route": "/diagnostics",
+      "seconds": 0.19
+    },
+    {
+      "route": "/jobs/94bdbb6b5ab348618d20c81582a3c6c1",
+      "seconds": 0.029
+    },
+    {
+      "route": "/jobs/94bdbb6b5ab348618d20c81582a3c6c1/result",
+      "seconds": 0.01
+    },
+    {
+      "route": "/analyze/compare/jobs/94bdbb6b5ab348618d20c81582a3c6c1/chart",
+      "seconds": 1.954
+    },
+    {
+      "route": "/analyze/compare/jobs/94bdbb6b5ab348618d20c81582a3c6c1/chart",
+      "seconds": 0.045
+    },
+    {
+      "route": "/analyze/compare/jobs/94bdbb6b5ab348618d20c81582a3c6c1/chart",
+      "seconds": 1.095
+    },
+    {
+      "route": "/analyze/compare/jobs/94bdbb6b5ab348618d20c81582a3c6c1/chart",
+      "seconds": 0.025
+    },
+    {
+      "route": "/export/compare",
+      "seconds": 0.154
+    },
+    {
+      "route": "/database/repeated-records",
+      "seconds": 0.011
+    },
+    {
+      "route": "/database/repeated-records",
+      "seconds": 0.01
+    }
+  ]
+}

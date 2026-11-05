@@ -2,14 +2,13 @@
  * SaveToDBDialog Component
  * Feature-001: History Compare Integration
  * 
- * A dialog that allows users to select Sub Tab (EAL/TML) and
- * Sub Table (Mainline, RAC, LOW S1, LMC) before saving repeated
- * exception records to the database.
+ * Select a line and branch from the shared line catalog before saving
+ * repeated exception records to the database.
  * 
  * Features:
  * - Auto-detection of line and section from data
  * - User override capability
- * - TML-specific section restriction (only Mainline)
+ * - Line-specific branch options from the shared catalog
  * - Record count display and validation
  */
 import React, { useState, useEffect, useMemo } from 'react';

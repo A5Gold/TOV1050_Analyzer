@@ -28,6 +28,7 @@ import {
   dualSystemCleaningRows,
   chartContractRows,
 } from './aboutGuideContent';
+import MetadataFormatGuide from './MetadataFormatGuide';
 import DiagnosticsPanel from './DiagnosticsPanel';
 import { GuideFlow } from './GuideVisuals';
 
@@ -60,7 +61,7 @@ const DeveloperReference: React.FC<DeveloperReferenceProps> = ({
         </Typography>
         <GuideFlow steps={architectureLayers} label="雙系統 Analyzer runtime layers" desktopColumns={3} />
         <Typography variant="caption" color="text.secondary" display="block" sx={{ mt: 0.75 }}>
-          正常分析使用完整的中位代表資料偵測例外並匯出；只有圖表 payload 使用 envelope。Raw overview 是獨立模式，不進行例外偵測。
+          正常分析使用完整清理後量測偵測例外並匯出；TOV1050 中位樣本用於圖表及報表 ChartData，envelope 僅供圖表顯示。Raw overview 是獨立模式，不進行例外偵測。
         </Typography>
         <Typography variant="subtitle1" component="h4" fontWeight={700} sx={{ mt: 3, mb: 1 }}>
           端到端資料流
@@ -70,7 +71,7 @@ const DeveloperReference: React.FC<DeveloperReferenceProps> = ({
           <Table size="small" aria-label="端到端資料流">
             <TableHead><TableRow><TableCell>入口</TableCell><TableCell>主要處理</TableCell><TableCell>輸出</TableCell></TableRow></TableHead>
             <TableBody>
-              <TableRow><TableCell>.datac / .csv</TableCell><TableCell>格式 loader → context/metadata → median → detector</TableCell><TableCell>同 revision 異常表、Boundary、ChartData、_Metadata</TableCell></TableRow>
+              <TableRow><TableCell>.datac / .csv</TableCell><TableCell>格式 loader → context/metadata → 完整 raw detector；TOV1050 median 用於圖表／ChartData</TableCell><TableCell>同 revision 異常表、Boundary、同 revision ChartData、_Metadata</TableCell></TableRow>
               <TableRow><TableCell>多期 Exception Reports</TableCell><TableCell>compare → repeated chain → 1 Year check</TableCell><TableCell>Previous N、action、reoccurrence_id</TableCell></TableRow>
               <TableRow><TableCell>Wear complete cycle</TableCell><TableCell>parse → resolver index → scope → conflict → coverage</TableCell><TableCell>preview、cycle records、segments、digest</TableCell></TableRow>
               <TableRow><TableCell>Trend files</TableCell><TableCell>L2 candidate → daily minimum → regression</TableCell><TableCell>trend points、logic_1/2、recommendation</TableCell></TableRow>
@@ -111,6 +112,7 @@ const DeveloperReference: React.FC<DeveloperReferenceProps> = ({
             ))}</TableBody>
           </Table>
         </TableContainer>
+        <Box sx={{ mt: 2 }}><MetadataFormatGuide /></Box>
         <Alert severity="info" sx={{ mt: 2 }}>
           Canonical filename parser 仍保留給標準報表與單元測試；任意合法 CSV basename 不應成為分析的阻擋條件。
         </Alert>
@@ -128,7 +130,7 @@ const DeveloperReference: React.FC<DeveloperReferenceProps> = ({
           same_chainage_median_sample_v1 按採集次序建立相鄰、精確同 chainage 群，遇 context／pass／segment／來源連續性改變便分群；非相鄰重訪不合併。每 channel 排除 nonfinite 後選真實中位樣本，偶數在中間兩個來源樣本取採集較早者，不求平均。保留 channel_source_row、sample counter、valid_count 及群樣本數；各 channel 可以來自不同列。
         </Typography>
         <Typography variant="body2" sx={{ mt: 1.5, maxWidth: '76ch' }}>
-          Detector、threshold crossing、peak、Excel 與 ChartData 消費同一份代表資料；min/max envelope 只縮小 UI payload。來源行數、清洗保留行數、代表群數、圖表顯示點數是不同指標，不能共用同一個 raw_row_count 解讀。
+          Detector、threshold crossing、peak 與例外明細使用完整清理後資料；TOV1050 例外報表的 ChartData 使用同次分析的中位代表資料，History Compare 沿用該報表；獨立 raw CSV 保留完整資料。min/max envelope 只縮小 UI payload。來源行數、清洗保留行數、代表群數、圖表顯示點數是不同指標。
         </Typography>
       </Box>
 

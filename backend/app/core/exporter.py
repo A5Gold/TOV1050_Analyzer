@@ -1,6 +1,7 @@
 import pandas as pd
 import io
 import math
+import json
 from numbers import Real
 from typing import Dict, Any, List, Optional
 from datetime import datetime
@@ -81,6 +82,39 @@ def format_datetime_for_excel(value) -> str | None:
 
 
 class ExcelExporter:
+    @staticmethod
+    def metadata_export_parts(metadata):
+        """Keep hidden capability JSON below Excel's per-cell text limit.
+
+        Review evidence is tabular and remains independent from approved values.
+        """
+        metadata = dict(metadata or {})
+        rows = []
+        capabilities = metadata.get('metadata_capabilities')
+        if isinstance(capabilities, str):
+            try:
+                capabilities = json.loads(capabilities)
+            except ValueError:
+                capabilities = None
+        if isinstance(capabilities, dict):
+            capabilities = dict(capabilities)
+            for review in capabilities.pop('boundary_review', []):
+                summary = {key: review.get(key) for key in (
+                    'line', 'branch', 'direction', 'tension_length', 'observed_from_m',
+                    'observed_to_m', 'point_count', 'status')}
+                summary['Line'] = summary.pop('line')
+                summary['Track'] = summary.pop('direction')
+                summary['gaps'] = '; '.join(review.get('gaps', []))
+                summary['candidate_review_only'] = json.dumps(review.get('candidate'), ensure_ascii=False)
+                for source in review.get('source_rows', []) or [{}]:
+                    rows.append({**summary, **source, 'evidence_type': 'observed_source_row'})
+                for boundary in review.get('known_boundaries', []):
+                    rows.append({**summary, **{key: boundary.get(key) for key in (
+                        'sheet', 'excel_row', 'source_sheet', 'source_excel_row', 'chainage_m',
+                        'bracket', 'wire_role', 'kind')}, 'evidence_type': 'known_boundary'})
+            metadata['metadata_capabilities'] = json.dumps(capabilities, ensure_ascii=False)
+        return metadata, pd.DataFrame(rows)
+
     EXCEPTION_PROVENANCE_COLUMNS = [
         'Line', 'Track',
         'id', 'exception type', 'FromM', 'ToM', 'maxValue', 'maxLocation',
@@ -185,6 +219,7 @@ class ExcelExporter:
                 - app_version: str (optional)
         """
         output = io.BytesIO()
+        metadata, boundary_review = ExcelExporter.metadata_export_parts(metadata)
         
         # Prepare Summary DataFrame
         all_exceptions = []
@@ -216,6 +251,8 @@ class ExcelExporter:
         with pd.ExcelWriter(output, engine='openpyxl') as writer:
             # Write Summary
             summary_df.to_excel(writer, sheet_name='Summary', index=False)
+            if not boundary_review.empty:
+                boundary_review.to_excel(writer, sheet_name='MetadataBoundaryReview', index=False)
             
             # Write Individual Sheets
             for exc_type, data in results.items():
@@ -271,6 +308,20 @@ class ExcelExporter:
                 pd.concat(provenance, ignore_index=True).to_excel(
                     writer, sheet_name='ExceptionProvenance', index=False
                 )
+            # Position diagnostics remain separate from the stable report layout.
+            evidence = []
+            for data in results.values():
+                frame = data if isinstance(data, pd.DataFrame) else pd.DataFrame(data)
+                if 'metadata_enrichment' in frame:
+                    frame = frame.copy()
+                    frame['Line'] = frame.get('line', frame.get('Line', default_line))
+                    frame['Track'] = frame.get('track', frame.get('Track', default_track))
+                    evidence.append(frame.reindex(columns=['Line', 'Track',
+                        'id', 'FromM', 'ToM', 'maxLocation', 'Tension Length',
+                        'Overlap', 'Landmark', 'metadata_enrichment']))
+            if evidence:
+                pd.concat(evidence, ignore_index=True).to_excel(
+                    writer, sheet_name='MetadataEvidence', index=False)
             
             if numeric_format:
                 numeric_columns = {

@@ -95,3 +95,20 @@ config/TML metadata.xlsx
 # Local raw measurement inputs (kept out of the remote repository)
 00 Reference Document/Raw data/**/*.csv
 00 Reference Document/Raw data/**/*.datac
+
+# User-requested release exclusions (2026-11-06); existing tracked files remain local.
+*.csv
+*.datac
+*Exception_Report*.xlsx
+*ExceptionReport*.xlsx
+*_Repeated.xlsx
+outputs/**/*DevelopmentValidation.xlsx
+outputs/**/user-data/
+outputs/**/electron-user-data/
+outputs/**/diagnostic-tools/
+outputs/**/*.db
+outputs/**/*.db-wal
+outputs/**/*.db-shm
+outputs/**/*.sqlite
+outputs/**/*.sqlite3
+**/~$*

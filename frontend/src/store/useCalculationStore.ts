@@ -1,4 +1,4 @@
-import { apiErrorMessage } from '../api/errorMessage';
+import { apiErrorDiagnostic, apiErrorMessage, type ApiErrorDiagnostic } from '../api/errorMessage';
 import { create } from 'zustand';
 import { uploadStaggerFile } from '../api/client';
 import type { StaggerResult, StaggerTrace } from '../types/api';
@@ -10,6 +10,7 @@ export interface CalculationCycleState {
   repeatedFile: File | null;
   isLoading: boolean;
   error: string | null;
+  errorDiagnostic: ApiErrorDiagnostic | null;
   warnings: string[];
   results: StaggerResult[];
   traces: StaggerTrace[];
@@ -40,6 +41,7 @@ const newCycle = (id: string, name: string): CalculationCycleState => ({
   repeatedFile: null,
   isLoading: false,
   error: null,
+  errorDiagnostic: null,
   warnings: [],
   results: [],
   traces: [],
@@ -79,6 +81,7 @@ export const useCalculationStore = create<CalculationStoreState>((set, get) => (
       ...cycle,
       uploadedFiles: [file],
       error: null,
+      errorDiagnostic: null,
       warnings: [],
       results: [],
       traces: [],
@@ -91,6 +94,7 @@ export const useCalculationStore = create<CalculationStoreState>((set, get) => (
       ...cycle,
       uploadedFiles: cycle.uploadedFiles.filter((file) => file.name !== name),
       error: null,
+      errorDiagnostic: null,
       warnings: [],
       results: [],
       traces: [],
@@ -104,6 +108,7 @@ export const useCalculationStore = create<CalculationStoreState>((set, get) => (
       ...cycle,
       repeatedFile: file,
       error: null,
+      errorDiagnostic: null,
       warnings: [],
       results: [],
       traces: [],
@@ -157,6 +162,7 @@ export const useCalculationStore = create<CalculationStoreState>((set, get) => (
       ...cycle,
       isLoading: true,
       error: null,
+      errorDiagnostic: null,
       warnings: [],
     })));
 
@@ -180,10 +186,12 @@ export const useCalculationStore = create<CalculationStoreState>((set, get) => (
       })));
     } catch (error: any) {
       const errorMessage = apiErrorMessage(error, 'Analysis failed');
+      const errorDiagnostic = apiErrorDiagnostic(error, activeCycle.uploadedFiles[0].name);
 
       set((state) => updateCycleById(state, targetCycleId, (cycle) => ({
         ...cycle,
         error: errorMessage,
+        errorDiagnostic,
         isLoading: false,
       })));
       throw error;

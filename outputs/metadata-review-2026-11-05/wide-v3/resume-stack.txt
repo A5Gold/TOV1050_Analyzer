@@ -1,0 +1,19 @@
+Process 30948: "C:\Users\chusiukd\AppData\Local\Programs\Python\Python312\python.exe" -c "import sys,runpy; sys.path.append('C:/Users/chusiukd/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/Lib/site-packages'); sys.argv=['scripts/validate_wide_reports_20261105.py','--resume']; runpy.run_path(sys.argv[0],run_name='__main__')"
+Python v3.12.8 (C:\Users\chusiukd\AppData\Local\Programs\Python\Python312\python.exe)
+
+Thread 26468 (active+gil): "MainThread"
+    ExcelFormatter._format_value (pandas\io\formats\excel.py:597)
+    ExcelFormatter.get_formatted_cells (pandas\io\formats\excel.py:890)
+    OpenpyxlWriter._write_cells (pandas\io\excel\_openpyxl.py:486)
+    ExcelFormatter.write (pandas\io\formats\excel.py:952)
+    NDFrame.to_excel (pandas\core\generic.py:2439)
+    deprecate_nonkeyword_arguments.<locals>.decorate.<locals>.wrapper (pandas\util\_decorators.py:333)
+    ExcelExporter.export_report (exporter.py:253)
+    export_tov1050_report (tov1050_report_export.py:41)
+    export_analysis_report (tov1050_report_export.py:144)
+    _export_job_work.<locals>.work (analysis.py:878)
+    <module> (validate_wide_reports_20261105.py:70)
+    _run_code (<frozen runpy>:88)
+    _run_module_code (<frozen runpy>:98)
+    run_path (<frozen runpy>:287)
+    <module> (<string>:1)

@@ -1,0 +1,75 @@
+[
+  {
+    "date": "20260907",
+    "source_sha256": "54ab7ede00922f56e29919518882381520d7181a9f233d4440b6726abea44e37",
+    "source_unchanged": true,
+    "report": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\validation-2026-11-03\\median-report-followup\\20260907_TWL_UT_MAINLINE_CEN_TSW_Exception_Report.xlsx",
+    "report_sha256": "ca0bb2e807f42a60dc1f5f3033f42b1ef2a60fe6c9120764c758bf5f1488a0a9",
+    "report_bytes": 21105386,
+    "raw_rows": 838859,
+    "chart_rows": 83963,
+    "summary_rows": 289,
+    "counts": {
+      "Low Height": 65,
+      "High Height": 2,
+      "Wire Wear": 1,
+      "Stagger Left": 118,
+      "Stagger Right": 103
+    },
+    "analysis_seconds": 57.176,
+    "analyze_export_read_seconds": 244.602
+  },
+  {
+    "date": "20260630",
+    "source_sha256": "e2ab667196694f07023ceb273e4fe7014fcab6a76165b5a0fec592ea55fbe251",
+    "source_unchanged": true,
+    "report": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\validation-2026-11-03\\median-report-followup\\20260630_TWL_UT_MAINLINE_CEN_TSW_Exception_Report.xlsx",
+    "report_sha256": "969efb6efa1b5cf71ae368f4ab16d2ad5132d62c0b3bd5dd4ee8943327f15f8f",
+    "report_bytes": 20862853,
+    "raw_rows": 830792,
+    "chart_rows": 83244,
+    "summary_rows": 330,
+    "counts": {
+      "Low Height": 69,
+      "High Height": 9,
+      "Wire Wear": 17,
+      "Stagger Left": 112,
+      "Stagger Right": 123
+    },
+    "analysis_seconds": 86.672,
+    "analyze_export_read_seconds": 367.131
+  },
+  {
+    "history_compare_seconds": 187.539,
+    "history_stats": {
+      "total": 15,
+      "breakdown": {
+        "Low Height": 4,
+        "Stagger Left": 6,
+        "Stagger Right": 5
+      }
+    },
+    "history_metrics": {
+      "reports": [
+        {
+          "filename": "20260907_TWL_UT_MAINLINE_CEN_TSW_Exception_Report.xlsx",
+          "chart_rows": 83963,
+          "exception_rows": 289,
+          "read_seconds": 97.547,
+          "cumulative_elapsed_seconds": 98.864
+        },
+        {
+          "filename": "20260630_TWL_UT_MAINLINE_CEN_TSW_Exception_Report.xlsx",
+          "chart_rows": 83244,
+          "exception_rows": 330,
+          "read_seconds": 85.731,
+          "cumulative_elapsed_seconds": 184.595
+        }
+      ],
+      "elapsed_seconds": 184.709
+    },
+    "overview_points": 1376,
+    "algorithm_provenance": "verified",
+    "references_unchanged": true
+  }
+]

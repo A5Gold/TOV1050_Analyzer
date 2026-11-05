@@ -1,0 +1,34 @@
+{
+  "entry": "real source Electron, real backend HTTP multipart upload; no API fixtures",
+  "result": "passed",
+  "runtime": {
+    "database_path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\followup-electron-2026-10-29\\isolated-validation.db",
+    "database_directory": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\followup-electron-2026-10-29",
+    "config_directory": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config",
+    "mode": "standard",
+    "packaging": {
+      "recommended_target": "dir",
+      "current_target": "dir",
+      "writable_data_root": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\followup-electron-2026-10-29",
+      "portable_database_pattern": "<packaged app root>\\data\\analysis.db",
+      "single_exe_note": "Single exe packages must store SQLite data in an external writable folder such as %APPDATA%; embedded executable resources are not a database storage location."
+    }
+  },
+  "http_status": 422,
+  "response": {
+    "detail": {
+      "code": "STAGGER_CONFIG_UNAVAILABLE",
+      "message": "Stagger calculation is unavailable for AEL/Mainline/UP: approved branch support metadata, approved Keq strategy/coefficients",
+      "context": {
+        "line": "AEL",
+        "branch": "Mainline",
+        "direction": "UP"
+      },
+      "missing_configuration": [
+        "approved branch support metadata",
+        "approved Keq strategy/coefficients"
+      ]
+    }
+  },
+  "displayed_diagnostic": "{\n  \"code\": \"STAGGER_CONFIG_UNAVAILABLE\",\n  \"filename\": \"20260603_AEL_UT_MAINLINE_SHR_AWE_Exception_Report_MedianSample.xlsx\",\n  \"status\": 422,\n  \"context\": {\n    \"line\": \"AEL\",\n    \"branch\": \"Mainline\",\n    \"direction\": \"UP\"\n  },\n  \"missing_configuration\": [\n    \"approved branch support metadata\",\n    \"approved Keq strategy/coefficients\"\n  ],\n  \"message\": \"已識別 AEL／Mainline／UP，目前缺少核准的分支支撐點資料、核准的 Keq 計算規則及係數，暫停拉出值計算。\",\n  \"original_message\": \"Stagger calculation is unavailable for AEL/Mainline/UP: approved branch support metadata, approved Keq strategy/coefficients\"\n}"
+}

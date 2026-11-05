@@ -1,0 +1,162 @@
+{
+  "base_head": "4e50d90f175c607cf5a6937c4137f6933dc911dc",
+  "status": "uncommitted implementation",
+  "files": [
+    {
+      "path": "backend/app/api/endpoints/analysis.py",
+      "sha256": "069de4f47e72049d32f77db7733ecb6bda5b88673a3085272a4cdad33b4d561c"
+    },
+    {
+      "path": "backend/app/core/analyzers.py",
+      "sha256": "6208fbaac477356882b8974b393f5184420fa7c5d301929bbe03ce3f776763ca"
+    },
+    {
+      "path": "backend/app/core/exporter.py",
+      "sha256": "ea737a4eb55d978a50fe36c5f4358e78400876e85e2871647c38cced5207a71b"
+    },
+    {
+      "path": "backend/app/core/tov1050_approved_intervals.py",
+      "sha256": "010153aee7386056caef29c596039bf63b0ab28df50aa60f82d06a19140ba8ca"
+    },
+    {
+      "path": "backend/app/core/tov1050_boundary_review.py",
+      "sha256": "6f97e8c743dbbbdf1297b4ff885bd0364b83b1aaef2517257bf89571374a2720"
+    },
+    {
+      "path": "backend/app/core/tov1050_capabilities.py",
+      "sha256": "4bb5d3baf367446d723ff077e74de610f7f0cf3a6a527e213fa04bd1c51631b3"
+    },
+    {
+      "path": "backend/app/core/tov1050_metadata.py",
+      "sha256": "775829bb842425bc43ee49a0cf58cd7320c2a6f352d93ee5bd914c036f263f8c"
+    },
+    {
+      "path": "backend/app/core/tov1050_report_export.py",
+      "sha256": "c92fa0dc72d94fd7a863404f38efea84a4f17588763b3808ac4226639e0c4269"
+    },
+    {
+      "path": "backend/tests/test_chart_viewport_contract.py",
+      "sha256": "f6527f4beb5bfe7f1c94506c6f03b646098094d4d96cc3afa9ed225f266200ec"
+    },
+    {
+      "path": "backend/tests/test_followup_metadata_review.py",
+      "sha256": "43bed97300c88da3a0396cdee0f028d6a92e1a9af9ea58b4c96d2992838682e0"
+    },
+    {
+      "path": "backend/tests/test_tov1050_approved_intervals.py",
+      "sha256": "b40eb80780a18edaddaab24f4403ae666136771f102ec07c3bd408051aeeef2d"
+    },
+    {
+      "path": "backend/tests/test_tov1050_boundary_review.py",
+      "sha256": "f056e5a33ff5cafd8c485fee969369d9cd9c5dbb1ae3893db09429c457a0cfb6"
+    },
+    {
+      "path": "backend/tests/test_tov1050_capabilities.py",
+      "sha256": "f649e053e95ee6a4970d422e8801b041c45b5d14e34ad00ddd370e6df88e27b3"
+    },
+    {
+      "path": "docs/metadata-approved-intervals.md",
+      "sha256": "98ab5f6f00044bacf157bc19416a2407cce5f68170d8f2fdf1c8e7750922752b"
+    },
+    {
+      "path": "docs/plans/2026-10-29-followup-stagger-metadata-chart-plan.md",
+      "sha256": "c5e53534ac3ac7b53916005e76f7a99978cceb7f15f61413bee21eeb0cdc321f"
+    },
+    {
+      "path": "docs/requests/2026-10-29-followup-stagger-metadata-chart.md",
+      "sha256": "f88f4b5228c813d02ba1b27bc0f998fc9dcece9ce5a6d0eb3aeb91d03ff7b6ba"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-10-29-followup-stagger-metadata-chart-design.md",
+      "sha256": "0611ecd3aa50e0246e109d16529fdeb6aa6e7561a91bf0ee1043cb300c2c27ea"
+    },
+    {
+      "path": "frontend/src/api/__tests__/errorMessage.test.ts",
+      "sha256": "d48db2c83fc76b33a4915eb0d05524f726a5c6ad4bdf20ef8668f58ad9de7653"
+    },
+    {
+      "path": "frontend/src/api/errorMessage.ts",
+      "sha256": "f9aae0b52ad3e40ae918cc07a995c97aad2f22ae3c0cafe4e2b849bf0a1dca83"
+    },
+    {
+      "path": "frontend/src/components/Calculation/StaggerDiagnosticAlert.tsx",
+      "sha256": "386f67ad17eb8e7be793c53173e93213daa878c36a1d4032f21ac86d2093a420"
+    },
+    {
+      "path": "frontend/src/components/Calculation/__tests__/StaggerDiagnosticAlert.test.tsx",
+      "sha256": "89be4469c9b875ef9c6b1923578adb91d956a8dc6085e2810ba232d488aca8bf"
+    },
+    {
+      "path": "frontend/src/components/ChartComponent.tsx",
+      "sha256": "f40740e6fcd2e71176a0553e292090b097f322caaa0ed70d820be98cf27d6c35"
+    },
+    {
+      "path": "frontend/src/components/ExceptionTable.tsx",
+      "sha256": "f1ae990adfb8d1f823a45044b9ee6a274856f0f893864a2cc05e71c614f51f47"
+    },
+    {
+      "path": "frontend/src/components/__tests__/ChartComponent.test.tsx",
+      "sha256": "fc2a19e5080ba37d35c81439552c9e5f61468a21958b3975653b44e6a057c325"
+    },
+    {
+      "path": "frontend/src/components/__tests__/ExceptionTable.test.tsx",
+      "sha256": "7bde580f2ad01b2de979b2514c9fdd8284ed215dab18cad16c6707b4c1dbd025"
+    },
+    {
+      "path": "frontend/src/components/__tests__/chartMarkerHitTest.test.ts",
+      "sha256": "1389dda82cdf3a8f0b3a8300386af0fe7004909cca5736cbb9afe592afe7dbe4"
+    },
+    {
+      "path": "frontend/src/components/chartMarkerHitTest.ts",
+      "sha256": "1530d96c18b525dc1480446f2c1ca7da148d0497e03c90533ccd54f5c6a0761d"
+    },
+    {
+      "path": "frontend/src/store/__tests__/useCalculationStore.test.ts",
+      "sha256": "dacc0270f076cfec65691b0d3a20a60d2c5e0ab1e13ea085083663762e8bc7b7"
+    },
+    {
+      "path": "frontend/src/store/useAnalysisStore.ts",
+      "sha256": "6f1cf7c28dfb4a0a2581a002f40c9f77852353a542f63791025bede0acf71200"
+    },
+    {
+      "path": "frontend/src/store/useCalculationStore.ts",
+      "sha256": "fceb8e120d0c82a053deb62f97fcce843c51ed3530ab97f0d0bfef593b3442d9"
+    },
+    {
+      "path": "frontend/src/types/api.ts",
+      "sha256": "129ac14129f820737115891cb8b8e9a978f65e705e8383c60ac1f1428ea42c5e"
+    },
+    {
+      "path": "frontend/src/views/CalculationView.tsx",
+      "sha256": "5fbb6b3da3b6a8e4ce21363b4cf24a9b993cacc13392439a5fe3255d71224f85"
+    },
+    {
+      "path": "frontend/tests/chart-pointer.spec.ts",
+      "sha256": "bbbb3d74a0c47716a1b4bc04d72b7a4256f9eb0b59df65f0457975347bb5645e"
+    },
+    {
+      "path": "frontend/tests/dual-system.spec.ts",
+      "sha256": "a88f4b027be39f5056500e5aab00e9a73afa315d84dbec8ae79398d0c24fe32e"
+    },
+    {
+      "path": "scripts/build_followup_metadata_workbooks.mjs",
+      "sha256": "4a667e912e13b97a04bb6f0dc21a133c5933a1a3b01d06bff5846f936cbe16a8"
+    },
+    {
+      "path": "scripts/review_followup_metadata.py",
+      "sha256": "a8ceb87397142296cb4a2a71707485993fbaadb7b6c482e2c4662412c78d8fe0"
+    },
+    {
+      "path": "scripts/validate_followup_electron.mjs",
+      "sha256": "307bd01f6e5b1b10c06b88dc014dd63261f748788dcc18fc60c6ab402024db20"
+    },
+    {
+      "path": "scripts/validate_followup_metadata_workbooks.py",
+      "sha256": "196b7f7baa54e791632639ec6ebb2ebc62ffbbfff78c5bed4cb457f21380d961"
+    },
+    {
+      "path": "scripts/validate_followup_runtime.py",
+      "sha256": "b5ec7a26bddc1f97c5717e3cb10794b13c5d930256c1f1d31e42fe0033b117a9"
+    }
+  ]
+}

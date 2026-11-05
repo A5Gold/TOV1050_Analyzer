@@ -23,7 +23,8 @@ test('nine parent lines and DRL branch names remain separate from direction', as
   await page.screenshot({ path: '../outputs/dual-system-2026-10-29/browser-drl.png', fullPage: true });
 });
 
-test('real Plotly marker focuses 200m and threshold toggle works in overview', async ({ page }) => {
+// Handler integration only. Actual mouse hit testing is in chart-pointer.spec.ts.
+test('emitted Plotly marker event focuses 200m and threshold toggle works in overview', async ({ page }) => {
   test.setTimeout(90000);
   page.on('pageerror', error => console.log('PAGE ERROR', error.message));
   const chainage = Array.from({ length: 201 }, (_, i) => i * 10);

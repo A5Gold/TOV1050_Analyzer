@@ -181,7 +181,7 @@ test('raw overview disables report export and can return to median analysis', as
   render(<ExceptionGeneratorView />);
   expect(screen.getByRole('button', { name: '匯出例外報表' })).toBeDisabled();
   expect(screen.getByRole('button', { name: /Table/ })).toBeDisabled();
-  fireEvent.click(screen.getByRole('button', { name: '返回中位樣本分析' }));
+  fireEvent.click(screen.getByRole('button', { name: '返回例外分析' }));
   await waitFor(() => expect(apiClient.post).toHaveBeenCalledWith('/analysis/jobs', expect.objectContaining({
     analysis_mode: 'median', chart_data_mode: 'chainage_median',
   }), { timeout: 30_000 }));

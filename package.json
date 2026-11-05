@@ -1,6 +1,6 @@
 {
   "name": "tov1050-analyzer",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "TOV1050 Analyzer - Railway Catenary Maintenance Data Analysis Tool",
   "author": "MTR Corporation Limited",
   "main": "electron/main.js",
@@ -11,7 +11,7 @@
     "dev:local": "concurrently -k \"npm run dev:frontend\" \"wait-on tcp:5174 && npm run dev:electron\"",
     "install:all": "npm install && cd frontend && npm install",
     "build:frontend": "cd frontend && npm run build",
-    "build:backend": "cd backend && pyinstaller --clean --noconfirm backend_server.spec",
+    "build:backend": "cd backend && ..\\venv\\Scripts\\python.exe -m PyInstaller --clean --noconfirm backend_server.spec",
     "wear:seed": "venv\\Scripts\\python.exe backend/scripts/generate_wear_cycle_seed.py",
     "clean:package": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\"",
     "package": "node scripts/dev-latest.mjs package:local",
@@ -43,7 +43,14 @@
         "from": "config",
         "to": "config",
         "filter": [
-          "**/*"
+          "**/*",
+          "!backups{,/**/*}",
+          "!**/~$*",
+          "!**/*.tmp",
+          "!**/*.activation.tmp",
+          "!**/*.db",
+          "!**/*.db-wal",
+          "!**/*.db-shm"
         ]
       },
       {

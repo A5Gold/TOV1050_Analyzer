@@ -1,0 +1,21 @@
+[
+  {
+    "Run Date": "20260630",
+    "Line": "TWL",
+    "Track": "UT",
+    "Section": "Mainline",
+    "St. Start": "CEN",
+    "St. End": "TSW",
+    "ID": "20260630_TWL_UT_Mainline_SL97",
+    "FromM": "2848.8",
+    "ToM": "2858",
+    "Length": "9.199999999999818",
+    "Exception Type": "Stagger Left",
+    "MaxValue": "242.16",
+    "MaxLocation": "2853.8",
+    "Track Type": "Curve",
+    "Level": "L2",
+    "Class": "Tunnel",
+    "Threshold Value": "230"
+  }
+]

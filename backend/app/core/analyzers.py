@@ -219,6 +219,15 @@ class ExceptionDetector:
         except Exception:
             if 'Track Type' not in df.columns: df['Track Type'] = np.nan
 
+        # TOV1050 approved atoms have mixed endpoint closure. They must never
+        # enter the legacy inclusive fallback, nor have release errors hidden.
+        if callable(getattr(self.meta_mgr, 'map_approved_enrichment', None)):
+            if getattr(self.meta_mgr, 'defer_approved_enrichment', False):
+                for column in ('Overlap', 'Tension Length', 'Landmark'):
+                    df[column] = np.nan
+                return df
+            return self.meta_mgr.map_approved_enrichment(df, line, section, track)
+
         try:
             ov_df = self.meta_mgr.get_overlap_intervals(line, section, track)
             self._apply_mapping(df, ov_df, ['Overlap', 'Tension Length'])

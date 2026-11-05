@@ -20,7 +20,7 @@ from app.core.line_registry import normalize_context, normalize_direction
 from openpyxl import load_workbook
 
 
-def load_report_preflight(source):
+def load_report_preflight(source, *, sheet_names=None):
     """Open only small context sheets without touching any ChartData XML.
 
     openpyxl's read-only loader scans dimensionless write-only worksheets at
@@ -28,6 +28,7 @@ def load_report_preflight(source):
     for engineering capability checks. The source workbook is never modified.
     """
     source = io.BytesIO(source) if isinstance(source, bytes) else source
+    selected_names = {"Summary", "Wire Wear", "_Metadata"} if sheet_names is None else set(sheet_names)
     sheet_namespace = 'http://schemas.openxmlformats.org/spreadsheetml/2006/main'
     relation_namespace = 'http://schemas.openxmlformats.org/officeDocument/2006/relationships'
     with zipfile.ZipFile(source) as archive:
@@ -38,7 +39,7 @@ def load_report_preflight(source):
         selected_paths = set()
         if sheets is not None:
             for sheet in list(sheets):
-                if sheet.attrib.get('name') not in {'Summary', 'Wire Wear', '_Metadata'}:
+                if sheet.attrib.get('name') not in selected_names:
                     sheets.remove(sheet)
                     continue
                 target = targets.get(sheet.attrib.get(f'{{{relation_namespace}}}id'), '')
@@ -233,8 +234,8 @@ def read_report_context(workbook, filename: str = "", *, chart_rows=None,
     capabilities = meta.get("metadata_capabilities")
     values = dict(capabilities) if isinstance(capabilities, dict) else {}
     values.update({key: value for key, value in meta.items() if not isinstance(value, (dict, list))})
-    algorithm = text_value(meta.get('aggregation_version') or meta.get('aggregation_algorithm') or meta.get('algorithm'))
-    mode = text_value(meta.get('aggregation') or meta.get('chart_data_mode') or meta.get('analysis_mode'))
+    algorithm = text_value(meta.get('detection_algorithm') or meta.get('aggregation_version') or meta.get('aggregation_algorithm') or meta.get('algorithm'))
+    mode = text_value(meta.get('detection_data_mode') or meta.get('aggregation') or meta.get('chart_data_mode') or meta.get('analysis_mode'))
     mode = {'median': 'chainage_median', 'raw_overview': 'raw'}.get(mode, mode)
     meta_context = normalize_report_row(values, source="_Metadata")
     contexts = [meta_context]

@@ -1,0 +1,36 @@
+{
+  "job_id": "18086e1667814e3d86693e43136f8c53",
+  "submit_seconds": 0.611,
+  "compare_seconds": 192.911,
+  "status_p95_seconds": 0.039,
+  "stats": {
+    "total": 15,
+    "breakdown": {
+      "Low Height": 4,
+      "Stagger Left": 6,
+      "Stagger Right": 5
+    }
+  },
+  "metrics": {
+    "reports": [
+      {
+        "filename": "20260907_TWL_UT_MAINLINE_CEN_TSW_Exception_Report.xlsx",
+        "chart_rows": 83963,
+        "exception_rows": 289,
+        "read_seconds": 95.737,
+        "cumulative_elapsed_seconds": 97.409
+      },
+      {
+        "filename": "20260630_TWL_UT_MAINLINE_CEN_TSW_Exception_Report.xlsx",
+        "chart_rows": 83244,
+        "exception_rows": 330,
+        "read_seconds": 94.4,
+        "cumulative_elapsed_seconds": 191.809
+      }
+    ],
+    "elapsed_seconds": 191.916
+  },
+  "overview_points": 1376,
+  "source_unchanged": true,
+  "comparison_export_bytes": 7903
+}

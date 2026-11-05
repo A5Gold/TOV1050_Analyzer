@@ -1,0 +1,102 @@
+{
+  "status": "passed",
+  "cells_compared": 5002,
+  "threshold_rows": 40,
+  "tl_intervals": 9,
+  "sources_unchanged": true,
+  "candidate_sha256": "0b8fdbed43a37945ff4ed358490141577cbb3e692a76d215710b31a1ca5dfb47",
+  "file": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\metadata-review-2026-11-03\\drl-wide-v2\\DRL metadata (wide UT-PL candidate).xlsx",
+  "production_activation": false,
+  "tl_rows": [
+    [
+      "UT",
+      "481",
+      41455,
+      42522,
+      38,
+      "bracket min/max",
+      "user-confirmed 2026-11-03",
+      "2-39"
+    ],
+    [
+      "UT",
+      "482",
+      42412,
+      43687,
+      44,
+      "bracket min/max",
+      "user-confirmed 2026-11-03",
+      "40-83"
+    ],
+    [
+      "UT",
+      "485",
+      43607,
+      44333,
+      84,
+      "bracket min/max",
+      "user-confirmed 2026-11-03",
+      "84-167"
+    ],
+    [
+      "UT",
+      "486",
+      44233,
+      44844,
+      40,
+      "bracket min/max",
+      "user-confirmed 2026-11-03",
+      "168-197, 200-209"
+    ],
+    [
+      "UT",
+      "487",
+      44871,
+      45026,
+      8,
+      "bracket min/max",
+      "user-confirmed 2026-11-03",
+      "198-199, 210-215"
+    ],
+    [
+      "PL",
+      "481",
+      41455,
+      42522,
+      38,
+      "bracket min/max",
+      "user-confirmed 2026-11-03",
+      "2-39"
+    ],
+    [
+      "PL",
+      "482",
+      42548,
+      42704,
+      7,
+      "bracket min/max",
+      "user-confirmed 2026-11-03",
+      "40-43, 45, 48, 50"
+    ],
+    [
+      "PL",
+      "483",
+      42647,
+      43609,
+      29,
+      "bracket min/max",
+      "user-confirmed 2026-11-03",
+      "44, 46-47, 49, 52, 54, 59-81"
+    ],
+    [
+      "PL",
+      "484",
+      42734,
+      42905,
+      6,
+      "bracket min/max",
+      "user-confirmed 2026-11-03",
+      "51, 53, 55-58"
+    ]
+  ]
+}

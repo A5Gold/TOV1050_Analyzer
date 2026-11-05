@@ -3,8 +3,8 @@
 - 日期：2026-10-29
 - Linear project：TOV1050_Analyzer
 - Linear issue：[DAV-26](https://linear.app/david-chu/issue/DAV-26)；延續 DAV-25，metadata 依賴 DAV-21
-- 負責人：Codex 主代理，metadata／Stagger／圖表三個子代理唯讀調查
-- 狀態：Draft；本次只交付設計與開發計畫，未授權功能實作
+- 負責人：Codex 主代理，metadata／Stagger／圖表三個子代理協作
+- 狀態：實作與驗證完成，待資料區間及人工環境審閱；使用者於2026-10-29明確approve設計／開發計畫
 
 ## 需求與目的
 
@@ -14,7 +14,7 @@
 
 ### 商業規則與限制
 
-- 本次不修改功能程式、原始 CSV／DATAC、runtime metadata、使用者 DB；不產生或啟用新 workbook。
+- 設計階段僅文件；使用者approve後授權必要功能實作、測試與review-only候選。原始CSV／DATAC、runtime metadata及使用者DB保持不覆寫；候選不自動啟用。
 - 延續九主 Line＋Branch＋Direction；DRL branch UT 對應 Mainline，與方向 UT 分開。
 - 前次已確認其他路線 Stagger 未有核准配置；不得套用 EAL／TML 的公式或係數。
 - Chainage canonical unit 是 m；點位不能直接當成有效區間，unknown overlap 不等於 N。
@@ -59,13 +59,31 @@ DRL 先做 runtime long／reference wide／現行 mapping 三方 diff、單位�
 
 ## 執行紀錄
 
+### 2026-10-29 設計批准後承接
+
+- 使用者明確回覆approve；不再等待設計批准。Linear MCP已實際掛載，DAV-26轉In Progress並同步承接。
+- 本次實作起點4e50d90f175c607cf5a6937c4137f6933dc911dc；既有兩項dirty與前回合相同。
+- 依P0–P5推進；三子代理分工圖表／Stagger／metadata候選，主代理整合approved interval provider、API／UI證據與驗證。
+- 未分型terminal配對、DRL方向及threshold差異仍依具體資料，不把本次approve視為任意資料promotion。
+
 ### 實作
 
-已新增需求、設計與開發計畫三份 Markdown；功能尚未實作，未產生候選 workbook，未修改 runtime config、raw 或 DB。
+- Stagger：繁中結構化診斷、巢狀 context／missing_configuration、檔名及代碼、可展開及複製 JSON，換檔／cycle／重試隔離。
+- 圖表：真 pointer 僅在可見 marker 圓內選取；同位多例外提供明確選單。Height／Stagger／Wear × L1／L2／L3 門檻矩陣，缺級停用、session 偏好保存；hover 僅 Chainage／實測值。
+- Metadata：獨立 Contact 邊界審閱 v2、approved interval sidecar provider、SHA／批准／context gate、端點 atoms 與 open spans、partial coverage 不推 N。可選 enrichment 在 median reduction 後填入，保留 detector／ID／first-nonempty。
+- API／UI／Excel：例外「依據」視窗顯示峰值位置狀態、已知邊界與來源列；MetadataEvidence／MetadataBoundaryReview 保存證據，不把大型 review JSON 塞進 Excel 單格。Summary 欄序不變；Wear gate 維持。
+- 最終候選：`outputs/metadata-review-2026-10-29/batch-04`，兩份 workbook、完整 provenance、audit、來源 SHA、64格 release diff；新 guide、candidate_from_m／candidate_to_m 與 wire_role_basis 明確列出。前批次保留為歷史，不啟用任何候選。
+- 契約：`docs/metadata-approved-intervals.md`。沒有 runtime sidecar、promotion、原始資料／正式 config／使用者 DB 寫回；開始時兩項 dirty 保留。
+
+### 使用者補充決策（實作中已納入）
+
+1. 無 `_C`／`_M` 分型的 BWA／Fixed／Spring **全部視作 Contact 邊界**；明確 `_M` 仍為 Messenger。v2 保存 `user_confirmed_untyped_contact_2026-10-29` 角色依據；候選由1增至31組。
+2. 沒有核准 AEL 配置，**先 skip 計算**；缺配置診斷及相容性驗證仍交付，不借 EAL/TML。
+3. 七份 runtime 相對 release 的64格差異為使用者有意調整，**保留現值**，本次不還原或代改 release manifest。
 
 ### 測試與 debug
 
-已執行唯讀來源與 workbook 結構調查；不把前次測試結果宣稱為本次重跑。
+以下先保留設計調查證據，再列批准後實際驗證；不將舊結果當本次重跑。
 
 ```text
 # 子代理執行
@@ -87,18 +105,42 @@ Low Height63／High Height2／Wire Wear1／Stagger Right94
 index_repository(C-Smart-Maintanence-TOV1050_Analyzer, fast): indexed
 ```
 
-調查用 manager smoke 與 openpyxl 盤點由三名子代理／主代理於本回合實跑；非完整 pytest／validator。此次沒有重跑前端 build、真 pointer、Electron或原生Excel，均列後續驗收。
+批准後實際驗證：
+
+| 驗證 | 結果 |
+|---|---|
+| provider／capabilities／adapter／median snapshot／report export pytest | 74 passed（61.97s） |
+| API analysis／chart data／viewport contract pytest | 31 passed（51.21s） |
+| Contact v2／真 mapping／DRL source review pytest | 21 passed；最後 schema／guide 更新後再跑記於整合紀錄 |
+| Stagger context＋API pytest | 16 passed、26 deselected，含真 EAL U3 HTTP200 |
+| Chart／marker Vitest | 18 passed，真 pointer Playwright 3 passed |
+| Stagger 前端四檔 | 16 passed |
+| ExceptionTable 證據視窗 | 2 passed |
+| TypeScript／production build | exit0；Vite build 4150 modules、成功，既有 assert externalization／大 chunk 警告 |
+| DRL／Contact候選 | artifact-tool author/render/error scan；最終逐格 parity 與圖片檢查見 batch-04 |
+| 真 Electron AEL 上傳 | 真本機 HTTP multipart，422 STAGGER_CONFIG_UNAVAILABLE；UI 顯示繁中身份／缺項／可複製 JSON，DB 確認隔離 |
+
+實檔 direct `_analyze_sync` 及 TWL 報表讀回：
+
+| 檔案 | raw→median | 例外 |
+|---|---:|---:|
+| 20260907_TWL_UT.csv | 838859→83963 | 160：Low63／High2／Wear1／StaggerRight94 |
+| 20260630_TWL_UT.csv | 830792→83244 | 199：Low66／High7／Wear15／StaggerRight111 |
+| TML_D1_260410.datac | 41138→41138 | 152：Wear86／StaggerLeft20／StaggerRight46 |
+
+來源 SHA 前後不變；兩份開發驗證報表位於 `outputs/followup-runtime-2026-10-29/batch-01`，Summary 三欄、證據工作表及隱藏 metadata JSON 讀回成功。這批實檔程序在使用者無分型規則補充前啟動，Review 證據為 v1；detector／門檻／正式空值不因 v2 角色分類改變。最終資料審閱以 batch-04 v2 為準。耗時含分析及大型匯出，不作效能 SLA。
+
+Debug：修正 optional TL 於 reducer 前導致 segment 改變的風險；修正 sidecar 非物件 JSON／來源消失的可理解錯誤；大型審閱拆表避免 Excel 32767字元截斷；既有測試 doubles 對 filename keyword、結構化 wear error、manager 新方法已更新。測試 worker 曾因資源啟動逾時，降為 threads／單 worker 後通過；Electron QA 前三次是誤選 DevTools Page／QA request context 問題，改選 renderer URL及實際 renderer fetch 後成功，未為此改產品。
 
 ### 驗收結果
 
-已完成指定對話、檔案與目前程式調查，完成根因／假設區分、方案比較、使用者更正後的邊界規則、分階段工作與驗收矩陣。Stagger舊空白line錯誤本次source未重現；實際使用者程序版本仍待核對。設計待使用者審閱，不宣稱功能問題已修復。
+完成已批准的程式實作、三子代理驗證、metadata 候選及實檔／Electron 診斷。最新382組 TL 中31組可列雙端候選、332組無 Contact 終端、15組單端、2組普通點超出配對、2組多端，另9組 DRL direction scope 未明（缺口可重疊）。TL-BK 未必完整，正式 TL／Overlap／Landmark 仍只接核准區間，沒有用候選冒充正式值。原生 Excel、使用者舊 portable、真實圖表於各 Windows DPI 的完整人工驗收未執行；不把 fixture Chromium 當真 Electron 圖表資料驗收。
 
 ## Linear 同步
 
-- 最後同步時間：2026-10-29，本次已實際建立 DAV-26；收尾更新設計、使用者確認、測試結果與 next action。
-- Issue 狀態：設計待審；DAV-26 收尾轉 In Review，DAV-25 保留 In Review、DAV-21 保留 In Progress。
-- Next action：使用者審閱設計／計畫；批准後執行 P0 基線與版本重現，再推進可獨立驗收的 Stagger／圖表／metadata 候選。
-- 阻塞／需要決策：無／單端 TL、未分型 terminal 的 Contact 適用性、連通配對、DRL方向及8.9／9.1門檻差異仍需來源／審閱；已確認termination是邊界與C/M角色不重問。
+- Linear MCP 實際可用，已同步 DAV-26／DAV-21；收尾同步最新使用者決策、batch-04、實作／測試與限制。
+- Issue 狀態：DAV-26 交付後 In Review；DAV-25 不變、DAV-21 維持 In Progress。
+- Next action：資料負責人審閱 batch-04 的31組 Contact 配對／連通 scope／完整性及缺端表；DRL方向另確認。取得具體 scope 核准後，開發端才做備份、sidecar／manifest 發布與新版正式報表。現行64格有意調整保留，AEL配置先skip。
 
 ## 相關檔案
 

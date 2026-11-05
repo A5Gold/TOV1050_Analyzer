@@ -1,0 +1,26 @@
+{
+  "source": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\Raw data\\TML\\TML_D1_260410.datac",
+  "source_sha256": "da226284648bbec7c9e16c2d5d709aa6a39fb96fc6059c0ae88e9d85a54f48e0",
+  "source_unchanged": true,
+  "metadata_sha256": "449f0bd788829ba755df7d91f4627454daeb79d1e9ee8f44e25d17c0a1690917",
+  "metadata_unchanged": true,
+  "report": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\validation-2026-11-03\\tml-median-regression\\20260410_TML_DN_Mainline_Exception_Report.xlsx",
+  "report_bytes": 2424644,
+  "report_sha256": "c2cef49721121bfa662bf484738b43c36bffaf0f86f4254561b684654bbce9ef",
+  "raw_rows": 41138,
+  "chart_rows": 41138,
+  "summary_rows": 152,
+  "export_data_mode": "cleaned_raw",
+  "sheets": [
+    "Summary",
+    "Low Height",
+    "High Height",
+    "Wire Wear",
+    "Stagger Left",
+    "Stagger Right",
+    "ExceptionProvenance",
+    "ChartData",
+    "_Metadata"
+  ],
+  "readback_seconds": 39.613
+}

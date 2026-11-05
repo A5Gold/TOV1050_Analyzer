@@ -1,11 +1,15 @@
 # 測試後續開發計畫
 
-- 日期：2026-10-29；Linear：DAV-26（設計審閱），關聯DAV-25／DAV-21。
-- 狀態：Draft；**本回合沒有開始功能實作**。
+- 日期：2026-10-29；Linear：DAV-26（實作交付審閱），關聯DAV-25／DAV-21。
+- 狀態：使用者approve後已完成程式實作及驗證；正式資料promotion另依scope批准。
 - 設計：`docs/superpowers/specs/2026-10-29-followup-stagger-metadata-chart-design.md`。
 - 需求：`docs/requests/2026-10-29-followup-stagger-metadata-chart.md`。
 
 ## 1. 執行原則與依賴
+
+最終進度（下文保留原計畫供追溯）：P0／P1／P2／P3已完成；P4 provider、API／UI／Excel evidence及回歸完成，但沒有未經核准的 runtime TL promotion；P5自動驗證、三份實檔及真Electron Stagger診斷完成，原生Excel／舊portable／各DPI真圖表人工驗收仍待進行。詳見本次request與 `outputs/followup-runtime-2026-10-29/verification.md`。
+
+使用者最後確認已覆蓋早期問題：無C/M分型BWA/Fixed/Spring全部為Contact；AEL配置先skip；64格runtime差異為有意調整，保留現值。最終候選為 `outputs/metadata-review-2026-10-29/batch-04`、v2、31組；batch-02／03保留歷史，不作最後審閱依據。
 
 先固定來源與重現證據，再完成可獨立驗收的Stagger診斷及圖表；metadata同時完成候選、邊界規則與缺口審閱。正式TL／Overlap填值依賴核准Contact區間，不要求等待全線資料齊備才做其他工作。
 

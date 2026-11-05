@@ -1,0 +1,245 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - complementary [ref=e4]:
+      - generic "TOV Data Analyzer" [ref=e6]:
+        - img [ref=e8]
+      - navigation "Main navigation" [ref=e10]:
+        - button "About" [ref=e11] [cursor=pointer]:
+          - img [ref=e12]
+          - generic [ref=e14]: About
+        - button "Exception Generator" [ref=e15] [cursor=pointer]:
+          - img [ref=e16]
+          - generic [ref=e18]: Generate
+        - button "History Compare" [ref=e19] [cursor=pointer]:
+          - img [ref=e20]
+          - generic [ref=e22]: History
+        - button "Version Difference" [ref=e23] [cursor=pointer]:
+          - img [ref=e24]
+          - generic [ref=e26]: Version Difference
+        - button "Database Records" [ref=e27] [cursor=pointer]:
+          - img [ref=e28]
+          - generic [ref=e30]: Records
+        - button "Wear Calculator" [ref=e31] [cursor=pointer]:
+          - img [ref=e32]
+          - generic [ref=e34]: Wear Calculator
+        - button "Stagger Calculation" [ref=e35] [cursor=pointer]:
+          - img [ref=e36]
+          - generic [ref=e38]: Stagger
+        - button "Trend Analyzer" [ref=e39] [cursor=pointer]:
+          - img [ref=e40]
+          - generic [ref=e43]: Trends
+        - button "Metadata Editor" [ref=e44] [cursor=pointer]:
+          - img [ref=e45]
+          - generic [ref=e47]: Settings
+    - generic [ref=e48]:
+      - banner [ref=e49]:
+        - generic [ref=e50]:
+          - generic [ref=e51]: TOV DATA ANALYZER
+          - generic [ref=e52]: File intelligence workspace
+        - paragraph [ref=e55]: Ready
+      - main [ref=e56]:
+        - generic [ref=e58]:
+          - generic [ref=e59]:
+            - tablist [ref=e63]:
+              - tab "20260907_TWL_UT.csv" [selected] [ref=e64] [cursor=pointer]:
+                - generic [ref=e65]:
+                  - paragraph [ref=e66]: 20260907_TWL_UT.csv
+                  - img [ref=e68]
+            - generic [ref=e71]:
+              - button "Logic" [ref=e72] [cursor=pointer]:
+                - img [ref=e74]
+                - text: Logic
+              - button "New Analysis" [ref=e76] [cursor=pointer]:
+                - img [ref=e78]
+                - text: New Analysis
+              - button "Reset All" [ref=e80] [cursor=pointer]:
+                - img [ref=e82]
+                - text: Reset All
+          - generic [ref=e85]:
+            - generic [ref=e86]:
+              - generic [ref=e87]:
+                - heading "20260907_TWL_UT.csv" [level=6] [ref=e88]
+                - generic [ref=e89]: AEL - UT - Mainline (20261029)
+                - button "匯出例外報表" [ref=e90] [cursor=pointer]:
+                  - img [ref=e92]
+                  - text: 匯出例外報表
+                - button "原始資料概覽" [ref=e94] [cursor=pointer]: 原始資料概覽
+              - group [ref=e95]:
+                - button "Graph" [pressed] [ref=e96] [cursor=pointer]:
+                  - img [ref=e97]
+                  - text: Graph
+                - button "Table" [ref=e99] [cursor=pointer]:
+                  - img [ref=e100]
+                  - text: Table
+            - generic [ref=e103]:
+              - generic [ref=e105]:
+                - generic [ref=e106]:
+                  - heading "20261029_AEL_Mainline_UT" [level=6] [ref=e108]
+                  - generic [ref=e109]:
+                    - generic [ref=e110]:
+                      - generic [ref=e111] [cursor=pointer]:
+                        - generic [ref=e112]:
+                          - checkbox "Markers" [checked] [ref=e113]
+                          - img [ref=e114]
+                        - generic [ref=e116]: Markers
+                      - generic [ref=e117] [cursor=pointer]:
+                        - generic [ref=e118]:
+                          - checkbox "門檻線" [checked] [ref=e119]
+                          - img [ref=e120]
+                        - generic [ref=e122]: 門檻線
+                      - generic [ref=e123] [cursor=pointer]:
+                        - generic [ref=e124]:
+                          - checkbox "Legend" [checked] [ref=e125]
+                          - img [ref=e126]
+                        - generic [ref=e128]: Legend
+                    - button "Clear Selection" [disabled]:
+                      - generic:
+                        - img
+                      - text: Clear Selection
+                - generic [ref=e132]:
+                  - img:
+                    - generic:
+                      - generic:
+                        - generic:
+                          - generic:
+                            - generic: "4000"
+                          - generic:
+                            - generic: "4200"
+                          - generic:
+                            - generic: "4400"
+                      - generic:
+                        - generic:
+                          - generic:
+                            - generic: −200
+                          - generic:
+                            - generic: "0"
+                          - generic:
+                            - generic: "200"
+                      - generic:
+                        - generic:
+                          - generic:
+                            - generic: "0"
+                          - generic:
+                            - generic: "500"
+                          - generic:
+                            - generic: "1000"
+                          - generic:
+                            - generic: "1500"
+                          - generic:
+                            - generic: "2000"
+                        - generic:
+                          - generic:
+                            - generic: "9"
+                          - generic:
+                            - generic: "9.5"
+                          - generic:
+                            - generic: "10"
+                  - img:
+                    - generic:
+                      - generic [ref=e167]:
+                        - generic [ref=e169]: height1
+                        - generic [ref=e172]: height2
+                        - generic [ref=e175]: height3
+                        - generic [ref=e178]: height4
+                        - generic [ref=e181]: stagger1
+                        - generic [ref=e184]: stagger2
+                        - generic [ref=e187]: stagger3
+                        - generic [ref=e190]: stagger4
+                        - generic [ref=e193]: wear1
+                        - generic [ref=e196]: wear2
+                        - generic [ref=e199]: wear3
+                        - generic [ref=e202]: wear4
+                        - generic [ref=e205]: High Height Dots
+                        - generic [ref=e212]: Stagger Left Dots
+                        - generic [ref=e219]: Wire Wear Dots
+                      - generic:
+                        - generic: Chainage (m)
+                      - generic:
+                        - generic: Height (mm)
+                      - generic:
+                        - generic: Stagger (mm)
+                      - generic:
+                        - generic: Wear (mm)
+                  - generic [ref=e225]:
+                    - img [ref=e228] [cursor=pointer]
+                    - generic [ref=e230]:
+                      - img [ref=e232] [cursor=pointer]
+                      - img [ref=e235] [cursor=pointer]
+                    - generic [ref=e237]:
+                      - img [ref=e239] [cursor=pointer]
+                      - img [ref=e242] [cursor=pointer]
+                      - img [ref=e245] [cursor=pointer]
+                      - img [ref=e248] [cursor=pointer]
+                  - img:
+                    - generic:
+                      - generic:
+                        - generic: height1
+                        - generic: "Chainage: 1000.0000 m實測值: 4000.0000 mm來源列: 未提供SampleCount: 未提供有效樣本: 1 / 1"
+              - generic [ref=e251]:
+                - generic [ref=e252]:
+                  - generic [ref=e253]:
+                    - img [ref=e254]
+                    - heading "Exceptions" [level=6] [ref=e256]
+                    - generic [ref=e258]: 3 items
+                  - generic [ref=e259]:
+                    - generic [ref=e260]:
+                      - generic [ref=e261]: Type
+                      - generic [ref=e262]:
+                        - combobox [ref=e263] [cursor=pointer]: All Types
+                        - textbox: All
+                        - img
+                        - group:
+                          - generic: Type
+                    - generic [ref=e264]:
+                      - generic [ref=e265]: Level
+                      - generic [ref=e266]:
+                        - combobox [ref=e267] [cursor=pointer]: All
+                        - textbox: All
+                        - img
+                        - group:
+                          - generic: Level
+                - list [ref=e268]:
+                  - listitem [ref=e269]:
+                    - 'button "High Height L1 ID: H Loc: 1000.00m Val: 4000.00 | Len: 10.00m" [ref=e270] [cursor=pointer]':
+                      - generic [ref=e271]:
+                        - heading "High Height" [level=6] [ref=e272]
+                        - generic [ref=e275]: L1
+                      - paragraph [ref=e277]: "ID: H"
+                      - generic [ref=e278]:
+                        - paragraph [ref=e279]: "Loc: 1000.00m"
+                        - paragraph [ref=e280]: "Val: 4000.00"
+                      - generic [ref=e282]: "|"
+                      - generic [ref=e284]: "Len: 10.00m"
+                  - separator [ref=e285]
+                  - listitem [ref=e286]:
+                    - 'button "Stagger Left L1 ID: S Loc: 1000.00m Val: 240.00 | Len: 10.00m" [ref=e287] [cursor=pointer]':
+                      - generic [ref=e288]:
+                        - heading "Stagger Left" [level=6] [ref=e289]
+                        - generic [ref=e292]: L1
+                      - paragraph [ref=e294]: "ID: S"
+                      - generic [ref=e295]:
+                        - paragraph [ref=e296]: "Loc: 1000.00m"
+                        - paragraph [ref=e297]: "Val: 240.00"
+                      - generic [ref=e299]: "|"
+                      - generic [ref=e301]: "Len: 10.00m"
+                  - separator [ref=e302]
+                  - listitem [ref=e303]:
+                    - 'button "Wire Wear L1 ID: W Loc: 1000.00m Val: 9.50 | Len: 10.00m" [ref=e304] [cursor=pointer]':
+                      - generic [ref=e305]:
+                        - heading "Wire Wear" [level=6] [ref=e306]
+                        - generic [ref=e309]: L1
+                      - paragraph [ref=e311]: "ID: W"
+                      - generic [ref=e312]:
+                        - paragraph [ref=e313]: "Loc: 1000.00m"
+                        - paragraph [ref=e314]: "Val: 9.50"
+                      - generic [ref=e316]: "|"
+                      - generic [ref=e318]: "Len: 10.00m"
+                  - separator [ref=e319]
+      - contentinfo [ref=e320]:
+        - img [ref=e321]
+        - paragraph [ref=e323]: Secure processing workspace • TOV640 DATAC / TOV1050 CSV • Version 2.0
+  - img [ref=e324]
+```

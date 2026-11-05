@@ -1,0 +1,514 @@
+[
+  {
+    "identity": "ISL",
+    "sheet": "Exception Boundarys",
+    "cell": "E4",
+    "kind": "value_or_formula",
+    "baseline": 100241,
+    "current": 100241.9
+  },
+  {
+    "identity": "ISL",
+    "sheet": "Exception Boundarys",
+    "cell": "G4",
+    "kind": "value_or_formula",
+    "baseline": 100241,
+    "current": 100241.9
+  },
+  {
+    "identity": "ISL",
+    "sheet": "threshold",
+    "cell": "G4",
+    "kind": "value_or_formula",
+    "baseline": 7.24,
+    "current": 7.44
+  },
+  {
+    "identity": "ISL",
+    "sheet": "threshold",
+    "cell": "G5",
+    "kind": "value_or_formula",
+    "baseline": 7.24,
+    "current": 7.44
+  },
+  {
+    "identity": "ISL",
+    "sheet": "threshold",
+    "cell": "G20",
+    "kind": "value_or_formula",
+    "baseline": 8.9,
+    "current": 9.1
+  },
+  {
+    "identity": "ISL",
+    "sheet": "threshold",
+    "cell": "G21",
+    "kind": "value_or_formula",
+    "baseline": 8.9,
+    "current": 9.1
+  },
+  {
+    "identity": "ISL",
+    "sheet": "threshold",
+    "cell": "G22",
+    "kind": "value_or_formula",
+    "baseline": 8.9,
+    "current": 9.1
+  },
+  {
+    "identity": "ISL",
+    "sheet": "threshold",
+    "cell": "G23",
+    "kind": "value_or_formula",
+    "baseline": 8.9,
+    "current": 9.1
+  },
+  {
+    "identity": "KTL",
+    "sheet": "threshold",
+    "cell": "G4",
+    "kind": "value_or_formula",
+    "baseline": 7.24,
+    "current": 7.44
+  },
+  {
+    "identity": "KTL",
+    "sheet": "threshold",
+    "cell": "G5",
+    "kind": "value_or_formula",
+    "baseline": 7.24,
+    "current": 7.44
+  },
+  {
+    "identity": "KTL",
+    "sheet": "threshold",
+    "cell": "G20",
+    "kind": "value_or_formula",
+    "baseline": 8.9,
+    "current": 9.1
+  },
+  {
+    "identity": "KTL",
+    "sheet": "threshold",
+    "cell": "G21",
+    "kind": "value_or_formula",
+    "baseline": 8.9,
+    "current": 9.1
+  },
+  {
+    "identity": "KTL",
+    "sheet": "threshold",
+    "cell": "G22",
+    "kind": "value_or_formula",
+    "baseline": 8.9,
+    "current": 9.1
+  },
+  {
+    "identity": "KTL",
+    "sheet": "threshold",
+    "cell": "G23",
+    "kind": "value_or_formula",
+    "baseline": 8.9,
+    "current": 9.1
+  },
+  {
+    "identity": "KTL",
+    "sheet": "threshold",
+    "cell": "G36",
+    "kind": "value_or_formula",
+    "baseline": 8.9,
+    "current": 9.1
+  },
+  {
+    "identity": "KTL",
+    "sheet": "threshold",
+    "cell": "G37",
+    "kind": "value_or_formula",
+    "baseline": 8.9,
+    "current": 9.1
+  },
+  {
+    "identity": "KTL",
+    "sheet": "threshold",
+    "cell": "G38",
+    "kind": "value_or_formula",
+    "baseline": 8.9,
+    "current": 9.1
+  },
+  {
+    "identity": "KTL",
+    "sheet": "threshold",
+    "cell": "G39",
+    "kind": "value_or_formula",
+    "baseline": 8.9,
+    "current": 9.1
+  },
+  {
+    "identity": "LAR_AEL",
+    "sheet": "Exception Boundarys",
+    "cell": "E3",
+    "kind": "value_or_formula",
+    "baseline": 33198.89999999999,
+    "current": 33199.9
+  },
+  {
+    "identity": "LAR_AEL",
+    "sheet": "Exception Boundarys",
+    "cell": "G3",
+    "kind": "value_or_formula",
+    "baseline": 33198.89999999999,
+    "current": 33199.9
+  },
+  {
+    "identity": "LAR_AEL",
+    "sheet": "Exception Boundarys",
+    "cell": "E4",
+    "kind": "value_or_formula",
+    "baseline": 33444.89999999999,
+    "current": 33445.9
+  },
+  {
+    "identity": "LAR_AEL",
+    "sheet": "Exception Boundarys",
+    "cell": "G4",
+    "kind": "value_or_formula",
+    "baseline": 33444.89999999999,
+    "current": 33445.9
+  },
+  {
+    "identity": "LAR_AEL",
+    "sheet": "Exception Boundarys",
+    "cell": "E5",
+    "kind": "value_or_formula",
+    "baseline": 36604.89999999999,
+    "current": 36605.9
+  },
+  {
+    "identity": "LAR_AEL",
+    "sheet": "Exception Boundarys",
+    "cell": "G5",
+    "kind": "value_or_formula",
+    "baseline": 36604.89999999999,
+    "current": 36605.9
+  },
+  {
+    "identity": "LAR_AEL",
+    "sheet": "Exception Boundarys",
+    "cell": "E6",
+    "kind": "value_or_formula",
+    "baseline": 43167.89999999999,
+    "current": 43168.9
+  },
+  {
+    "identity": "LAR_AEL",
+    "sheet": "Exception Boundarys",
+    "cell": "G6",
+    "kind": "value_or_formula",
+    "baseline": 43167.89999999999,
+    "current": 43168.9
+  },
+  {
+    "identity": "LAR_AEL",
+    "sheet": "threshold",
+    "cell": "G4",
+    "kind": "value_or_formula",
+    "baseline": 7.24,
+    "current": 7.44
+  },
+  {
+    "identity": "LAR_AEL",
+    "sheet": "threshold",
+    "cell": "G5",
+    "kind": "value_or_formula",
+    "baseline": 7.24,
+    "current": 7.44
+  },
+  {
+    "identity": "LAR_AEL",
+    "sheet": "threshold",
+    "cell": "G20",
+    "kind": "value_or_formula",
+    "baseline": 8.9,
+    "current": 9.1
+  },
+  {
+    "identity": "LAR_AEL",
+    "sheet": "threshold",
+    "cell": "G21",
+    "kind": "value_or_formula",
+    "baseline": 8.9,
+    "current": 9.1
+  },
+  {
+    "identity": "LAR_AEL",
+    "sheet": "threshold",
+    "cell": "G22",
+    "kind": "value_or_formula",
+    "baseline": 8.9,
+    "current": 9.1
+  },
+  {
+    "identity": "LAR_AEL",
+    "sheet": "threshold",
+    "cell": "G23",
+    "kind": "value_or_formula",
+    "baseline": 8.9,
+    "current": 9.1
+  },
+  {
+    "identity": "LAR_TCL",
+    "sheet": "Exception Boundarys",
+    "cell": "E3",
+    "kind": "value_or_formula",
+    "baseline": 33198.89999999999,
+    "current": 33199.9
+  },
+  {
+    "identity": "LAR_TCL",
+    "sheet": "Exception Boundarys",
+    "cell": "G3",
+    "kind": "value_or_formula",
+    "baseline": 33198.89999999999,
+    "current": 33199.9
+  },
+  {
+    "identity": "LAR_TCL",
+    "sheet": "Exception Boundarys",
+    "cell": "E4",
+    "kind": "value_or_formula",
+    "baseline": 33444.89999999999,
+    "current": 33445.9
+  },
+  {
+    "identity": "LAR_TCL",
+    "sheet": "Exception Boundarys",
+    "cell": "G4",
+    "kind": "value_or_formula",
+    "baseline": 33444.89999999999,
+    "current": 33445.9
+  },
+  {
+    "identity": "LAR_TCL",
+    "sheet": "Exception Boundarys",
+    "cell": "E5",
+    "kind": "value_or_formula",
+    "baseline": 36604.89999999999,
+    "current": 36605.9
+  },
+  {
+    "identity": "LAR_TCL",
+    "sheet": "Exception Boundarys",
+    "cell": "G5",
+    "kind": "value_or_formula",
+    "baseline": 36604.89999999999,
+    "current": 36605.9
+  },
+  {
+    "identity": "LAR_TCL",
+    "sheet": "Exception Boundarys",
+    "cell": "E6",
+    "kind": "value_or_formula",
+    "baseline": 43167.89999999999,
+    "current": 43168.9
+  },
+  {
+    "identity": "LAR_TCL",
+    "sheet": "Exception Boundarys",
+    "cell": "G6",
+    "kind": "value_or_formula",
+    "baseline": 43167.89999999999,
+    "current": 43168.9
+  },
+  {
+    "identity": "LAR_TCL",
+    "sheet": "threshold",
+    "cell": "G6",
+    "kind": "value_or_formula",
+    "baseline": 8.9,
+    "current": 9.1
+  },
+  {
+    "identity": "LAR_TCL",
+    "sheet": "threshold",
+    "cell": "G7",
+    "kind": "value_or_formula",
+    "baseline": 8.9,
+    "current": 9.1
+  },
+  {
+    "identity": "LAR_TCL",
+    "sheet": "threshold",
+    "cell": "G8",
+    "kind": "value_or_formula",
+    "baseline": 8.9,
+    "current": 9.1
+  },
+  {
+    "identity": "LAR_TCL",
+    "sheet": "threshold",
+    "cell": "G9",
+    "kind": "value_or_formula",
+    "baseline": 8.9,
+    "current": 9.1
+  },
+  {
+    "identity": "LAR_TCL",
+    "sheet": "threshold",
+    "cell": "G20",
+    "kind": "value_or_formula",
+    "baseline": 7.24,
+    "current": 7.44
+  },
+  {
+    "identity": "LAR_TCL",
+    "sheet": "threshold",
+    "cell": "G21",
+    "kind": "value_or_formula",
+    "baseline": 7.24,
+    "current": 7.44
+  },
+  {
+    "identity": "TKL",
+    "sheet": "threshold",
+    "cell": "G4",
+    "kind": "value_or_formula",
+    "baseline": 7.24,
+    "current": 7.44
+  },
+  {
+    "identity": "TKL",
+    "sheet": "threshold",
+    "cell": "G5",
+    "kind": "value_or_formula",
+    "baseline": 7.24,
+    "current": 7.44
+  },
+  {
+    "identity": "TKL",
+    "sheet": "threshold",
+    "cell": "G20",
+    "kind": "value_or_formula",
+    "baseline": 8.9,
+    "current": 9.1
+  },
+  {
+    "identity": "TKL",
+    "sheet": "threshold",
+    "cell": "G21",
+    "kind": "value_or_formula",
+    "baseline": 8.9,
+    "current": 9.1
+  },
+  {
+    "identity": "TKL",
+    "sheet": "threshold",
+    "cell": "G22",
+    "kind": "value_or_formula",
+    "baseline": 8.9,
+    "current": 9.1
+  },
+  {
+    "identity": "TKL",
+    "sheet": "threshold",
+    "cell": "G23",
+    "kind": "value_or_formula",
+    "baseline": 8.9,
+    "current": 9.1
+  },
+  {
+    "identity": "TKS",
+    "sheet": "threshold",
+    "cell": "G4",
+    "kind": "value_or_formula",
+    "baseline": 7.24,
+    "current": 7.44
+  },
+  {
+    "identity": "TKS",
+    "sheet": "threshold",
+    "cell": "G5",
+    "kind": "value_or_formula",
+    "baseline": 7.24,
+    "current": 7.44
+  },
+  {
+    "identity": "TKS",
+    "sheet": "threshold",
+    "cell": "G20",
+    "kind": "value_or_formula",
+    "baseline": 8.9,
+    "current": 9.1
+  },
+  {
+    "identity": "TKS",
+    "sheet": "threshold",
+    "cell": "G21",
+    "kind": "value_or_formula",
+    "baseline": 8.9,
+    "current": 9.1
+  },
+  {
+    "identity": "TKS",
+    "sheet": "threshold",
+    "cell": "G22",
+    "kind": "value_or_formula",
+    "baseline": 8.9,
+    "current": 9.1
+  },
+  {
+    "identity": "TKS",
+    "sheet": "threshold",
+    "cell": "G23",
+    "kind": "value_or_formula",
+    "baseline": 8.9,
+    "current": 9.1
+  },
+  {
+    "identity": "TWL",
+    "sheet": "threshold",
+    "cell": "G4",
+    "kind": "value_or_formula",
+    "baseline": 7.24,
+    "current": 7.44
+  },
+  {
+    "identity": "TWL",
+    "sheet": "threshold",
+    "cell": "G5",
+    "kind": "value_or_formula",
+    "baseline": 7.24,
+    "current": 7.44
+  },
+  {
+    "identity": "TWL",
+    "sheet": "threshold",
+    "cell": "G20",
+    "kind": "value_or_formula",
+    "baseline": 8.9,
+    "current": 9.1
+  },
+  {
+    "identity": "TWL",
+    "sheet": "threshold",
+    "cell": "G21",
+    "kind": "value_or_formula",
+    "baseline": 8.9,
+    "current": 9.1
+  },
+  {
+    "identity": "TWL",
+    "sheet": "threshold",
+    "cell": "G22",
+    "kind": "value_or_formula",
+    "baseline": 8.9,
+    "current": 9.1
+  },
+  {
+    "identity": "TWL",
+    "sheet": "threshold",
+    "cell": "G23",
+    "kind": "value_or_formula",
+    "baseline": 8.9,
+    "current": 9.1
+  }
+]

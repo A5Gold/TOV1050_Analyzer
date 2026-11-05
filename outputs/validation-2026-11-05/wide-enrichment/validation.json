@@ -1,0 +1,89 @@
+[
+  {
+    "date": "20260907",
+    "source_sha256": "54ab7ede00922f56e29919518882381520d7181a9f233d4440b6726abea44e37",
+    "source_unchanged": true,
+    "report": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\validation-2026-11-05\\wide-enrichment\\20260907_TWL_UT_MAINLINE_CEN_TSW_Exception_Report.xlsx",
+    "report_sha256": "fdf6c882c447940bd7c04c10f34e6b42a4219c41e1b5d1056b8d20ef98130c7a",
+    "report_bytes": 21735046,
+    "raw_rows": 838859,
+    "chart_rows": 83963,
+    "summary_rows": 289,
+    "counts": {
+      "Low Height": 65,
+      "High Height": 2,
+      "Wire Wear": 1,
+      "Stagger Left": 118,
+      "Stagger Right": 103
+    },
+    "enrichment_filled": {
+      "Overlap": 289,
+      "Tension Length": 289,
+      "Landmark": 0
+    },
+    "detection_unchanged": true,
+    "analysis_seconds": 186.443,
+    "analyze_export_read_seconds": 994.646,
+    "metadata_version_corrected": true
+  },
+  {
+    "date": "20260630",
+    "source_sha256": "e2ab667196694f07023ceb273e4fe7014fcab6a76165b5a0fec592ea55fbe251",
+    "source_unchanged": true,
+    "report": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\validation-2026-11-05\\wide-enrichment\\20260630_TWL_UT_MAINLINE_CEN_TSW_Exception_Report.xlsx",
+    "report_sha256": "dc4fea01b9a5e8f4aa6853b539ddcec03fb8be6ea16989b071beb3527a96ea1d",
+    "report_bytes": 21495625,
+    "raw_rows": 830792,
+    "chart_rows": 83244,
+    "summary_rows": 330,
+    "counts": {
+      "Low Height": 69,
+      "High Height": 9,
+      "Wire Wear": 17,
+      "Stagger Left": 112,
+      "Stagger Right": 123
+    },
+    "enrichment_filled": {
+      "Overlap": 329,
+      "Tension Length": 329,
+      "Landmark": 0
+    },
+    "detection_unchanged": true,
+    "analysis_seconds": 240.283,
+    "analyze_export_read_seconds": 923.844,
+    "metadata_version_corrected": true
+  },
+  {
+    "history_compare_seconds": 220.78,
+    "history_stats": {
+      "total": 15,
+      "breakdown": {
+        "Low Height": 4,
+        "Stagger Left": 6,
+        "Stagger Right": 5
+      }
+    },
+    "history_metrics": {
+      "reports": [
+        {
+          "filename": "20260907_TWL_UT_MAINLINE_CEN_TSW_Exception_Report.xlsx",
+          "chart_rows": 83963,
+          "exception_rows": 289,
+          "read_seconds": 106.166,
+          "cumulative_elapsed_seconds": 108.05
+        },
+        {
+          "filename": "20260630_TWL_UT_MAINLINE_CEN_TSW_Exception_Report.xlsx",
+          "chart_rows": 83244,
+          "exception_rows": 330,
+          "read_seconds": 109.477,
+          "cumulative_elapsed_seconds": 217.528
+        }
+      ],
+      "elapsed_seconds": 217.72
+    },
+    "overview_points": 1376,
+    "algorithm_provenance": "verified",
+    "references_unchanged": true
+  }
+]

@@ -3,7 +3,7 @@ import {
   Paper, Table, TableBody, TableCell, TableContainer, 
   TableHead, TableRow, TableSortLabel, Box, Typography,
   TextField, FormControl, InputLabel, Select, MenuItem,
-  Grid, IconButton, Tooltip, Stack
+  Grid, IconButton, Tooltip, Stack, Button, Dialog, DialogTitle, DialogContent, DialogActions
 } from '@mui/material';
 import FilterListOffIcon from '@mui/icons-material/FilterListOff';
 import { AnalysisResponse, ExceptionRecord } from '../types/api';
@@ -57,10 +57,36 @@ interface ExceptionTableProps {
 }
 
 const ExceptionTable = ({ result, taskRunData }: ExceptionTableProps) => {
+  const [evidenceRow, setEvidenceRow] = useState<ExceptionRecord | null>(null);
+  const gapLabels: Record<string, string> = {
+    direction_scope_unresolved: '方向或分支適用範圍待確認',
+    no_contact_boundaries: '缺少明確 Contact 終端',
+    one_contact_boundary_missing_other_end: '只有一個 Contact 終端，另一端待補',
+    multiple_contact_boundaries_require_segment_pairing: 'Contact 終端超過兩個，須確認分段配對',
+    termination_contact_role_unresolved: '無分型終端的 Contact／Messenger 角色待確認',
+    ordinary_brackets_outside_contact_pair: '配對外仍有普通 Bracket，連續範圍待確認',
+    normal_bracket_identity_multiple_locations: '相同 Bracket 名稱出現在多個位置',
+    unrecognized_or_mismatched_termination: '終端格式或 TL 對應待確認',
+    single_point_tl: '只有一個觀察點',
+  };
+  const evidenceStatuses: Record<string, string> = {
+    matched: '位置有核准對應', no_approved_interval: '未有核准區間', outside_coverage: '超出核准涵蓋範圍',
+    unresolved_pairing: '邊界配對或完整性待確認', ambiguous: '多項資料有歧義',
+  };
+  const peakEvidence = (row: ExceptionRecord) => {
+    try { return JSON.parse(row.metadata_enrichment || '{}') as Record<string, string | null>; }
+    catch { return {}; }
+  };
   const enrichmentCapabilities: Record<string, string> = {
     Overlap: 'overlap_intervals', 'Tension Length': 'tension_length_intervals', Landmark: 'landmark_intervals',
   };
-  const missingEnrichment = (field: string) => {
+  const missingEnrichment = (field: string, row: ExceptionRecord) => {
+    const statusKey = field === 'Overlap' ? 'overlap_status' : field === 'Landmark' ? 'landmark_status' : 'tl_status';
+    const status = peakEvidence(row)[statusKey];
+    if (status && status !== 'matched') return {
+      label: evidenceStatuses[status] || '資料待確認',
+      reason: `峰值位置 ${row.maxLocation} m：${evidenceStatuses[status] || status}。報表欄位沿用例外範圍內首個非空值。`,
+    };
     const capability = result?.metadata_capabilities?.capabilities[enrichmentCapabilities[field]];
     return capability?.status === 'unavailable'
       ? { label: '未有核准資料', reason: capability.reason || '尚未提供核准的實體區間資料。' }
@@ -348,12 +374,14 @@ const ExceptionTable = ({ result, taskRunData }: ExceptionTableProps) => {
                         
                         const missing = column.id in enrichmentCapabilities &&
                           (displayValue === null || displayValue === undefined || (typeof displayValue === 'string' && !displayValue.trim()));
-                        const missingState = missing ? missingEnrichment(column.id) : null;
+                        const missingState = missing ? missingEnrichment(column.id, row) : null;
                         return (
                             <TableCell key={column.id}>
                             {missingState ? <Tooltip title={missingState.reason}>
                               <Typography component="span" variant="body2" sx={{ whiteSpace: 'nowrap' }}>{missingState.label}</Typography>
                             </Tooltip> : displayValue}
+                            {column.id === 'Tension Length' && result.metadata_capabilities &&
+                              <Button size="small" onClick={() => setEvidenceRow(row)} aria-label={`查看 ${row.id} 的邊界依據`}>依據</Button>}
                             </TableCell>
                         );
                         })}
@@ -370,6 +398,30 @@ const ExceptionTable = ({ result, taskRunData }: ExceptionTableProps) => {
           </TableBody>
         </Table>
       </TableContainer>
+      <Dialog open={!!evidenceRow} onClose={() => setEvidenceRow(null)} maxWidth="md" fullWidth>
+        <DialogTitle>TL／Overlap／Landmark 資料依據</DialogTitle>
+        <DialogContent dividers>
+          <Typography paragraph>正式欄位只使用核准區間，並沿用例外範圍內首個非空值。下列 Bracket 觀察及候選配對只供參考，未套用至報表。</Typography>
+          {evidenceRow && <>
+            <Typography paragraph>例外 {evidenceRow.FromM}–{evidenceRow.ToM} m；峰值 {evidenceRow.maxLocation} m。</Typography>
+            {(['tl_status', 'overlap_status', 'landmark_status'] as const).map((key, i) =>
+              <Typography key={key}>{['TL', 'Overlap', 'Landmark'][i]} 峰值位置狀態：{evidenceStatuses[peakEvidence(evidenceRow)[key] || ''] || '未有核准區間'}</Typography>)}
+            <Typography variant="body2" sx={{ my: 2 }}>以下列出觀察範圍與例外前後 100 m 相交的 TL；觀察範圍不代表實體邊界，也不能據此推斷 Overlap。</Typography>
+            {(result.metadata_capabilities?.boundary_review || []).filter(review =>
+              review.observed_from_m <= evidenceRow.ToM + 100 && review.observed_to_m >= evidenceRow.FromM - 100
+            ).map(review => <Box key={review.tension_length} sx={{ borderTop: 1, borderColor: 'divider', py: 1 }}>
+              <Typography fontWeight="bold">{review.tension_length}：{review.point_count} 個觀察點，{review.observed_from_m}–{review.observed_to_m} m</Typography>
+              <Typography variant="body2">已知終端：{review.known_boundaries.map(b => `${b.bracket} @ ${b.chainage_m} m (${b.wire_role})`).join('；') || '未有終端標記'}</Typography>
+              <Typography variant="body2">候選：{review.candidate ? `${review.candidate.from_m}–${review.candidate.to_m} m（待核准）` : '未能配對 Contact 兩端'}</Typography>
+              <Typography variant="body2">缺口：{review.gaps.map(gap => gapLabels[gap] || gap).join('；') || '配對、連續範圍及完整性待核准'}</Typography>
+              <details><summary>來源列</summary><Typography variant="body2">{review.source_rows.map(r => `${r.sheet} 第 ${r.excel_row} 列 ← ${r.source_sheet || '未提供來源工作表'} ${r.source_excel_row || ''}`).join('；')}</Typography></details>
+            </Box>)}
+            {!(result.metadata_capabilities?.boundary_review || []).some(r => r.observed_from_m <= evidenceRow.ToM + 100 && r.observed_to_m >= evidenceRow.FromM - 100) &&
+              <Typography>附近未有可分類的 Bracket 證據；需要補充來源及核准範圍。Landmark 點位亦不會自動擴成區間。</Typography>}
+          </>}
+        </DialogContent>
+        <DialogActions><Button onClick={() => setEvidenceRow(null)}>關閉</Button></DialogActions>
+      </Dialog>
       <Box sx={{ p: 1, borderTop: 1, borderColor: 'divider' }}>
         <Typography variant="caption">Showing {sortedRows.length} of {allRows.length} Exceptions</Typography>
       </Box>

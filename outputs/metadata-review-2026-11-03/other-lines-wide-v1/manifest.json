@@ -1,0 +1,317 @@
+[
+  {
+    "identity": "ISL",
+    "file": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\metadata-review-2026-11-03\\other-lines-wide-v1\\candidates\\ISL metadata.xlsx",
+    "source_sha256": "ae7e0b15d7f6f7b1254e24803501585b2bac82f945f2a376827be66b95f4d9a3",
+    "routes": [
+      {
+        "name": "ISL UT",
+        "track_count": 697,
+        "point_count": 678,
+        "landmark_count": 1,
+        "tl_count": 19,
+        "atom_count": 73,
+        "messenger_excluded": [],
+        "single_point_tls": [
+          "254"
+        ]
+      },
+      {
+        "name": "ISL DT",
+        "track_count": 542,
+        "point_count": 830,
+        "landmark_count": 2,
+        "tl_count": 28,
+        "atom_count": 107,
+        "messenger_excluded": [],
+        "single_point_tls": [
+          "255"
+        ]
+      }
+    ],
+    "source_warnings": [
+      {
+        "sheet": "ISL UT",
+        "cell": "E1362",
+        "bracket": "251-027",
+        "value_m": 113948,
+        "tension_length": "251",
+        "domain_m": [
+          97000,
+          113500
+        ],
+        "candidate_cell": "ISL UT Brackets!A665",
+        "original_mapping_sheet": "ISL UT",
+        "original_mapping_row": 659
+      }
+    ],
+    "status": "review-only; not activated"
+  },
+  {
+    "identity": "KTL",
+    "file": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\metadata-review-2026-11-03\\other-lines-wide-v1\\candidates\\KTL metadata.xlsx",
+    "source_sha256": "acc1583ee2e31e39063aa02e0a6a4df5f022be1b80c1b00f7af33c7853d061c5",
+    "routes": [
+      {
+        "name": "KTL UT",
+        "track_count": 495,
+        "point_count": 1583,
+        "landmark_count": 4,
+        "tl_count": 27,
+        "atom_count": 107,
+        "messenger_excluded": [],
+        "single_point_tls": []
+      },
+      {
+        "name": "KTL DT",
+        "track_count": 654,
+        "point_count": 1678,
+        "landmark_count": 1,
+        "tl_count": 30,
+        "atom_count": 119,
+        "messenger_excluded": [],
+        "single_point_tls": []
+      }
+    ],
+    "status": "review-only; not activated"
+  },
+  {
+    "identity": "LAR_AEL",
+    "file": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\metadata-review-2026-11-03\\other-lines-wide-v1\\candidates\\LAR_AEL metadata.xlsx",
+    "source_sha256": "213c9e28cfbc7a29c546377ef936a731ef881ac8c77d6734f4a0414cf511fa88",
+    "routes": [
+      {
+        "name": "LAR_AEL UT",
+        "track_count": 77,
+        "point_count": 1422,
+        "landmark_count": 0,
+        "tl_count": 47,
+        "atom_count": 187,
+        "messenger_excluded": [],
+        "single_point_tls": []
+      },
+      {
+        "name": "LAR_AEL DT",
+        "track_count": 81,
+        "point_count": 1449,
+        "landmark_count": 0,
+        "tl_count": 49,
+        "atom_count": 195,
+        "messenger_excluded": [],
+        "single_point_tls": []
+      }
+    ],
+    "status": "review-only; not activated"
+  },
+  {
+    "identity": "LAR_TCL",
+    "file": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\metadata-review-2026-11-03\\other-lines-wide-v1\\candidates\\LAR_TCL metadata.xlsx",
+    "source_sha256": "09c0cf915bc7b43dc1cadaa2e6d0ecf1a4d07bf12a748ef5f3e0fb429a35cddd",
+    "routes": [
+      {
+        "name": "LAR_TCL UT",
+        "track_count": 77,
+        "point_count": 1242,
+        "landmark_count": 0,
+        "tl_count": 41,
+        "atom_count": 163,
+        "messenger_excluded": [],
+        "single_point_tls": []
+      },
+      {
+        "name": "LAR_TCL DT",
+        "track_count": 81,
+        "point_count": 1247,
+        "landmark_count": 0,
+        "tl_count": 42,
+        "atom_count": 167,
+        "messenger_excluded": [],
+        "single_point_tls": []
+      }
+    ],
+    "status": "review-only; not activated"
+  },
+  {
+    "identity": "TKL",
+    "file": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\metadata-review-2026-11-03\\other-lines-wide-v1\\candidates\\TKL metadata.xlsx",
+    "source_sha256": "ebfe9f1c0499820abdf62a48a3036c0a98784309fe1cc163761f8f6aad2999ba",
+    "routes": [
+      {
+        "name": "TKL UT",
+        "track_count": 36,
+        "point_count": 639,
+        "landmark_count": 22,
+        "tl_count": 19,
+        "atom_count": 75,
+        "messenger_excluded": [
+          {
+            "row": 107,
+            "bracket": "581-BWA_M",
+            "role": "messenger"
+          },
+          {
+            "row": 511,
+            "bracket": "547-Fixed_M",
+            "role": "messenger"
+          },
+          {
+            "row": 600,
+            "bracket": "541-BWA_M",
+            "role": "messenger"
+          },
+          {
+            "row": 614,
+            "bracket": "545-BWA_M",
+            "role": "messenger"
+          }
+        ],
+        "single_point_tls": []
+      },
+      {
+        "name": "TKL DT",
+        "track_count": 27,
+        "point_count": 657,
+        "landmark_count": 19,
+        "tl_count": 19,
+        "atom_count": 75,
+        "messenger_excluded": [
+          {
+            "row": 114,
+            "bracket": "578-BWA_M",
+            "role": "messenger"
+          },
+          {
+            "row": 362,
+            "bracket": "560-BWA_M",
+            "role": "messenger"
+          },
+          {
+            "row": 515,
+            "bracket": "548-Fixed_M",
+            "role": "messenger"
+          },
+          {
+            "row": 609,
+            "bracket": "542-BWA_M",
+            "role": "messenger"
+          },
+          {
+            "row": 620,
+            "bracket": "546-BWA_M",
+            "role": "messenger"
+          }
+        ],
+        "single_point_tls": []
+      }
+    ],
+    "source_warnings": [
+      {
+        "sheet": "TKL UT",
+        "cell": "E377",
+        "bracket": "555-040",
+        "value_m": 126,
+        "tension_length": "555",
+        "domain_m": [
+          54500,
+          66000
+        ],
+        "candidate_cell": "TKL UT Brackets!A341",
+        "original_mapping_sheet": "TKL UT",
+        "original_mapping_row": 341
+      },
+      {
+        "sheet": "TKL DT",
+        "cell": "E234",
+        "bracket": "570-017",
+        "value_m": -108,
+        "tension_length": "570",
+        "domain_m": [
+          54500,
+          66000
+        ],
+        "candidate_cell": "TKL DT Brackets!A207",
+        "original_mapping_sheet": "TKL DT",
+        "original_mapping_row": 207
+      }
+    ],
+    "status": "review-only; not activated"
+  },
+  {
+    "identity": "TKS",
+    "file": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\metadata-review-2026-11-03\\other-lines-wide-v1\\candidates\\TKS metadata.xlsx",
+    "source_sha256": "ac7adf99da2cdcf337ff4708b16b241132c1b326364d94def443eff2fad61d6a",
+    "routes": [
+      {
+        "name": "TKS UT",
+        "track_count": 13,
+        "point_count": 170,
+        "landmark_count": 1,
+        "tl_count": 4,
+        "atom_count": 15,
+        "messenger_excluded": [
+          {
+            "row": 16,
+            "bracket": "595-BWA_M",
+            "role": "messenger"
+          }
+        ],
+        "single_point_tls": []
+      },
+      {
+        "name": "TKS DT",
+        "track_count": 12,
+        "point_count": 180,
+        "landmark_count": 5,
+        "tl_count": 4,
+        "atom_count": 15,
+        "messenger_excluded": [
+          {
+            "row": 15,
+            "bracket": "590-BWA_M@66390m",
+            "role": "messenger"
+          },
+          {
+            "row": 70,
+            "bracket": "584-BWA_M",
+            "role": "messenger"
+          },
+          {
+            "row": 81,
+            "bracket": "590-BWA_M@65282m",
+            "role": "messenger"
+          }
+        ],
+        "single_point_tls": []
+      }
+    ],
+    "status": "review-only; not activated"
+  },
+  {
+    "identity": "TWL",
+    "file": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\metadata-review-2026-11-03\\other-lines-wide-v1\\candidates\\TWL metadata.xlsx",
+    "source_sha256": "5ab7e9f4da470825143cc8008d7ff82f784f9da93b860b9e3bf08140b990f67b",
+    "routes": [
+      {
+        "name": "TWL UT",
+        "track_count": 83,
+        "point_count": 1176,
+        "landmark_count": 0,
+        "tl_count": 22,
+        "atom_count": 85,
+        "messenger_excluded": [],
+        "single_point_tls": []
+      },
+      {
+        "name": "TWL DT",
+        "track_count": 67,
+        "point_count": 1192,
+        "landmark_count": 0,
+        "tl_count": 22,
+        "atom_count": 87,
+        "messenger_excluded": [],
+        "single_point_tls": []
+      }
+    ],
+    "status": "review-only; not activated"
+  }
+]

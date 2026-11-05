@@ -3,6 +3,21 @@ import { AnalysisMode, AnalysisResponse, BackgroundJob, ExceptionRecord } from '
 
 // --- Session Types ---
 
+export type ChartMetric = 'height' | 'stagger' | 'wear';
+export type ChartLevel = 'L1' | 'L2' | 'L3';
+export interface ChartPreferences {
+  showThresholds: boolean;
+  thresholds: Record<ChartMetric, Record<ChartLevel, boolean>>;
+}
+export const DEFAULT_CHART_PREFERENCES: ChartPreferences = {
+  showThresholds: true,
+  thresholds: {
+    height: { L1: true, L2: true, L3: true },
+    stagger: { L1: true, L2: true, L3: true },
+    wear: { L1: true, L2: true, L3: true },
+  },
+};
+
 export interface AnalysisSession {
   id: string; // UUID
   label: string; // e.g., "20260115_AEL_UT_HUH_TAP.csv"
@@ -53,6 +68,14 @@ export interface CompareSession {
   repeatedData: ExceptionRecord[]; // The comparison result
   latestFileName: string;
   chartData?: (Record<string, (number | null)[]> | null)[];
+  compareJobId?: string;
+  comparePendingJobId?: string;
+  comparePendingFiles?: File[];
+  compareRunId?: string;
+  compareProgress?: string;
+  compareCycleCount?: number;
+  compareChainOrder?: string[];
+  resultMetadata?: Record<string, string>;
   loading: boolean;
   error: string | null;
   
@@ -64,6 +87,7 @@ interface AnalysisStoreState {
   // --- Exception Generator State ---
   analysisSessions: AnalysisSession[];
   activeAnalysisTabId: string | null;
+  chartPreferences: Record<string, ChartPreferences>;
 
   // --- History Compare State ---
   compareSessions: CompareSession[];
@@ -77,6 +101,7 @@ interface AnalysisStoreState {
   updateAnalysisSession: (id: string, updates: Partial<AnalysisSession>) => void;
   setActiveAnalysisTab: (id: string | null) => void;
   resetAnalysisSessions: () => void;
+  updateChartPreferences: (id: string, update: (previous: ChartPreferences) => ChartPreferences) => void;
 
   // Compare Actions
   addCompareSession: (session: CompareSession) => void;
@@ -90,6 +115,7 @@ export const useAnalysisStore = create<AnalysisStoreState>((set) => ({
   // Initial State
   analysisSessions: [],
   activeAnalysisTabId: null,
+  chartPreferences: {},
   compareSessions: [],
   activeCompareTabId: null,
 
@@ -109,7 +135,8 @@ export const useAnalysisStore = create<AnalysisStoreState>((set) => ({
     
     return {
       analysisSessions: newSessions,
-      activeAnalysisTabId: newActiveId
+      activeAnalysisTabId: newActiveId,
+      chartPreferences: Object.fromEntries(Object.entries(state.chartPreferences).filter(([key]) => key !== id)),
     };
   }),
 
@@ -123,8 +150,14 @@ export const useAnalysisStore = create<AnalysisStoreState>((set) => ({
 
   resetAnalysisSessions: () => set({ 
     analysisSessions: [], 
-    activeAnalysisTabId: null 
+    activeAnalysisTabId: null,
+    chartPreferences: {},
   }),
+
+  updateChartPreferences: (id, update) => set(state => ({ chartPreferences: {
+    ...state.chartPreferences,
+    [id]: update(state.chartPreferences[id] ?? DEFAULT_CHART_PREFERENCES),
+  } })),
 
   // --- Compare Actions ---
   addCompareSession: (session) => set((state) => ({

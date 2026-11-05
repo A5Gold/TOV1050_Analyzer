@@ -251,6 +251,7 @@ def test_analysis_registry_normalizes_wire_context_and_keeps_legacy_sections(
     for name in (f"{line} metadata.xlsx", "TKS metadata.xlsx"):
         (tmp_path / name).write_text("metadata")
     meta = MagicMock()
+    meta.map_approved_enrichment.side_effect = lambda frame, *args: frame
     meta.get_all_thresholds.return_value = pd.DataFrame()
     meta.get_capabilities.return_value = {"capabilities": {name: {"status": "available"}
         for name in ("thresholds", "class_intervals", "track_intervals")}}

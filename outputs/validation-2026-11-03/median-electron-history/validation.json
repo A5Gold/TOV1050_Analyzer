@@ -1,0 +1,64 @@
+{
+  "entry": "real source Electron + real backend + Vite proxy, no intercepted API",
+  "status": "failed",
+  "runtime": {
+    "database_path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\validation-2026-11-03\\median-electron-history\\isolated.db",
+    "database_directory": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\validation-2026-11-03\\median-electron-history",
+    "config_directory": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config",
+    "mode": "standard",
+    "packaging": {
+      "recommended_target": "dir",
+      "current_target": "dir",
+      "writable_data_root": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\validation-2026-11-03\\median-electron-history",
+      "portable_database_pattern": "<packaged app root>\\data\\analysis.db",
+      "single_exe_note": "Single exe packages must store SQLite data in an external writable folder such as %APPDATA%; embedded executable resources are not a database storage location."
+    }
+  },
+  "submit_http": 202,
+  "submit_seconds": 3.4714378,
+  "job": {
+    "job_id": "4be27a0d6ed24485a0516260ccf14229",
+    "kind": "history_compare",
+    "client_session_id": "mw0e29dh0x8t3jfd5nga",
+    "analysis_revision": null,
+    "status": "queued",
+    "stage": "queued",
+    "processed": 0,
+    "total": null,
+    "unit": null,
+    "error": null,
+    "error_code": null,
+    "elapsed_seconds": 0.015,
+    "stage_percent": null
+  },
+  "final_job": {
+    "job_id": "4be27a0d6ed24485a0516260ccf14229",
+    "kind": "history_compare",
+    "client_session_id": "mw0e29dh0x8t3jfd5nga",
+    "analysis_revision": null,
+    "status": "ready",
+    "stage": "ready",
+    "processed": 1,
+    "total": 1,
+    "unit": "reports",
+    "error": null,
+    "error_code": null,
+    "elapsed_seconds": 197.703,
+    "stage_percent": 100
+  },
+  "total_compare_seconds": 205.22999449999998,
+  "status_p95_seconds": 0.25925330000001123,
+  "line_options": [
+    "EAL",
+    "TML",
+    "AEL",
+    "TCL",
+    "KTL",
+    "ISL",
+    "TWL",
+    "TKL",
+    "DRL"
+  ],
+  "error": "page.screenshot: Timeout 90000ms exceeded.\nCall log:\n\u001b[2m  - taking page screenshot\u001b[22m\n\u001b[2m  - waiting for fonts to load...\u001b[22m\n\u001b[2m  - fonts loaded\u001b[22m\n\n    at C:\\Smart Maintanence\\TOV1050_Analyzer\\scripts\\validate_history_electron_20261103.mjs:89:14",
+  "body": "About\nGenerate\nHistory\nVersion Difference\nRecords\nWear Calculator\nStagger\nTrends\nSettings\nTOV DATA ANALYZER\nFile intelligence workspace\n\nReady\n\nComparison 1\n\nLogic\nNew\nReset\nRepeated Table\nComparison Chart\n\n15 Matches\n\nBatch Edit (0)\nSave Edit\nDiscard\nCheck 1 Year Record\nExport\nSave to DB\n\nFilters\n\nClear\nException TypeTrack TypeLevelActionChainage FromChainage To\nMatches Breakdown:\nL1: 1\nL2: 10\nL3: 4\nLow Height: 4\nStagger Left: 6\nStagger Right: 5\nActions:\nPending: 15\nTASK RUN DATA\nEXCEPTION\nView\nRun Date\nLine\nTrack\nSection\nTask No\nSt. Start\nSt. End\nID\nFromM\nToM\nLength\n2026/09/07\nTWL\nUT\nMainline\n-\nCEN\nTSW\n20260907_TWL_UT_Mainline_LH22\n5,262.8\n5,309\n46.2\n2026/09/07\nTWL\nUT\nMainline\n-\nCEN\nTSW\n20260907_TWL_UT_Mainline_LH24\n5,198.6\n5,211\n12.4\n2026/09/07\nTWL\nUT\nMainline\n-\nCEN\nTSW\n20260907_TWL_UT_Mainline_LH51\n3,044.4\n3,069.2\n24.8\n2026/09/07\nTWL\nUT\nMainline\n-\nCEN\nTSW\n20260907_TWL_UT_Mainline_LH54\n1,404.8\n1,410.2\n5.4\n2026/09/07\nTWL\nUT\nMainline\n-\nCEN\nTSW\n20260907_TWL_UT_Mainline_SL7\n16,076.4\n16,104.8\n28.4\n2026/09/07\nTWL\nUT\nMainline\n-\nCEN\nTSW\n20260907_TWL_UT_Mainline_SL34\n12,049.8\n12,054.4\n4.6\n\nRows per page:\n\n100\n\n1–15 of 15\n\nSecure processing workspace • TOV640 DATAC / TOV1050 CSV • Version 2.0\n\nSave to Database\n15 records will be saved to the database.\nLine (Sub Tab)\nTWL\nLine (Sub Tab)\nSection (Sub Table)\nMainline\nSection (Sub Table)\nCancel\nSave"
+}

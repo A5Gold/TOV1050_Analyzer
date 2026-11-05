@@ -1,4 +1,5 @@
 import React from 'react';
+import MetadataFormatGuide from '../About/MetadataFormatGuide';
 import { GuideFlow } from '../About/GuideVisuals';
 import { measurementFlow } from '../About/aboutGuideContent';
 import {
@@ -69,7 +70,7 @@ const ExceptionAlgorithmDialog: React.FC<ExceptionAlgorithmDialogProps> = ({ ope
                     <Grid item xs={12}>
                         <GuideFlow steps={measurementFlow} label="雙系統中位實測樣本與例外判定" desktopColumns={4} />
                         <Typography variant="body2" sx={{ mt: 2 }}>
-                            DATAC 與 CSV 各用原格式清洗規則，再將相鄰精確同 chainage 群的各 channel 選為真實中位樣本；偶數取中間兩樣本中採集較早者。各 channel 可來自不同來源列，不取平均，不加入 noise filter。Detector、圖表與 Excel 使用同 revision 代表資料；圖表 envelope 只影響顯示。原始資料概覽略過中位精簡及判定，不能匯出例外報表。
+                            DATAC 與 CSV 各用原格式清洗規則，再將相鄰精確同 chainage 群的各 channel 選為真實中位樣本；偶數取中間兩樣本中採集較早者。各 channel 可來自不同來源列，不取平均，不加入 noise filter。TOV1050 Detector、threshold crossing、peak 及例外明細使用完整清洗後 raw；中位樣本只用於同 revision 圖表與報表 ChartData，History Compare 直接讀此 Exception Report。EAL／TML 保留既有完整資料流程；圖表 envelope 只影響顯示。原始資料概覽略過中位精簡及判定，不能匯出例外報表。
                         </Typography>
                     </Grid>
                     
@@ -148,12 +149,19 @@ const ExceptionAlgorithmDialog: React.FC<ExceptionAlgorithmDialogProps> = ({ ope
                             </Grid>
                         </Grid>
                         <Typography variant="body2" sx={{ mt: 2 }}>
-                            門檻線與是否選取例外無關，預設可見並可關閉；使用同 revision metadata 的分段門檻，stagger 正負值分開保存。Class 未定義才 fallback both，Class 已定義但門檻空白則不 fallback。缺 Overlap／Tension Length／Landmark 的核准區間會保留 unknown 與原因，不補 N／0。
+                            門檻線與是否選取例外無關，預設可見並可關閉；使用同 revision metadata 的分段門檻，Stagger Left 正值與 Right 負值分開判斷，共用門檻絕對值。Class 未定義才 fallback both，Class 已定義但門檻空白則不 fallback。缺 Overlap／Tension Length／Landmark 的核准區間會保留 unknown 與原因，不補 N／0。
                         </Typography>
                     </Grid>
 
                     <Grid item xs={12}>
                         <Divider />
+                    </Grid>
+
+                    <Grid item xs={12}>
+                        <Typography variant="h6" gutterBottom color="primary" fontWeight="bold">
+                            Metadata 格式與補值規則
+                        </Typography>
+                        <MetadataFormatGuide />
                     </Grid>
 
                     {/* Section 2: Severity Levels */}

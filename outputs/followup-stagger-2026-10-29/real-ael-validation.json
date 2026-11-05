@@ -1,0 +1,59 @@
+{
+  "file": "C:\\Smart Maintanence\\TOV1050_Analyzer\\02 Output Document\\AEL\\20260603_AEL_UT_MAINLINE_SHR_AWE_Exception_Report_MedianSample.xlsx",
+  "sha256": "a3e0a3817d8cda5a8cedd2ffe51a2969bbafb47983956eafd043ec9516c99171",
+  "source_head": "4e50d90f175c607cf5a6937c4137f6933dc911dc",
+  "preflight_seconds": 0.6552,
+  "context": {
+    "line": "AEL",
+    "branch": "Mainline",
+    "direction": "UP",
+    "track": "UT",
+    "section": "Mainline",
+    "task_no": "U3",
+    "station_start": "SHR",
+    "station_end": "AWE",
+    "run_date": "20260603",
+    "legacy_session": "Mainline",
+    "source_line": "AEL",
+    "source_track": "UT",
+    "algorithm": "same_chainage_median_sample_v1",
+    "algorithm_mode": "chainage_median"
+  },
+  "direct_route": {
+    "status": 422,
+    "detail": {
+      "code": "STAGGER_CONFIG_UNAVAILABLE",
+      "message": "Stagger calculation is unavailable for AEL/Mainline/UP: approved branch support metadata, approved Keq strategy/coefficients",
+      "context": {
+        "line": "AEL",
+        "branch": "Mainline",
+        "direction": "UP"
+      },
+      "missing_configuration": [
+        "approved branch support metadata",
+        "approved Keq strategy/coefficients"
+      ]
+    },
+    "seconds": 0.0695
+  },
+  "api": {
+    "status": 422,
+    "body": {
+      "detail": {
+        "code": "STAGGER_CONFIG_UNAVAILABLE",
+        "message": "Stagger calculation is unavailable for AEL/Mainline/UP: approved branch support metadata, approved Keq strategy/coefficients",
+        "context": {
+          "line": "AEL",
+          "branch": "Mainline",
+          "direction": "UP"
+        },
+        "missing_configuration": [
+          "approved branch support metadata",
+          "approved Keq strategy/coefficients"
+        ]
+      }
+    },
+    "seconds": 0.1531
+  },
+  "source_unchanged": true
+}

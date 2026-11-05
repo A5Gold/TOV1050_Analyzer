@@ -16,6 +16,27 @@ describe('useCalculationStore', () => {
     useCalculationStore.getState().reset();
   });
 
+  it('retains nested Stagger diagnostics in the original cycle and clears them for a replacement file', async () => {
+    const error = { response: { status: 422, data: { detail: {
+      code: 'STAGGER_CONFIG_UNAVAILABLE', message: 'Unavailable',
+      context: { line: 'AEL', branch: 'Mainline', direction: 'UP' },
+      missing_configuration: ['approved Keq strategy/coefficients'],
+    } } } };
+    mockedUploadStaggerFile.mockRejectedValueOnce(error);
+    useCalculationStore.getState().setUploadedFile(new File(['data'], 'AEL_report.xlsx'));
+    await expect(useCalculationStore.getState().analyze()).rejects.toBe(error);
+    const cycle = useCalculationStore.getState().cycles[0];
+    expect(cycle.error).toContain('已識別 AEL／Mainline／UP');
+    expect(cycle.errorDiagnostic).toMatchObject({ filename: 'AEL_report.xlsx', context: { line: 'AEL' } });
+    expect(cycle.results).toEqual([]);
+    expect(cycle.isLoading).toBe(false);
+    useCalculationStore.getState().createCycle();
+    expect(useCalculationStore.getState().cycles[1].errorDiagnostic).toBeNull();
+    useCalculationStore.getState().setActiveCycle('cycle-1');
+    useCalculationStore.getState().setUploadedFile(new File(['other'], 'TML_report.xlsx'));
+    expect(useCalculationStore.getState().cycles[0].errorDiagnostic).toBeNull();
+  });
+
   it('keeps results isolated between cycle tabs', async () => {
     mockedUploadStaggerFile.mockResolvedValueOnce({
       results: [

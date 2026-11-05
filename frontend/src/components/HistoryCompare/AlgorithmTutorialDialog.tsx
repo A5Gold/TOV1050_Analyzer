@@ -83,6 +83,15 @@ const AlgorithmTutorialDialog: React.FC<AlgorithmTutorialDialogProps> = ({ open,
 
       <DialogContent sx={{ p: 0 }}>
         <Stack spacing={0}>
+          <Box sx={{ px: 3, pt: 2.5 }}>
+            <Typography variant="h6" gutterBottom>輸入報表與 Metadata</Typography>
+            <Typography variant="body2">
+              TOV1050 請使用 Exception Generator 匯出的 Exception Report：例外以完整 raw 偵測，ChartData 已保存同次分析的中位實測樣本，毋須重新上載約 80 萬列 raw CSV。EAL／TML 保留 TOV640 完整資料流程。各期須使用相容的演算法與相同路線／分支／方向／Section。
+            </Typography>
+            <Typography variant="body2" sx={{ mt: 1 }}>
+              新 wide metadata 的 A:C 為 Landmark 區間，D:G 為 Overlap／Tension Length，H:J 為 Track Type，K 控制 D:E 開閉端點；各欄組獨立，單位為公尺。History 沿用輸入報表已保存的 metadata 值與版本／digest，不以目前 config 重新補算舊報表。缺值請回到來源區間核對並重新產生報表；詳細格式與設定路徑見 About。
+            </Typography>
+          </Box>
           <Box sx={{ px: 3, pt: 2.5, display: 'flex', justifyContent: 'center' }}>
             <Box component="img" src={historyCompareImage} alt="History compare algorithm flow" sx={{ width: '100%', maxWidth: 720, maxHeight: 260, objectFit: 'contain', borderRadius: 1 }} />
           </Box>

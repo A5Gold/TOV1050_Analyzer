@@ -6,7 +6,7 @@ from app.core.tov1050_capabilities import TensionLengthInterval, sweep_approved_
 CONFIG = Path(__file__).resolve().parents[2] / "config"
 
 
-def test_native_points_are_not_physical_intervals():
+def test_approved_wide_metadata_keeps_points_and_reports_listed_tl_scopes():
     manager = TOV1050MetadataManager(CONFIG / "ISL metadata.xlsx")
     points = manager.get_bracket_points("ISL", "Mainline", "UT")
     cr = points[points.tension_length == "CR289"]
@@ -15,11 +15,44 @@ def test_native_points_are_not_physical_intervals():
     assert cr.source_excel_row.notna().all()
     assert cr.source_workbook.str.endswith("TOV1050 TL-BK No.xlsx").all()
     capabilities = manager.get_capabilities("ISL", "Mainline", "UT")
-    assert capabilities["overlap_state"] == "unknown"
+    assert capabilities["overlap_state"] == "listed_tl_set"
+    assert capabilities["enrichment_source"] == "wide_excel"
     assert capabilities["capabilities"]["bracket_points"]["status"] == "available"
-    assert capabilities["capabilities"]["tension_length_intervals"]["status"] == "unavailable"
+    assert capabilities["capabilities"]["tension_length_intervals"]["status"] == "partial"
+    assert capabilities["capabilities"]["tension_length_intervals"]["count"] > 0
     for method in (manager.get_tension_length_lookup, manager.get_tension_length_source_rows):
         with pytest.raises(MetadataCapabilityError, match="ISL metadata.xlsx/ISL/Mainline/UT"):
+            method("ISL", "UT", "Mainline")
+
+
+def test_legacy_point_only_fixture_does_not_imply_physical_intervals(tmp_path):
+    import json
+    from openpyxl import Workbook
+    from app.core.tov1050_approved_intervals import ApprovedIntervalProvider
+    path = tmp_path / "ISL metadata.xlsx"
+    book = Workbook()
+    book.active.title = "Exception Boundarys"
+    sheet = book.create_sheet("ISL UT")
+    sheet.append(["Track Type", "Track Type FromM", "Track Type ToM", None,
+                  "Bracket FromM", "Tension Length", "Bracket"])
+    sheet.append(["Tangent", 0, 100, None, 10, "1", "1-001"])
+    sheet.append([None, None, None, None, 90, "1", "1-002"])
+    provenance = book.create_sheet("__provenance__")
+    provenance.append(["source_sheet", "source_row", "classification", "components_json"])
+    for row, position, bracket in ((2, 10, "1-001"), (3, 90, "1-002")):
+        provenance.append(["ISL UT", row, "normal", json.dumps([
+            {"from_m": position, "candidate_bracket": bracket}])])
+    book.save(path)
+    manager = TOV1050MetadataManager(path)
+    points = manager.get_bracket_points("ISL", "Mainline", "UT")
+    assert points.chainage_m.tolist() == [10, 90]
+    assert isinstance(manager.approved_interval_provider(), ApprovedIntervalProvider)
+    for position in (10, 50, 90):
+        evidence = manager.enrichment_evidence(position, "ISL", "Mainline", "UT")
+        assert evidence["Tension Length"] is None
+        assert evidence["Overlap"] is None
+    for method in (manager.get_tension_length_lookup, manager.get_tension_length_source_rows):
+        with pytest.raises(MetadataCapabilityError, match="missing approved TensionLengthInterval"):
             method("ISL", "UT", "Mainline")
 
 
@@ -66,14 +99,16 @@ def test_wear_consumers_reject_unapproved_tov1050_geometry(monkeypatch, route):
     from app.api.endpoints import calculation
     from app.core.calculation.excel_parser import ChartDataRecord
     record = ChartDataRecord("2026-10-23", "AEL", "UT", "Mainline", "", "SHO", "AWE", "303", 24540, 11, "Curve", None)
-    monkeypatch.setattr(calculation, "parse_exception_report", lambda _: ([], [record]))
+    monkeypatch.setattr(calculation, "parse_exception_report", lambda _, **kwargs: ([], [record]))
     monkeypatch.setattr(calculation, "get_config_dir", lambda: CONFIG)
     app = FastAPI()
     app.include_router(calculation.router)
     response = TestClient(app).post("/calculation"+route, data={"line":"AEL"}, files={"files":("report.xlsx",b"parser-mocked","application/octet-stream")})
     assert response.status_code == 422
-    assert "LAR_AEL metadata.xlsx/AEL/Mainline/UT" in response.json()["detail"]
-    assert "missing approved TensionLengthInterval" in response.json()["detail"]
+    detail = response.json()["detail"]
+    message = detail["message"] if isinstance(detail, dict) else detail
+    assert "LAR_AEL metadata.xlsx/AEL/Mainline/UT" in message
+    assert "missing approved TensionLengthInterval" in message
 
 
 def test_required_drl_missing_direction_stops_before_detector(monkeypatch):
@@ -81,13 +116,15 @@ def test_required_drl_missing_direction_stops_before_detector(monkeypatch):
     from fastapi.testclient import TestClient
     from app.api.endpoints import analysis
     monkeypatch.setattr(analysis,"CONFIG_DIR",CONFIG)
+    def forbidden(*args, **kwargs):
+        raise AssertionError("Detector must not run for a missing direction sheet")
+    monkeypatch.setattr(analysis.ExceptionDetector, "analyze", forbidden)
     app=FastAPI()
     app.include_router(analysis.router)
     sample=CONFIG.parent / "docs/TOV1050_Migration/Raw data/AEL/20260822_AEL_UT_SHO_AWE.csv"
     response=TestClient(app).post("/analyze",json=dict(file_path=str(sample),line="DRL",track="DT",section="Mainline",date_str="20261023"))
     assert response.status_code == 400
-    assert "DRL metadata.xlsx/DRL/Mainline/DT" in response.json()["detail"]
-    assert "track_intervals" in response.json()["detail"]
+    assert "Failed to load sheet 'DRL DT'" in response.json()["detail"]
 
 
 def test_measurement_coverage_rejects_partial_track_and_class_gaps():
@@ -96,7 +133,7 @@ def test_measurement_coverage_rejects_partial_track_and_class_gaps():
     assert manager.require_measurement_coverage(pd.Series([42000.0]),"DRL","PL","UT")["track_intervals"]["uncovered_rows"]==0
     with pytest.raises(MetadataCapabilityError,match="2/3 uncovered rows"):
         manager.require_measurement_coverage(pd.Series([42000.0,44500.0,45389.0]),"DRL","PL","UT")
-    with pytest.raises(MetadataCapabilityError,match="class_intervals sheet=location type"):
+    with pytest.raises(MetadataCapabilityError,match="class_intervals sheet=Exception Boundarys"):
         manager.require_measurement_coverage(pd.Series([47000.0]),"DRL","PL","UT")
 
 
@@ -118,6 +155,6 @@ def test_confirmed_drl_pl_ut_fixture_gap_stops_before_detector(monkeypatch):
     assert response.status_code==400
     detail=response.json()["detail"]
     assert "DRL metadata.xlsx/DRL/PL/UT" in detail
-    assert "track_intervals sheet=PL track type: 52/52 uncovered rows" in detail
+    assert "track_intervals sheet=DRL PL: 52/52 uncovered rows" in detail
     assert "Chainage_m=" in detail
     assert analysis.LAST_RAW_DF is previous

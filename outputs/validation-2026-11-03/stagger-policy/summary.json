@@ -1,0 +1,610 @@
+[
+  {
+    "file": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\Raw data\\TWL\\20260907_TWL_UT.csv",
+    "source_sha256": "54ab7ede00922f56e29919518882381520d7181a9f233d4440b6726abea44e37",
+    "source_unchanged": true,
+    "loaded_cleaned_rows": 838859,
+    "mapped_raw_rows": 838859,
+    "median_rows": 83963,
+    "aggregation": {
+      "aggregation": "chainage_median",
+      "algorithm": "same_chainage_median_sample_v1",
+      "aggregation_version": "same_chainage_median_sample_v1",
+      "raw_points": 838859,
+      "grouped_points": 83963,
+      "grouping_columns": [
+        "Chainage",
+        "Line",
+        "line",
+        "Track",
+        "track",
+        "Class",
+        "Track Type",
+        "Overlap",
+        "Tension Length",
+        "Landmark",
+        "segment_id"
+      ],
+      "median_even_rule": "earliest acquired sample matching either central order-statistic value",
+      "sample_counter_column": "SampleCount [n.]",
+      "pass_rule": "finite sample counter decrease",
+      "adjacent_runs_only": true,
+      "source_row_unit": "source row number or one-based retained row",
+      "representative_semantics": "per-channel measured sample; channels may come from different raw rows",
+      "noise_filter": null
+    },
+    "counts": {
+      "median_before": {
+        "Low Height": 63,
+        "High Height": 2,
+        "Wire Wear": 1,
+        "Stagger Left": 0,
+        "Stagger Right": 94
+      },
+      "median_after": {
+        "Low Height": 63,
+        "High Height": 2,
+        "Wire Wear": 1,
+        "Stagger Left": 116,
+        "Stagger Right": 94
+      },
+      "cleaned_raw_after": {
+        "Low Height": 65,
+        "High Height": 2,
+        "Wire Wear": 1,
+        "Stagger Left": 118,
+        "Stagger Right": 103
+      }
+    },
+    "mode_seconds": {
+      "median_before": 2.0498325000007753,
+      "median_after": 4.926902999999584,
+      "cleaned_raw_after": 10.252310699997906
+    },
+    "elapsed_seconds": 87.60213160000058,
+    "unchanged": {
+      "median_before_to_median_after": {
+        "Low Height": true,
+        "High Height": true,
+        "Wire Wear": true,
+        "Stagger Left": false,
+        "Stagger Right": true
+      },
+      "median_after_to_cleaned_raw_after": {
+        "Low Height": false,
+        "High Height": false,
+        "Wire Wear": false,
+        "Stagger Left": false,
+        "Stagger Right": false
+      }
+    },
+    "level_peak_summary": {
+      "median_before": {
+        "Low Height": {
+          "levels": {
+            "L2": 50,
+            "L1": 13
+          },
+          "peak_min": 3548.069,
+          "peak_max": 3899.985
+        },
+        "High Height": {
+          "levels": {
+            "L1": 2
+          },
+          "peak_min": 6981.388,
+          "peak_max": 7645.27
+        },
+        "Wire Wear": {
+          "levels": {
+            "L2": 1
+          },
+          "peak_min": 9.358,
+          "peak_max": 9.358
+        },
+        "Stagger Left": {
+          "levels": {},
+          "peak_min": null,
+          "peak_max": null
+        },
+        "Stagger Right": {
+          "levels": {
+            "L3": 69,
+            "L2": 14,
+            "L1": 11
+          },
+          "peak_min": -478.429,
+          "peak_max": -100.232
+        }
+      },
+      "median_after": {
+        "Low Height": {
+          "levels": {
+            "L2": 50,
+            "L1": 13
+          },
+          "peak_min": 3548.069,
+          "peak_max": 3899.985
+        },
+        "High Height": {
+          "levels": {
+            "L1": 2
+          },
+          "peak_min": 6981.388,
+          "peak_max": 7645.27
+        },
+        "Wire Wear": {
+          "levels": {
+            "L2": 1
+          },
+          "peak_min": 9.358,
+          "peak_max": 9.358
+        },
+        "Stagger Left": {
+          "levels": {
+            "L3": 78,
+            "L2": 38
+          },
+          "peak_min": 102.572,
+          "peak_max": 270.717
+        },
+        "Stagger Right": {
+          "levels": {
+            "L3": 69,
+            "L2": 14,
+            "L1": 11
+          },
+          "peak_min": -478.429,
+          "peak_max": -100.232
+        }
+      },
+      "cleaned_raw_after": {
+        "Low Height": {
+          "levels": {
+            "L2": 52,
+            "L1": 13
+          },
+          "peak_min": 3548.054,
+          "peak_max": 3899.99
+        },
+        "High Height": {
+          "levels": {
+            "L1": 2
+          },
+          "peak_min": 7453.393,
+          "peak_max": 7645.27
+        },
+        "Wire Wear": {
+          "levels": {
+            "L2": 1
+          },
+          "peak_min": 9.357,
+          "peak_max": 9.357
+        },
+        "Stagger Left": {
+          "levels": {
+            "L3": 79,
+            "L2": 39
+          },
+          "peak_min": 102.786,
+          "peak_max": 270.779
+        },
+        "Stagger Right": {
+          "levels": {
+            "L3": 74,
+            "L2": 18,
+            "L1": 11
+          },
+          "peak_min": -478.727,
+          "peak_max": -101.317
+        }
+      }
+    }
+  },
+  {
+    "file": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\Raw data\\TWL\\20260630_TWL_UT.csv",
+    "source_sha256": "e2ab667196694f07023ceb273e4fe7014fcab6a76165b5a0fec592ea55fbe251",
+    "source_unchanged": true,
+    "loaded_cleaned_rows": 830792,
+    "mapped_raw_rows": 830792,
+    "median_rows": 83244,
+    "aggregation": {
+      "aggregation": "chainage_median",
+      "algorithm": "same_chainage_median_sample_v1",
+      "aggregation_version": "same_chainage_median_sample_v1",
+      "raw_points": 830792,
+      "grouped_points": 83244,
+      "grouping_columns": [
+        "Chainage",
+        "Line",
+        "line",
+        "Track",
+        "track",
+        "Class",
+        "Track Type",
+        "Overlap",
+        "Tension Length",
+        "Landmark",
+        "segment_id"
+      ],
+      "median_even_rule": "earliest acquired sample matching either central order-statistic value",
+      "sample_counter_column": "SampleCount [n.]",
+      "pass_rule": "finite sample counter decrease",
+      "adjacent_runs_only": true,
+      "source_row_unit": "source row number or one-based retained row",
+      "representative_semantics": "per-channel measured sample; channels may come from different raw rows",
+      "noise_filter": null
+    },
+    "counts": {
+      "median_before": {
+        "Low Height": 66,
+        "High Height": 7,
+        "Wire Wear": 15,
+        "Stagger Left": 0,
+        "Stagger Right": 111
+      },
+      "median_after": {
+        "Low Height": 66,
+        "High Height": 7,
+        "Wire Wear": 15,
+        "Stagger Left": 109,
+        "Stagger Right": 111
+      },
+      "cleaned_raw_after": {
+        "Low Height": 69,
+        "High Height": 9,
+        "Wire Wear": 17,
+        "Stagger Left": 112,
+        "Stagger Right": 123
+      }
+    },
+    "mode_seconds": {
+      "median_before": 2.6584872999992513,
+      "median_after": 7.085192599999573,
+      "cleaned_raw_after": 11.475796400001855
+    },
+    "elapsed_seconds": 83.13382039999851,
+    "unchanged": {
+      "median_before_to_median_after": {
+        "Low Height": true,
+        "High Height": true,
+        "Wire Wear": true,
+        "Stagger Left": false,
+        "Stagger Right": true
+      },
+      "median_after_to_cleaned_raw_after": {
+        "Low Height": false,
+        "High Height": false,
+        "Wire Wear": false,
+        "Stagger Left": false,
+        "Stagger Right": false
+      }
+    },
+    "level_peak_summary": {
+      "median_before": {
+        "Low Height": {
+          "levels": {
+            "L2": 55,
+            "L1": 11
+          },
+          "peak_min": 3547.945,
+          "peak_max": 3899.896
+        },
+        "High Height": {
+          "levels": {
+            "L1": 6,
+            "L2": 1
+          },
+          "peak_min": 5209.873,
+          "peak_max": 8345.492
+        },
+        "Wire Wear": {
+          "levels": {
+            "L2": 14,
+            "L1": 1
+          },
+          "peak_min": 8.111,
+          "peak_max": 10.125
+        },
+        "Stagger Left": {
+          "levels": {},
+          "peak_min": null,
+          "peak_max": null
+        },
+        "Stagger Right": {
+          "levels": {
+            "L3": 68,
+            "L2": 33,
+            "L1": 10
+          },
+          "peak_min": -445.753,
+          "peak_max": -100.743
+        }
+      },
+      "median_after": {
+        "Low Height": {
+          "levels": {
+            "L2": 55,
+            "L1": 11
+          },
+          "peak_min": 3547.945,
+          "peak_max": 3899.896
+        },
+        "High Height": {
+          "levels": {
+            "L1": 6,
+            "L2": 1
+          },
+          "peak_min": 5209.873,
+          "peak_max": 8345.492
+        },
+        "Wire Wear": {
+          "levels": {
+            "L2": 14,
+            "L1": 1
+          },
+          "peak_min": 8.111,
+          "peak_max": 10.125
+        },
+        "Stagger Left": {
+          "levels": {
+            "L3": 74,
+            "L2": 34,
+            "L1": 1
+          },
+          "peak_min": 100.204,
+          "peak_max": 500.721
+        },
+        "Stagger Right": {
+          "levels": {
+            "L3": 68,
+            "L2": 33,
+            "L1": 10
+          },
+          "peak_min": -445.753,
+          "peak_max": -100.743
+        }
+      },
+      "cleaned_raw_after": {
+        "Low Height": {
+          "levels": {
+            "L2": 58,
+            "L1": 11
+          },
+          "peak_min": 3547.945,
+          "peak_max": 3899.998
+        },
+        "High Height": {
+          "levels": {
+            "L1": 8,
+            "L2": 1
+          },
+          "peak_min": 5160.226,
+          "peak_max": 8345.492
+        },
+        "Wire Wear": {
+          "levels": {
+            "L2": 16,
+            "L1": 1
+          },
+          "peak_min": 8.087,
+          "peak_max": 10.173
+        },
+        "Stagger Left": {
+          "levels": {
+            "L3": 76,
+            "L2": 35,
+            "L1": 1
+          },
+          "peak_min": 100.22,
+          "peak_max": 500.721
+        },
+        "Stagger Right": {
+          "levels": {
+            "L3": 73,
+            "L2": 40,
+            "L1": 10
+          },
+          "peak_min": -446.219,
+          "peak_max": -100.775
+        }
+      }
+    }
+  },
+  {
+    "file": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\Raw data\\TML\\TML_D1_260410.datac",
+    "source_sha256": "da226284648bbec7c9e16c2d5d709aa6a39fb96fc6059c0ae88e9d85a54f48e0",
+    "source_unchanged": true,
+    "loaded_cleaned_rows": 41138,
+    "mapped_raw_rows": 41138,
+    "median_rows": 41138,
+    "aggregation": {
+      "aggregation": "chainage_median",
+      "algorithm": "same_chainage_median_sample_v1",
+      "aggregation_version": "same_chainage_median_sample_v1",
+      "raw_points": 41138,
+      "grouped_points": 41138,
+      "grouping_columns": [
+        "Chainage",
+        "Line",
+        "Track",
+        "line",
+        "track",
+        "Class",
+        "Track Type",
+        "Overlap",
+        "Tension Length",
+        "Landmark",
+        "segment_id"
+      ],
+      "median_even_rule": "earliest acquired sample matching either central order-statistic value",
+      "sample_counter_column": null,
+      "pass_rule": "finite sample counter decrease",
+      "adjacent_runs_only": true,
+      "source_row_unit": "source row number or one-based retained row",
+      "representative_semantics": "per-channel measured sample; channels may come from different raw rows",
+      "noise_filter": null
+    },
+    "counts": {
+      "median_before": {
+        "Low Height": 0,
+        "High Height": 0,
+        "Wire Wear": 86,
+        "Stagger Left": 20,
+        "Stagger Right": 46
+      },
+      "median_after": {
+        "Low Height": 0,
+        "High Height": 0,
+        "Wire Wear": 86,
+        "Stagger Left": 20,
+        "Stagger Right": 46
+      },
+      "cleaned_raw_after": {
+        "Low Height": 0,
+        "High Height": 0,
+        "Wire Wear": 86,
+        "Stagger Left": 20,
+        "Stagger Right": 46
+      }
+    },
+    "mode_seconds": {
+      "median_before": 3.245281999999861,
+      "median_after": 3.1533834999972896,
+      "cleaned_raw_after": 2.1890406999991683
+    },
+    "elapsed_seconds": 15.9807593000005,
+    "unchanged": {
+      "median_before_to_median_after": {
+        "Low Height": true,
+        "High Height": true,
+        "Wire Wear": true,
+        "Stagger Left": true,
+        "Stagger Right": true
+      },
+      "median_after_to_cleaned_raw_after": {
+        "Low Height": true,
+        "High Height": true,
+        "Wire Wear": true,
+        "Stagger Left": true,
+        "Stagger Right": true
+      }
+    },
+    "level_peak_summary": {
+      "median_before": {
+        "Low Height": {
+          "levels": {},
+          "peak_min": null,
+          "peak_max": null
+        },
+        "High Height": {
+          "levels": {},
+          "peak_min": null,
+          "peak_max": null
+        },
+        "Wire Wear": {
+          "levels": {
+            "L1": 71,
+            "L2": 15
+          },
+          "peak_min": 7.3,
+          "peak_max": 10.2
+        },
+        "Stagger Left": {
+          "levels": {
+            "L1": 13,
+            "L3": 6,
+            "L2": 1
+          },
+          "peak_min": 250.0,
+          "peak_max": 621.99
+        },
+        "Stagger Right": {
+          "levels": {
+            "L3": 20,
+            "L1": 16,
+            "L2": 10
+          },
+          "peak_min": -616.99,
+          "peak_max": -250.0
+        }
+      },
+      "median_after": {
+        "Low Height": {
+          "levels": {},
+          "peak_min": null,
+          "peak_max": null
+        },
+        "High Height": {
+          "levels": {},
+          "peak_min": null,
+          "peak_max": null
+        },
+        "Wire Wear": {
+          "levels": {
+            "L1": 71,
+            "L2": 15
+          },
+          "peak_min": 7.3,
+          "peak_max": 10.2
+        },
+        "Stagger Left": {
+          "levels": {
+            "L1": 13,
+            "L3": 6,
+            "L2": 1
+          },
+          "peak_min": 250.0,
+          "peak_max": 621.99
+        },
+        "Stagger Right": {
+          "levels": {
+            "L3": 20,
+            "L1": 16,
+            "L2": 10
+          },
+          "peak_min": -616.99,
+          "peak_max": -250.0
+        }
+      },
+      "cleaned_raw_after": {
+        "Low Height": {
+          "levels": {},
+          "peak_min": null,
+          "peak_max": null
+        },
+        "High Height": {
+          "levels": {},
+          "peak_min": null,
+          "peak_max": null
+        },
+        "Wire Wear": {
+          "levels": {
+            "L1": 71,
+            "L2": 15
+          },
+          "peak_min": 7.3,
+          "peak_max": 10.2
+        },
+        "Stagger Left": {
+          "levels": {
+            "L1": 13,
+            "L3": 6,
+            "L2": 1
+          },
+          "peak_min": 250.0,
+          "peak_max": 621.99
+        },
+        "Stagger Right": {
+          "levels": {
+            "L3": 20,
+            "L1": 16,
+            "L2": 10
+          },
+          "peak_min": -616.99,
+          "peak_max": -250.0
+        }
+      }
+    }
+  }
+]

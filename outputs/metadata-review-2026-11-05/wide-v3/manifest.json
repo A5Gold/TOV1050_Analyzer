@@ -1,0 +1,162 @@
+[
+  {
+    "file": "ISL metadata.xlsx",
+    "source": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\metadata-review-2026-11-03\\other-lines-wide-v1\\candidates\\ISL metadata.xlsx",
+    "source_sha256": "a0d45f6ece4abb49cb3cbfa331404f0537c021f5814372720d2716029f1370d7",
+    "routes": [
+      {
+        "sheet": "ISL UT",
+        "tl_count": 19,
+        "landmarks": 1,
+        "atoms": 73
+      },
+      {
+        "sheet": "ISL DT",
+        "tl_count": 28,
+        "landmarks": 2,
+        "atoms": 107
+      }
+    ],
+    "production_activation": false
+  },
+  {
+    "file": "KTL metadata.xlsx",
+    "source": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\metadata-review-2026-11-03\\other-lines-wide-v1\\candidates\\KTL metadata.xlsx",
+    "source_sha256": "dc95e1cc049d7413b6728c200026caced2fa9bc175c1cd55af9636391aad3f70",
+    "routes": [
+      {
+        "sheet": "KTL UT",
+        "tl_count": 27,
+        "landmarks": 4,
+        "atoms": 107
+      },
+      {
+        "sheet": "KTL DT",
+        "tl_count": 30,
+        "landmarks": 1,
+        "atoms": 119
+      }
+    ],
+    "production_activation": false
+  },
+  {
+    "file": "LAR_AEL metadata.xlsx",
+    "source": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\metadata-review-2026-11-03\\other-lines-wide-v1\\candidates\\LAR_AEL metadata.xlsx",
+    "source_sha256": "f3641710f2c691ff11dfc9e2542c31d89599781120effe902f339b28ce3a186b",
+    "routes": [
+      {
+        "sheet": "LAR_AEL UT",
+        "tl_count": 47,
+        "landmarks": 0,
+        "atoms": 187
+      },
+      {
+        "sheet": "LAR_AEL DT",
+        "tl_count": 49,
+        "landmarks": 0,
+        "atoms": 195
+      }
+    ],
+    "production_activation": false
+  },
+  {
+    "file": "LAR_TCL metadata.xlsx",
+    "source": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\metadata-review-2026-11-03\\other-lines-wide-v1\\candidates\\LAR_TCL metadata.xlsx",
+    "source_sha256": "80e5bd51fee71966d0acd0b696f3bc8b40871cc400b7b64f313da2f9d6da6d77",
+    "routes": [
+      {
+        "sheet": "LAR_TCL UT",
+        "tl_count": 41,
+        "landmarks": 0,
+        "atoms": 163
+      },
+      {
+        "sheet": "LAR_TCL DT",
+        "tl_count": 42,
+        "landmarks": 0,
+        "atoms": 167
+      }
+    ],
+    "production_activation": false
+  },
+  {
+    "file": "TKL metadata.xlsx",
+    "source": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\metadata-review-2026-11-03\\other-lines-wide-v1\\candidates\\TKL metadata.xlsx",
+    "source_sha256": "7b9ae7e59fd470f8be449370832da0ee165cf1ca622175a2f4c107cbdc655af3",
+    "routes": [
+      {
+        "sheet": "TKL UT",
+        "tl_count": 19,
+        "landmarks": 22,
+        "atoms": 75
+      },
+      {
+        "sheet": "TKL DT",
+        "tl_count": 19,
+        "landmarks": 19,
+        "atoms": 75
+      }
+    ],
+    "production_activation": false
+  },
+  {
+    "file": "TKS metadata.xlsx",
+    "source": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\metadata-review-2026-11-03\\other-lines-wide-v1\\candidates\\TKS metadata.xlsx",
+    "source_sha256": "79b2775e21840350713191fa69d797e95a5bc8e79a1dde38c231f6ca3ccc5175",
+    "routes": [
+      {
+        "sheet": "TKS UT",
+        "tl_count": 4,
+        "landmarks": 1,
+        "atoms": 15
+      },
+      {
+        "sheet": "TKS DT",
+        "tl_count": 4,
+        "landmarks": 5,
+        "atoms": 15
+      }
+    ],
+    "production_activation": false
+  },
+  {
+    "file": "TWL metadata.xlsx",
+    "source": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\metadata-review-2026-11-03\\other-lines-wide-v1\\candidates\\TWL metadata.xlsx",
+    "source_sha256": "626ba83ca8ca53a4bb92aaba74d5416314d27d7e5c8e4878c6db73461bc48837",
+    "routes": [
+      {
+        "sheet": "TWL UT",
+        "tl_count": 22,
+        "landmarks": 0,
+        "atoms": 85
+      },
+      {
+        "sheet": "TWL DT",
+        "tl_count": 22,
+        "landmarks": 0,
+        "atoms": 87
+      }
+    ],
+    "production_activation": false
+  },
+  {
+    "file": "DRL metadata.xlsx",
+    "source": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\metadata-review-2026-11-03\\drl-wide-v2\\DRL metadata (wide UT-PL candidate).xlsx",
+    "source_sha256": "0b8fdbed43a37945ff4ed358490141577cbb3e692a76d215710b31a1ca5dfb47",
+    "routes": [
+      {
+        "sheet": "DRL UT",
+        "tl_count": 5,
+        "landmarks": 0,
+        "atoms": 19
+      },
+      {
+        "sheet": "DRL PL",
+        "tl_count": 4,
+        "landmarks": 0,
+        "atoms": 15
+      }
+    ],
+    "production_activation": false
+  }
+]

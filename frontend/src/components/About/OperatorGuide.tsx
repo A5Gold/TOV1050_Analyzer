@@ -36,6 +36,8 @@ import {
   WearResolutionVisual,
 } from './GuideVisuals';
 
+import MetadataFormatGuide from './MetadataFormatGuide';
+
 const sectionSx = { scrollMarginTop: 16, py: 3 } as const;
 
 const OperatorGuide: React.FC = () => (
@@ -75,6 +77,11 @@ const OperatorGuide: React.FC = () => (
         <Alert severity="warning" sx={{ mt: 2 }}>
           若缺少日期、Line、Branch、Direction 或 Station range，請先補齊所需欄位。九個主 Line 可辨識，工程計算仍須該分支／方向的核准配置；不能因選單可選便當作全線已可計算。
         </Alert>
+      </Box>
+
+      <Box component="section" id="operator-metadata" sx={sectionSx}>
+        <Typography variant="h6" component="h3" gutterBottom>Metadata 格式、區間與設定路徑</Typography>
+        <MetadataFormatGuide />
       </Box>
 
       <Box component="section" id="operator-chart" sx={sectionSx}>
@@ -119,7 +126,7 @@ const OperatorGuide: React.FC = () => (
       <Box component="section" id="operator-threshold" sx={sectionSx}>
         <Typography variant="h6" component="h3" gutterBottom>Threshold 異常判定</Typography>
         <Typography variant="body2" color="text.secondary" sx={{ maxWidth: '76ch', mb: 2 }}>
-          清洗後先選同 chainage 的中位實測樣本，各 channel 代表值再作最壞值／例外判定並對照 metadata threshold。Low Height 與 Wire Wear 值愈低愈嚴重，High Height 值愈高愈嚴重；Stagger 依 Tangent 或 Curve 的實際配置門檻分左右判斷。圖表取樣不參與判定。
+          TOV1050 使用每筆完整清洗後量測作最壞值／例外判定並對照 metadata threshold；同 chainage 中位實測樣本用於圖表及報表 ChartData。Low Height 與 Wire Wear 值愈低愈嚴重，High Height 值愈高愈嚴重；Stagger 依 Tangent 或 Curve 的實際配置門檻判斷：Left 正值、Right 負值，共用門檻絕對值。圖表取樣不參與判定。
         </Typography>
         <TableContainer sx={{ mb: 2 }}>
           <Table size="small" aria-label="Threshold 判斷次序">

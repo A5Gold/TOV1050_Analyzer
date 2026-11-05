@@ -1,0 +1,9 @@
+Process 30480: "C:\Users\chusiukd\AppData\Local\Programs\Python\Python312\python.exe" scripts/validate_wide_reports_20261105.py
+Python v3.12.8 (C:\Users\chusiukd\AppData\Local\Programs\Python\Python312\python.exe)
+
+Thread 27408 (active+gil): "MainThread"
+    XMLPullParser.feed (xml\etree\ElementTree.py:1284)
+    iterparse.<locals>.iterator (xml\etree\ElementTree.py:1241)
+    iter_chart_rows (history_report_reader.py:118)
+    <genexpr> (validate_wide_reports_20261105.py:84)
+    <module> (validate_wide_reports_20261105.py:84)

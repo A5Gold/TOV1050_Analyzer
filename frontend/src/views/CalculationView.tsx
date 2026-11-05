@@ -31,6 +31,7 @@ import DownloadOutlinedIcon from '@mui/icons-material/DownloadOutlined';
 import CycleTabBar, { CycleTabItem } from '../components/Calculation/CycleTabBar';
 import StaggerAlgorithmDialog from '../components/Calculation/StaggerAlgorithmDialog';
 import StaggerRawDataPanel from '../components/Calculation/StaggerRawDataPanel';
+import StaggerDiagnosticAlert from '../components/Calculation/StaggerDiagnosticAlert';
 import { exportStaggerResults } from '../components/Calculation/staggerExport';
 import { useCalculationStore } from '../store/useCalculationStore';
 import { scrollablePageSx } from '../utils/pageLayout';
@@ -230,7 +231,9 @@ const CalculationView: React.FC = () => {
         </Tooltip>
       </Box>
 
-      {activeCycle.error && <Alert severity="error">{activeCycle.error}</Alert>}
+      {activeCycle.errorDiagnostic
+        ? <StaggerDiagnosticAlert key={`${activeCycle.id}:${activeCycle.errorDiagnostic.filename}`} diagnostic={activeCycle.errorDiagnostic} />
+        : activeCycle.error && <Alert severity="error">{activeCycle.error}</Alert>}
       {activeCycle.warnings.map((warning) => (
         <Alert key={warning} severity="warning">{warning}</Alert>
       ))}

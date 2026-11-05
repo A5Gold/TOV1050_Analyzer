@@ -2,13 +2,17 @@ import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import ChartComponent from '../ChartComponent';
 import type { AnalysisResponse } from '../../types/api';
+import { useAnalysisStore } from '../../store/useAnalysisStore';
 
-const mocks = vi.hoisted(() => ({ props: {} as any, get: vi.fn(), post: vi.fn() }));
+const mocks = vi.hoisted(() => ({ props: {} as any, element: null as any, get: vi.fn(), post: vi.fn() }));
 vi.mock('../../api/client', () => ({ default: { get: mocks.get, post: mocks.post } }));
 vi.mock('plotly.js', () => ({ default: { purge: vi.fn() } }));
 vi.mock('react-plotly.js', async () => {
   const React = await import('react');
-  return { default: React.forwardRef((props: any, _ref) => { mocks.props = props; return <div data-testid="plot" />; }) };
+  return { default: React.forwardRef((props: any, ref) => {
+    React.useImperativeHandle(ref, () => ({ el: mocks.element }));
+    mocks.props = props; return <div data-testid="plot" />;
+  }) };
 });
 
 const result = (revision = 'r1') => ({
@@ -30,7 +34,7 @@ const detail = (height = 99) => ({ data: {
 async function advance(ms = 250) { await act(async () => { vi.advanceTimersByTime(ms); }); }
 function zoom(from = 90, to = 110) { act(() => mocks.props.onRelayout({ 'xaxis.range[0]': from, 'xaxis.range[1]': to })); }
 describe('ChartComponent median/raw detail', () => {
-  beforeEach(() => { vi.useFakeTimers(); mocks.get.mockReset(); mocks.post.mockReset().mockResolvedValue({ data: {} }); });
+  beforeEach(() => { useAnalysisStore.setState({ chartPreferences: {} }); vi.useFakeTimers(); mocks.element = null; mocks.get.mockReset(); mocks.post.mockReset().mockResolvedValue({ data: {} }); });
   afterEach(() => { cleanup(); vi.useRealTimers(); });
 
   it('draws measured sample lines with channel provenance and only selects exception markers', () => {
@@ -41,6 +45,7 @@ describe('ChartComponent median/raw detail', () => {
     expect(line).toMatchObject({ mode: 'lines', y: [10, 12], connectgaps: false });
     expect(line.customdata[0]).toEqual([4, 1002, 3, 4]);
     expect(line.customdata.flat().every((value: any) => value != null)).toBe(true);
+    expect(line.hovertemplate).toBe('Chainage: %{x:.4f} m<br>實測值: %{y:.4f} mm<extra></extra>');
     expect(traces.every((trace: any) => trace.xaxis === 'x')).toBe(true);
     expect(mocks.props.layout.xaxis).toMatchObject({ anchor: 'y3' });
     for (const axis of ['yaxis', 'yaxis2', 'yaxis3']) expect(mocks.props.layout[axis].anchor).toBe('x');
@@ -48,6 +53,7 @@ describe('ChartComponent median/raw detail', () => {
     expect(select).not.toHaveBeenCalled();
     act(() => mocks.props.onClick({ points: [{ data: traces.find((t: any) => t.name === 'High Height Dots'), text: 'E1', pointIndex: 0 }] }));
     expect(select).toHaveBeenCalledWith('E1');
+    expect(traces.find((t: any) => t.name === 'High Height Dots').hovertemplate).toBe(line.hovertemplate);
   });
 
   it('debounces arbitrary zooms and sends the session/revision and median mode', async () => {
@@ -158,6 +164,43 @@ describe('ChartComponent median/raw detail', () => {
     expect(mocks.get).not.toHaveBeenCalled();
   });
 
+  it('keeps independent metric/level preferences through master hide, detail and session remounts', async () => {
+    const overview = { ...result(), threshold_segments: [
+      { from_m: 0, to_m: 1000, metric: 'height', exception_type: 'High Height', level: 'L1', value: 40 },
+      { from_m: 0, to_m: 500, metric: 'stagger', exception_type: 'Stagger Right', level: 'L2', value: -240 },
+      { from_m: 500, to_m: 1000, metric: 'stagger', exception_type: 'Stagger Left', level: 'L2', value: 250 },
+      { from_m: 500, to_m: 1000, metric: 'wear', exception_type: 'Wire Wear', level: 'L1', value: 9.5 },
+    ] };
+    const mount = (sessionId = 'A') => render(<ChartComponent result={overview} selectedExceptionId={null} onSelectException={vi.fn()} sessionId={sessionId} />);
+    const first = mount();
+    fireEvent.click(screen.getByRole('button', { name: '門檻設定' }));
+    expect(screen.getByRole('checkbox', { name: 'Height L3' })).toBeDisabled();
+    expect(screen.getByRole('checkbox', { name: 'Wire Wear L3' })).toBeDisabled();
+    expect(screen.getAllByText('未配置')).toHaveLength(6);
+    fireEvent.click(screen.getByRole('checkbox', { name: 'Stagger L2' }));
+    expect(mocks.props.layout.shapes.map((s: any) => s.y0)).toEqual([40, 9.5]);
+    fireEvent.click(screen.getByRole('button', { name: '完成' }));
+    fireEvent.click(screen.getByRole('checkbox', { name: '門檻線' }));
+    expect(mocks.props.layout.shapes).toHaveLength(0);
+    fireEvent.click(screen.getByRole('checkbox', { name: '門檻線' }));
+    expect(mocks.props.layout.shapes).toHaveLength(2);
+    mocks.get.mockResolvedValue({ data: { ...detail().data, threshold_segments: [] } });
+    zoom(); await advance();
+    fireEvent.click(screen.getByRole('button', { name: '門檻設定' }));
+    expect(screen.getByRole('checkbox', { name: 'Stagger L2' })).toBeEnabled();
+    expect(screen.getByRole('checkbox', { name: 'Stagger L2' })).not.toBeChecked();
+    first.unmount();
+    const second = mount();
+    expect(mocks.props.layout.shapes.map((s: any) => s.y0)).toEqual([40, 9.5]);
+    second.unmount();
+    const third = mount('B');
+    expect(mocks.props.layout.shapes.map((s: any) => s.y0)).toEqual([40, -240, 250, 9.5]);
+    third.unmount();
+    act(() => useAnalysisStore.getState().removeAnalysisSession('A'));
+    expect(useAnalysisStore.getState().chartPreferences.A).toBeUndefined();
+    expect(mocks.get).toHaveBeenCalledTimes(1);
+  }, 30000);
+
   it('focuses the actual marker among overlapping line points and refocuses the same dot after panning', async () => {
     mocks.get.mockResolvedValue(detail());
     const select = vi.fn();
@@ -173,6 +216,51 @@ describe('ChartComponent median/raw detail', () => {
     expect(mocks.props.layout.xaxis.range).toEqual([0, 200]);
     await advance();
     expect(mocks.get.mock.lastCall?.[1].params).toMatchObject({ from_m: 0, to_m: 200 });
+  });
+
+  it('requires a choice for coincident native pointer hits and discards the choices on revision change', () => {
+    const select = vi.fn();
+    const overview = result();
+    overview.exceptions['High Height'].push({ ...overview.exceptions['High Height'][0], id: 'E2' });
+    const axis = { _offset: 0, _length: 500, l2p: (value: number) => value };
+    mocks.element = { getBoundingClientRect: () => ({ left: 0, top: 0, width: 500, height: 500 }),
+      _fullLayout: { width: 500, height: 500, xaxis: axis, yaxis: axis },
+      _fullData: [{ visible: true, mode: 'markers', xaxis: 'x', yaxis: 'y', x: [100, 100], y: [30, 30],
+        customdata: [{ kind: 'exception-marker', id: 'E1' }, { kind: 'exception-marker', id: 'E2' }] }],
+    };
+    const view = render(<ChartComponent result={overview} selectedExceptionId={null} onSelectException={select} sessionId="A" />);
+    act(() => mocks.props.onClick({ event: { clientX: 100, clientY: 30 }, points: [{ data: mocks.props.data[0] }] }));
+    expect(screen.getAllByRole('menuitem')).toHaveLength(2);
+    expect(select).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByRole('menuitem', { name: 'E2 · High Height · L1' }));
+    expect(select).toHaveBeenCalledWith('E2');
+    act(() => mocks.props.onClick({ event: { clientX: 100, clientY: 30 }, points: [] }));
+    view.rerender(<ChartComponent result={result('r2')} selectedExceptionId={null} onSelectException={select} sessionId="A" />);
+    expect(screen.queryByRole('menuitem')).not.toBeInTheDocument();
+    expect(select).toHaveBeenCalledTimes(1);
+  }, 20000);
+
+  it('keeps the latest marker focus when the earlier marker detail arrives late', async () => {
+    const select = vi.fn();
+    const overview = result();
+    overview.exceptions['High Height'].push({ ...overview.exceptions['High Height'][0], id: 'E2', maxLocation: 500 });
+    let finishFirst!: (value: any) => void;
+    mocks.get.mockImplementationOnce(() => new Promise(resolve => { finishFirst = resolve; }));
+    mocks.get.mockResolvedValueOnce(detail(55));
+    render(<ChartComponent result={overview} selectedExceptionId={null} onSelectException={select} sessionId="A" />);
+    const dots = mocks.props.data.find((trace: any) => trace.name === 'High Height Dots');
+    act(() => mocks.props.onClick({ points: [{ data: dots, pointNumber: 0, x: 100 }] }));
+    await advance();
+    const firstSignal = mocks.get.mock.calls[0][1].signal;
+    act(() => mocks.props.onClick({ points: [{ data: dots, pointNumber: 1, x: 500 }] }));
+    await advance();
+    expect(firstSignal.aborted).toBe(true);
+    expect(mocks.props.layout.xaxis.range).toEqual([400, 600]);
+    expect(select.mock.calls).toEqual([['E1'], ['E2']]);
+    expect(mocks.props.data.find((trace: any) => trace.name === 'height1').y).toEqual([55]);
+    await act(async () => finishFirst(detail(999)));
+    expect(mocks.props.data.find((trace: any) => trace.name === 'height1').y).toEqual([55]);
+    expect(mocks.props.layout.xaxis.range).toEqual([400, 600]);
   });
 
   it('clamps negative padding, sorts reverse ranges, and handles wholly outside windows locally', async () => {

@@ -1,11 +1,92 @@
 import pandas as pd
 import numpy as np
 import logging
+import math
 from pathlib import Path
 from typing import Dict, Optional, Tuple, Union, List
 
 # Configure logging
 logger = logging.getLogger(__name__)
+
+
+STAGGER_MAGNITUDE_RULE_VERSION = "symmetric-stagger-magnitude-2026-11-03-v1"
+STAGGER_LEVELS = ("Stagger L1", "Stagger L2", "Stagger L3")
+STAGGER_SIDES = ("Stagger Left", "Stagger Right")
+
+
+def normalize_stagger_thresholds(frame: pd.DataFrame, *, source: str = "threshold") -> pd.DataFrame:
+    """Expand legacy one-sided stagger rows into a shared magnitude per context.
+
+    Only the returned in-memory frame changes. Conflicting source rows must be
+    reviewed instead of resolved by row order.
+    """
+    if "Exc Type" not in frame or not any(column in frame for column in STAGGER_LEVELS):
+        return frame.copy()
+
+    records = frame.to_dict(orient="records")
+    groups = {}
+    stagger_positions = set()
+
+    for position, row in enumerate(records):
+        side = str(row.get("Exc Type", "")).strip()
+        if side not in STAGGER_SIDES:
+            continue
+        stagger_positions.add(position)
+        context = (str(row.get("Class", "")).strip(), str(row.get("Track Type", "")).strip())
+        group = groups.setdefault(context, {"first": position, "rows": {}, "levels": {}})
+        group["rows"].setdefault(side, row)
+        for level in STAGGER_LEVELS:
+            value = row.get(level)
+            if value is None or value is pd.NA or (isinstance(value, str) and not value.strip()):
+                continue
+            if not isinstance(value, str) and pd.isna(value):
+                continue
+            try:
+                number = float(str(value).replace(",", "").strip())
+            except (TypeError, ValueError) as exc:
+                raise ValueError(
+                    f"{source}/threshold row {position + 2}: invalid {side} {level} "
+                    f"for Class={context[0]}, Track Type={context[1]}: {value!r}"
+                ) from exc
+            if not math.isfinite(number):
+                raise ValueError(
+                    f"{source}/threshold row {position + 2}: non-finite {side} {level} "
+                    f"for Class={context[0]}, Track Type={context[1]}: {value!r}"
+                )
+            magnitude = abs(number)
+            prior = group["levels"].get(level)
+            if prior is not None and not math.isclose(prior[0], magnitude, rel_tol=0, abs_tol=1e-9):
+                raise ValueError(
+                    f"{source}/threshold rows {prior[1] + 2} and {position + 2}: "
+                    f"conflicting Stagger magnitude for Class={context[0]}, "
+                    f"Track Type={context[1]}, {level}: {prior[0]} vs {magnitude}"
+                )
+            group["levels"][level] = (magnitude, position)
+
+    if not groups:
+        return frame.copy()
+
+    insert_at = {group["first"]: group for group in groups.values()}
+    output = []
+    for position, row in enumerate(records):
+        if position not in stagger_positions:
+            output.append(row)
+            continue
+        group = insert_at.get(position)
+        if group is None:
+            continue
+        if not group["levels"]:
+            raise ValueError(f"{source}/threshold row {position + 2}: Stagger Left and Right have no configured levels")
+        for side in STAGGER_SIDES:
+            normalized = dict(group["rows"].get(side, row))
+            normalized["Exc Type"] = side
+            for level in STAGGER_LEVELS:
+                normalized[level] = group["levels"].get(level, (np.nan,))[0]
+            output.append(normalized)
+
+    result = pd.DataFrame(output, columns=frame.columns)
+    result.attrs["stagger_magnitude_rule_version"] = STAGGER_MAGNITUDE_RULE_VERSION
+    return result
 
 class MetadataManager:
     """
@@ -67,14 +148,38 @@ class MetadataManager:
                 if 'Track Type' in df.columns:
                     df['Track Type'] = df['Track Type'].astype(str).str.strip()
 
-                # Numeric Cleaning: Thresholds if this is the threshold sheet
+                # Keep wide Stagger tokens until the common adapter validates
+                # them; otherwise a malformed value silently becomes NaN.
                 if sheet_name == 'threshold':
+                     if 'Exc Type' in df and 'min' in df:
+                         for position, row in df.iterrows():
+                             level = str(row['Exc Type']).strip()
+                             if level not in STAGGER_LEVELS:
+                                 continue
+                             value = row['min']
+                             if pd.isna(value) or (isinstance(value, str) and not value.strip()):
+                                 continue
+                             try:
+                                 number = float(str(value).replace(',', '').strip())
+                             except (TypeError, ValueError) as exc:
+                                 raise ValueError(
+                                     f"{self.config_path}/threshold row {position + 2}: invalid {level} min "
+                                     f"for Class={row.get('Class')}, Track Type={row.get('Track Type')}: {value!r}"
+                                 ) from exc
+                             if not math.isfinite(number):
+                                 raise ValueError(
+                                     f"{self.config_path}/threshold row {position + 2}: non-finite {level} min "
+                                     f"for Class={row.get('Class')}, Track Type={row.get('Track Type')}: {value!r}"
+                                 )
                      for col in df.columns:
+                         if col in STAGGER_LEVELS:
+                             continue
                          if 'min' in col.lower() or 'max' in col.lower() or 'L1' in col or 'L2' in col or 'L3' in col:
                              df[col] = pd.to_numeric(
                                  df[col].astype(str).str.replace(',', '', regex=False).str.strip(),
                                  errors='coerce',
                              )
+                     df = normalize_stagger_thresholds(df, source=str(self.config_path))
 
                 self._cache[sheet_name] = df
                 logger.info(f"Sheet '{sheet_name}' cached successfully")
@@ -232,8 +337,8 @@ class MetadataManager:
         Adapts legacy Long Format (Excel) to Wide Format (Detector).
         """
         # 1. Check if already wide (has 'Low Height L1' column)
-        if 'Low Height L1' in df.columns:
-            return df
+        if 'Low Height L1' in df.columns or any(column in df for column in STAGGER_LEVELS):
+            return normalize_stagger_thresholds(df, source=str(self.config_path))
             
         # 2. Pivot Long to Wide
         grouped = {}
@@ -288,6 +393,13 @@ class MetadataManager:
                 
                 # Only set if val is numeric
                 if pd.notna(val):
+                    if base_type in STAGGER_SIDES and col_name in grouped[key]:
+                        previous = grouped[key][col_name]
+                        if not math.isclose(abs(float(previous)), abs(float(val)), rel_tol=0, abs_tol=1e-9):
+                            raise ValueError(
+                                f"{self.config_path}/threshold row {idx + 2}: conflicting Stagger magnitude "
+                                f"for Class={cls}, Track Type={tt}, {col_name}: {previous} vs {val}"
+                            )
                     grouped[key][col_name] = val
                 
         # Convert to DataFrame
@@ -295,7 +407,7 @@ class MetadataManager:
             return df
 
         normalized_df = pd.DataFrame(list(grouped.values()))
-        return normalized_df
+        return normalize_stagger_thresholds(normalized_df, source=str(self.config_path))
 
     # ─── Calculation Module: Tension Length Lookup ─────────────────────────────
 

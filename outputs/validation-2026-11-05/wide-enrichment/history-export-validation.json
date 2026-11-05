@@ -1,0 +1,9 @@
+{
+  "file": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\validation-2026-11-05\\wide-enrichment\\20260907_TWL_UT_MAINLINE_CEN_TSW_Exception_Report_2_Repeated.xlsx",
+  "sha256": "53c268a4e9b4d9da683e1e0f90bba568024e77b60c5578ef3eb14ea44231fe64",
+  "rows": 15,
+  "enrichment_filled": {
+    "Tension Length": 15,
+    "Overlap": 15
+  }
+}

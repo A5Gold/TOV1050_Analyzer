@@ -1,0 +1,178 @@
+[
+  {
+    "workbook": "TKL metadata.xlsx",
+    "sheet": "TKL UT",
+    "landmarks": [
+      "TIS901",
+      "AFW"
+    ],
+    "from_m": 63626,
+    "to_m": 63823,
+    "policy": "all distinct matching landmark names joined by / (user confirmed 2026-11-05)"
+  },
+  {
+    "workbook": "TKL metadata.xlsx",
+    "sheet": "TKL UT",
+    "landmarks": [
+      "AFW",
+      "TIK884"
+    ],
+    "from_m": 62356,
+    "to_m": 62553,
+    "policy": "all distinct matching landmark names joined by / (user confirmed 2026-11-05)"
+  },
+  {
+    "workbook": "TKL metadata.xlsx",
+    "sheet": "TKL UT",
+    "landmarks": [
+      "SI-TIK803",
+      "TIK803"
+    ],
+    "from_m": 62085,
+    "to_m": 62282,
+    "policy": "all distinct matching landmark names joined by / (user confirmed 2026-11-05)"
+  },
+  {
+    "workbook": "TKL metadata.xlsx",
+    "sheet": "TKL UT",
+    "landmarks": [
+      "SI-KTT903",
+      "KTT903"
+    ],
+    "from_m": 59546,
+    "to_m": 59745,
+    "policy": "all distinct matching landmark names joined by / (user confirmed 2026-11-05)"
+  },
+  {
+    "workbook": "TKL metadata.xlsx",
+    "sheet": "TKL UT",
+    "landmarks": [
+      "QUB807",
+      "SI-QUB807"
+    ],
+    "from_m": 56827,
+    "to_m": 57024,
+    "policy": "all distinct matching landmark names joined by / (user confirmed 2026-11-05)"
+  },
+  {
+    "workbook": "TKL metadata.xlsx",
+    "sheet": "TKL UT",
+    "landmarks": [
+      "NOP801",
+      "SI-NOP801"
+    ],
+    "from_m": 55659,
+    "to_m": 55859,
+    "policy": "all distinct matching landmark names joined by / (user confirmed 2026-11-05)"
+  },
+  {
+    "workbook": "TKL metadata.xlsx",
+    "sheet": "TKL UT",
+    "landmarks": [
+      "NOP881",
+      "SI-NOP881"
+    ],
+    "from_m": 55176,
+    "to_m": 55323,
+    "policy": "all distinct matching landmark names joined by / (user confirmed 2026-11-05)"
+  },
+  {
+    "workbook": "TKL metadata.xlsx",
+    "sheet": "TKL DT",
+    "landmarks": [
+      "TIK804",
+      "SI-TIK804"
+    ],
+    "from_m": 62064,
+    "to_m": 62263,
+    "policy": "all distinct matching landmark names joined by / (user confirmed 2026-11-05)"
+  },
+  {
+    "workbook": "TKL metadata.xlsx",
+    "sheet": "TKL DT",
+    "landmarks": [
+      "SI-KTT904",
+      "KTT904"
+    ],
+    "from_m": 59441,
+    "to_m": 59634,
+    "policy": "all distinct matching landmark names joined by / (user confirmed 2026-11-05)"
+  },
+  {
+    "workbook": "TKL metadata.xlsx",
+    "sheet": "TKL DT",
+    "landmarks": [
+      "QUB806",
+      "SI-QUB806"
+    ],
+    "from_m": 56819,
+    "to_m": 57016,
+    "policy": "all distinct matching landmark names joined by / (user confirmed 2026-11-05)"
+  },
+  {
+    "workbook": "TKL metadata.xlsx",
+    "sheet": "TKL DT",
+    "landmarks": [
+      "SI-QUB894",
+      "QUB894"
+    ],
+    "from_m": 56605,
+    "to_m": 56804,
+    "policy": "all distinct matching landmark names joined by / (user confirmed 2026-11-05)"
+  },
+  {
+    "workbook": "TKL metadata.xlsx",
+    "sheet": "TKL DT",
+    "landmarks": [
+      "NOP802",
+      "SI-NOP802"
+    ],
+    "from_m": 55653,
+    "to_m": 55852,
+    "policy": "all distinct matching landmark names joined by / (user confirmed 2026-11-05)"
+  },
+  {
+    "workbook": "TKL metadata.xlsx",
+    "sheet": "TKL DT",
+    "landmarks": [
+      "NOP895",
+      "SI-NOP895"
+    ],
+    "from_m": 55125,
+    "to_m": 55321,
+    "policy": "all distinct matching landmark names joined by / (user confirmed 2026-11-05)"
+  },
+  {
+    "workbook": "TKS metadata.xlsx",
+    "sheet": "TKS DT",
+    "landmarks": [
+      "LHP902",
+      "LHP990"
+    ],
+    "from_m": 65940,
+    "to_m": 66139,
+    "policy": "all distinct matching landmark names joined by / (user confirmed 2026-11-05)"
+  },
+  {
+    "workbook": "TKS metadata.xlsx",
+    "sheet": "TKS DT",
+    "landmarks": [
+      "LHP902",
+      "SI-LHP902"
+    ],
+    "from_m": 65940,
+    "to_m": 66139,
+    "policy": "all distinct matching landmark names joined by / (user confirmed 2026-11-05)"
+  },
+  {
+    "workbook": "TKS metadata.xlsx",
+    "sheet": "TKS DT",
+    "landmarks": [
+      "LHP990",
+      "SI-LHP902"
+    ],
+    "from_m": 65939,
+    "to_m": 66139,
+    "policy": "all distinct matching landmark names joined by / (user confirmed 2026-11-05)"
+  }
+]

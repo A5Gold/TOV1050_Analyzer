@@ -11,7 +11,7 @@ from app.api.endpoints import analysis, metadata, sessions, database_records, ca
 from app.core.background_jobs import JobManager
 from app.api.endpoints import line_catalog
 
-APP_VERSION = "2.0.0"
+APP_VERSION = "2.0.1"
 
 @asynccontextmanager
 async def lifespan(app):

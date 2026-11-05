@@ -1,0 +1,187 @@
+[
+  {
+    "kind": "threshold_business_difference",
+    "context": "Open/Tangent/Wire Wear L1",
+    "source_cell": "threshold!G4",
+    "runtime": 8.9,
+    "reference": 9.1,
+    "policy": "preserve_runtime; requires business decision"
+  },
+  {
+    "kind": "threshold_business_difference",
+    "context": "Open/Curve/Wire Wear L1",
+    "source_cell": "threshold!G9",
+    "runtime": 8.9,
+    "reference": 9.1,
+    "policy": "preserve_runtime; requires business decision"
+  },
+  {
+    "kind": "threshold_business_difference",
+    "context": "Tunnel/Tangent/Wire Wear L1",
+    "source_cell": "threshold!G14",
+    "runtime": 8.9,
+    "reference": 9.1,
+    "policy": "preserve_runtime; requires business decision"
+  },
+  {
+    "kind": "threshold_business_difference",
+    "context": "Tunnel/Curve/Wire Wear L1",
+    "source_cell": "threshold!G19",
+    "runtime": 8.9,
+    "reference": 9.1,
+    "policy": "preserve_runtime; requires business decision"
+  },
+  {
+    "kind": "mapping_missing_from_reference",
+    "context": "DRL UT",
+    "source_cell": "mapping",
+    "chainage_m": 44945.2,
+    "bracket": "487-004",
+    "count": 1,
+    "policy": "candidate_uses_current_mapping"
+  },
+  {
+    "kind": "mapping_missing_from_reference",
+    "context": "DRL UT",
+    "source_cell": "mapping",
+    "chainage_m": 44965.4,
+    "bracket": "487-005",
+    "count": 1,
+    "policy": "candidate_uses_current_mapping"
+  },
+  {
+    "kind": "mapping_missing_from_reference",
+    "context": "DRL UT",
+    "source_cell": "mapping",
+    "chainage_m": 44985.6,
+    "bracket": "487-006",
+    "count": 1,
+    "policy": "candidate_uses_current_mapping"
+  },
+  {
+    "kind": "mapping_missing_from_reference",
+    "context": "DRL UT",
+    "source_cell": "mapping",
+    "chainage_m": 45005.8,
+    "bracket": "487-007",
+    "count": 1,
+    "policy": "candidate_uses_current_mapping"
+  },
+  {
+    "kind": "mapping_missing_from_reference",
+    "context": "DRL UT",
+    "source_cell": "mapping",
+    "chainage_m": 45026.0,
+    "bracket": "487-BWA",
+    "count": 1,
+    "policy": "candidate_uses_current_mapping"
+  },
+  {
+    "kind": "reference_point_not_in_current_mapping",
+    "context": "DRL UT",
+    "source_cell": "reference E:G",
+    "chainage_m": 42496.0,
+    "bracket": "481-034",
+    "count": 1,
+    "policy": "preserve_in_audit; do_not_invent_mapping"
+  },
+  {
+    "kind": "reference_point_not_in_current_mapping",
+    "context": "DRL UT",
+    "source_cell": "reference E:G",
+    "chainage_m": 42522.0,
+    "bracket": "481-035",
+    "count": 1,
+    "policy": "preserve_in_audit; do_not_invent_mapping"
+  },
+  {
+    "kind": "reference_point_not_in_current_mapping",
+    "context": "DRL UT",
+    "source_cell": "reference E:G",
+    "chainage_m": 42763.0,
+    "bracket": "482-011",
+    "count": 1,
+    "policy": "preserve_in_audit; do_not_invent_mapping"
+  },
+  {
+    "kind": "reference_point_not_in_current_mapping",
+    "context": "DRL UT",
+    "source_cell": "reference E:G",
+    "chainage_m": 42799.0,
+    "bracket": "482-012",
+    "count": 2,
+    "policy": "preserve_in_audit; do_not_invent_mapping"
+  },
+  {
+    "kind": "reference_point_not_in_current_mapping",
+    "context": "DRL UT",
+    "source_cell": "reference E:G",
+    "chainage_m": 42836.0,
+    "bracket": "482-013",
+    "count": 2,
+    "policy": "preserve_in_audit; do_not_invent_mapping"
+  },
+  {
+    "kind": "reference_point_not_in_current_mapping",
+    "context": "DRL UT",
+    "source_cell": "reference E:G",
+    "chainage_m": 44871.0,
+    "bracket": "487-001",
+    "count": 1,
+    "policy": "preserve_in_audit; do_not_invent_mapping"
+  },
+  {
+    "kind": "reference_point_not_in_current_mapping",
+    "context": "DRL UT",
+    "source_cell": "reference E:G",
+    "chainage_m": 44898.0,
+    "bracket": "487-002",
+    "count": 1,
+    "policy": "preserve_in_audit; do_not_invent_mapping"
+  },
+  {
+    "kind": "reference_point_not_in_current_mapping",
+    "context": "DRL PL",
+    "source_cell": "reference E:G",
+    "chainage_m": 42496.0,
+    "bracket": "481-034",
+    "count": 1,
+    "policy": "preserve_in_audit; do_not_invent_mapping"
+  },
+  {
+    "kind": "reference_point_not_in_current_mapping",
+    "context": "DRL PL",
+    "source_cell": "reference E:G",
+    "chainage_m": 42522.0,
+    "bracket": "481-035",
+    "count": 1,
+    "policy": "preserve_in_audit; do_not_invent_mapping"
+  },
+  {
+    "kind": "reference_point_not_in_current_mapping",
+    "context": "DRL PL",
+    "source_cell": "reference E:G",
+    "chainage_m": 42734.0,
+    "bracket": "484-001",
+    "count": 1,
+    "policy": "preserve_in_audit; do_not_invent_mapping"
+  },
+  {
+    "kind": "reference_point_not_in_current_mapping",
+    "context": "DRL PL",
+    "source_cell": "reference E:G",
+    "chainage_m": 42872.0,
+    "bracket": "484-005",
+    "count": 2,
+    "policy": "preserve_in_audit; do_not_invent_mapping"
+  },
+  {
+    "kind": "reference_point_not_in_current_mapping",
+    "context": "DRL PL",
+    "source_cell": "reference E:G",
+    "chainage_m": 42905.0,
+    "bracket": "483-009",
+    "count": 1,
+    "policy": "preserve_in_audit; do_not_invent_mapping"
+  }
+]

@@ -298,4 +298,7 @@ def test_selected_context_overrides_source_labels_in_analysis_and_all_exports(tm
     assert raw.status_code == 200
     exported = pd.read_csv(io.BytesIO(raw.content))
     assert set(exported.line) == {"AEL"} and set(exported.track) == {"UT"}
-    pd.testing.assert_series_equal(exported.height1, frame.height1, check_names=False, atol=1e-9, rtol=0)
+    # The chart cache contains median representatives; exported measurements
+    # must match the complete cleaned source instead.
+    full_frame = analysis_endpoint._export_frame(analysis_endpoint.ANALYSIS_SESSIONS[session_id])
+    pd.testing.assert_series_equal(exported.height1, full_frame.height1, check_names=False, atol=1e-9, rtol=0)

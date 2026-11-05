@@ -55,6 +55,7 @@ class Job:
     total: int | None = None
     unit: str | None = None
     error: str | None = None
+    error_code: str | None = None
     created_at: float = field(default_factory=time.monotonic)
     started_at: float | None = None
     finished_at: float | None = None
@@ -62,6 +63,7 @@ class Job:
     result: Any = None
     filename: str | None = None
     path: Path | None = None
+    artifacts: list[Path] = field(default_factory=list)
     downloads: int = 0
     future: Any = None
     work: dict = field(default_factory=dict)
@@ -153,7 +155,7 @@ class JobManager:
             shutil.rmtree(candidate, ignore_errors=True)
         return root / f"process-{os.getpid()}-{uuid.uuid4().hex}"
 
-    def submit(self, kind, session_id, factory, revision=None):
+    def submit(self, kind, session_id, factory, revision=None, artifacts=()):
         """factory runs only after admission and returns the captured work."""
         with self.lock:
             self.cleanup()
@@ -163,7 +165,7 @@ class JobManager:
             if active >= 2:
                 raise JobCapacityError("One job is running and one is queued; try again shortly")
             work = factory()
-            job = Job(uuid.uuid4().hex, kind, session_id, revision)
+            job = Job(uuid.uuid4().hex, kind, session_id, revision, artifacts=list(artifacts))
             self.jobs[job.job_id] = job
             job.work["call"] = work
             job.future = self.executor.submit(self._run, job)
@@ -191,7 +193,10 @@ class JobManager:
         except Exception as exc:
             with self.lock:
                 job.status, job.stage = "failed", "failed"
-                job.error = str(getattr(exc, "detail", exc))
+                detail = getattr(exc, "detail", exc)
+                detail = detail() if callable(detail) else detail
+                job.error = str(detail.get("message", detail)) if isinstance(detail, dict) else str(detail)
+                job.error_code = detail.get("code") if isinstance(detail, dict) else None
         finally:
             with self.lock:
                 # A locked artifact must never retain an admission slot.
@@ -199,12 +204,14 @@ class JobManager:
                 if job.status != "ready":
                     job.result = None
                     self._remove_artifact(context.output_path())
+                    for artifact in job.artifacts:
+                        self._remove_artifact(artifact)
 
     def describe(self, job):
         now = job.finished_at or time.monotonic()
         return {key: getattr(job, key) for key in (
             "job_id", "kind", "client_session_id", "analysis_revision", "status",
-            "stage", "processed", "total", "unit", "error",
+            "stage", "processed", "total", "unit", "error", "error_code",
         )} | {"elapsed_seconds": round(now - job.created_at, 3),
               "stage_percent": round(min(job.processed / job.total, 1) * 100, 1)
               if job.total and job.total > 0 else None}
@@ -228,6 +235,8 @@ class JobManager:
                     job.status = job.stage = "cancelled"
                     job.finished_at = time.monotonic()
                     job.work.clear()
+                    for artifact in job.artifacts:
+                        self._remove_artifact(artifact)
                 else:
                     job.status = "cancelling"
             return self.describe(job)
@@ -265,6 +274,8 @@ class JobManager:
                 if job.finished_at is not None and not job.downloads and now - job.finished_at >= self.ttl_seconds:
                     if job.path:
                         self._remove_artifact(job.path)
+                    for artifact in job.artifacts:
+                        self._remove_artifact(artifact)
                     self.expired[key] = (job.client_session_id, now)
                     del self.jobs[key]
             # Tombstones are small, but still bounded in time and count.
@@ -284,6 +295,9 @@ class JobManager:
                         job.finished_at = time.monotonic()
                         job.work.clear()
         self.executor.shutdown(wait=True, cancel_futures=True)
+        for job in self.jobs.values():
+            for artifact in job.artifacts:
+                self._remove_artifact(artifact)
         shutil.rmtree(self.directory, ignore_errors=True)
         self.jobs.clear()
         self.pending_deletions.clear()

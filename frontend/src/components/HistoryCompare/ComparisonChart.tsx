@@ -10,12 +10,13 @@ interface ComparisonChartProps {
   selectedRow: ExceptionRecord | null;
   onClearSelection: () => void;
   sessionId: string;
+  onViewportChange?: (from: number, to: number) => void;
 }
 
 // User-defined Palette
 const CYCLE_COLORS = ['#d62728', '#1f77b4', '#2ca02c', '#ff7f0e', '#9467bd']; // Red, Blue, Green, Orange, Purple
 
-const ComparisonChart = ({ chartData, selectedRow, onClearSelection, sessionId }: ComparisonChartProps) => {
+const ComparisonChart = ({ chartData, selectedRow, onClearSelection, sessionId, onViewportChange }: ComparisonChartProps) => {
   const [layoutState, setLayoutState] = useState<Partial<Plotly.Layout>>({});
   const [showLegends, setShowLegends] = useState(true);
   const [showMaxLabel, setShowMaxLabel] = useState(true);
@@ -340,6 +341,13 @@ const ComparisonChart = ({ chartData, selectedRow, onClearSelection, sessionId }
                 style={{ width: '100%', height: '100%' }}
                 useResizeHandler={true}
                 config={{ responsive: true, scrollZoom: true, displaylogo: false }}
+                onRelayout={event => {
+                  const changes = event as Record<string, any>;
+                  const range = changes['xaxis.range'];
+                  const from = Number(range?.[0] ?? changes['xaxis.range[0]']);
+                  const to = Number(range?.[1] ?? changes['xaxis.range[1]']);
+                  if (Number.isFinite(from) && Number.isFinite(to)) onViewportChange?.(from, to);
+                }}
              />
         </Paper>
     </Box>

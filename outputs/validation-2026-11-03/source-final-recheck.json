@@ -1,0 +1,72 @@
+[
+  {
+    "Path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\Raw data\\TWL\\20260907_TWL_UT.csv",
+    "Hash": "54AB7EDE00922F56E29919518882381520D7181A9F233D4440B6726ABEA44E37",
+    "unchanged": true
+  },
+  {
+    "Path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\Raw data\\TWL\\20260630_TWL_UT.csv",
+    "Hash": "E2AB667196694F07023CEB273E4FE7014FCAB6A76165B5A0FEC592EA55FBE251",
+    "unchanged": true
+  },
+  {
+    "Path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\Raw data\\TML\\TML_D1_260410.datac",
+    "Hash": "DA226284648BBEC7C9E16C2D5D709AA6A39FB96FC6059C0AE88E9D85A54F48E0",
+    "unchanged": true
+  },
+  {
+    "Path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\02 Output Document\\TWL\\20260907_TWL_UT_MAINLINE_CEN_TSW_Exception_Report.xlsx",
+    "Hash": "F1BC6365EC49F8DE4B669E7DDEFD96EE8DE20A7779A629F0BD853BAC7CD1E8AF",
+    "unchanged": true
+  },
+  {
+    "Path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\DRL metadata.xlsx",
+    "Hash": "641477E23E3F9AFAE7B4D63A4829286F2F93680153D077F987B538367A4902CC",
+    "unchanged": true
+  },
+  {
+    "Path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\EAL metadata.xlsx",
+    "Hash": "D74F3C9A7D1FC4D9F0AC95288B993D24B9574D30218C791D6E519B871CD3CCF9",
+    "unchanged": true
+  },
+  {
+    "Path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\ISL metadata.xlsx",
+    "Hash": "CD65E09B69D2F59EAB283A8B30B7DD00503AD99F803611D8CEF14878981ED809",
+    "unchanged": true
+  },
+  {
+    "Path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\KTL metadata.xlsx",
+    "Hash": "82AF451A3124AA578DE146883B6BAF07356E12270C969244307DC93FE074DF08",
+    "unchanged": true
+  },
+  {
+    "Path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\LAR_AEL metadata.xlsx",
+    "Hash": "BEA986379F0584D648B90B19F513746E613E6917A8525568A2DB111FA49F586A",
+    "unchanged": true
+  },
+  {
+    "Path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\LAR_TCL metadata.xlsx",
+    "Hash": "BAA09191A3B4EEA07F9D8E6C500A57B7C218CE1EECCDD2EA99EE34D7DE35F112",
+    "unchanged": true
+  },
+  {
+    "Path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\TKL metadata.xlsx",
+    "Hash": "FDAD42C797C84AF15F4E28AE22F004D2AD4B7DAACE8CD09BB4C760161BEFF44D",
+    "unchanged": true
+  },
+  {
+    "Path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\TKS metadata.xlsx",
+    "Hash": "0B2EEFB27A3A29BB3E4A98F259E25A7EE01B7C76EF99C16F5975C82EEEFA238C",
+    "unchanged": true
+  },
+  {
+    "Path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\TML metadata.xlsx",
+    "Hash": "449F0BD788829BA755DF7D91F4627454DAEB79D1E9EE8F44E25D17C0A1690917",
+    "unchanged": true
+  },
+  {
+    "Path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\TWL metadata.xlsx",
+    "Hash": "9B582DC72F1EB9B14D819FB816082CD9972274BB2E57B6663915EEAC108FF3D5",
+    "unchanged": true
+  }
+]

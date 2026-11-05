@@ -1,12 +1,14 @@
 # 測試後續設計：Stagger、metadata 邊界與圖表互動
 
-- 日期：2026-10-29；狀態：Draft，供使用者審閱，尚未實作。
+- 日期：2026-10-29；狀態：已approve並完成程式實作／驗證，區間資料promotion另依scope批准。
 - 追蹤：DAV-26；延續 DAV-25，metadata 依賴 DAV-21。
 - 需求：`docs/requests/2026-10-29-followup-stagger-metadata-chart.md`。
 - 計畫：`docs/plans/2026-10-29-followup-stagger-metadata-chart-plan.md`。
 - 現況基線：master `15481bbe71c011153ac8fb1a57badc437348a4b3`。三名子代理完成 Stagger／metadata／圖表唯讀調查。
 
 ## 1. 本次確認的業務規則
+
+**實作後補充（優先於下文早期審閱假設）**：使用者確認無C/M分型的BWA／Fixed／Spring全部可視作Contact邊界，明確M仍為Messenger；AEL計算配置先skip；64格runtime差異為有意調整，保留現值。Contact審閱v2及最終batch-04依此產生31組候選。角色確認不等於所有連通／scope／coverage均已批准；正式provider契約及交付結果見 `docs/metadata-approved-intervals.md` 和本次request。
 
 使用者在本次對話依序更正及確認：
 

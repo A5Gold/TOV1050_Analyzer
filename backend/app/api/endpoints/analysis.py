@@ -34,7 +34,7 @@ from app.core.tov1050_contract import (
 )
 from app.core.tov1050_data_ingestion import TOV1050DataLoader
 from app.core.tov1050_metadata import TOV1050MetadataManager
-from app.core.metadata import MetadataManager
+from app.core.metadata import MetadataManager, STAGGER_MAGNITUDE_RULE_VERSION
 from app.core.analyzers import ExceptionDetector
 from app.core.exporter import ExcelExporter
 from app.core.tov1050_report_export import export_analysis_report
@@ -44,6 +44,7 @@ from app.core.chart_cache import ChartSource, WindowCache
 from app.core.chart_thresholds import build_threshold_segments, clip_threshold_segments
 from app.core.report_context import (ReportContextError, read_report_context,
                                      ensure_compatible_scopes, validate_algorithm_compatibility)
+from app.core.history_report_reader import read_history_report, read_chart_window
 from app.core.line_registry import normalize_context, normalize_line
 
 # Configure logging
@@ -158,8 +159,6 @@ LAST_ANALYSIS_RESULTS = {}
 LAST_RAW_DF = pd.DataFrame()
 LAST_ANALYSIS_SNAPSHOT = None
 LAST_ANALYSIS_SOURCE_PATH: Optional[str] = None
-LAST_COMPARE_RESULTS = pd.DataFrame()
-LAST_COMPARE_FILES = []
 LAST_ANALYSIS_PARAMS = {} # Store context for file naming
 LAST_METADATA_CAPABILITIES = None
 
@@ -284,6 +283,47 @@ def _snapshot_frame(snapshot):
     return frame if isinstance(frame, pd.DataFrame) else pd.DataFrame()
 
 
+def _export_frame(snapshot):
+    """Return the complete cleaned source frame for raw CSV and legacy exports.
+
+    Median analysis keeps only representatives in the session snapshot for the
+    chart. Raw CSV reloads the immutable source instead of pinning hundreds of
+    thousands of rows in every session.
+    """
+    if snapshot.get("analysis_mode") == "median" and snapshot.get("source_path"):
+        return _reload_cleaned_source(snapshot)
+    return _snapshot_frame(snapshot)
+
+
+def _report_chart_frame(snapshot):
+    """Use TOV1050's analyzed median for ChartData; keep TOV640 raw."""
+    params = snapshot.get("params") or {}
+    if (snapshot.get("analysis_mode") == "median"
+            and str(params.get("line", "")).strip().upper() in LINE_WORKBOOKS):
+        frame = snapshot.get("analysis_df")
+        if not isinstance(frame, pd.DataFrame) or frame.empty:
+            raise HTTPException(status_code=410, detail="Median analysis expired; run analysis again before exporting")
+        return frame
+    return _export_frame(snapshot)
+
+
+def _report_chart_metadata(snapshot, chart_df):
+    """Keep detector provenance separate from the report ChartData mode."""
+    aggregation = snapshot.get("aggregation_metadata") or {}
+    params = snapshot.get("params") or {}
+    median_report = (snapshot.get("analysis_mode") == "median"
+                     and str(params.get("line", "")).strip().upper() in LINE_WORKBOOKS)
+    metadata = {**aggregation,
+                "export_data_mode": "chainage_median" if median_report else "cleaned_raw",
+                "chart_row_count": len(chart_df)}
+    raw_count = aggregation.get("detection_points", aggregation.get("source_points"))
+    if raw_count is not None:
+        metadata["raw_row_count"] = raw_count
+    elif not median_report:
+        metadata["raw_row_count"] = len(chart_df)
+    return metadata
+
+
 def _assert_reportable(snapshot):
     if snapshot.get("analysis_mode") == "raw_overview":
         raise HTTPException(status_code=403, detail="Raw overview does not support exception report export")
@@ -296,7 +336,7 @@ def _validate_chart_mode(snapshot, mode):
             raise HTTPException(status_code=409, detail=f"This analysis uses {expected}; import again to change mode")
 
 
-def _reload_overview_source(snapshot):
+def _reload_cleaned_source(snapshot):
     path = Path(snapshot["source_path"])
     if not path.exists() or _file_digest(path) != snapshot["source_sha256"]:
         raise HTTPException(status_code=409, detail="Source file changed; import it again")
@@ -306,6 +346,12 @@ def _reload_overview_source(snapshot):
     if _file_digest(path) != snapshot["source_sha256"]:
         raise HTTPException(status_code=409, detail="Source file changed during reading; import it again")
     snapshot["source_stat"] = _source_stat(path)
+    for column, selected, source in (("Line", params["line"], "source_line"),
+                                     ("Track", params["track"], "source_track")):
+        if column in frame.columns:
+            frame[source] = frame[column].copy()
+        frame[column] = selected
+        frame[column.lower()] = selected
     # A cold raw detail must preserve the same chart context as its overview.
     # Never infer it from the device's display line (e.g. RED LINE).
     if snapshot.get("metadata_path"):
@@ -324,8 +370,15 @@ def _reload_overview_source(snapshot):
             frame[column] = value
         if _file_digest(metadata_path) != snapshot.get("metadata_sha256"):
             raise HTTPException(status_code=409, detail="Metadata changed during reading; import it again")
+    if snapshot.get("analysis_mode") == "median":
+        from app.core.chainage_reduction import annotate_raw_samples
+        frame = annotate_raw_samples(frame)
     _validate_raw_source(snapshot)
     return frame
+
+
+def _reload_overview_source(snapshot):
+    return _reload_cleaned_source(snapshot)
 
 
 def _source_stat(path):
@@ -587,6 +640,10 @@ def _analyze_sync(request: AnalyzeRequest, progress=None, publish=None):
             df = mapped
         if progress:
             progress("metadata_mapping", 1, 2, "steps")
+        if is_tov1050:
+            # Optional enrichment must not create reducer segments or change
+            # exception IDs. Required class/track mappings still precede it.
+            meta_mgr.defer_approved_enrichment = True
         mapped = detector._map_track_info(df, request.line, session, request.track)
         if isinstance(mapped, pd.DataFrame):
             df = mapped
@@ -603,10 +660,16 @@ def _analyze_sync(request: AnalyzeRequest, progress=None, publish=None):
         normalized_params.update(analysis_mode=request.analysis_mode, chart_data_mode=mode)
         aggregation_metadata = {}
         if request.analysis_mode == "median":
-            from app.core.chainage_reduction import reduce_chainage
-            df, aggregation_metadata = reduce_chainage(df, progress=progress)
+            from app.core.chainage_reduction import reduce_chainage, annotate_raw_samples
+            # Keep the complete cleaned frame for exception detection.  Median
+            # reduction is a chart representation only under the raw-data
+            # contract; it must never hide threshold crossings or peaks.
+            cleaned_df = annotate_raw_samples(df)
+            chart_df, aggregation_metadata = reduce_chainage(cleaned_df, progress=progress)
+            if is_tov1050:
+                chart_df = meta_mgr.map_approved_enrichment(chart_df, request.line, session, request.track)
             results, boundary_df = detector.analyze(
-                df, line=request.line, section=session, track=request.track,
+                cleaned_df, line=request.line, section=session, track=request.track,
                 date_str=request.date_str, task_no=request.task_no,
                 station_start=station_start, station_end=station_end,
                 metadata_mapped=True,
@@ -614,11 +677,32 @@ def _analyze_sync(request: AnalyzeRequest, progress=None, publish=None):
         else:
             results = {}
             boundary_df = meta_mgr.get_boundaries_for_plot(request.line, request.track, session)
+        if is_tov1050:
+            meta_mgr.approved_interval_provider().verify_sources()
+            # Diagnostic evidence is added after detection. It cannot split
+            # representative groups, change peaks, or select candidate values.
+            for records in results.values():
+                if records.empty:
+                    continue
+                evidence = [meta_mgr.enrichment_evidence(float(position), request.line, session, request.track)
+                            for position in records['maxLocation']]
+                for column in ("Overlap", "Tension Length", "Landmark"):
+                    records[column] = [item.get(column) for item in evidence]
+                records['metadata_enrichment'] = [json.dumps(item, ensure_ascii=False) for item in evidence]
         if _file_digest(data_path) != source_sha256 or _file_digest(metadata_file) != metadata_sha256:
             raise HTTPException(status_code=409, detail="Source or metadata changed during analysis; import again")
         aggregation_metadata.update(source_sha256=source_sha256, metadata_sha256=metadata_sha256,
-                                    source_points=source_points, representative_points=len(df),
+                                    source_points=source_points, representative_points=(len(chart_df) if request.analysis_mode == "median" else len(df)),
                                     analysis_mode=request.analysis_mode)
+        if request.analysis_mode == "median":
+            aggregation_metadata.update(
+                detection_algorithm="cleaned_raw_signed_stagger_v1",
+                detection_data_mode="cleaned_raw",
+                detection_points=source_points,
+                export_data_mode="chainage_median" if is_tov1050 else "cleaned_raw",
+                chart_aggregation_version=aggregation_metadata.get("aggregation_version"),
+                stagger_magnitude_rule_version=STAGGER_MAGNITUDE_RULE_VERSION,
+            )
         source_path = str(data_path.resolve())
         revision = uuid.uuid4().hex
         snapshot = {
@@ -632,10 +716,11 @@ def _analyze_sync(request: AnalyzeRequest, progress=None, publish=None):
             "chart_lock": threading.RLock(),
         }
         if request.analysis_mode == "median":
-            snapshot["analysis_df"] = df
-            # Compatibility alias: this is the compact representative frame,
-            # never the discarded full source frame.
-            snapshot["raw_df"] = df
+            snapshot["analysis_df"] = chart_df
+            # Legacy clients read raw_df as the compact chart frame.  Keep the
+            # alias while the complete cleaned source remains reloadable only.
+            snapshot["raw_df"] = chart_df
+            snapshot["raw_source_available"] = True
         else:
             # Only this local variable holds the complete raw frame.
             payload, resolution = build_chart_payload(df, _chart_columns(df), progress=progress)
@@ -768,24 +853,27 @@ def _export_job_work(snapshot, mode):
     revision = snapshot["analysis_revision"]
     _assert_reportable(snapshot)
     _validate_chart_mode(snapshot, mode)
-    raw_df, results = _snapshot_frame(snapshot), snapshot["results"]
+    results = snapshot["results"]
 
     def work(context):
-        context.progress("exporting", 0, len(raw_df), "rows")
-        chart_df, statistics = raw_df, None
+        chart_df = _report_chart_frame(snapshot)
+        context.progress("exporting", 0, len(chart_df), "rows")
+        statistics = None
         metadata = {"analysis_revision": revision, "chart_data_mode": mode,
-                    "raw_row_count": len(raw_df), **snapshot.get("aggregation_metadata", {})}
+                    **_report_chart_metadata(snapshot, chart_df)}
         metadata.update({key: params.get(key) for key in ("line", "branch", "direction", "track", "section",
                          "session", "date_str", "task_no", "station_start", "station_end") if params.get(key) is not None})
         if capabilities:
             metadata.update(metadata_capabilities=json.dumps(capabilities, ensure_ascii=False),
-                            enrichment_version="tov640-first-nonempty-v1")
+                              enrichment_version=capabilities.get("enrichment_version", "tov640-first-nonempty-v1"))
         if mode == "chainage_mean" and "analysis_mode" not in snapshot:
             from app.core.chainage_aggregation import aggregate_chainage
-            chart_df, aggregation_metadata = aggregate_chainage(raw_df, progress=context.progress)
+            chart_df, aggregation_metadata = aggregate_chainage(chart_df, progress=context.progress)
             statistics = chart_df
             metadata.update(aggregation_metadata)
             metadata["grouped_row_count"] = len(chart_df)
+            metadata["chart_row_count"] = len(chart_df)
+            metadata["export_data_mode"] = "chainage_mean"
         output = context.output_path()
         export_analysis_report(results, chart_df=chart_df, metadata=metadata,
                                line=params.get("line", ""), output_path=output,
@@ -956,209 +1044,180 @@ async def release_chart_cache(request: ReportJobRequest):
     return {"status": "success"}
 
 
-@router.post("/analyze/compare")
-async def compare_history(files: List[UploadFile] = File(...)):
+def _compare_history_files(paths, names, context):
+    started = time.perf_counter()
+    reports = []
+    read_metrics = []
+    total = len(paths)
+    # Reject known scope/version disagreements from small sheets before
+    # spending time decoding hundreds of thousands of ChartData rows.
+    preflight_contexts = []
+    for index, (path, name) in enumerate(zip(paths, names), 1):
+        context.progress("validating_scope", index - 1, total, "reports")
+        preflight_contexts.append(read_history_report(path, name, preflight=True).context)
+    ensure_compatible_scopes(preflight_contexts, source="History Comparison")
+    if len({item.section.strip().upper() for item in preflight_contexts if item.section}) > 1:
+        raise ReportContextError("History Comparison: incompatible Section. Compare each section separately.",
+                                 "INCOMPATIBLE_REPORT_SCOPE")
+    validate_algorithm_compatibility(preflight_contexts)
+    for index, (path, name) in enumerate(zip(paths, names), 1):
+        read_started = time.perf_counter()
+        context.progress("reading_report", index - 1, total, "reports")
+        reports.append(read_history_report(path, name,
+            progress=lambda rows: context.progress(f"reading_report_{index}", rows, None, "rows"),
+            cache_chart=hasattr(context, "job")))
+        read_metrics.append({"filename": name, "chart_rows": reports[-1].chart_rows,
+                             "exception_rows": len(reports[-1].exceptions),
+                             "read_seconds": round(time.perf_counter() - read_started, 3),
+                             "cumulative_elapsed_seconds": round(time.perf_counter() - started, 3)})
+    context.progress("validating_scope", total, total, "reports")
+    contexts = [report.context for report in reports]
+    report_context = ensure_compatible_scopes(contexts, source="History Comparison")
+    if len({item.section.strip().upper() for item in contexts if item.section}) > 1:
+        raise ReportContextError("History Comparison: incompatible Section. Compare each section separately.",
+                                 "INCOMPATIBLE_REPORT_SCOPE")
+    algorithms_verified = validate_algorithm_compatibility(contexts)
+    reports.sort(key=lambda report: re.search(r"(\d{8})", report.filename).group(1)
+                 if re.search(r"(\d{8})", report.filename) else "00000000", reverse=True)
+    accumulator = reports[0].exceptions
+    finder = RepeatedExceptionFinder()
+    for index, report in enumerate(reports[1:], 1):
+        context.progress("comparing", index - 1, len(reports) - 1, "reports")
+        if accumulator.empty or report.exceptions.empty:
+            accumulator = pd.DataFrame()
+            break
+        accumulator = finder.find_repeated(accumulator, report.exceptions, new_id_label=f"Previous {index}")
+    context.progress("comparing", max(len(reports) - 1, 0), max(len(reports) - 1, 1), "reports")
+    final_results, breakdown = {}, {}
+    if not accumulator.empty:
+        for exception_type, group in accumulator.groupby("exception type"):
+            breakdown[str(exception_type)] = len(group)
+            final_results[str(exception_type)] = group.replace({np.nan: None}).to_dict(orient="records")
+    file_names = [report.filename for report in reports]
+    latest = reports[0].context
+    date_match = re.match(r"(\d{4})[-/]?(\d{2})[-/]?(\d{2})", latest.run_date)
+    date_str = "".join(date_match.groups()) if date_match else latest.run_date
+    metadata = {"date_str": date_str, "line": latest.line, "track": latest.track,
+                "branch": latest.branch, "direction": latest.direction, "section": latest.section,
+                "session": latest.legacy_session, "task_no": latest.task_no,
+                "station_start": latest.station_start, "station_end": latest.station_end}
+    if hasattr(context, "job"):
+        context.job.work["history_paths"] = [report.path for report in reports]
+    return {
+        "status": "success", "repeated": final_results,
+        "stats": {"total": sum(breakdown.values()), "breakdown": breakdown},
+        "chain_order": file_names,
+        "chart_data": [None] * len(reports),
+        "context": {"line": report_context.line, "branch": report_context.branch,
+                    "direction": report_context.direction, "section": report_context.section},
+        "algorithm_provenance": "verified" if algorithms_verified else "unknown",
+        "chart_domains": [report.chart_domain for report in reports],
+        "metadata": metadata,
+        "metrics": {"reports": read_metrics, "elapsed_seconds": round(time.perf_counter() - started, 3)},
+    }
+
+
+@router.post("/analyze/compare/jobs", status_code=202)
+async def create_history_compare_job(files: List[UploadFile] = File(...), client_session_id: str = Query(..., min_length=1)):
     """
     Compare multiple uploaded Analysis Reports using the "Chain Comparison" (Iterative) Method.
     """
-    global LAST_COMPARE_RESULTS, LAST_COMPARE_FILES, LAST_ANALYSIS_PARAMS
-
     if not files or len(files) < 2:
         raise HTTPException(status_code=400, detail="Please upload at least 2 files to compare.")
-    
+    if not client_session_id.strip():
+        raise HTTPException(status_code=422, detail="client_session_id is required")
+    admitted = False
+    paths, names = [], []
     try:
-        # 1. Sort files by date (Descending: Newest -> Oldest)
-        def get_date(filename):
-            match = re.search(r'(\d{8})', filename)
-            return match.group(1) if match else "00000000"
-        
-        sorted_files = sorted(files, key=lambda f: get_date(f.filename), reverse=True)
-        file_names = [f.filename for f in sorted_files]
-        print(f"Comparing chain (Newest -> Oldest): {file_names}")
-
-        def context_from_bytes(content, filename):
-            from openpyxl import load_workbook
-            workbook = load_workbook(io.BytesIO(content), read_only=True, data_only=True)
-            sections = set()
-            class ObservedSheet:
-                def __init__(self, sheet):
-                    self.sheet = sheet
-
-                def iter_rows(self, **kwargs):
-                    rows = self.sheet.iter_rows(**kwargs)
-                    headers = next(rows, ())
-                    yield headers
-                    section_column = next((i for i, value in enumerate(headers)
-                                           if str(value).strip().lower() == "section"), None)
-                    for row in rows:
-                        if section_column is not None and section_column < len(row) and row[section_column]:
-                            sections.add(str(row[section_column]).strip().upper())
-                        yield row
-
-            class ObservedWorkbook:
-                sheetnames = workbook.sheetnames
-
-                def __getitem__(self, name):
-                    return ObservedSheet(workbook[name])
-            try:
-                context = read_report_context(ObservedWorkbook(), filename, include_chart=True)
-                if len(sections) > 1:
-                    raise ReportContextError(f"{filename}: multiple Section values; compare each section separately.",
-                                             "INCOMPATIBLE_REPORT_SCOPE")
-                return context
-            finally:
-                workbook.close()
-
-        contexts = []
-        for uploaded in sorted_files:
-            content = await uploaded.read()
-            await uploaded.seek(0)
-            contexts.append(await run_in_threadpool(context_from_bytes, content, uploaded.filename or ""))
-        report_context = ensure_compatible_scopes(contexts, source="History Comparison")
-        known_sections = {context.section.strip().upper() for context in contexts if context.section}
-        if len(known_sections) > 1:
-            raise ReportContextError("History Comparison: incompatible Section. Compare each section separately.",
-                                     "INCOMPATIBLE_REPORT_SCOPE")
-        algorithms_verified = validate_algorithm_compatibility(contexts)
-
-        # Helper to load all sheets into one DF
-        async def load_combined_df(file: UploadFile) -> pd.DataFrame:
-            content = await file.read()
-            await file.seek(0) 
-            excel = pd.ExcelFile(io.BytesIO(content))
-            
-            dfs = []
-            for sheet in excel.sheet_names:
-                if sheet in ['Summary', 'Previous', 'Comparison Report', 'ChartData',
-                             'ExceptionProvenance', 'ChainageStatistics'] or sheet.startswith('_'):
-                    continue
-                
-                df = pd.read_excel(excel, sheet_name=sheet)
-                if df.empty: continue
-                
-                # Phase 10.10.I: Normalize column names BEFORE checking for 'exception type'
-                # This prevents "The column label 'exception type' is not unique" error
-                column_renames = {
-                    'ID': 'id',
-                    'Exception Type': 'exception type',
-                    'MaxValue': 'maxValue',
-                    'MaxLocation': 'maxLocation',
-                    'Length': 'length',
-                    'Level': 'level',
-                    'Run Date': 'task_run_date',
-                    'Line': 'line',
-                    'Track': 'track',
-                    'Task No': 'task_no',
-                    'St. Start': 'station_start',
-                    'St. End': 'station_end',
-                }
-                df = df.rename(columns={k: v for k, v in column_renames.items() if k in df.columns})
-                
-                if 'exception type' not in df.columns:
-                    df['exception type'] = sheet
-                
-                dfs.append(df)
-            
-            if not dfs:
-                return pd.DataFrame()
-            return pd.concat(dfs, ignore_index=True)
-
-        async def load_chart_data(file: UploadFile) -> Optional[Dict[str, List]]:
-            content = await file.read()
-            await file.seek(0)
-            excel = pd.ExcelFile(io.BytesIO(content))
-            
-            if 'ChartData' in excel.sheet_names:
-                df = pd.read_excel(excel, sheet_name='ChartData')
-                return df.replace({np.nan: None}).to_dict(orient='list')
-            return None
-
-        finder = RepeatedExceptionFinder()
-        
-        # 2. Initialize Accumulator with the Newest File (Index 0)
-        accumulator_df = await load_combined_df(sorted_files[0])
-        
-        # Load Chart Data for ALL files
-        all_charts = []
-        for f in sorted_files:
-            c_data = await load_chart_data(f)
-            all_charts.append(c_data) # Can be None
-
-        if accumulator_df.empty:
-            return {"status": "success", "repeated": {}, "message": "Newest file is empty"}
-
-        # 3. Chain Iteration
-        for i in range(1, len(sorted_files)):
-            prev_file = sorted_files[i]
-            prev_df = await load_combined_df(prev_file)
-            
-            if prev_df.empty:
-                accumulator_df = pd.DataFrame()
-                break
-            
-            # Perform intersection with Newest as Base, Previous as Target
-            # Label the matched ID as "Previous {i}"
-            col_label = f"Previous {i}"
-            accumulator_df = finder.find_repeated(accumulator_df, prev_df, new_id_label=col_label)
-            
-            # Survival Check
-            if accumulator_df.empty:
-                break
-        
-        # Cache for Export
-        LAST_COMPARE_RESULTS = accumulator_df
-        LAST_COMPARE_FILES = file_names
-        
-        # Workbook identity is authoritative; filename is only the reader's
-        # validated fallback. Unknown legacy fields remain unknown.
-        latest = contexts[0]
-        LAST_ANALYSIS_PARAMS = {
-            'date_str': latest.run_date, 'line': latest.line, 'track': latest.track,
-            'section': latest.section, 'session': latest.legacy_session, 'branch': latest.branch,
-            'task_no': latest.task_no, 'station_start': latest.station_start, 'station_end': latest.station_end,
-        }
-        
-        # 4. Process Results & Stats
-        final_results = {}
-        stats_breakdown = {}
-        
-        if not accumulator_df.empty:
-            # Group by exception type
-            for exc_type, group in accumulator_df.groupby('exception type'):
-                # Stats
-                stats_breakdown[exc_type] = len(group)
-                
-                # Replace NaNs
-                recs = group.replace({np.nan: None}).to_dict(orient='records')
-                final_results[exc_type] = recs
-
-        # Calculate Total
-        total_count = sum(stats_breakdown.values())
-
-        return {
-            "status": "success",
-            "repeated": final_results,
-            "stats": {
-                "total": total_count,
-                "breakdown": stats_breakdown
-            },
-            "chain_order": file_names,
-            "chart_data": all_charts,
-            "context": {"line": report_context.line, "branch": report_context.branch,
-                         "direction": report_context.direction, "section": report_context.section},
-            "algorithm_provenance": "verified" if algorithms_verified else "unknown",
-        }
-
+        for uploaded in files:
+            suffix = Path(uploaded.filename or "report.xlsx").suffix or ".xlsx"
+            path = JOBS.directory / f"history-{uuid.uuid4().hex}{suffix}"
+            paths.append(path)
+            with path.open("wb") as stream:
+                while chunk := await uploaded.read(1024 * 1024):
+                    await run_in_threadpool(stream.write, chunk)
+            names.append(uploaded.filename or path.name)
+        def capture():
+            return lambda context: _compare_history_files(paths, names, context)
+        result = JOBS.submit("history_compare", client_session_id, capture,
+                             artifacts=[*paths, *(path.with_suffix(".chart.bin") for path in paths)])
+        admitted = True
+        return result
     except ReportContextError as exc:
         raise HTTPException(status_code=422, detail=exc.detail()) from exc
-    except ValueError as e:
-        raise HTTPException(status_code=422, detail=str(e)) from e
+    except (JobCapacityError, OSError) as exc:
+        if isinstance(exc, JobCapacityError):
+            _job_error(exc)
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
     except HTTPException:
         raise
     except Exception as e:
         import traceback
         traceback.print_exc()
         raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        if not admitted:
+            for path in paths:
+                JOBS._remove_artifact(path)
+
+
+@router.post("/analyze/compare")
+async def compare_history(files: List[UploadFile] = File(...)):
+    """Compatibility endpoint; the desktop uses the bounded background-job API."""
+    if len(files) < 2:
+        raise HTTPException(status_code=400, detail="Please upload at least 2 files to compare.")
+    import tempfile
+    class CompatibilityContext:
+        @staticmethod
+        def progress(*args):
+            pass
+    def compare(paths, names):
+        return _compare_history_files(paths, names, CompatibilityContext())
+    try:
+        with tempfile.TemporaryDirectory(prefix="tov1050-history-") as directory:
+            paths, names = [], []
+            for index, uploaded in enumerate(files):
+                path = Path(directory) / f"{index}.xlsx"
+                path.write_bytes(await uploaded.read())
+                paths.append(path)
+                names.append(uploaded.filename or path.name)
+            return await run_in_threadpool(compare, paths, names)
+    except ReportContextError as exc:
+        raise HTTPException(status_code=422, detail=exc.detail()) from exc
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+
+@router.get("/analyze/compare/jobs/{job_id}/chart")
+async def get_history_chart(job_id: str, client_session_id: str = Query(..., min_length=1),
+                            cycle: int = Query(0, ge=0),
+                            from_m: Optional[float] = Query(None, allow_inf_nan=False),
+                            to_m: Optional[float] = Query(None, allow_inf_nan=False),
+                            max_points: int = Query(5000, ge=100, le=5000),
+                            preserve_m: List[float] = Query(default=[])):
+    try:
+        with JOBS.lock:
+            job = JOBS.get(job_id, client_session_id)
+            if job.kind != "history_compare" or job.status != "ready":
+                raise JobNotReady("Comparison has not completed")
+            paths = job.work["history_paths"]
+            if cycle >= len(paths):
+                raise HTTPException(status_code=422, detail="Invalid comparison cycle")
+            domain = job.result["chart_domains"][cycle]
+            if domain is None:
+                return {"chart_data": None, "chart_resolution": {"source_points": 0, "returned_points": 0}}
+            lower = domain[0] if from_m is None else from_m
+            upper = domain[1] if to_m is None else to_m
+            job.downloads += 1
+        try:
+            payload, resolution = await run_in_threadpool(
+                partial(read_chart_window, paths[cycle], lower, upper, max_points=max_points,
+                        preserve=tuple(preserve_m[:16])))
+            return {"chart_data": payload, "chart_resolution": resolution}
+        finally:
+            JOBS.release_download(job)
+    except (JobMissing, JobExpired, JobNotReady) as exc:
+        _job_error(exc)
 
 @router.post("/export/compare/generate")
 async def generate_compare_report(request: GenerateExportRequest):
@@ -1259,23 +1318,32 @@ async def generate_compare_report(request: GenerateExportRequest):
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.get("/export/compare")
-async def export_compare_report():
+async def export_compare_report(job_id: str = Query(..., min_length=1),
+                                client_session_id: str = Query(..., min_length=1)):
     """
     Download the last comparison result.
     """
-    if LAST_COMPARE_RESULTS.empty:
-        raise HTTPException(status_code=400, detail="No comparison results available. Run comparison first.")
-    
     try:
-        excel_file = ExcelExporter.export_history_compare(LAST_COMPARE_RESULTS, LAST_COMPARE_FILES)
-        
-        p = LAST_ANALYSIS_PARAMS
+        with JOBS.lock:
+            job = JOBS.get(job_id, client_session_id)
+            if job.kind != "history_compare" or job.status != "ready":
+                raise JobNotReady("Comparison has not completed")
+            result = job.result
+            frame = pd.DataFrame([row for records in result["repeated"].values() for row in records])
+            if frame.empty:
+                raise HTTPException(status_code=400, detail="No comparison results available.")
+            file_names = result["chain_order"]
+            params = result["metadata"]
+    except (JobMissing, JobExpired, JobNotReady) as exc:
+        _job_error(exc)
+    try:
+        excel_file = await run_in_threadpool(ExcelExporter.export_history_compare, frame, file_names)
+        p = params
         date_s = p.get('date_str', 'UnknownDate')
         line = p.get('line', 'UnknownLine')
         track = p.get('track', 'UnknownTrack')
         section = p.get('section', 'UnknownSection')
-        count = len(LAST_COMPARE_RESULTS) # Row count
-        file_count = len(LAST_COMPARE_FILES) # File count
+        file_count = len(file_names)
         
         filename = generate_filename(
             date_str=date_s,
@@ -1313,11 +1381,14 @@ async def export_report():
     try:
         report_metadata = ({
             "metadata_capabilities": json.dumps(LAST_METADATA_CAPABILITIES, ensure_ascii=False),
-            "enrichment_version": "tov640-first-nonempty-v1",
+            "enrichment_version": LAST_METADATA_CAPABILITIES.get("enrichment_version", "tov640-first-nonempty-v1"),
         } if LAST_METADATA_CAPABILITIES else None)
         if LAST_ANALYSIS_SNAPSHOT:
-            report_metadata = {**(report_metadata or {}), **LAST_ANALYSIS_SNAPSHOT.get("aggregation_metadata", {})}
-        excel_file = export_analysis_report(LAST_ANALYSIS_RESULTS, chart_df=(_snapshot_frame(LAST_ANALYSIS_SNAPSHOT) if LAST_ANALYSIS_SNAPSHOT else LAST_RAW_DF),
+            chart_df = _report_chart_frame(LAST_ANALYSIS_SNAPSHOT)
+            report_metadata = {**(report_metadata or {}), **_report_chart_metadata(LAST_ANALYSIS_SNAPSHOT, chart_df)}
+        else:
+            chart_df = LAST_RAW_DF
+        excel_file = export_analysis_report(LAST_ANALYSIS_RESULTS, chart_df=chart_df,
                                            metadata=report_metadata, line=LAST_ANALYSIS_PARAMS.get('line', ''))
         
         p = LAST_ANALYSIS_PARAMS
@@ -1343,6 +1414,8 @@ async def export_report():
             'Content-Disposition': f'attachment; filename="{filename}"; filename*=utf-8\'\'{encoded_filename}'
         }
         return StreamingResponse(_download_body(excel_file, line), headers=headers, media_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    except HTTPException:
+        raise
     except Exception as e:
         import traceback
         traceback.print_exc()
@@ -1354,14 +1427,13 @@ async def generate_report_from_data(request: GenerateAnalysisReportRequest):
     Generate Analysis Report from frontend data (Stateful-Safe).
     """
     try:
-        # Prefer the complete raw frame captured for this analysis tab.  The
-        # chart payload is intentionally downsampled for rendering and must
-        # not become the report's raw ChartData.
+        # Use the analysis median for TOV1050 report ChartData, never the
+        # frontend's bounded chart payload. TOV640 reports remain complete.
         chart_df = None
         state = _state_for(request.client_session_id)
         if state is not None:
             _assert_reportable(state)
-            chart_df = _snapshot_frame(state)
+            chart_df = await run_in_threadpool(_report_chart_frame, state)
         elif request.client_session_id:
             raise HTTPException(status_code=410, detail="Analysis expired; run analysis again before exporting")
         elif request.chart_data:
@@ -1372,10 +1444,10 @@ async def generate_report_from_data(request: GenerateAnalysisReportRequest):
         if state and state.get("metadata_capabilities"):
             report_metadata = {
                 "metadata_capabilities": json.dumps(state["metadata_capabilities"], ensure_ascii=False),
-                "enrichment_version": "tov640-first-nonempty-v1",
+                "enrichment_version": state["metadata_capabilities"].get("enrichment_version", "tov640-first-nonempty-v1"),
             }
         if state:
-            report_metadata = {**(report_metadata or {}), **state.get("aggregation_metadata", {})}
+            report_metadata = {**(report_metadata or {}), **_report_chart_metadata(state, chart_df)}
         export_params = {**(state.get("params", {}) if state else {}), **request.params}
         excel_file = await run_in_threadpool(export_analysis_report, state["results"] if state else request.exceptions, chart_df=chart_df,
                                              metadata=report_metadata, line=export_params.get('line', ''))
@@ -1451,7 +1523,7 @@ async def export_raw_data(
     # an explicit legacy export source and must take precedence over any
     # stale snapshot left by an earlier request.
     export_frame = (LAST_RAW_DF if isinstance(LAST_RAW_DF, pd.DataFrame) and not LAST_RAW_DF.empty
-                    else _snapshot_frame(LAST_ANALYSIS_SNAPSHOT) if LAST_ANALYSIS_SNAPSHOT
+                    else _export_frame(LAST_ANALYSIS_SNAPSHOT) if LAST_ANALYSIS_SNAPSHOT
                     else LAST_RAW_DF)
     if export_frame.empty:
         raise HTTPException(status_code=400, detail="No data available. Run analysis first.")
@@ -1555,11 +1627,11 @@ async def export_raw_data_generate(request: ExportRawRequest):
         # frontend chart payload may be envelope-sampled, so it is only a
         # backward-compatible fallback when no tab state exists.
         state = _state_for(request.client_session_id)
-        if state is not None and not _snapshot_frame(state).empty:
+        if state is not None:
             _assert_reportable(state)
-            df = _snapshot_frame(state)
-        elif state and state.get("analysis_mode") == "raw_overview":
-            raise HTTPException(status_code=403, detail="CSV export is disabled in raw overview")
+            df = await run_in_threadpool(_export_frame, state)
+            if df.empty:
+                raise HTTPException(status_code=410, detail="Analysis expired; run analysis again before exporting")
         elif request.client_session_id:
             raise HTTPException(status_code=410, detail="Analysis expired; run analysis again before exporting")
         else:

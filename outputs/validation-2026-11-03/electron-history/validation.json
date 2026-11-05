@@ -1,0 +1,120 @@
+{
+  "entry": "real source Electron + real backend + Vite proxy, no intercepted API",
+  "status": "passed",
+  "runtime": {
+    "database_path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\validation-2026-11-03\\electron-history\\isolated.db",
+    "database_directory": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\validation-2026-11-03\\electron-history",
+    "config_directory": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config",
+    "mode": "standard",
+    "packaging": {
+      "recommended_target": "dir",
+      "current_target": "dir",
+      "writable_data_root": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\validation-2026-11-03\\electron-history",
+      "portable_database_pattern": "<packaged app root>\\data\\analysis.db",
+      "single_exe_note": "Single exe packages must store SQLite data in an external writable folder such as %APPDATA%; embedded executable resources are not a database storage location."
+    }
+  },
+  "submit_http": 202,
+  "submit_seconds": 12.977069299999995,
+  "job": {
+    "job_id": "381262357ba94b02ab6f91652d0ef5b5",
+    "kind": "history_compare",
+    "client_session_id": "mw0b4bj4juabxs1mmup",
+    "analysis_revision": null,
+    "status": "queued",
+    "stage": "queued",
+    "processed": 0,
+    "total": null,
+    "unit": null,
+    "error": null,
+    "error_code": null,
+    "elapsed_seconds": 0,
+    "stage_percent": null
+  },
+  "final_job": {
+    "job_id": "381262357ba94b02ab6f91652d0ef5b5",
+    "kind": "history_compare",
+    "client_session_id": "mw0b4bj4juabxs1mmup",
+    "analysis_revision": null,
+    "status": "ready",
+    "stage": "ready",
+    "processed": 1,
+    "total": 1,
+    "unit": "reports",
+    "error": null,
+    "error_code": null,
+    "elapsed_seconds": 877.641,
+    "stage_percent": 100
+  },
+  "total_compare_seconds": 895.1579009,
+  "status_p95_seconds": 0.4741528999999864,
+  "line_options": [
+    "EAL",
+    "TML",
+    "AEL",
+    "TCL",
+    "KTL",
+    "ISL",
+    "TWL",
+    "TKL",
+    "DRL"
+  ],
+  "save_http": 200,
+  "save_result": {
+    "status": "success",
+    "message": "Saved 15 repeated records",
+    "saved_count": 15,
+    "filtered_mock_count": 0
+  },
+  "postchecks": {
+    "status": "passed",
+    "job_id": "381262357ba94b02ab6f91652d0ef5b5",
+    "database_path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\validation-2026-11-03\\electron-history\\isolated.db",
+    "repeated_rows": 15,
+    "overviews": [
+      {
+        "source_points": 838859,
+        "returned_points": 1469,
+        "strategy": "min_max_envelope",
+        "from_m": 146.2,
+        "to_m": 16851,
+        "target_points": 5000
+      },
+      {
+        "source_points": 830792,
+        "returned_points": 1493,
+        "strategy": "min_max_envelope",
+        "from_m": 318,
+        "to_m": 16829.2,
+        "target_points": 5000
+      }
+    ],
+    "details": [
+      {
+        "source_points": 2784,
+        "returned_points": 2784,
+        "strategy": "raw",
+        "from_m": 5257.8,
+        "to_m": 5314,
+        "target_points": 5000
+      },
+      {
+        "source_points": 2820,
+        "returned_points": 2820,
+        "strategy": "raw",
+        "from_m": 5257.8,
+        "to_m": 5314,
+        "target_points": 5000
+      }
+    ],
+    "export_bytes": 7904,
+    "save": {
+      "status": "success",
+      "message": "Saved 15 repeated records",
+      "saved_count": 15,
+      "filtered_mock_count": 0
+    },
+    "api_query_total": 15,
+    "read_only_sqlite_reopen": true
+  }
+}

@@ -15,6 +15,7 @@ export interface GuideMatrixRow {
 export const operatorNavItems: GuideNavItem[] = [
   { id: 'operator-workflow', label: '工作流程' },
   { id: 'operator-tov1050-input', label: '雙系統輸入' },
+  { id: 'operator-metadata', label: 'Metadata 格式與路徑' },
   { id: 'operator-chart', label: '圖表與資料品質' },
   { id: 'operator-version-difference', label: 'Version Difference' },
   { id: 'operator-threshold', label: 'Threshold' },
@@ -132,8 +133,8 @@ export const tov1050InputRows: GuideMatrixRow[] = [
 export const measurementFlow: GuideFlowStep[] = [
   { title: '格式專屬清洗', detail: 'DATAC 與 CSV 分別處理 header、invalid、修剪及座標，統一公尺與 channel 名稱。' },
   { title: 'Context 與 metadata', detail: '保存主線／分支／方向、來源列、pass/segment；依核准範圍取得 Class、Track Type 與門檻。' },
-  { title: '中位實測樣本', detail: '相鄰精確同 chainage 群內，每個 channel 選一個真實 finite 中位樣本；不跨 gap、pass 或 context 混合。' },
-  { title: '判定與報表', detail: 'detector、Excel 與 ChartData 使用同 revision 的代表資料；圖表顯示取樣不改判定或匯出。' },
+  { title: '完整 raw 判定', detail: '每筆清理後量測均參與例外判定，保留來源缺口、pass 與 context 邊界；Left／Right 使用共用門檻絕對值。' },
+  { title: '圖表與報表', detail: 'TOV1050 偵測與例外明細使用完整清理後資料；例外報表 ChartData 使用同 revision 的中位代表資料，History Compare 讀同一報表。獨立 raw CSV 保留完整資料。' },
 ];
 
 export const dualSystemCleaningRows: GuideMatrixRow[] = [
@@ -156,7 +157,7 @@ export const chartContractRows: GuideMatrixRow[] = [
 
 export const metadataCanonicalRows: GuideMatrixRow[] = [
   { cells: ['Threshold schema', '`Class`、`Track Type`、`Exc Type` 與各異常 L1/L2/L3 欄位。'] },
-  { cells: ['Input formats', 'TOV1050 long table 與 TOV640 legacy wide table 都先轉成 canonical model。'] },
+  { cells: ['Input formats', '正式 TOV1050 使用 wide Excel，方向頁有 11 欄獨立區間清單；Threshold 頁另行讀取。保留舊 long／7 欄及 TOV640 legacy 格式 adapter，不代表新檔應沿用舊格式。'] },
   { cells: ['Mixed workbook', '混合欄位、缺欄、非數值或 threshold 順序錯誤會 fail closed，錯誤需帶 sheet／列號。'] },
   { cells: ['Threshold 空值', 'Class 未定義才 fallback both；Class 已定義但 threshold 為 NaN 不 fallback。沒有配置的 level 不偵測亦不畫線。'] },
   { cells: ['Write-back', '原 metadata 不靜默覆寫；先輸出候選、provenance 與 audit，確認核准來源及端點政策後再安排寫回。'] },
@@ -188,7 +189,7 @@ export const apiOwnershipRows: GuideMatrixRow[] = [
 
 export const contractRows: GuideMatrixRow[] = [
   { cells: ['共同報表 context', '逐筆保留主 line＋branch＋direction＋section、task/stations 與來源標籤；來源系統與 run/date context 由 catalog／_Metadata 保存。LMC/TKS legacy aliases 由來源 adapter 解析，不全域替換 line 字串。'] },
-  { cells: ['Algorithm provenance', '_Metadata 保存 algorithm、來源／metadata digest 與 revision；代表樣本的來源列在 ChartData 保留。表格、ChartData、Excel 同 revision；不以 _MedianSample 檔名後綴辨認演算法。'] },
+  { cells: ['Algorithm provenance', '_Metadata 分開保存 detection_algorithm／detection_data_mode、報表 export_data_mode、圖表 aggregation_version、來源／metadata digest、revision。TOV1050 例外明細由完整 raw 判定，ChartData 是同 revision 的 median；新 raw 判定與舊 median 判定須重新產生為相同版本才可比較。'] },
   { cells: ['比較 scope', '同一次比較限相容主線／分支／方向；History／Version 遇多 Section 或不同 Section 明確拒絕，須先分拆。跨期以物理身份配對，日期作時間軸；不同 raw/median 模式不得混淆。舊 provenance 缺失標 unknown，可相容不代表 algorithm verified。'] },
   {
     cells: ['Section-aware resolution', '先以 Section、Track 與原始 Chainage 做 strict match；只有真正 gap 才可做 exact transition。'],
@@ -212,7 +213,7 @@ export const contractRows: GuideMatrixRow[] = [
 
 export const blockingErrorRows: GuideMatrixRow[] = [
   { cells: ['工程配置尚未核准', '報表可辨識不代表可運算；Stagger 缺該主線／分支／方向的係數或 support，須補核准配置，不借用另一條線的公式。'] },
-  { cells: ['Enrichment 缺區間', 'Overlap／Tension Length／Landmark 顯示缺資料原因；observed bracket envelope 或單一點不是核准實體區間。unknown 不能補 N／0。'] },
+  { cells: ['Enrichment 缺區間', '依核准 wide FromM／ToM 查詢例外峰值；無有效 TL、里程空隙或無 Landmark 來源時保留未知／空白。單有效 TL 才標 Overlap=N，不以最近支架或地標補值。'] },
   { cells: ['UNKNOWN TL identity', '列出 Line、sheet row、raw signature 與 identity，修正 metadata 或來源欄位。'] },
   { cells: ['位置或來源無效', '檢查 Section、Track、Chainage、source bounds 與 ordered source signature。'] },
   { cells: ['解析不唯一', '多個 exact transition rows 或多個 primary TL 一律 HTTP 422，不自動選最近值。'] },
@@ -243,3 +244,16 @@ export const guideSourceReferences = [
   'frontend/src/types/api.ts',
   'backend/tests/ 與 frontend/src/**/__tests__/',
 ];
+
+
+export const metadataFormatRows: GuideMatrixRow[] = [
+  { cells: ['正式格式', 'TOV1050 為 wide Excel：ISL、KTL、LAR_AEL、LAR_TCL、TKL、TKS、TWL、DRL metadata.xlsx；TOV640 的 EAL／TML 保留既有格式。Threshold 頁提供門檻，方向頁提供 Class 與區間。'] },
+  { cells: ['A:C 地標', 'Landmark FromM、Landmark ToM、Landmark。實際範圍直接使用；單點 X 只擴張一次成 [X−100, X+100]m。同時命中多個名稱，以「 / 」分隔。'] },
+  { cells: ['D:G 張力段與重疊', 'Overlap FromM、Overlap ToM、Overlap、Tension Length。全部實體支架與 Contact termination（BWA／Spring／Fixed）共同取 min/max；單有效 TL=N，多有效 TL=Y，無 TL 維持未知。'] },
+  { cells: ['H:J 軌道類型', 'Track Type、Track Type FromM、Track Type ToM。與 A:C、D:G 為獨立清單；同一列不代表相互對應。'] },
+  { cells: ['K 端點', 'Interval Closed 只控制 D:E 區間端點：both 為兩端包含，neither 為兩端不含。所有 FromM／ToM 及 Chainage 均為公尺；CSV Km × 1000 只換算一次。'] },
+  { cells: ['方向與來源', 'Brackets／Landmark Points 與 provenance 保留來源證據。DRL 只有 UT 與獨立 PL，沒有 DT，PL 不借用 UT 資料；DRL Wire Wear L1=9.1。'] },
+  { cells: ['缺值與維護', '只在有來源且峰值命中區間時補值；無地標來源或 TL 空隙會留空，不自動延長。手修 Brackets 後須重建衍生區間並驗證，不能只改支架點便視為 D:G 已同步。Wear 計算範圍仍需另行核准。'] },
+];
+
+export const metadataPathDescription = '開發版：專案根目錄 config。Portable：EXE 同層 resources\\config，包含 app_settings.json、line_catalog.json、各線 metadata.xlsx 及 tov1050-metadata-release.json。Backend 優先採用有效 CONFIG_PATH；實際位置可在 About → 開發者參考 → 執行環境查看 config_directory。Portable 資料庫位於 EXE 同層 data\\analysis.db，與 metadata 目錄分開。';

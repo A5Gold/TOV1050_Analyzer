@@ -1,0 +1,12 @@
+[
+  {
+    "path": "outputs\\metadata-review-2026-10-29\\batch-03\\candidates\\DRL metadata (review candidate).xlsx",
+    "checked_cells": 4512,
+    "parity": "pass"
+  },
+  {
+    "path": "outputs\\metadata-review-2026-10-29\\batch-03\\candidates\\Contact TL boundary review.xlsx",
+    "checked_cells": 6271,
+    "parity": "pass"
+  }
+]

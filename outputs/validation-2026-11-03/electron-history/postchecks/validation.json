@@ -1,0 +1,51 @@
+{
+  "status": "passed",
+  "job_id": "381262357ba94b02ab6f91652d0ef5b5",
+  "database_path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\validation-2026-11-03\\electron-history\\isolated.db",
+  "repeated_rows": 15,
+  "overviews": [
+    {
+      "source_points": 838859,
+      "returned_points": 1469,
+      "strategy": "min_max_envelope",
+      "from_m": 146.2,
+      "to_m": 16851.0,
+      "target_points": 5000
+    },
+    {
+      "source_points": 830792,
+      "returned_points": 1493,
+      "strategy": "min_max_envelope",
+      "from_m": 318.0,
+      "to_m": 16829.2,
+      "target_points": 5000
+    }
+  ],
+  "details": [
+    {
+      "source_points": 2784,
+      "returned_points": 2784,
+      "strategy": "raw",
+      "from_m": 5257.8,
+      "to_m": 5314.0,
+      "target_points": 5000
+    },
+    {
+      "source_points": 2820,
+      "returned_points": 2820,
+      "strategy": "raw",
+      "from_m": 5257.8,
+      "to_m": 5314.0,
+      "target_points": 5000
+    }
+  ],
+  "export_bytes": 7904,
+  "save": {
+    "status": "success",
+    "message": "Saved 15 repeated records",
+    "saved_count": 15,
+    "filtered_mock_count": 0
+  },
+  "api_query_total": 15,
+  "read_only_sqlite_reopen": true
+}

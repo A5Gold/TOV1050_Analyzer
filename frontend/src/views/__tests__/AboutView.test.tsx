@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, within } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -70,7 +70,7 @@ describe('AboutView', () => {
     expect(screen.getByRole('heading', { name: 'Check 1 Year API 與 staged contract' })).toBeInTheDocument();
     expect(screen.getByRole('table', { name: 'Check 1 Year API decision matrix' })).toBeInTheDocument();
     expect(await screen.findByRole('table', { name: '執行環境診斷' })).toBeInTheDocument();
-    expect(screen.getByText(/analysis\.db/i)).toBeInTheDocument();
+    expect(within(screen.getByRole('table', { name: '執行環境診斷' })).getByText(/analysis\.db/i)).toBeInTheDocument();
     expect(fetchDiagnostics).toHaveBeenCalledOnce();
   });
 

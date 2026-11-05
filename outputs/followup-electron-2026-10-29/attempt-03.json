@@ -1,0 +1,7 @@
+{
+  "entry": "real source Electron, real backend HTTP multipart upload; no API fixtures",
+  "result": "failed",
+  "error": "Error: Backend health did not become ready\n    at file:///C:/Smart%20Maintanence/TOV1050_Analyzer/scripts/validate_followup_electron.mjs:44:21",
+  "url": "http://localhost:5192/",
+  "body": "About\nGenerate\nHistory\nVersion Difference\nRecords\nWear Calculator\nStagger\nTrends\nSettings\nTOV DATA ANALYZER\nFile intelligence workspace\n\nReady\n\n拉出值計算\n\n以 cycle 為單位上傳 Exception Report，檢視結果摘要、trace 與局部 Raw Data，方便逐筆追蹤拉出值判定過程。\n\nCase A：只使用 Exception Report 的 Summary 與 ChartData 計算。\nCase B：額外上傳 n_Repeated Report，系統會結合 repeated data 補足候選支點與判定依據。\n上傳 Exception Report\n\n拖放或點擊上傳 `.xlsx` 檔案。系統會讀取 workbook 內的 Summary 與 ChartData 工作表進行拉出值分析。\n\n必要工作表：Summary、ChartData；必要欄位包含 stagger1 至 stagger4 與 Chainage。\n上傳 n_Repeated Report（選填）\n\n用於 Case B。當需要補充 Stagger Left / Stagger Right 的 repeated data 時，請一併提供此報表。\n\n未提供時仍可執行 Case A；提供後會以 repeated data 補強 stagger candidate 判定。\nCycle A\n開始分析\n上傳主檔\n上傳 n_Repeated\nExport Excel\n已上傳檔案\n0\n結果數\n0\n部分 Trace\n0\n分析模式\nCase A\n摘要\n追蹤\n原始資料\n摘要會列出每筆結果、關鍵識別欄位、K_eq 與狀態。可透過「追蹤」或「原始資料」檢視所選 ID。\n\n尚無拉出值結果。\n\nSecure processing workspace • TOV640 DATAC / TOV1050 CSV • Version 2.0"
+}

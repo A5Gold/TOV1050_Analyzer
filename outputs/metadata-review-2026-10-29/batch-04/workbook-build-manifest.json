@@ -1,0 +1,66 @@
+[
+  {
+    "file": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\metadata-review-2026-10-29\\batch-04\\candidates\\DRL metadata (review candidate).xlsx",
+    "status": "review-only; no approved interval promotion",
+    "sheets": [
+      {
+        "name": "Capabilities",
+        "rows": 8
+      },
+      {
+        "name": "threshold",
+        "rows": 88
+      },
+      {
+        "name": "Exception Boundarys",
+        "rows": 1
+      },
+      {
+        "name": "DRL UT",
+        "rows": 10
+      },
+      {
+        "name": "DRL PL",
+        "rows": 7
+      },
+      {
+        "name": "DRL UT Brackets",
+        "rows": 214
+      },
+      {
+        "name": "DRL PL Brackets",
+        "rows": 80
+      },
+      {
+        "name": "Boundary Review",
+        "rows": 9
+      },
+      {
+        "name": "Source provenance",
+        "rows": 25
+      },
+      {
+        "name": "Decisions",
+        "rows": 7
+      }
+    ]
+  },
+  {
+    "file": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\metadata-review-2026-10-29\\batch-04\\candidates\\Contact TL boundary review.xlsx",
+    "status": "review-only; no approved interval promotion",
+    "sheets": [
+      {
+        "name": "Review Guide",
+        "rows": 6
+      },
+      {
+        "name": "Boundary Review",
+        "rows": 382
+      },
+      {
+        "name": "Known Boundaries",
+        "rows": 100
+      }
+    ]
+  }
+]

@@ -1,0 +1,22 @@
+[
+  {
+    "file": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\validation-2026-11-05\\wide-enrichment\\20260907_TWL_UT_MAINLINE_CEN_TSW_Exception_Report.xlsx",
+    "old_sha256": "19d79c2f0a99d1406c4deabd5d54fe92f2a88b93c89b8b90bfdb726ec9ea1977",
+    "new_sha256": "fdf6c882c447940bd7c04c10f34e6b42a4219c41e1b5d1056b8d20ef98130c7a",
+    "previous_version": "tov640-first-nonempty-v1",
+    "enrichment_version": "wide-excel-enrichment-2026-11-05-v1",
+    "changed_parts": [
+      "xl/worksheets/sheet11.xml"
+    ]
+  },
+  {
+    "file": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\validation-2026-11-05\\wide-enrichment\\20260630_TWL_UT_MAINLINE_CEN_TSW_Exception_Report.xlsx",
+    "old_sha256": "cd5f02467f27a3e206f10f9965e0687016a98525a8d8207b1126c0e89bb1c98f",
+    "new_sha256": "dc4fea01b9a5e8f4aa6853b539ddcec03fb8be6ea16989b071beb3527a96ea1d",
+    "previous_version": "tov640-first-nonempty-v1",
+    "enrichment_version": "wide-excel-enrichment-2026-11-05-v1",
+    "changed_parts": [
+      "xl/worksheets/sheet11.xml"
+    ]
+  }
+]

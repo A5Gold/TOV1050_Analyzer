@@ -203,6 +203,25 @@ def reduce_chainage(frame: pd.DataFrame, *, progress=None):
     return result, reducer.metadata()
 
 
+def annotate_raw_samples(frame: pd.DataFrame) -> pd.DataFrame:
+    """Label acquisition/context discontinuities without reducing any sample.
+
+    The detector needs the same gap/pass boundaries as the chart reducer, even
+    when it consumes every cleaned measurement. No channel value is changed.
+    """
+    result = frame.copy(deep=False)
+    if result.empty:
+        return result
+    if "source_row_number" not in result:
+        result["source_row_number"] = np.arange(1, len(result) + 1)
+    reducer = _Reducer()
+    reducer.context_columns = [c for c in result if c.lower() in _IDENTITY_NAMES]
+    reducer.counter_column = next((c for c in SAMPLE_COUNTER_COLUMNS if c in result), None)
+    _, passes, segments, _ = reducer._boundaries(result)
+    result["pass_id"], result["segment_id"] = passes, segments
+    return result
+
+
 def reduce_chainage_chunks(chunks: Iterable[pd.DataFrame], *, progress=None):
     """Reduce chunks while retaining only the last unfinished raw run.
 

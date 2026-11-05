@@ -41,6 +41,20 @@ export interface MetadataCapabilities {
   chainage_unit: 'm';
   enrichment_version: 'tov640-first-nonempty-v1';
   overlap_state: 'unknown';
+  approved_interval_version?: string;
+  boundary_review_version?: string;
+  approved_interval_sha256?: string | null;
+  boundary_review?: Array<{
+    tension_length: string;
+    observed_from_m: number;
+    observed_to_m: number;
+    point_count: number;
+    status: string;
+    gaps: string[];
+    known_boundaries: Array<{ chainage_m: number; bracket: string; wire_role: string }>;
+    source_rows: Array<{ sheet: string; excel_row: number; source_sheet: string; source_excel_row: number | string }>;
+    candidate: { from_m: number; to_m: number } | null;
+  }>;
   capabilities: Record<string, {
     status: 'available' | 'partial' | 'unavailable';
     count: number;
@@ -85,6 +99,7 @@ export interface AnalysisResponse {
 }
 
 export interface ExceptionRecord {
+  metadata_enrichment?: string;
   id: string;
   'exception type': string;
   level: string;

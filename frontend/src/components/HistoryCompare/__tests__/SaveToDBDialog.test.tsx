@@ -64,6 +64,14 @@ describe('SaveToDBDialog', () => {
       
       expect(screen.getByLabelText(/Section \(Sub Table\)/i)).toBeInTheDocument();
     });
+
+    it('offers every supported parent line in the shared catalog', async () => {
+      render(<SaveToDBDialog {...defaultProps} />);
+      await userEvent.click(screen.getByLabelText(/Line \(Sub Tab\)/i));
+      for (const line of ['EAL', 'TML', 'AEL', 'TCL', 'KTL', 'ISL', 'TWL', 'TKL', 'DRL']) {
+        expect(screen.getByRole('option', { name: line, exact: true })).toBeInTheDocument();
+      }
+    });
   });
 
   describe('Auto-detection', () => {

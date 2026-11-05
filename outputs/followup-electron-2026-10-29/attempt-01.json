@@ -1,0 +1,5 @@
+{
+  "entry": "real source Electron, real backend HTTP multipart upload; no API fixtures",
+  "result": "failed",
+  "error": "locator.click: Timeout 60000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Stagger Calculation', exact: true })\u001b[22m\n\n    at C:\\Smart Maintanence\\TOV1050_Analyzer\\scripts\\validate_followup_electron.mjs:24:80"
+}

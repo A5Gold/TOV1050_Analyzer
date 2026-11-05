@@ -1,6 +1,6 @@
 import { apiErrorMessage } from '../api/errorMessage';
 import { canonicalBranch, normalizeReportIdentity, normalizeDirection } from '../config/lineCatalog';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
   Box, Typography, Button, Paper, 
   CircularProgress, Alert, Stack, List, ListItem, ListItemText,
@@ -65,6 +65,7 @@ const HistoryCompareView = () => {
   const [closestDragActive, setClosestDragActive] = useState(false);
   const [olderDragActive, setOlderDragActive] = useState(false);
   const [resultTabIndex, setResultTabIndex] = useState(0); // 0: Table, 1: Chart
+  const [chartViewport, setChartViewport] = useState<{ rowId: string; from: number; to: number } | null>(null);
   const [toast, setToast] = useState<{ open: boolean; message: string; severity: 'info' | 'success' | 'error' }>({ open: false, message: '', severity: 'info' });
   const [isChecking1Year, setIsChecking1Year] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
@@ -121,6 +122,35 @@ const HistoryCompareView = () => {
 
   // --- Active Session Logic ---
   const activeSession = compareSessions.find(s => s.id === activeCompareTabId);
+  useEffect(() => {
+    setSelectedRow(null);
+    setFilteredComparisonData(null);
+  }, [activeCompareTabId]);
+
+  useEffect(() => {
+    if (!activeSession?.compareJobId || !selectedRow || resultTabIndex !== 1) return;
+    const session = activeSession;
+    const controller = new AbortController();
+    const center = (selectedRow.FromM + selectedRow.ToM) / 2;
+    const span = Math.max(100, (selectedRow.length || 10) + 100);
+    const count = session.compareCycleCount || 2 + session.olderPreviousFiles.length;
+    const viewport = chartViewport?.rowId === selectedRow.id ? chartViewport : null;
+    Promise.all(Array.from({ length: count }, (_, cycle) =>
+      apiClient.get('/analyze/compare/jobs/' + session.compareJobId + '/chart', {
+        params: { client_session_id: session.id, cycle, max_points: 5000,
+                  from_m: viewport?.from ?? center - span / 2, to_m: viewport?.to ?? center + span / 2,
+                  preserve_m: ['FromM', 'ToM', 'maxLocation'].map(key =>
+                    (selectedRow as any)[cycle ? 'Previous ' + cycle + '_' + key : key]).filter(Number.isFinite) },
+        paramsSerializer: { indexes: null },
+        signal: controller.signal,
+      }).then(response => response.data.chart_data)
+    )).then(chartData => {
+      if (!controller.signal.aborted) updateCompareSession(session.id, { chartData });
+    }).catch(error => {
+      if (!controller.signal.aborted) updateCompareSession(session.id, { error: apiErrorMessage(error, 'Unable to load comparison chart.') });
+    });
+    return () => controller.abort();
+  }, [activeSession?.compareJobId, selectedRow, resultTabIndex, chartViewport]);
 
   // Handle Row Updates (Editing)
   // Phase 11 Issue 4: Queue changes in pendingChanges instead of immediate store update
@@ -255,7 +285,7 @@ const HistoryCompareView = () => {
     true
   );
 
-  const handleCompare = async () => {
+  const handleCompare = async (resumeJobId?: string) => {
     if (!activeSession) return;
     if (!activeSession.latestFile) {
         updateCompareSession(activeSession.id, { error: "Latest Cycle Report is required." });
@@ -265,13 +295,32 @@ const HistoryCompareView = () => {
         updateCompareSession(activeSession.id, { error: "Closest Previous Cycle Report is required." });
         return;
     }
+    const requestFiles = [activeSession.latestFile, activeSession.closestPreviousFile, ...activeSession.olderPreviousFiles];
+    if (resumeJobId && (activeSession.comparePendingFiles?.length !== requestFiles.length ||
+        activeSession.comparePendingFiles?.some((file, index) => file !== requestFiles[index]))) {
+      updateCompareSession(activeSession.id, { error: 'Reports changed; start a new comparison.' });
+      return;
+    }
 
+    const runId = generateId();
+    const currentRun = () => {
+      const current = useAnalysisStore.getState().compareSessions.find(item => item.id === activeSession.id);
+      if (current?.compareRunId !== runId) return false;
+      if (current.latestFile !== activeSession.latestFile ||
+          current.closestPreviousFile !== activeSession.closestPreviousFile ||
+          current.olderPreviousFiles.length !== activeSession.olderPreviousFiles.length ||
+          current.olderPreviousFiles.some((file, index) => file !== activeSession.olderPreviousFiles[index])) {
+        updateCompareSession(activeSession.id, { loading: false, compareRunId: undefined, error: 'Reports changed; run comparison again.' });
+        return false;
+      }
+      return true;
+    };
     updateCompareSession(activeSession.id, {
       loading: true,
       error: null,
-      repeatedData: [],
-      latestFileName: '',
-      chartData: undefined,
+      compareRunId: runId,
+      comparePendingJobId: resumeJobId,
+      compareProgress: 'Uploading reports',
     });
 
     const formData = new FormData();
@@ -280,32 +329,88 @@ const HistoryCompareView = () => {
     activeSession.olderPreviousFiles.forEach(f => formData.append('files', f));
 
     try {
-      const response = await apiClient.post('/analyze/compare', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' }
-      });
-
-      if (response.data.status === 'success') {
+      if (!resumeJobId && activeSession.comparePendingJobId) {
+        try {
+          await apiClient.post('/jobs/' + activeSession.comparePendingJobId + '/cancel', null,
+                              { params: { client_session_id: activeSession.id } });
+        } catch (error: any) {
+          if (![404, 410].includes(error?.response?.status)) throw error;
+        }
+      }
+      const response = resumeJobId
+        ? await apiClient.get('/jobs/' + resumeJobId, { params: { client_session_id: activeSession.id } })
+        : await apiClient.post('/analyze/compare/jobs?client_session_id=' + encodeURIComponent(activeSession.id), formData, {
+          headers: { 'Content-Type': 'multipart/form-data' }
+        });
+      let job = response.data;
+      if (!currentRun()) {
+        await apiClient.post('/jobs/' + job.job_id + '/cancel', null, { params: { client_session_id: activeSession.id } });
+        return;
+      }
+      updateCompareSession(activeSession.id, { comparePendingJobId: job.job_id, comparePendingFiles: requestFiles });
+      for (;;) {
+        if (job.status === 'ready') break;
+        if (['failed', 'cancelled'].includes(job.status)) {
+          updateCompareSession(activeSession.id, { comparePendingJobId: undefined });
+          throw new Error(job.error || 'Comparison failed.');
+        }
+        await new Promise(resolve => setTimeout(resolve, 400));
+        const state = await apiClient.get('/jobs/' + job.job_id, { params: { client_session_id: activeSession.id } });
+        if (!currentRun()) {
+          await apiClient.post('/jobs/' + job.job_id + '/cancel', null, { params: { client_session_id: activeSession.id } });
+          return;
+        }
+        job = state.data;
+        updateCompareSession(activeSession.id, { compareProgress: job.stage + ' · ' + job.processed + (job.total ? '/' + job.total : '') + ' ' + (job.unit || '') });
+      }
+      const resultResponse = await apiClient.get('/jobs/' + job.job_id + '/result', { params: { client_session_id: activeSession.id } });
+      if (!currentRun()) return;
+      if (resultResponse.data.status === 'success') {
+        const responseData = resultResponse.data;
         let flat: ExceptionRecord[] = [];
-        Object.values(response.data.repeated).forEach((list: any) => {
+        Object.values(responseData.repeated).forEach((list: any) => {
           flat = [...flat, ...list];
         });
-        
-        const chain = response.data.chain_order;
+        const chain = responseData.chain_order;
         const latest = chain && chain.length > 0 ? chain[0] : '';
 
         updateCompareSession(activeSession.id, { 
             repeatedData: flat, 
             latestFileName: latest,
             loading: false,
-            chartData: response.data.chart_data, // Store chart data
+            chartData: undefined,
+            resultMetadata: responseData.metadata,
+            compareJobId: job.job_id,
+            comparePendingJobId: undefined,
+            compareCycleCount: chain.length,
+            compareChainOrder: chain,
         });
-        setConfigOpen(false); // Auto-collapse config on success (Issue 1)
-        setResultTabIndex(0); // Show table first
+        if (useAnalysisStore.getState().activeCompareTabId === activeSession.id) {
+          setSelectedRow(null);
+          setFilteredComparisonData(null);
+          setConfigOpen(false);
+          setResultTabIndex(0);
+        }
       }
     } catch (err: any) {
+      if (!currentRun()) return;
       console.error(err);
       const msg = apiErrorMessage(err, "Comparison failed.");
-      updateCompareSession(activeSession.id, { error: msg, loading: false });
+      updateCompareSession(activeSession.id, { error: msg, loading: false,
+        ...([404, 410].includes(err.response?.status) ? { comparePendingJobId: undefined } : {}) });
+    }
+  };
+
+  const handleCancelCompare = async () => {
+    if (!activeSession) return;
+    const session = activeSession;
+    updateCompareSession(session.id, { loading: false, compareRunId: undefined, compareProgress: undefined });
+    if (session.comparePendingJobId) {
+      try {
+        await apiClient.post('/jobs/' + session.comparePendingJobId + '/cancel', null, { params: { client_session_id: session.id } });
+      } catch (error) {
+        updateCompareSession(session.id, { error: apiErrorMessage(error, 'Unable to cancel comparison.') });
+      }
     }
   };
 
@@ -319,6 +424,7 @@ const HistoryCompareView = () => {
           const payload = {
               data: activeSession.repeatedData,
               metadata: {
+                  ...activeSession.resultMetadata,
                   filename: activeSession.latestFileName,
                   // Include optional fields for conditional naming
                   task_no: activeSession.taskNo || parsedMeta.task_no,
@@ -591,14 +697,15 @@ const HistoryCompareView = () => {
     const rowSection = unique(['section']);
     const rowIdentity = rowLine ? normalizeReportIdentity(rowLine, rowSection || '') : null;
     return {
-      line: rowLine !== undefined ? rowIdentity?.line || '' : identity.line,
-      track: unique(['track']) ?? (custom ? '' : normalizeDirection(parts[2] || '') ? parts[2] : ''),
-      section: rowSection ?? identity.section,
-      date_str: unique(['task_run_date', 'date_str']) ?? fileDate,
-      task_run_date: unique(['task_run_date', 'date_str']) ?? fileDate,
-      task_no: unique(['task_no']) ?? (custom ? parts[2] : undefined),
-      station_start: unique(['station_start']) ?? (custom ? parts[3]?.split('-')[0] : parts[4]),
-      station_end: unique(['station_end']) ?? (custom ? parts[3]?.split('-')[1] : parts[5]),
+      ...(activeSession?.resultMetadata || {}),
+      line: activeSession?.resultMetadata?.line || (rowLine !== undefined ? rowIdentity?.line || '' : identity.line),
+      track: activeSession?.resultMetadata?.track || unique(['track']) || (custom ? '' : normalizeDirection(parts[2] || '') ? parts[2] : ''),
+      section: activeSession?.resultMetadata?.section || rowSection || identity.section,
+      date_str: activeSession?.resultMetadata?.date_str || unique(['task_run_date', 'date_str']) || fileDate,
+      task_run_date: activeSession?.resultMetadata?.date_str || unique(['task_run_date', 'date_str']) || fileDate,
+      task_no: activeSession?.resultMetadata?.task_no || unique(['task_no']) || (custom ? parts[2] : undefined),
+      station_start: activeSession?.resultMetadata?.station_start || unique(['station_start']) || (custom ? parts[3]?.split('-')[0] : parts[4]),
+      station_end: activeSession?.resultMetadata?.station_end || unique(['station_end']) || (custom ? parts[3]?.split('-')[1] : parts[5]),
     };
   };
 
@@ -705,10 +812,10 @@ const HistoryCompareView = () => {
         }
       }
       // Build comparison files list
-      const comparisonFiles: string[] = [];
-      if (activeSession.latestFile) comparisonFiles.push(activeSession.latestFile.name);
-      if (activeSession.closestPreviousFile) comparisonFiles.push(activeSession.closestPreviousFile.name);
-      activeSession.olderPreviousFiles.forEach(f => comparisonFiles.push(f.name));
+      const comparisonFiles = activeSession.compareChainOrder || [
+        activeSession.latestFile?.name, activeSession.closestPreviousFile?.name,
+        ...activeSession.olderPreviousFiles.map(file => file.name),
+      ].filter((name): name is string => !!name);
 
       // Use options from dialog for line and section
       // Phase 11 Issue 1: Use parsed metadata for task_no/station when user hasn't entered them
@@ -1012,13 +1119,16 @@ const HistoryCompareView = () => {
                             variant="contained" 
                             fullWidth 
                             size="large"
-                            onClick={handleCompare}
+                            onClick={() => handleCompare()}
                             disabled={activeSession.loading || !activeSession.latestFile || !activeSession.closestPreviousFile}
                             startIcon={activeSession.loading ? <CircularProgress size={20} color="inherit" /> : <CompareArrowsIcon />}
                             sx={{ mt: 3 }}
                         >
                             {activeSession.loading ? "Running..." : "Compare"}
                         </Button>
+                        {!activeSession.loading && activeSession.comparePendingJobId && (
+                          <Button fullWidth onClick={() => handleCompare(activeSession.comparePendingJobId)}>Resume comparison status</Button>
+                        )}
                     </Box>
                 )}
             </Paper>
@@ -1194,7 +1304,11 @@ const HistoryCompareView = () => {
                     <Box sx={{ flexGrow: 1, minHeight: 0, overflow: 'hidden', position: 'relative', bgcolor: 'background.default' }}>
                         {activeSession.loading && (
                             <Box sx={{ position: 'absolute', inset: 0, zIndex: 2, bgcolor: 'background.default', p: 3, display: 'flex', alignItems: 'flex-start', justifyContent: 'center' }}>
-                                <TaskLoadingState stage="detecting" />
+                                <Stack alignItems="center" spacing={2}>
+                                  <TaskLoadingState stage="detecting" />
+                                  <Typography role="status">{activeSession.compareProgress || 'Preparing comparison'}</Typography>
+                                  <Button onClick={handleCancelCompare}>Cancel comparison</Button>
+                                </Stack>
                             </Box>
                         )}
                         {isExporting && (
@@ -1244,6 +1358,11 @@ const HistoryCompareView = () => {
                                         selectedRow={selectedRow}
                                         onClearSelection={() => setSelectedRow(null)}
                                         sessionId={activeSession.id}
+                                        onViewportChange={(from, to) => {
+                                          if (selectedRow) setChartViewport(previous =>
+                                            previous?.rowId === selectedRow.id && previous.from === from && previous.to === to
+                                              ? previous : { rowId: selectedRow.id, from, to });
+                                        }}
                                     />
                                 </Paper>
                             </Box>

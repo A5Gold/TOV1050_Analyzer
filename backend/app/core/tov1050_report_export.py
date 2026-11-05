@@ -1,4 +1,4 @@
-"""Bounded-memory ChartData writer; legacy exception/report semantics unchanged."""
+"""Bounded-memory ChartData writer; caller selects the report data frame."""
 from copy import copy
 import io
 import math
@@ -28,7 +28,7 @@ def _excel_value(value):
 
 def export_tov1050_report(results, chart_df=None, metadata=None, *, chart_statistics_df=None,
                           output_path=None, progress=None, _numeric_format=REPORT_NUMERIC_FORMAT):
-    """Delegate Summary/exception generation, stream full ChartData row by row.
+    """Delegate Summary/exception generation, stream ChartData row by row.
 
     This function does not map metadata, aggregate exceptions, or downsample.
     The small legacy workbook provides exact headers/order and formatting.
@@ -37,6 +37,7 @@ def export_tov1050_report(results, chart_df=None, metadata=None, *, chart_statis
     # are immutable snapshots shared by background exports.
     report_results = {name: value.copy(deep=True) if isinstance(value, pd.DataFrame) else value
                       for name, value in results.items()}
+    metadata, boundary_review = ExcelExporter.metadata_export_parts(metadata)
     small = ExcelExporter.export_report(report_results, chart_df=None, numeric_format=_numeric_format)
     source = load_workbook(small, read_only=True)
     target = Workbook(write_only=True)
@@ -106,6 +107,8 @@ def export_tov1050_report(results, chart_df=None, metadata=None, *, chart_statis
                     progress("exporting", index, None, "rows")
         if chart_df is not None and not chart_df.empty:
             write_frame("ChartData", chart_df, ExcelExporter.chart_report_columns(chart_df))
+        if not boundary_review.empty:
+            write_frame("MetadataBoundaryReview", boundary_review, list(boundary_review.columns))
         if chart_statistics_df is not None and not chart_statistics_df.empty:
             write_frame("ChainageStatistics", chart_statistics_df, list(chart_statistics_df.columns))
         if metadata:

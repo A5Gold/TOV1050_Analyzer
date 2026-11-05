@@ -1,6 +1,6 @@
 # -*- mode: python ; coding: utf-8 -*-
 """
-PyInstaller spec file for TOV640 Analyzer Backend Server
+PyInstaller spec file for TOV1050 Analyzer Backend Server
 """
 
 import sys
@@ -8,7 +8,7 @@ import os
 from PyInstaller.utils.hooks import collect_submodules, collect_data_files
 
 # Get the backend directory path
-BACKEND_DIR = os.path.dirname(os.path.abspath(SPECPATH))
+BACKEND_DIR = os.path.abspath(SPECPATH)
 
 # Collect submodules
 uvicorn_imports = collect_submodules('uvicorn')

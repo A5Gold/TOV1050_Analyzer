@@ -1,0 +1,290 @@
+{
+  "status": "passed",
+  "exception_reports": [
+    {
+      "file": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\validation-2026-11-03\\npm-dev-retest\\20260907_TWL_UT_MAINLINE_CEN_TSW_Exception_Report.xlsx",
+      "chart_rows": 83963,
+      "summary_rows": 289,
+      "metadata": {
+        "analysis_revision": "ff82cd17418145bda84608f486d72ff9",
+        "chart_data_mode": "chainage_median",
+        "aggregation": "chainage_median",
+        "algorithm": "same_chainage_median_sample_v1",
+        "aggregation_version": "same_chainage_median_sample_v1",
+        "raw_points": "838859",
+        "grouped_points": "83963",
+        "grouping_columns": "['Chainage', 'Line', 'line', 'Track', 'track', 'Class', 'Track Type', 'Overlap', 'Tension Length', 'Landmark', 'task_run_date', 'Section', 'task_no', 'station_start', 'station_end', 'segment_id']",
+        "median_even_rule": "earliest acquired sample matching either central order-statistic value",
+        "sample_counter_column": "SampleCount [n.]",
+        "pass_rule": "finite sample counter decrease",
+        "adjacent_runs_only": "True",
+        "source_row_unit": "source row number or one-based retained row",
+        "representative_semantics": "per-channel measured sample; channels may come from different raw rows",
+        "noise_filter": "None",
+        "source_sha256": "54ab7ede00922f56e29919518882381520d7181a9f233d4440b6726abea44e37",
+        "metadata_sha256": "5ab7e9f4da470825143cc8008d7ff82f784f9da93b860b9e3bf08140b990f67b",
+        "source_points": "838859",
+        "representative_points": "83963",
+        "analysis_mode": "median",
+        "detection_algorithm": "cleaned_raw_signed_stagger_v1",
+        "detection_data_mode": "cleaned_raw",
+        "detection_points": "838859",
+        "export_data_mode": "chainage_median",
+        "chart_aggregation_version": "same_chainage_median_sample_v1",
+        "stagger_magnitude_rule_version": "symmetric-stagger-magnitude-2026-11-03-v1",
+        "chart_row_count": "83963",
+        "raw_row_count": "838859",
+        "line": "TWL",
+        "branch": "Mainline",
+        "direction": "UP",
+        "track": "UT",
+        "section": "Mainline",
+        "session": "Mainline",
+        "date_str": "20260907",
+        "station_start": "CEN",
+        "station_end": "TSW",
+        "metadata_capabilities": {
+          "schema_version": "tov1050-metadata-capabilities-v1",
+          "workbook": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\TWL metadata.xlsx",
+          "workbook_sha256": "5ab7e9f4da470825143cc8008d7ff82f784f9da93b860b9e3bf08140b990f67b",
+          "line": "TWL",
+          "session": "Mainline",
+          "direction": "UT",
+          "chainage_unit": "m",
+          "enrichment_version": "tov640-first-nonempty-v1",
+          "overlap_state": "unknown",
+          "approved_interval_version": "approved-contact-intervals-v1",
+          "boundary_review_version": "contact-boundary-review-2026-10-29-v2",
+          "approved_interval_sha256": null,
+          "approved_interval_sources": [],
+          "capabilities": {
+            "thresholds": {
+              "status": "available",
+              "count": 40,
+              "reason": ""
+            },
+            "class_intervals": {
+              "status": "available",
+              "count": 5,
+              "reason": ""
+            },
+            "track_intervals": {
+              "status": "available",
+              "count": 83,
+              "reason": ""
+            },
+            "bracket_points": {
+              "status": "available",
+              "count": 1176,
+              "reason": ""
+            },
+            "landmark_points": {
+              "status": "unavailable",
+              "count": 0,
+              "reason": "No classified point records"
+            },
+            "tension_length_intervals": {
+              "status": "unavailable",
+              "count": 0,
+              "reason": "No approved physical interval source; observed bracket envelopes and landmark points are not intervals"
+            },
+            "overlap_intervals": {
+              "status": "unavailable",
+              "count": 0,
+              "reason": "No approved physical interval source; observed bracket envelopes and landmark points are not intervals"
+            },
+            "landmark_intervals": {
+              "status": "unavailable",
+              "count": 0,
+              "reason": "No approved physical interval source; observed bracket envelopes and landmark points are not intervals"
+            }
+          }
+        },
+        "enrichment_version": "tov640-first-nonempty-v1"
+      },
+      "enrichment": {
+        "Overlap": {
+          "None": 289
+        },
+        "Tension Length": {
+          "None": 289
+        },
+        "Landmark": {
+          "None": 289
+        }
+      },
+      "sha256": "471b64f961a0a4b2e0f0a74315dc8bd84eab46d23f888787ade12e8a34d0f957"
+    },
+    {
+      "file": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\validation-2026-11-03\\npm-dev-retest\\20260630_TWL_UT_MAINLINE_CEN_TSW_Exception_Report.xlsx",
+      "chart_rows": 83244,
+      "summary_rows": 330,
+      "metadata": {
+        "analysis_revision": "58824d77d09a41dab01ce29184e6bb19",
+        "chart_data_mode": "chainage_median",
+        "aggregation": "chainage_median",
+        "algorithm": "same_chainage_median_sample_v1",
+        "aggregation_version": "same_chainage_median_sample_v1",
+        "raw_points": "830792",
+        "grouped_points": "83244",
+        "grouping_columns": "['Chainage', 'Line', 'line', 'Track', 'track', 'Class', 'Track Type', 'Overlap', 'Tension Length', 'Landmark', 'task_run_date', 'Section', 'task_no', 'station_start', 'station_end', 'segment_id']",
+        "median_even_rule": "earliest acquired sample matching either central order-statistic value",
+        "sample_counter_column": "SampleCount [n.]",
+        "pass_rule": "finite sample counter decrease",
+        "adjacent_runs_only": "True",
+        "source_row_unit": "source row number or one-based retained row",
+        "representative_semantics": "per-channel measured sample; channels may come from different raw rows",
+        "noise_filter": "None",
+        "source_sha256": "e2ab667196694f07023ceb273e4fe7014fcab6a76165b5a0fec592ea55fbe251",
+        "metadata_sha256": "5ab7e9f4da470825143cc8008d7ff82f784f9da93b860b9e3bf08140b990f67b",
+        "source_points": "830792",
+        "representative_points": "83244",
+        "analysis_mode": "median",
+        "detection_algorithm": "cleaned_raw_signed_stagger_v1",
+        "detection_data_mode": "cleaned_raw",
+        "detection_points": "830792",
+        "export_data_mode": "chainage_median",
+        "chart_aggregation_version": "same_chainage_median_sample_v1",
+        "stagger_magnitude_rule_version": "symmetric-stagger-magnitude-2026-11-03-v1",
+        "chart_row_count": "83244",
+        "raw_row_count": "830792",
+        "line": "TWL",
+        "branch": "Mainline",
+        "direction": "UP",
+        "track": "UT",
+        "section": "Mainline",
+        "session": "Mainline",
+        "date_str": "20260630",
+        "station_start": "CEN",
+        "station_end": "TSW",
+        "metadata_capabilities": {
+          "schema_version": "tov1050-metadata-capabilities-v1",
+          "workbook": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\TWL metadata.xlsx",
+          "workbook_sha256": "5ab7e9f4da470825143cc8008d7ff82f784f9da93b860b9e3bf08140b990f67b",
+          "line": "TWL",
+          "session": "Mainline",
+          "direction": "UT",
+          "chainage_unit": "m",
+          "enrichment_version": "tov640-first-nonempty-v1",
+          "overlap_state": "unknown",
+          "approved_interval_version": "approved-contact-intervals-v1",
+          "boundary_review_version": "contact-boundary-review-2026-10-29-v2",
+          "approved_interval_sha256": null,
+          "approved_interval_sources": [],
+          "capabilities": {
+            "thresholds": {
+              "status": "available",
+              "count": 40,
+              "reason": ""
+            },
+            "class_intervals": {
+              "status": "available",
+              "count": 5,
+              "reason": ""
+            },
+            "track_intervals": {
+              "status": "available",
+              "count": 83,
+              "reason": ""
+            },
+            "bracket_points": {
+              "status": "available",
+              "count": 1176,
+              "reason": ""
+            },
+            "landmark_points": {
+              "status": "unavailable",
+              "count": 0,
+              "reason": "No classified point records"
+            },
+            "tension_length_intervals": {
+              "status": "unavailable",
+              "count": 0,
+              "reason": "No approved physical interval source; observed bracket envelopes and landmark points are not intervals"
+            },
+            "overlap_intervals": {
+              "status": "unavailable",
+              "count": 0,
+              "reason": "No approved physical interval source; observed bracket envelopes and landmark points are not intervals"
+            },
+            "landmark_intervals": {
+              "status": "unavailable",
+              "count": 0,
+              "reason": "No approved physical interval source; observed bracket envelopes and landmark points are not intervals"
+            }
+          }
+        },
+        "enrichment_version": "tov640-first-nonempty-v1"
+      },
+      "enrichment": {
+        "Overlap": {
+          "None": 330
+        },
+        "Tension Length": {
+          "None": 330
+        },
+        "Landmark": {
+          "None": 330
+        }
+      },
+      "sha256": "a564ba6bfc7121b239d649e55ff54ce45d9d1d10d237d5aed4749527cff3ff32"
+    }
+  ],
+  "comparison_report": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\validation-2026-11-03\\npm-dev-retest\\20260907_TWL_UT_MAINLINE_CEN_TSW_Exception_Report_2_Repeated.xlsx",
+  "comparison_sheets": {
+    "Summary": {
+      "rows": 17,
+      "headers": [
+        "TASK RUN DATA",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        "EXCEPTION",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        "INITIAL CHECK",
+        null,
+        null,
+        null,
+        "SITE VERIFICATION (IF ANY)",
+        null,
+        null,
+        null,
+        "FINAL ADJUSTMENT (IF ANY)",
+        null,
+        null,
+        null
+      ]
+    }
+  },
+  "history_stats": {
+    "total": 15,
+    "breakdown": {
+      "Low Height": 4,
+      "Stagger Left": 6,
+      "Stagger Right": 5
+    }
+  },
+  "comparison_ids_verified": 15,
+  "sources_and_config_unchanged": true,
+  "renderer_errors": [],
+  "failed_api_requests": [],
+  "screenshot_warnings": [
+    "Screenshot: TimeoutError: page.screenshot: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - taking page screenshot\u001b[22m\n",
+    "Screenshot: TimeoutError: page.screenshot: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - taking page screenshot\u001b[22m\n"
+  ]
+}

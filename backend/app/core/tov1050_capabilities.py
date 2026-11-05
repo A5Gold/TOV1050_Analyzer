@@ -71,7 +71,7 @@ def sweep_approved_intervals(intervals: list[TensionLengthInterval]) -> list[Ove
 
 POINT_COLUMNS = ["chainage_m", "tension_length", "bracket", "classification",
                  "workbook", "sheet", "excel_row", "source_workbook", "source_sheet",
-                 "source_excel_row", "source_bracket", "component_index"]
+                 "source_excel_row", "source_bracket", "component_index", "wire_role"]
 
 
 class TOV1050CapabilitiesMixin:
@@ -119,17 +119,27 @@ class TOV1050CapabilitiesMixin:
             bracket = str(row["Bracket"]).strip()
             matches = provenance[(position, bracket)]
             source = matches.popleft() if matches else {}
-            classification = source.get("classification", "unclassified")
+            # Current Brackets fields survive manual chainage corrections, which
+            # intentionally no longer match the historical provenance key.
+            def explicit(field, default=""):
+                value = row.get(field)
+                if value is not None and not pd.isna(value) and str(value).strip():
+                    return value
+                value = source.get(field, default)
+                return default if value is None or pd.isna(value) else value
+
+            classification = str(explicit("classification", "unclassified")).strip()
             value = row["Tension Length"]
             tl = "" if pd.isna(value) else str(int(value)) if isinstance(value, float) and value.is_integer() else str(value).strip()
             result.append(dict(chainage_m=position, tension_length=tl, bracket=bracket,
                                classification=classification, workbook=str(self.config_path),
                                sheet=sheet, excel_row=int(index + 2),
-                               source_workbook=standard.get("mapping_workbook", ""),
-                               source_sheet=source.get("source_sheet", ""),
-                               source_excel_row=source.get("source_row", ""),
-                               source_bracket=source.get("source_bracket", bracket),
-                               component_index=source.get("component_index", "")))
+                               source_workbook=explicit("source_workbook", explicit("original_workbook", standard.get("mapping_workbook", ""))),
+                               source_sheet=explicit("source_sheet", explicit("original_sheet")),
+                               source_excel_row=explicit("source_excel_row", explicit("original_excel_row", source.get("source_row", ""))),
+                               source_bracket=explicit("source_bracket", bracket),
+                               component_index=explicit("component_index"),
+                               wire_role=explicit("wire_role")))
         return pd.DataFrame(result, columns=POINT_COLUMNS)
 
     def get_bracket_points(self, line, section, track):
@@ -160,10 +170,41 @@ class TOV1050CapabilitiesMixin:
         for name in ("tension_length_intervals", "overlap_intervals", "landmark_intervals"):
             capabilities[name] = dict(status="unavailable", count=0,
                                       reason="No approved physical interval source; observed bracket envelopes and landmark points are not intervals")
+        provider = self.approved_interval_provider()
+        context = provider.context(line, section, track)
+        wide_excel = getattr(provider, "source_kind", None) == "wide_excel"
+        for name, collection in (("tension_length_intervals", "tension_lengths"),
+                                 ("overlap_intervals", "tension_lengths"),
+                                 ("landmark_intervals", "landmarks")):
+            records = context.get(collection, [])
+            count = sum(bool(row["active_tension_lengths"]) for row in records) if wide_excel and collection == "tension_lengths" else len(records)
+            if count:
+                capabilities[name] = dict(status="partial", count=count,
+                    reason=("Wide Excel records cover listed scopes only; inspect position evidence for gaps" if wide_excel else
+                            "Approved records cover explicit scopes only; inspect position evidence for gaps"))
+            elif wide_excel:
+                capabilities[name] = dict(status="unavailable", count=0, reason="No listed wide Excel records")
+        from .tov1050_boundary_review import BOUNDARY_REVIEW_VERSION, review_contact_boundaries
+        review_points = [dict(row, line=line, branch=section, direction=track)
+                         for row in points.to_dict("records") if row["tension_length"]]
+        reviews = review_contact_boundaries(review_points)
+        # Keep all point lineage in the review artifact; the runtime summary
+        # carries known boundaries and row references without large point blobs.
+        for review in reviews:
+            review["source_rows"] = [dict(sheet=p["sheet"], excel_row=p["excel_row"],
+                                         source_sheet=p["source_sheet"], source_excel_row=p["source_excel_row"])
+                                     for p in review.pop("point_evidence")]
         return dict(schema_version="tov1050-metadata-capabilities-v1", workbook=str(self.config_path),
                     workbook_sha256=hashlib.sha256(self.config_path.read_bytes()).hexdigest(),
                     line=line, session=section, direction=track, chainage_unit="m",
-                    enrichment_version="tov640-first-nonempty-v1", overlap_state="unknown",
+                    enrichment_version=(provider.version if wide_excel else "tov640-first-nonempty-v1"),
+                    overlap_state="listed_tl_set" if wide_excel else "unknown",
+                    approved_interval_version=(provider.version if wide_excel else "approved-contact-intervals-v1"),
+                    enrichment_source="wide_excel" if wide_excel else "approved_sidecar",
+                    boundary_review_version=BOUNDARY_REVIEW_VERSION,
+                    approved_interval_sha256=provider.digest, boundary_review=reviews,
+                    approved_interval_sources=[dict(path=str(path), sha256=digest)
+                                               for path, digest in getattr(provider, "sources", [])],
                     capabilities=capabilities)
 
     def require_tension_length_intervals(self, line, track, section):

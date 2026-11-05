@@ -1,0 +1,7 @@
+{
+  "entry": "real source Electron, real backend HTTP multipart upload; no API fixtures",
+  "result": "failed",
+  "error": "locator.click: Target page, context or browser has been closed\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /Stagger/ }).first()\u001b[22m\n\n    at C:\\Smart Maintanence\\TOV1050_Analyzer\\scripts\\validate_followup_electron.mjs:29:63",
+  "url": "devtools://devtools/bundled/devtools_app.html?remoteBase=https://chrome-devtools-frontend.appspot.com/serve_file/@343e118217e16cefbdd60854f3bf34447cc46ff9/&can_dock=true&toolbarColor=rgba(223,223,223,1)&textColor=rgba(0,0,0,1)&experiments=true",
+  "body": "unavailable"
+}

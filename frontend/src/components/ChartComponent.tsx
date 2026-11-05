@@ -1,16 +1,23 @@
 import React, { useCallback, useEffect, useState, useMemo, useRef } from 'react';
 import Plotly from 'plotly.js';
 import Plot from 'react-plotly.js';
-import { Alert, Box, Typography, Paper, FormGroup, FormControlLabel, Checkbox, Button, Chip, CircularProgress } from '@mui/material';
+import { Alert, Box, Typography, Paper, FormGroup, FormControlLabel, Checkbox, Button, Chip, CircularProgress, Popover, Table, TableHead, TableBody, TableRow, TableCell, MenuList, MenuItem } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 import { AnalysisResponse, ExceptionRecord } from '../types/api';
 import apiClient from '../api/client';
+import { DEFAULT_CHART_PREFERENCES, useAnalysisStore, type ChartMetric, type ChartLevel } from '../store/useAnalysisStore';
+import { hitTestExceptionMarkers, type MarkerHit } from './chartMarkerHitTest';
 
 const LEVEL_COLORS: Record<string, string> = {
   'L1': '#d32f2f', // Red
   'L2': '#ed6c02', // Orange
   'L3': '#0288d1', // Blue
 };
+const METRICS: { key: ChartMetric; label: string }[] = [
+  { key: 'height', label: 'Height' }, { key: 'stagger', label: 'Stagger' }, { key: 'wear', label: 'Wire Wear' },
+];
+const LEVELS: ChartLevel[] = ['L1', 'L2', 'L3'];
+const MEASUREMENT_HOVER = 'Chainage: %{x:.4f} m<br>實測值: %{y:.4f} mm<extra></extra>';
 
 interface ChartComponentProps {
   result: AnalysisResponse | null;
@@ -53,7 +60,11 @@ const detailErrorMessage = (error: any): string => {
 const ChartComponent = ({ result, selectedExceptionId, onSelectException, sessionId }: ChartComponentProps) => {
   
   const [showMarkers, setShowMarkers] = useState(true);
-  const [showThresholds, setShowThresholds] = useState(true);
+  const preferences = useAnalysisStore(state => state.chartPreferences[sessionId] ?? DEFAULT_CHART_PREFERENCES);
+  const updatePreferences = useAnalysisStore(state => state.updateChartPreferences);
+  const showThresholds = preferences.showThresholds;
+  const [thresholdAnchor, setThresholdAnchor] = useState<HTMLElement | null>(null);
+  const [markerChoices, setMarkerChoices] = useState<{ hits: MarkerHit[]; left: number; top: number; identity: string } | null>(null);
   const [showLegend, setShowLegend] = useState(true);
   const [layoutState, setLayoutState] = useState<Partial<Plotly.Layout>>({});
   const [chartData, setChartData] = useState<AnalysisResponse['chart_data']>({});
@@ -73,6 +84,13 @@ const ChartComponent = ({ result, selectedExceptionId, onSelectException, sessio
   const isRaw = result?.analysis_mode === 'raw_overview' || result?.chart_view === 'raw';
   const dataMode = isRaw ? 'raw' : 'chainage_median';
   const identity = `${sessionId}:${result?.analysis_revision || ''}:${dataMode}`;
+  const availableThresholds = useMemo(() => {
+    const available = new Set<string>();
+    for (const segment of (result as (AnalysisResponse & ChartExtras) | null)?.threshold_segments || []) {
+      if ([segment.from_m, segment.to_m, segment.value].every(Number.isFinite)) available.add(`${segment.metric}:${segment.level}`);
+    }
+    return available;
+  }, [result]);
   const domain = useMemo(() => {
     const provided = (result as (AnalysisResponse & ChartExtras) | null)?.chart_domain;
     if (provided && Number.isFinite(provided.from_m) && Number.isFinite(provided.to_m) && provided.from_m <= provided.to_m) return provided;
@@ -104,6 +122,7 @@ const ChartComponent = ({ result, selectedExceptionId, onSelectException, sessio
 
   // Keep the initial overview resident: reset never needs a full-data request.
   const resetOverview = () => {
+    setMarkerChoices(null);
     requestGeneration.current += 1;
     detailController.current?.abort();
     setChartData(result?.chart_data || {});
@@ -144,6 +163,8 @@ const ChartComponent = ({ result, selectedExceptionId, onSelectException, sessio
     setDetailError(null);
     setDetailCancelled(false);
     setDetailLoading(false);
+    setMarkerChoices(null);
+    setThresholdAnchor(null);
   }, [result, identity]);
 
   // A new window/mode cancels both the debounce and any in-flight request.
@@ -280,7 +301,7 @@ const ChartComponent = ({ result, selectedExceptionId, onSelectException, sessio
         connectgaps: false,
         name,
         customdata: customdata as any,
-        hovertemplate: `Chainage: %{x:.4f} m<br>實測值: %{y:.4f} mm<br>來源列: %{customdata[0]}<br>SampleCount: %{customdata[1]}<br>有效樣本: %{customdata[2]} / %{customdata[3]}<extra>%{fullData.name}</extra>`,
+        hovertemplate: MEASUREMENT_HOVER,
         xaxis: 'x',
         yaxis: row === 1 ? 'y' : `y${row}`,
         marker: { size: 3, color },
@@ -331,8 +352,7 @@ const ChartComponent = ({ result, selectedExceptionId, onSelectException, sessio
                 symbol: 'circle',
                 line: { color: 'white', width: 1 }
             },
-            hoverinfo: 'text', // Only show ID on hover
-            hovertemplate: '<b>ID: %{text}</b><br>Loc: %{x:.2f}m<br>Val: %{y:.2f}<extra></extra>',
+            hovertemplate: MEASUREMENT_HOVER,
         });
     });
   }
@@ -345,6 +365,7 @@ const ChartComponent = ({ result, selectedExceptionId, onSelectException, sessio
   const activeThresholds = loadedIdentity === identity ? thresholdSegments : (result as AnalysisResponse & ChartExtras).threshold_segments || [];
   if (showThresholds && !isRaw) {
     for (const segment of activeThresholds) {
+      if (!preferences.thresholds[segment.metric]?.[segment.level as ChartLevel]) continue;
       if (![segment.from_m, segment.to_m, segment.value].every(Number.isFinite)) continue;
       shapes.push({
         type: 'line', x0: segment.from_m, x1: segment.to_m,
@@ -452,7 +473,7 @@ const ChartComponent = ({ result, selectedExceptionId, onSelectException, sessio
               label="Markers" 
             />
             <FormControlLabel 
-              control={<Checkbox checked={showThresholds} onChange={(e) => setShowThresholds(e.target.checked)} size="small" />} 
+              control={<Checkbox checked={showThresholds} disabled={isRaw} onChange={(e) => updatePreferences(sessionId, previous => ({ ...previous, showThresholds: e.target.checked }))} size="small" />}
               label="門檻線"
             />
             <FormControlLabel 
@@ -460,6 +481,8 @@ const ChartComponent = ({ result, selectedExceptionId, onSelectException, sessio
               label="Legend" 
             />
           </FormGroup>
+          <Button variant="outlined" size="small" disabled={isRaw} aria-haspopup="dialog" aria-expanded={!!thresholdAnchor}
+            onClick={event => setThresholdAnchor(event.currentTarget)}>門檻設定</Button>
           <Button 
             variant="outlined" 
             size="small" 
@@ -471,6 +494,44 @@ const ChartComponent = ({ result, selectedExceptionId, onSelectException, sessio
           </Button>
         </Box>
       </Box>
+      <Popover open={!!thresholdAnchor && !isRaw} anchorEl={thresholdAnchor} onClose={() => setThresholdAnchor(null)}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }} transformOrigin={{ vertical: 'top', horizontal: 'right' }}>
+        <Box role="dialog" aria-label="門檻線設定" sx={{ p: 2, maxWidth: 'calc(100vw - 32px)' }}>
+          <Typography variant="subtitle1" fontWeight={700}>門檻線設定</Typography>
+          <Typography variant="caption">只影響圖表顯示；未配置的級別不產生門檻線。</Typography>
+          <Table size="small" aria-label="量測與級別門檻顯示">
+            <TableHead><TableRow><TableCell>量測</TableCell>{LEVELS.map(level => <TableCell key={level} align="center">{level}</TableCell>)}</TableRow></TableHead>
+            <TableBody>{METRICS.map(metric => <TableRow key={metric.key}>
+              <TableCell component="th" scope="row">{metric.label}</TableCell>
+              {LEVELS.map(level => {
+                const available = availableThresholds.has(`${metric.key}:${level}`);
+                return <TableCell key={level} align="center" sx={{ px: 0.5 }}>
+                  <Checkbox size="small" checked={available && preferences.thresholds[metric.key][level]} disabled={!available}
+                    inputProps={{ 'aria-label': `${metric.label} ${level}` }}
+                    onChange={event => updatePreferences(sessionId, previous => ({ ...previous, thresholds: {
+                      ...previous.thresholds, [metric.key]: { ...previous.thresholds[metric.key], [level]: event.target.checked },
+                    } }))} />
+                  {!available && <Typography variant="caption" display="block">未配置</Typography>}
+                </TableCell>;
+              })}
+            </TableRow>)}</TableBody>
+          </Table>
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 1 }}><Button onClick={() => setThresholdAnchor(null)}>完成</Button></Box>
+        </Box>
+      </Popover>
+      <Popover open={!!markerChoices && markerChoices.identity === identity} onClose={() => setMarkerChoices(null)}
+        anchorReference="anchorPosition" anchorPosition={markerChoices ? { left: markerChoices.left, top: markerChoices.top } : undefined}>
+        <Box sx={{ maxWidth: 'min(420px, calc(100vw - 32px))', p: 1 }}>
+          <Typography variant="subtitle2" sx={{ px: 1 }}>此位置有多個例外，請選擇</Typography>
+          <MenuList aria-label="選擇此位置的例外">{markerChoices?.hits.map(hit => {
+            const exception = Object.values(result.exceptions).flat().find(item => item.id === hit.id);
+            return exception && <MenuItem key={hit.id} sx={{ whiteSpace: 'normal', overflowWrap: 'anywhere' }} onClick={() => {
+              if (markerChoices.identity !== identity) return;
+              focusException(exception, hit.x); onSelectException(hit.id); setMarkerChoices(null);
+            }}>{exception.id} · {exception['exception type']} · {exception.level}</MenuItem>;
+          })}</MenuList>
+        </Box>
+      </Popover>
       {detailLoading && <Box role="status" aria-live="polite" sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1, px: 1 }}>
         <Typography variant="body2" sx={{ flex: 1 }}>{isRaw
           ? '載入原始資料明細；快取過期時需重新讀取來源檔。保留目前圖表資料。'
@@ -502,8 +563,19 @@ const ChartComponent = ({ result, selectedExceptionId, onSelectException, sessio
             scrollZoom: true // Enable scroll zoom
           }}
           onClick={(data) => {
+            const event = data.event as MouseEvent | undefined;
+            if (event && Number.isFinite(event.clientX) && Number.isFinite(event.clientY) && chartRef.current?.el) {
+              const hits = hitTestExceptionMarkers(chartRef.current.el, event.clientX, event.clientY);
+              if (hits.length > 1) {
+                setMarkerChoices({ hits, left: event.clientX, top: event.clientY, identity });
+              } else if (hits.length === 1) {
+                const exception = Object.values(result.exceptions).flat().find(item => item.id === hits[0].id);
+                if (exception) { focusException(exception, hits[0].x); onSelectException(exception.id); }
+              }
+              return;
+            }
             for (const point of (data.points || []) as any[]) {
-              const marker = point.customdata?.kind === 'exception-marker' ? point.customdata : point.data?.customdata?.[point.pointIndex];
+              const marker = point.customdata?.kind === 'exception-marker' ? point.customdata : point.data?.customdata?.[point.pointIndex ?? point.pointNumber];
               if (marker?.kind !== 'exception-marker') continue;
               const id = marker.id;
               const exception = Object.values(result.exceptions).flat().find(item => item.id === id);

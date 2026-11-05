@@ -233,7 +233,7 @@ class TestExportRawGenerateEndpoint:
             "raw_marker": ["first", "middle", "last"],
         })
         monkeypatch.setattr(analysis_endpoint, "ANALYSIS_SESSIONS", {
-            "tab-report": {"raw_df": raw, "source_path": "raw.csv"},
+            "tab-report": {"raw_df": raw, "source_path": "raw.csv", "results": {}},
         })
         response = client.post("/api/export/report/generate", json={
             "exceptions": {},
@@ -372,8 +372,9 @@ class TestLegacyExportRawEndpoint:
         # Clear global state first
         from app.api.endpoints.analysis import LAST_RAW_DF
         
-        with patch('app.api.endpoints.analysis.LAST_RAW_DF', pd.DataFrame()):
+        with patch('app.api.endpoints.analysis.LAST_RAW_DF', pd.DataFrame()), \
+             patch('app.api.endpoints.analysis.LAST_ANALYSIS_SNAPSHOT', None):
             response = client.get("/api/export/raw")
             # Should fail since no analysis has been run
             assert response.status_code == 400
-            assert "No raw data available" in response.json()["detail"]
+            assert "No data available" in response.json()["detail"]

@@ -471,7 +471,7 @@ const ExceptionGeneratorView = () => {
                             <Button variant="outlined" size="small"
                               onClick={() => handleAnalyze(rawOverview ? 'median' : 'raw_overview')}
                               disabled={activeSession.loading || exporting || activeSession.downloadStatus === 'downloading' || isActiveJob(activeSession.exportJob)}>
-                              {rawOverview ? '返回中位樣本分析' : '原始資料概覽'}
+                              {rawOverview ? '返回例外分析' : '原始資料概覽'}
                             </Button>
                         </Stack>
 
@@ -492,7 +492,7 @@ const ExceptionGeneratorView = () => {
                         </ToggleButtonGroup>
                     </Paper>
 
-                    {rawOverview && <Alert severity="info">原始資料概覽：略過同 Km 精簡及例外偵測，不能匯出例外報表。切回中位樣本分析會重新讀取原檔。</Alert>}
+                    {rawOverview && <Alert severity="info">原始資料概覽：略過例外偵測，不能匯出例外報表。切回例外分析會重新讀取原檔。</Alert>}
                     {exporting && (
                       <Box sx={{ px: 2, pt: 1 }}>
                         <TaskLoadingState stage="exporting" exportMode progress={activeSession.exportJob} />
@@ -581,7 +581,7 @@ const ExceptionGeneratorView = () => {
                             </Stack>
                         </Stack>
                         <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-                            正常分析會為各 channel 選取同 Km 中位實測樣本，圖表及報表使用相同資料；不另加噪訊濾波。
+                            例外判定及報表使用完整清理後資料；圖表以同 Km 中位實測樣本顯示，不另加噪訊濾波。
                         </Typography>
                         {activeSession.error && <Alert severity="error" sx={{ mt: 1 }}>{activeSession.error}</Alert>}
                     </Box>

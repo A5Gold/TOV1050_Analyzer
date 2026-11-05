@@ -1,0 +1,261 @@
+{
+  "status": "passed",
+  "entry": "npm run dev starts Electron/Vite/FastAPI; browser UI on same dev service; file picker adapter supplies real CSV paths; no API interception",
+  "reports": [
+    {
+      "source": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\Raw data\\TWL\\20260907_TWL_UT.csv",
+      "report": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\validation-2026-11-03\\npm-dev-retest\\20260907_TWL_UT_MAINLINE_CEN_TSW_Exception_Report.xlsx",
+      "analysis_seconds": 44.320931800000004,
+      "total_seconds": 166.4873522,
+      "counts": {
+        "Low Height": 65,
+        "High Height": 2,
+        "Wire Wear": 1,
+        "Stagger Left": 118,
+        "Stagger Right": 103
+      },
+      "aggregation_metadata": {
+        "aggregation": "chainage_median",
+        "algorithm": "same_chainage_median_sample_v1",
+        "aggregation_version": "same_chainage_median_sample_v1",
+        "raw_points": 838859,
+        "grouped_points": 83963,
+        "grouping_columns": [
+          "Chainage",
+          "Line",
+          "line",
+          "Track",
+          "track",
+          "Class",
+          "Track Type",
+          "Overlap",
+          "Tension Length",
+          "Landmark",
+          "task_run_date",
+          "Section",
+          "task_no",
+          "station_start",
+          "station_end",
+          "segment_id"
+        ],
+        "median_even_rule": "earliest acquired sample matching either central order-statistic value",
+        "sample_counter_column": "SampleCount [n.]",
+        "pass_rule": "finite sample counter decrease",
+        "adjacent_runs_only": true,
+        "source_row_unit": "source row number or one-based retained row",
+        "representative_semantics": "per-channel measured sample; channels may come from different raw rows",
+        "noise_filter": null,
+        "source_sha256": "54ab7ede00922f56e29919518882381520d7181a9f233d4440b6726abea44e37",
+        "metadata_sha256": "5ab7e9f4da470825143cc8008d7ff82f784f9da93b860b9e3bf08140b990f67b",
+        "source_points": 838859,
+        "representative_points": 83963,
+        "analysis_mode": "median",
+        "detection_algorithm": "cleaned_raw_signed_stagger_v1",
+        "detection_data_mode": "cleaned_raw",
+        "detection_points": 838859,
+        "export_data_mode": "chainage_median",
+        "chart_aggregation_version": "same_chainage_median_sample_v1",
+        "stagger_magnitude_rule_version": "symmetric-stagger-magnitude-2026-11-03-v1"
+      },
+      "analysis_job": {
+        "job_id": "4551445da9bb4fd3bcb3ceb6a8272138",
+        "kind": "analysis",
+        "client_session_id": "mw0po0ypjgbmee016dr",
+        "analysis_revision": null,
+        "status": "queued",
+        "stage": "queued",
+        "processed": 0,
+        "total": null,
+        "unit": null,
+        "error": null,
+        "error_code": null,
+        "elapsed_seconds": 0,
+        "stage_percent": null
+      },
+      "params": {
+        "file_path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\Raw data\\TWL\\20260907_TWL_UT.csv",
+        "line": "TWL",
+        "section": "Mainline",
+        "track": "UT",
+        "date_str": "20260907",
+        "session": "Mainline",
+        "branch": "Mainline",
+        "task_no": null,
+        "station_start": "CEN",
+        "station_end": "TSW",
+        "client_session_id": "mw0po0ypjgbmee016dr",
+        "analysis_mode": "median",
+        "chart_data_mode": "chainage_median",
+        "direction": "UP",
+        "source_context": {
+          "line": "TWL",
+          "track": "UT",
+          "section": "Mainline",
+          "session": null,
+          "branch": null
+        }
+      }
+    },
+    {
+      "source": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\Raw data\\TWL\\20260630_TWL_UT.csv",
+      "report": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\validation-2026-11-03\\npm-dev-retest\\20260630_TWL_UT_MAINLINE_CEN_TSW_Exception_Report.xlsx",
+      "analysis_seconds": 53.24080170000001,
+      "total_seconds": 172.89130239999997,
+      "counts": {
+        "Low Height": 69,
+        "High Height": 9,
+        "Wire Wear": 17,
+        "Stagger Left": 112,
+        "Stagger Right": 123
+      },
+      "aggregation_metadata": {
+        "aggregation": "chainage_median",
+        "algorithm": "same_chainage_median_sample_v1",
+        "aggregation_version": "same_chainage_median_sample_v1",
+        "raw_points": 830792,
+        "grouped_points": 83244,
+        "grouping_columns": [
+          "Chainage",
+          "Line",
+          "line",
+          "Track",
+          "track",
+          "Class",
+          "Track Type",
+          "Overlap",
+          "Tension Length",
+          "Landmark",
+          "task_run_date",
+          "Section",
+          "task_no",
+          "station_start",
+          "station_end",
+          "segment_id"
+        ],
+        "median_even_rule": "earliest acquired sample matching either central order-statistic value",
+        "sample_counter_column": "SampleCount [n.]",
+        "pass_rule": "finite sample counter decrease",
+        "adjacent_runs_only": true,
+        "source_row_unit": "source row number or one-based retained row",
+        "representative_semantics": "per-channel measured sample; channels may come from different raw rows",
+        "noise_filter": null,
+        "source_sha256": "e2ab667196694f07023ceb273e4fe7014fcab6a76165b5a0fec592ea55fbe251",
+        "metadata_sha256": "5ab7e9f4da470825143cc8008d7ff82f784f9da93b860b9e3bf08140b990f67b",
+        "source_points": 830792,
+        "representative_points": 83244,
+        "analysis_mode": "median",
+        "detection_algorithm": "cleaned_raw_signed_stagger_v1",
+        "detection_data_mode": "cleaned_raw",
+        "detection_points": 830792,
+        "export_data_mode": "chainage_median",
+        "chart_aggregation_version": "same_chainage_median_sample_v1",
+        "stagger_magnitude_rule_version": "symmetric-stagger-magnitude-2026-11-03-v1"
+      },
+      "analysis_job": {
+        "job_id": "f9742449b7354aecb6424a7ba504ee0f",
+        "kind": "analysis",
+        "client_session_id": "mw0prt86l8vxlu05b6b",
+        "analysis_revision": null,
+        "status": "queued",
+        "stage": "queued",
+        "processed": 0,
+        "total": null,
+        "unit": null,
+        "error": null,
+        "error_code": null,
+        "elapsed_seconds": 0,
+        "stage_percent": null
+      },
+      "params": {
+        "file_path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\Raw data\\TWL\\20260630_TWL_UT.csv",
+        "line": "TWL",
+        "section": "Mainline",
+        "track": "UT",
+        "date_str": "20260630",
+        "session": "Mainline",
+        "branch": "Mainline",
+        "task_no": null,
+        "station_start": "CEN",
+        "station_end": "TSW",
+        "client_session_id": "mw0prt86l8vxlu05b6b",
+        "analysis_mode": "median",
+        "chart_data_mode": "chainage_median",
+        "direction": "UP",
+        "source_context": {
+          "line": "TWL",
+          "track": "UT",
+          "section": "Mainline",
+          "session": null,
+          "branch": null
+        }
+      }
+    }
+  ],
+  "errors": [
+    "Screenshot: TimeoutError: page.screenshot: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - taking page screenshot\u001b[22m\n",
+    "Screenshot: TimeoutError: page.screenshot: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - taking page screenshot\u001b[22m\n"
+  ],
+  "requests_failed": [],
+  "runtime": {
+    "database_path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\validation-2026-11-03\\npm-dev-retest\\isolated.db",
+    "database_directory": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\validation-2026-11-03\\npm-dev-retest",
+    "config_directory": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config",
+    "mode": "standard",
+    "packaging": {
+      "recommended_target": "dir",
+      "current_target": "dir",
+      "writable_data_root": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\validation-2026-11-03\\npm-dev-retest",
+      "portable_database_pattern": "<packaged app root>\\data\\analysis.db",
+      "single_exe_note": "Single exe packages must store SQLite data in an external writable folder such as %APPDATA%; embedded executable resources are not a database storage location."
+    }
+  },
+  "history": {
+    "job": {
+      "job_id": "62dac6677d0a4bebac297c199b811faf",
+      "kind": "history_compare",
+      "client_session_id": "mw0pvqd3rf8rktg31le",
+      "analysis_revision": null,
+      "status": "queued",
+      "stage": "queued",
+      "processed": 0,
+      "total": null,
+      "unit": null,
+      "error": null,
+      "error_code": null,
+      "elapsed_seconds": 0,
+      "stage_percent": null
+    },
+    "submit_http": 202,
+    "submit_seconds": 1.0908178000000188,
+    "compare_seconds": 78.57407889999996,
+    "stats": {
+      "total": 15,
+      "breakdown": {
+        "Low Height": 4,
+        "Stagger Left": 6,
+        "Stagger Right": 5
+      }
+    },
+    "metrics": {
+      "reports": [
+        {
+          "filename": "20260907_TWL_UT_MAINLINE_CEN_TSW_Exception_Report.xlsx",
+          "chart_rows": 83963,
+          "exception_rows": 289,
+          "read_seconds": 40.366,
+          "cumulative_elapsed_seconds": 41.03
+        },
+        {
+          "filename": "20260630_TWL_UT_MAINLINE_CEN_TSW_Exception_Report.xlsx",
+          "chart_rows": 83244,
+          "exception_rows": 330,
+          "read_seconds": 35.056,
+          "cumulative_elapsed_seconds": 76.086
+        }
+      ],
+      "elapsed_seconds": 76.141
+    },
+    "report": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\validation-2026-11-03\\npm-dev-retest\\20260907_TWL_UT_MAINLINE_CEN_TSW_Exception_Report_2_Repeated.xlsx"
+  },
+  "sources_and_config_unchanged": true
+}

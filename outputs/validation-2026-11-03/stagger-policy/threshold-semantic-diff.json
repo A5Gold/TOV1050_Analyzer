@@ -1,0 +1,2316 @@
+[
+  {
+    "path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\DRL metadata.xlsx",
+    "sha256": "641477e23e3f9afae7b4d63a4829286f2f93680153d077f987b538367a4902cc",
+    "source_unchanged": true,
+    "before": [
+      {
+        "Class": "both",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 200.0,
+        "Stagger L2": 130.0,
+        "Stagger L3": 100.0
+      },
+      {
+        "Class": "both",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 200.0,
+        "Stagger L2": 130.0,
+        "Stagger L3": 100.0
+      },
+      {
+        "Class": "both",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 260.0,
+        "Stagger L2": 190.0,
+        "Stagger L3": 160.0
+      },
+      {
+        "Class": "both",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 260.0,
+        "Stagger L2": 190.0,
+        "Stagger L3": 160.0
+      },
+      {
+        "Class": "both",
+        "Track Type": "non-support",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 350.0,
+        "Stagger L2": 280.0,
+        "Stagger L3": 250.0
+      },
+      {
+        "Class": "both",
+        "Track Type": "non-support",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 350.0,
+        "Stagger L2": 280.0,
+        "Stagger L3": 250.0
+      },
+      {
+        "Class": "both",
+        "Track Type": "Support",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 350.0,
+        "Stagger L2": 280.0,
+        "Stagger L3": 250.0
+      },
+      {
+        "Class": "both",
+        "Track Type": "Support",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 350.0,
+        "Stagger L2": 280.0,
+        "Stagger L3": 250.0
+      }
+    ],
+    "after": [
+      {
+        "Class": "Open",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 270.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Open",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 270.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Tunnel",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 370.0,
+        "Stagger L2": 330.0,
+        "Stagger L3": 300.0
+      },
+      {
+        "Class": "Tunnel",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 370.0,
+        "Stagger L2": 330.0,
+        "Stagger L3": 300.0
+      },
+      {
+        "Class": "Tunnel",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 370.0,
+        "Stagger L2": 330.0,
+        "Stagger L3": 300.0
+      },
+      {
+        "Class": "Tunnel",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 370.0,
+        "Stagger L2": 330.0,
+        "Stagger L3": 300.0
+      },
+      {
+        "Class": "Open",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 400.0,
+        "Stagger L2": 360.0,
+        "Stagger L3": 330.0
+      },
+      {
+        "Class": "Open",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 400.0,
+        "Stagger L2": 360.0,
+        "Stagger L3": 330.0
+      },
+      {
+        "Class": "ORCR",
+        "Track Type": "non-support",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 350.0,
+        "Stagger L2": 280.0,
+        "Stagger L3": 250.0
+      },
+      {
+        "Class": "ORCR",
+        "Track Type": "non-support",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 350.0,
+        "Stagger L2": 280.0,
+        "Stagger L3": 250.0
+      },
+      {
+        "Class": "ORCR",
+        "Track Type": "Support",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 350.0,
+        "Stagger L2": 280.0,
+        "Stagger L3": 250.0
+      },
+      {
+        "Class": "ORCR",
+        "Track Type": "Support",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 350.0,
+        "Stagger L2": 280.0,
+        "Stagger L3": 250.0
+      },
+      {
+        "Class": "Tunnel_MIS",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Tunnel_MIS",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Tunnel_MIS",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Tunnel_MIS",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Open_MIS",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 200.0,
+        "Stagger L2": 130.0,
+        "Stagger L3": 100.0
+      },
+      {
+        "Class": "Open_MIS",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 200.0,
+        "Stagger L2": 130.0,
+        "Stagger L3": 100.0
+      },
+      {
+        "Class": "Open_MIS",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 260.0,
+        "Stagger L2": 190.0,
+        "Stagger L3": 160.0
+      },
+      {
+        "Class": "Open_MIS",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 260.0,
+        "Stagger L2": 190.0,
+        "Stagger L3": 160.0
+      }
+    ]
+  },
+  {
+    "path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\EAL metadata.xlsx",
+    "sha256": "d74f3c9a7d1fc4d9f0ac95288b993d24b9574d30218c791d6e519b871cd3ccf9",
+    "source_unchanged": true,
+    "before": [
+      {
+        "Class": "both",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 320.0,
+        "Stagger L2": 280.0,
+        "Stagger L3": 250.0
+      },
+      {
+        "Class": "both",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 320.0,
+        "Stagger L2": 280.0,
+        "Stagger L3": 250.0
+      },
+      {
+        "Class": "SCL",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 480.0,
+        "Stagger L2": null,
+        "Stagger L3": 450.0
+      },
+      {
+        "Class": "SCL",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 480.0,
+        "Stagger L2": null,
+        "Stagger L3": 450.0
+      },
+      {
+        "Class": "both",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 470.0,
+        "Stagger L2": 430.0,
+        "Stagger L3": 400.0
+      },
+      {
+        "Class": "both",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 470.0,
+        "Stagger L2": 430.0,
+        "Stagger L3": 400.0
+      },
+      {
+        "Class": "SCL",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 480.0,
+        "Stagger L2": null,
+        "Stagger L3": 450.0
+      },
+      {
+        "Class": "SCL",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 480.0,
+        "Stagger L2": null,
+        "Stagger L3": 450.0
+      }
+    ],
+    "after": [
+      {
+        "Class": "both",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 320.0,
+        "Stagger L2": 280.0,
+        "Stagger L3": 250.0
+      },
+      {
+        "Class": "both",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 320.0,
+        "Stagger L2": 280.0,
+        "Stagger L3": 250.0
+      },
+      {
+        "Class": "SCL",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 480.0,
+        "Stagger L2": null,
+        "Stagger L3": 450.0
+      },
+      {
+        "Class": "SCL",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 480.0,
+        "Stagger L2": null,
+        "Stagger L3": 450.0
+      },
+      {
+        "Class": "both",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 470.0,
+        "Stagger L2": 430.0,
+        "Stagger L3": 400.0
+      },
+      {
+        "Class": "both",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 470.0,
+        "Stagger L2": 430.0,
+        "Stagger L3": 400.0
+      },
+      {
+        "Class": "SCL",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 480.0,
+        "Stagger L2": null,
+        "Stagger L3": 450.0
+      },
+      {
+        "Class": "SCL",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 480.0,
+        "Stagger L2": null,
+        "Stagger L3": 450.0
+      }
+    ]
+  },
+  {
+    "path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\ISL metadata.xlsx",
+    "sha256": "cd65e09b69d2f59eab283a8b30b7dd00503ad99f803611d8cef14878981ed809",
+    "source_unchanged": true,
+    "before": [
+      {
+        "Class": "ORCR",
+        "Track Type": "non-support",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 350.0,
+        "Stagger L2": 280.0,
+        "Stagger L3": 250.0
+      },
+      {
+        "Class": "ORCR",
+        "Track Type": "Support",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 350.0,
+        "Stagger L2": 280.0,
+        "Stagger L3": 250.0
+      },
+      {
+        "Class": "Tunnel_MIS",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Tunnel_MIS",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Open_MIS",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 200.0,
+        "Stagger L2": 130.0,
+        "Stagger L3": 100.0
+      },
+      {
+        "Class": "Open_MIS",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 260.0,
+        "Stagger L2": 190.0,
+        "Stagger L3": 160.0
+      },
+      {
+        "Class": "Tunnel",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Tunnel",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Open",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 200.0,
+        "Stagger L2": 130.0,
+        "Stagger L3": 100.0
+      },
+      {
+        "Class": "Open",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 260.0,
+        "Stagger L2": 190.0,
+        "Stagger L3": 160.0
+      }
+    ],
+    "after": [
+      {
+        "Class": "ORCR",
+        "Track Type": "non-support",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 350.0,
+        "Stagger L2": 280.0,
+        "Stagger L3": 250.0
+      },
+      {
+        "Class": "ORCR",
+        "Track Type": "non-support",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 350.0,
+        "Stagger L2": 280.0,
+        "Stagger L3": 250.0
+      },
+      {
+        "Class": "ORCR",
+        "Track Type": "Support",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 350.0,
+        "Stagger L2": 280.0,
+        "Stagger L3": 250.0
+      },
+      {
+        "Class": "ORCR",
+        "Track Type": "Support",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 350.0,
+        "Stagger L2": 280.0,
+        "Stagger L3": 250.0
+      },
+      {
+        "Class": "Tunnel_MIS",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Tunnel_MIS",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Tunnel_MIS",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Tunnel_MIS",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Open_MIS",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 200.0,
+        "Stagger L2": 130.0,
+        "Stagger L3": 100.0
+      },
+      {
+        "Class": "Open_MIS",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 200.0,
+        "Stagger L2": 130.0,
+        "Stagger L3": 100.0
+      },
+      {
+        "Class": "Open_MIS",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 260.0,
+        "Stagger L2": 190.0,
+        "Stagger L3": 160.0
+      },
+      {
+        "Class": "Open_MIS",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 260.0,
+        "Stagger L2": 190.0,
+        "Stagger L3": 160.0
+      },
+      {
+        "Class": "Tunnel",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Tunnel",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Tunnel",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Tunnel",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Open",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 200.0,
+        "Stagger L2": 130.0,
+        "Stagger L3": 100.0
+      },
+      {
+        "Class": "Open",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 200.0,
+        "Stagger L2": 130.0,
+        "Stagger L3": 100.0
+      },
+      {
+        "Class": "Open",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 260.0,
+        "Stagger L2": 190.0,
+        "Stagger L3": 160.0
+      },
+      {
+        "Class": "Open",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 260.0,
+        "Stagger L2": 190.0,
+        "Stagger L3": 160.0
+      }
+    ]
+  },
+  {
+    "path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\KTL metadata.xlsx",
+    "sha256": "82af451a3124aa578de146883b6baf07356e12270c969244307dc93fe074df08",
+    "source_unchanged": true,
+    "before": [
+      {
+        "Class": "ORCR",
+        "Track Type": "non-support",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 350.0,
+        "Stagger L2": 280.0,
+        "Stagger L3": 250.0
+      },
+      {
+        "Class": "ORCR",
+        "Track Type": "Support",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 350.0,
+        "Stagger L2": 280.0,
+        "Stagger L3": 250.0
+      },
+      {
+        "Class": "Tunnel_MIS",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Tunnel_MIS",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Open_MIS",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 200.0,
+        "Stagger L2": 130.0,
+        "Stagger L3": 100.0
+      },
+      {
+        "Class": "Open_MIS",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 260.0,
+        "Stagger L2": 190.0,
+        "Stagger L3": 160.0
+      },
+      {
+        "Class": "Tunnel",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Tunnel",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Open",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 200.0,
+        "Stagger L2": 130.0,
+        "Stagger L3": 100.0
+      },
+      {
+        "Class": "Open",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 260.0,
+        "Stagger L2": 190.0,
+        "Stagger L3": 160.0
+      }
+    ],
+    "after": [
+      {
+        "Class": "ORCR",
+        "Track Type": "non-support",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 350.0,
+        "Stagger L2": 280.0,
+        "Stagger L3": 250.0
+      },
+      {
+        "Class": "ORCR",
+        "Track Type": "non-support",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 350.0,
+        "Stagger L2": 280.0,
+        "Stagger L3": 250.0
+      },
+      {
+        "Class": "ORCR",
+        "Track Type": "Support",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 350.0,
+        "Stagger L2": 280.0,
+        "Stagger L3": 250.0
+      },
+      {
+        "Class": "ORCR",
+        "Track Type": "Support",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 350.0,
+        "Stagger L2": 280.0,
+        "Stagger L3": 250.0
+      },
+      {
+        "Class": "Tunnel_MIS",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Tunnel_MIS",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Tunnel_MIS",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Tunnel_MIS",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Open_MIS",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 200.0,
+        "Stagger L2": 130.0,
+        "Stagger L3": 100.0
+      },
+      {
+        "Class": "Open_MIS",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 200.0,
+        "Stagger L2": 130.0,
+        "Stagger L3": 100.0
+      },
+      {
+        "Class": "Open_MIS",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 260.0,
+        "Stagger L2": 190.0,
+        "Stagger L3": 160.0
+      },
+      {
+        "Class": "Open_MIS",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 260.0,
+        "Stagger L2": 190.0,
+        "Stagger L3": 160.0
+      },
+      {
+        "Class": "Tunnel",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Tunnel",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Tunnel",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Tunnel",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Open",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 200.0,
+        "Stagger L2": 130.0,
+        "Stagger L3": 100.0
+      },
+      {
+        "Class": "Open",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 200.0,
+        "Stagger L2": 130.0,
+        "Stagger L3": 100.0
+      },
+      {
+        "Class": "Open",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 260.0,
+        "Stagger L2": 190.0,
+        "Stagger L3": 160.0
+      },
+      {
+        "Class": "Open",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 260.0,
+        "Stagger L2": 190.0,
+        "Stagger L3": 160.0
+      }
+    ]
+  },
+  {
+    "path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\LAR_AEL metadata.xlsx",
+    "sha256": "bea986379f0584d648b90b19f513746e613e6917a8525568a2db111fa49f586a",
+    "source_unchanged": true,
+    "before": [
+      {
+        "Class": "ORCR",
+        "Track Type": "non-support",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 350.0,
+        "Stagger L2": 280.0,
+        "Stagger L3": 250.0
+      },
+      {
+        "Class": "ORCR",
+        "Track Type": "Support",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 350.0,
+        "Stagger L2": 280.0,
+        "Stagger L3": 250.0
+      },
+      {
+        "Class": "Tunnel_MIS",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Tunnel_MIS",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Open_MIS",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 200.0,
+        "Stagger L2": 130.0,
+        "Stagger L3": 100.0
+      },
+      {
+        "Class": "Open_MIS",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 260.0,
+        "Stagger L2": 190.0,
+        "Stagger L3": 160.0
+      },
+      {
+        "Class": "Open",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 270.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Tunnel",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 370.0,
+        "Stagger L2": 330.0,
+        "Stagger L3": 300.0
+      },
+      {
+        "Class": "Tunnel",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 370.0,
+        "Stagger L2": 330.0,
+        "Stagger L3": 300.0
+      },
+      {
+        "Class": "Open",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 400.0,
+        "Stagger L2": 360.0,
+        "Stagger L3": 330.0
+      }
+    ],
+    "after": [
+      {
+        "Class": "ORCR",
+        "Track Type": "non-support",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 350.0,
+        "Stagger L2": 280.0,
+        "Stagger L3": 250.0
+      },
+      {
+        "Class": "ORCR",
+        "Track Type": "non-support",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 350.0,
+        "Stagger L2": 280.0,
+        "Stagger L3": 250.0
+      },
+      {
+        "Class": "ORCR",
+        "Track Type": "Support",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 350.0,
+        "Stagger L2": 280.0,
+        "Stagger L3": 250.0
+      },
+      {
+        "Class": "ORCR",
+        "Track Type": "Support",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 350.0,
+        "Stagger L2": 280.0,
+        "Stagger L3": 250.0
+      },
+      {
+        "Class": "Tunnel_MIS",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Tunnel_MIS",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Tunnel_MIS",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Tunnel_MIS",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Open_MIS",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 200.0,
+        "Stagger L2": 130.0,
+        "Stagger L3": 100.0
+      },
+      {
+        "Class": "Open_MIS",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 200.0,
+        "Stagger L2": 130.0,
+        "Stagger L3": 100.0
+      },
+      {
+        "Class": "Open_MIS",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 260.0,
+        "Stagger L2": 190.0,
+        "Stagger L3": 160.0
+      },
+      {
+        "Class": "Open_MIS",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 260.0,
+        "Stagger L2": 190.0,
+        "Stagger L3": 160.0
+      },
+      {
+        "Class": "Open",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 270.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Open",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 270.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Tunnel",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 370.0,
+        "Stagger L2": 330.0,
+        "Stagger L3": 300.0
+      },
+      {
+        "Class": "Tunnel",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 370.0,
+        "Stagger L2": 330.0,
+        "Stagger L3": 300.0
+      },
+      {
+        "Class": "Tunnel",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 370.0,
+        "Stagger L2": 330.0,
+        "Stagger L3": 300.0
+      },
+      {
+        "Class": "Tunnel",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 370.0,
+        "Stagger L2": 330.0,
+        "Stagger L3": 300.0
+      },
+      {
+        "Class": "Open",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 400.0,
+        "Stagger L2": 360.0,
+        "Stagger L3": 330.0
+      },
+      {
+        "Class": "Open",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 400.0,
+        "Stagger L2": 360.0,
+        "Stagger L3": 330.0
+      }
+    ]
+  },
+  {
+    "path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\LAR_TCL metadata.xlsx",
+    "sha256": "baa09191a3b4eea07f9d8e6c500a57b7c218ce1eeccdd2ea99ee34d7de35f112",
+    "source_unchanged": true,
+    "before": [
+      {
+        "Class": "Open",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 270.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Tunnel",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 370.0,
+        "Stagger L2": 330.0,
+        "Stagger L3": 300.0
+      },
+      {
+        "Class": "Tunnel",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 370.0,
+        "Stagger L2": 330.0,
+        "Stagger L3": 300.0
+      },
+      {
+        "Class": "Open",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 400.0,
+        "Stagger L2": 360.0,
+        "Stagger L3": 330.0
+      },
+      {
+        "Class": "ORCR",
+        "Track Type": "non-support",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 370.0,
+        "Stagger L2": 350.0,
+        "Stagger L3": 330.0
+      },
+      {
+        "Class": "ORCR",
+        "Track Type": "Support",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 370.0,
+        "Stagger L2": 350.0,
+        "Stagger L3": 330.0
+      },
+      {
+        "Class": "Tunnel_MIS",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Tunnel_MIS",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Open_MIS",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 200.0,
+        "Stagger L2": 130.0,
+        "Stagger L3": 100.0
+      },
+      {
+        "Class": "Open_MIS",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 260.0,
+        "Stagger L2": 190.0,
+        "Stagger L3": 160.0
+      }
+    ],
+    "after": [
+      {
+        "Class": "Open",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 270.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Open",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 270.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Tunnel",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 370.0,
+        "Stagger L2": 330.0,
+        "Stagger L3": 300.0
+      },
+      {
+        "Class": "Tunnel",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 370.0,
+        "Stagger L2": 330.0,
+        "Stagger L3": 300.0
+      },
+      {
+        "Class": "Tunnel",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 370.0,
+        "Stagger L2": 330.0,
+        "Stagger L3": 300.0
+      },
+      {
+        "Class": "Tunnel",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 370.0,
+        "Stagger L2": 330.0,
+        "Stagger L3": 300.0
+      },
+      {
+        "Class": "Open",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 400.0,
+        "Stagger L2": 360.0,
+        "Stagger L3": 330.0
+      },
+      {
+        "Class": "Open",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 400.0,
+        "Stagger L2": 360.0,
+        "Stagger L3": 330.0
+      },
+      {
+        "Class": "ORCR",
+        "Track Type": "non-support",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 370.0,
+        "Stagger L2": 350.0,
+        "Stagger L3": 330.0
+      },
+      {
+        "Class": "ORCR",
+        "Track Type": "non-support",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 370.0,
+        "Stagger L2": 350.0,
+        "Stagger L3": 330.0
+      },
+      {
+        "Class": "ORCR",
+        "Track Type": "Support",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 370.0,
+        "Stagger L2": 350.0,
+        "Stagger L3": 330.0
+      },
+      {
+        "Class": "ORCR",
+        "Track Type": "Support",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 370.0,
+        "Stagger L2": 350.0,
+        "Stagger L3": 330.0
+      },
+      {
+        "Class": "Tunnel_MIS",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Tunnel_MIS",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Tunnel_MIS",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Tunnel_MIS",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Open_MIS",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 200.0,
+        "Stagger L2": 130.0,
+        "Stagger L3": 100.0
+      },
+      {
+        "Class": "Open_MIS",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 200.0,
+        "Stagger L2": 130.0,
+        "Stagger L3": 100.0
+      },
+      {
+        "Class": "Open_MIS",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 260.0,
+        "Stagger L2": 190.0,
+        "Stagger L3": 160.0
+      },
+      {
+        "Class": "Open_MIS",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 260.0,
+        "Stagger L2": 190.0,
+        "Stagger L3": 160.0
+      }
+    ]
+  },
+  {
+    "path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\TKL metadata.xlsx",
+    "sha256": "fdad42c797c84af15f4e28ae22f004d2ad4b7daace8cd09bb4c760161beff44d",
+    "source_unchanged": true,
+    "before": [
+      {
+        "Class": "ORCR",
+        "Track Type": "non-support",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 350.0,
+        "Stagger L2": 280.0,
+        "Stagger L3": 250.0
+      },
+      {
+        "Class": "ORCR",
+        "Track Type": "Support",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 350.0,
+        "Stagger L2": 280.0,
+        "Stagger L3": 250.0
+      },
+      {
+        "Class": "Tunnel_MIS",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Tunnel_MIS",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Open_MIS",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 200.0,
+        "Stagger L2": 130.0,
+        "Stagger L3": 100.0
+      },
+      {
+        "Class": "Open_MIS",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 260.0,
+        "Stagger L2": 190.0,
+        "Stagger L3": 160.0
+      },
+      {
+        "Class": "Tunnel",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Tunnel",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Open",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 200.0,
+        "Stagger L2": 130.0,
+        "Stagger L3": 100.0
+      },
+      {
+        "Class": "Open",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 260.0,
+        "Stagger L2": 190.0,
+        "Stagger L3": 160.0
+      }
+    ],
+    "after": [
+      {
+        "Class": "ORCR",
+        "Track Type": "non-support",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 350.0,
+        "Stagger L2": 280.0,
+        "Stagger L3": 250.0
+      },
+      {
+        "Class": "ORCR",
+        "Track Type": "non-support",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 350.0,
+        "Stagger L2": 280.0,
+        "Stagger L3": 250.0
+      },
+      {
+        "Class": "ORCR",
+        "Track Type": "Support",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 350.0,
+        "Stagger L2": 280.0,
+        "Stagger L3": 250.0
+      },
+      {
+        "Class": "ORCR",
+        "Track Type": "Support",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 350.0,
+        "Stagger L2": 280.0,
+        "Stagger L3": 250.0
+      },
+      {
+        "Class": "Tunnel_MIS",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Tunnel_MIS",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Tunnel_MIS",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Tunnel_MIS",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Open_MIS",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 200.0,
+        "Stagger L2": 130.0,
+        "Stagger L3": 100.0
+      },
+      {
+        "Class": "Open_MIS",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 200.0,
+        "Stagger L2": 130.0,
+        "Stagger L3": 100.0
+      },
+      {
+        "Class": "Open_MIS",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 260.0,
+        "Stagger L2": 190.0,
+        "Stagger L3": 160.0
+      },
+      {
+        "Class": "Open_MIS",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 260.0,
+        "Stagger L2": 190.0,
+        "Stagger L3": 160.0
+      },
+      {
+        "Class": "Tunnel",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Tunnel",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Tunnel",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Tunnel",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Open",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 200.0,
+        "Stagger L2": 130.0,
+        "Stagger L3": 100.0
+      },
+      {
+        "Class": "Open",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 200.0,
+        "Stagger L2": 130.0,
+        "Stagger L3": 100.0
+      },
+      {
+        "Class": "Open",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 260.0,
+        "Stagger L2": 190.0,
+        "Stagger L3": 160.0
+      },
+      {
+        "Class": "Open",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 260.0,
+        "Stagger L2": 190.0,
+        "Stagger L3": 160.0
+      }
+    ]
+  },
+  {
+    "path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\TKS metadata.xlsx",
+    "sha256": "0b2eefb27a3a29bb3e4a98f259e25a7ee01b7c76ef99c16f5975c82eeefa238c",
+    "source_unchanged": true,
+    "before": [
+      {
+        "Class": "ORCR",
+        "Track Type": "non-support",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 350.0,
+        "Stagger L2": 280.0,
+        "Stagger L3": 250.0
+      },
+      {
+        "Class": "ORCR",
+        "Track Type": "Support",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 350.0,
+        "Stagger L2": 280.0,
+        "Stagger L3": 250.0
+      },
+      {
+        "Class": "Tunnel_MIS",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Tunnel_MIS",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Open_MIS",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 200.0,
+        "Stagger L2": 130.0,
+        "Stagger L3": 100.0
+      },
+      {
+        "Class": "Open_MIS",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 260.0,
+        "Stagger L2": 190.0,
+        "Stagger L3": 160.0
+      },
+      {
+        "Class": "Tunnel",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Tunnel",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Open",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 200.0,
+        "Stagger L2": 130.0,
+        "Stagger L3": 100.0
+      },
+      {
+        "Class": "Open",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 260.0,
+        "Stagger L2": 190.0,
+        "Stagger L3": 160.0
+      }
+    ],
+    "after": [
+      {
+        "Class": "ORCR",
+        "Track Type": "non-support",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 350.0,
+        "Stagger L2": 280.0,
+        "Stagger L3": 250.0
+      },
+      {
+        "Class": "ORCR",
+        "Track Type": "non-support",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 350.0,
+        "Stagger L2": 280.0,
+        "Stagger L3": 250.0
+      },
+      {
+        "Class": "ORCR",
+        "Track Type": "Support",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 350.0,
+        "Stagger L2": 280.0,
+        "Stagger L3": 250.0
+      },
+      {
+        "Class": "ORCR",
+        "Track Type": "Support",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 350.0,
+        "Stagger L2": 280.0,
+        "Stagger L3": 250.0
+      },
+      {
+        "Class": "Tunnel_MIS",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Tunnel_MIS",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Tunnel_MIS",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Tunnel_MIS",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Open_MIS",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 200.0,
+        "Stagger L2": 130.0,
+        "Stagger L3": 100.0
+      },
+      {
+        "Class": "Open_MIS",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 200.0,
+        "Stagger L2": 130.0,
+        "Stagger L3": 100.0
+      },
+      {
+        "Class": "Open_MIS",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 260.0,
+        "Stagger L2": 190.0,
+        "Stagger L3": 160.0
+      },
+      {
+        "Class": "Open_MIS",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 260.0,
+        "Stagger L2": 190.0,
+        "Stagger L3": 160.0
+      },
+      {
+        "Class": "Tunnel",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Tunnel",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Tunnel",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Tunnel",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Open",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 200.0,
+        "Stagger L2": 130.0,
+        "Stagger L3": 100.0
+      },
+      {
+        "Class": "Open",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 200.0,
+        "Stagger L2": 130.0,
+        "Stagger L3": 100.0
+      },
+      {
+        "Class": "Open",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 260.0,
+        "Stagger L2": 190.0,
+        "Stagger L3": 160.0
+      },
+      {
+        "Class": "Open",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 260.0,
+        "Stagger L2": 190.0,
+        "Stagger L3": 160.0
+      }
+    ]
+  },
+  {
+    "path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\TML metadata.xlsx",
+    "sha256": "449f0bd788829ba755df7d91f4627454daeb79d1e9ee8f44e25d17c0a1690917",
+    "source_unchanged": true,
+    "before": [
+      {
+        "Class": "both",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 320.0,
+        "Stagger L2": 280.0,
+        "Stagger L3": 250.0
+      },
+      {
+        "Class": "both",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 320.0,
+        "Stagger L2": 280.0,
+        "Stagger L3": 250.0
+      },
+      {
+        "Class": "KSL",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 400.0,
+        "Stagger L2": 330.0,
+        "Stagger L3": 300.0
+      },
+      {
+        "Class": "KSL",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 400.0,
+        "Stagger L2": 330.0,
+        "Stagger L3": 300.0
+      },
+      {
+        "Class": "SCL",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 480.0,
+        "Stagger L2": null,
+        "Stagger L3": 450.0
+      },
+      {
+        "Class": "SCL",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 480.0,
+        "Stagger L2": null,
+        "Stagger L3": 450.0
+      },
+      {
+        "Class": "both",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 470.0,
+        "Stagger L2": 430.0,
+        "Stagger L3": 400.0
+      },
+      {
+        "Class": "both",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 470.0,
+        "Stagger L2": 430.0,
+        "Stagger L3": 400.0
+      },
+      {
+        "Class": "KSL",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 480.0,
+        "Stagger L2": null,
+        "Stagger L3": 400.0
+      },
+      {
+        "Class": "KSL",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 480.0,
+        "Stagger L2": null,
+        "Stagger L3": 400.0
+      },
+      {
+        "Class": "SCL",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 480.0,
+        "Stagger L2": null,
+        "Stagger L3": 450.0
+      },
+      {
+        "Class": "SCL",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 480.0,
+        "Stagger L2": null,
+        "Stagger L3": 450.0
+      }
+    ],
+    "after": [
+      {
+        "Class": "both",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 320.0,
+        "Stagger L2": 280.0,
+        "Stagger L3": 250.0
+      },
+      {
+        "Class": "both",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 320.0,
+        "Stagger L2": 280.0,
+        "Stagger L3": 250.0
+      },
+      {
+        "Class": "KSL",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 400.0,
+        "Stagger L2": 330.0,
+        "Stagger L3": 300.0
+      },
+      {
+        "Class": "KSL",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 400.0,
+        "Stagger L2": 330.0,
+        "Stagger L3": 300.0
+      },
+      {
+        "Class": "SCL",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 480.0,
+        "Stagger L2": null,
+        "Stagger L3": 450.0
+      },
+      {
+        "Class": "SCL",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 480.0,
+        "Stagger L2": null,
+        "Stagger L3": 450.0
+      },
+      {
+        "Class": "both",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 470.0,
+        "Stagger L2": 430.0,
+        "Stagger L3": 400.0
+      },
+      {
+        "Class": "both",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 470.0,
+        "Stagger L2": 430.0,
+        "Stagger L3": 400.0
+      },
+      {
+        "Class": "KSL",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 480.0,
+        "Stagger L2": null,
+        "Stagger L3": 400.0
+      },
+      {
+        "Class": "KSL",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 480.0,
+        "Stagger L2": null,
+        "Stagger L3": 400.0
+      },
+      {
+        "Class": "SCL",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 480.0,
+        "Stagger L2": null,
+        "Stagger L3": 450.0
+      },
+      {
+        "Class": "SCL",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 480.0,
+        "Stagger L2": null,
+        "Stagger L3": 450.0
+      }
+    ]
+  },
+  {
+    "path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\TWL metadata.xlsx",
+    "sha256": "9b582dc72f1eb9b14d819fb816082cd9972274bb2e57b6663915eeac108ff3d5",
+    "source_unchanged": true,
+    "before": [
+      {
+        "Class": "ORCR",
+        "Track Type": "non-support",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 350.0,
+        "Stagger L2": 280.0,
+        "Stagger L3": 250.0
+      },
+      {
+        "Class": "ORCR",
+        "Track Type": "Support",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 350.0,
+        "Stagger L2": 280.0,
+        "Stagger L3": 250.0
+      },
+      {
+        "Class": "Tunnel_MIS",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Tunnel_MIS",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Open_MIS",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 200.0,
+        "Stagger L2": 130.0,
+        "Stagger L3": 100.0
+      },
+      {
+        "Class": "Open_MIS",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 260.0,
+        "Stagger L2": 190.0,
+        "Stagger L3": 160.0
+      },
+      {
+        "Class": "Tunnel",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Tunnel",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Open",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 200.0,
+        "Stagger L2": 130.0,
+        "Stagger L3": 100.0
+      },
+      {
+        "Class": "Open",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 260.0,
+        "Stagger L2": 190.0,
+        "Stagger L3": 160.0
+      }
+    ],
+    "after": [
+      {
+        "Class": "ORCR",
+        "Track Type": "non-support",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 350.0,
+        "Stagger L2": 280.0,
+        "Stagger L3": 250.0
+      },
+      {
+        "Class": "ORCR",
+        "Track Type": "non-support",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 350.0,
+        "Stagger L2": 280.0,
+        "Stagger L3": 250.0
+      },
+      {
+        "Class": "ORCR",
+        "Track Type": "Support",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 350.0,
+        "Stagger L2": 280.0,
+        "Stagger L3": 250.0
+      },
+      {
+        "Class": "ORCR",
+        "Track Type": "Support",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 350.0,
+        "Stagger L2": 280.0,
+        "Stagger L3": 250.0
+      },
+      {
+        "Class": "Tunnel_MIS",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Tunnel_MIS",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Tunnel_MIS",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Tunnel_MIS",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Open_MIS",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 200.0,
+        "Stagger L2": 130.0,
+        "Stagger L3": 100.0
+      },
+      {
+        "Class": "Open_MIS",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 200.0,
+        "Stagger L2": 130.0,
+        "Stagger L3": 100.0
+      },
+      {
+        "Class": "Open_MIS",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 260.0,
+        "Stagger L2": 190.0,
+        "Stagger L3": 160.0
+      },
+      {
+        "Class": "Open_MIS",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 260.0,
+        "Stagger L2": 190.0,
+        "Stagger L3": 160.0
+      },
+      {
+        "Class": "Tunnel",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Tunnel",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Tunnel",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Tunnel",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 300.0,
+        "Stagger L2": 230.0,
+        "Stagger L3": 200.0
+      },
+      {
+        "Class": "Open",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 200.0,
+        "Stagger L2": 130.0,
+        "Stagger L3": 100.0
+      },
+      {
+        "Class": "Open",
+        "Track Type": "Tangent",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 200.0,
+        "Stagger L2": 130.0,
+        "Stagger L3": 100.0
+      },
+      {
+        "Class": "Open",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Left",
+        "Stagger L1": 260.0,
+        "Stagger L2": 190.0,
+        "Stagger L3": 160.0
+      },
+      {
+        "Class": "Open",
+        "Track Type": "Curve",
+        "Exc Type": "Stagger Right",
+        "Stagger L1": 260.0,
+        "Stagger L2": 190.0,
+        "Stagger L3": 160.0
+      }
+    ]
+  }
+]

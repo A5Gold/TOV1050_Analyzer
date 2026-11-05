@@ -1,0 +1,731 @@
+{
+  "sources": [
+    {
+      "path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\DRL metadata.xlsx",
+      "sha256": "eb14b76d2c355459e2df684902a3482ef5d54a056e0bf85e8210ab37cef93208"
+    },
+    {
+      "path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\metadata-review-2026-11-03\\batch-01\\candidates\\DRL metadata (review candidate).xlsx",
+      "sha256": "ab0d35bfb85b9cceed9f63e6f8dc44602cb2439b30f02e5b67c6091d2dca0f7f"
+    },
+    {
+      "path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\00 Reference Document\\config\\DRL metadata.xlsx",
+      "sha256": "a386100bb6f47ab9d2a61e7e80c40ad5e87a91cc614e1659584ea41a0161ecff"
+    }
+  ],
+  "threshold_checks": [
+    {
+      "row": 2,
+      "column": 4,
+      "value": 270,
+      "source_row": 2
+    },
+    {
+      "row": 2,
+      "column": 5,
+      "value": 230,
+      "source_row": 3
+    },
+    {
+      "row": 2,
+      "column": 6,
+      "value": 200,
+      "source_row": 4
+    },
+    {
+      "row": 3,
+      "column": 4,
+      "value": 270,
+      "source_row": 2
+    },
+    {
+      "row": 3,
+      "column": 5,
+      "value": 230,
+      "source_row": 3
+    },
+    {
+      "row": 3,
+      "column": 6,
+      "value": 200,
+      "source_row": 4
+    },
+    {
+      "row": 4,
+      "column": 7,
+      "value": 9.1,
+      "source_row": 18
+    },
+    {
+      "row": 4,
+      "column": 8,
+      "value": 10.2,
+      "source_row": 19
+    },
+    {
+      "row": 5,
+      "column": 11,
+      "value": 3900,
+      "source_row": 33
+    },
+    {
+      "row": 5,
+      "column": 12,
+      "value": 3880,
+      "source_row": 34
+    },
+    {
+      "row": 6,
+      "column": 9,
+      "value": 5350,
+      "source_row": 30
+    },
+    {
+      "row": 6,
+      "column": 10,
+      "value": 5300,
+      "source_row": 31
+    },
+    {
+      "row": 7,
+      "column": 4,
+      "value": 370,
+      "source_row": 6
+    },
+    {
+      "row": 7,
+      "column": 5,
+      "value": 330,
+      "source_row": 7
+    },
+    {
+      "row": 7,
+      "column": 6,
+      "value": 300,
+      "source_row": 8
+    },
+    {
+      "row": 8,
+      "column": 4,
+      "value": 370,
+      "source_row": 6
+    },
+    {
+      "row": 8,
+      "column": 5,
+      "value": 330,
+      "source_row": 7
+    },
+    {
+      "row": 8,
+      "column": 6,
+      "value": 300,
+      "source_row": 8
+    },
+    {
+      "row": 9,
+      "column": 7,
+      "value": 9.1,
+      "source_row": 22
+    },
+    {
+      "row": 9,
+      "column": 8,
+      "value": 10.2,
+      "source_row": 23
+    },
+    {
+      "row": 10,
+      "column": 11,
+      "value": 3900,
+      "source_row": 43
+    },
+    {
+      "row": 10,
+      "column": 12,
+      "value": 3880,
+      "source_row": 44
+    },
+    {
+      "row": 11,
+      "column": 9,
+      "value": 5350,
+      "source_row": 40
+    },
+    {
+      "row": 11,
+      "column": 10,
+      "value": 5300,
+      "source_row": 41
+    },
+    {
+      "row": 12,
+      "column": 4,
+      "value": 370,
+      "source_row": 10
+    },
+    {
+      "row": 12,
+      "column": 5,
+      "value": 330,
+      "source_row": 11
+    },
+    {
+      "row": 12,
+      "column": 6,
+      "value": 300,
+      "source_row": 12
+    },
+    {
+      "row": 13,
+      "column": 4,
+      "value": 370,
+      "source_row": 10
+    },
+    {
+      "row": 13,
+      "column": 5,
+      "value": 330,
+      "source_row": 11
+    },
+    {
+      "row": 13,
+      "column": 6,
+      "value": 300,
+      "source_row": 12
+    },
+    {
+      "row": 14,
+      "column": 7,
+      "value": 9.1,
+      "source_row": 24
+    },
+    {
+      "row": 14,
+      "column": 8,
+      "value": 10.2,
+      "source_row": 25
+    },
+    {
+      "row": 15,
+      "column": 11,
+      "value": 3900,
+      "source_row": 48
+    },
+    {
+      "row": 15,
+      "column": 12,
+      "value": 3880,
+      "source_row": 49
+    },
+    {
+      "row": 16,
+      "column": 9,
+      "value": 5350,
+      "source_row": 45
+    },
+    {
+      "row": 16,
+      "column": 10,
+      "value": 5300,
+      "source_row": 46
+    },
+    {
+      "row": 17,
+      "column": 4,
+      "value": 400,
+      "source_row": 14
+    },
+    {
+      "row": 17,
+      "column": 5,
+      "value": 360,
+      "source_row": 15
+    },
+    {
+      "row": 17,
+      "column": 6,
+      "value": 330,
+      "source_row": 16
+    },
+    {
+      "row": 18,
+      "column": 4,
+      "value": 400,
+      "source_row": 14
+    },
+    {
+      "row": 18,
+      "column": 5,
+      "value": 360,
+      "source_row": 15
+    },
+    {
+      "row": 18,
+      "column": 6,
+      "value": 330,
+      "source_row": 16
+    },
+    {
+      "row": 19,
+      "column": 7,
+      "value": 9.1,
+      "source_row": 20
+    },
+    {
+      "row": 19,
+      "column": 8,
+      "value": 10.2,
+      "source_row": 21
+    },
+    {
+      "row": 20,
+      "column": 11,
+      "value": 3900,
+      "source_row": 38
+    },
+    {
+      "row": 20,
+      "column": 12,
+      "value": 3880,
+      "source_row": 39
+    },
+    {
+      "row": 21,
+      "column": 9,
+      "value": 5350,
+      "source_row": 35
+    },
+    {
+      "row": 21,
+      "column": 10,
+      "value": 5300,
+      "source_row": 36
+    },
+    {
+      "row": 22,
+      "column": 4,
+      "value": 350,
+      "source_row": 50
+    },
+    {
+      "row": 22,
+      "column": 5,
+      "value": 280,
+      "source_row": 51
+    },
+    {
+      "row": 22,
+      "column": 6,
+      "value": 250,
+      "source_row": 52
+    },
+    {
+      "row": 23,
+      "column": 4,
+      "value": 350,
+      "source_row": 50
+    },
+    {
+      "row": 23,
+      "column": 5,
+      "value": 280,
+      "source_row": 51
+    },
+    {
+      "row": 23,
+      "column": 6,
+      "value": 250,
+      "source_row": 52
+    },
+    {
+      "row": 24,
+      "column": 7,
+      "value": 7.44,
+      "source_row": 58
+    },
+    {
+      "row": 24,
+      "column": 8,
+      "value": 8.16,
+      "source_row": 59
+    },
+    {
+      "row": 25,
+      "column": 11,
+      "value": 3890,
+      "source_row": 62
+    },
+    {
+      "row": 25,
+      "column": 12,
+      "value": 3870,
+      "source_row": 63
+    },
+    {
+      "row": 26,
+      "column": 4,
+      "value": 350,
+      "source_row": 54
+    },
+    {
+      "row": 26,
+      "column": 5,
+      "value": 280,
+      "source_row": 55
+    },
+    {
+      "row": 26,
+      "column": 6,
+      "value": 250,
+      "source_row": 56
+    },
+    {
+      "row": 27,
+      "column": 4,
+      "value": 350,
+      "source_row": 54
+    },
+    {
+      "row": 27,
+      "column": 5,
+      "value": 280,
+      "source_row": 55
+    },
+    {
+      "row": 27,
+      "column": 6,
+      "value": 250,
+      "source_row": 56
+    },
+    {
+      "row": 28,
+      "column": 7,
+      "value": 7.44,
+      "source_row": 60
+    },
+    {
+      "row": 28,
+      "column": 8,
+      "value": 8.16,
+      "source_row": 61
+    },
+    {
+      "row": 29,
+      "column": 11,
+      "value": 3890,
+      "source_row": 64
+    },
+    {
+      "row": 29,
+      "column": 12,
+      "value": 3870,
+      "source_row": 65
+    },
+    {
+      "row": 30,
+      "column": 4,
+      "value": 300,
+      "source_row": 74
+    },
+    {
+      "row": 30,
+      "column": 5,
+      "value": 230,
+      "source_row": 75
+    },
+    {
+      "row": 30,
+      "column": 6,
+      "value": 200,
+      "source_row": 76
+    },
+    {
+      "row": 31,
+      "column": 4,
+      "value": 300,
+      "source_row": 74
+    },
+    {
+      "row": 31,
+      "column": 5,
+      "value": 230,
+      "source_row": 75
+    },
+    {
+      "row": 31,
+      "column": 6,
+      "value": 200,
+      "source_row": 76
+    },
+    {
+      "row": 32,
+      "column": 11,
+      "value": 3900,
+      "source_row": 66
+    },
+    {
+      "row": 32,
+      "column": 12,
+      "value": 3880,
+      "source_row": 67
+    },
+    {
+      "row": 33,
+      "column": 4,
+      "value": 300,
+      "source_row": 78
+    },
+    {
+      "row": 33,
+      "column": 5,
+      "value": 230,
+      "source_row": 79
+    },
+    {
+      "row": 33,
+      "column": 6,
+      "value": 200,
+      "source_row": 80
+    },
+    {
+      "row": 34,
+      "column": 4,
+      "value": 300,
+      "source_row": 78
+    },
+    {
+      "row": 34,
+      "column": 5,
+      "value": 230,
+      "source_row": 79
+    },
+    {
+      "row": 34,
+      "column": 6,
+      "value": 200,
+      "source_row": 80
+    },
+    {
+      "row": 35,
+      "column": 11,
+      "value": 3900,
+      "source_row": 68
+    },
+    {
+      "row": 35,
+      "column": 12,
+      "value": 3880,
+      "source_row": 69
+    },
+    {
+      "row": 36,
+      "column": 4,
+      "value": 200,
+      "source_row": 82
+    },
+    {
+      "row": 36,
+      "column": 5,
+      "value": 130,
+      "source_row": 83
+    },
+    {
+      "row": 36,
+      "column": 6,
+      "value": 100,
+      "source_row": 84
+    },
+    {
+      "row": 37,
+      "column": 4,
+      "value": 200,
+      "source_row": 82
+    },
+    {
+      "row": 37,
+      "column": 5,
+      "value": 130,
+      "source_row": 83
+    },
+    {
+      "row": 37,
+      "column": 6,
+      "value": 100,
+      "source_row": 84
+    },
+    {
+      "row": 38,
+      "column": 11,
+      "value": 3900,
+      "source_row": 70
+    },
+    {
+      "row": 38,
+      "column": 12,
+      "value": 3880,
+      "source_row": 71
+    },
+    {
+      "row": 39,
+      "column": 4,
+      "value": 260,
+      "source_row": 86
+    },
+    {
+      "row": 39,
+      "column": 5,
+      "value": 190,
+      "source_row": 87
+    },
+    {
+      "row": 39,
+      "column": 6,
+      "value": 160,
+      "source_row": 88
+    },
+    {
+      "row": 40,
+      "column": 4,
+      "value": 260,
+      "source_row": 86
+    },
+    {
+      "row": 40,
+      "column": 5,
+      "value": 190,
+      "source_row": 87
+    },
+    {
+      "row": 40,
+      "column": 6,
+      "value": 160,
+      "source_row": 88
+    },
+    {
+      "row": 41,
+      "column": 11,
+      "value": 3900,
+      "source_row": 72
+    },
+    {
+      "row": 41,
+      "column": 12,
+      "value": 3880,
+      "source_row": 73
+    }
+  ],
+  "locations": [
+    [
+      "Open",
+      40000,
+      43599.0
+    ],
+    [
+      "Tunnel",
+      43600.0,
+      44300.0
+    ],
+    [
+      "Open",
+      44301.0,
+      45500.0
+    ]
+  ],
+  "atom_counts": {
+    "UT": 19,
+    "PL": 15
+  },
+  "tl_rows": [
+    [
+      "UT",
+      "481",
+      41455,
+      42522,
+      38,
+      "bracket min/max",
+      "user-confirmed 2026-11-03",
+      "2-39"
+    ],
+    [
+      "UT",
+      "482",
+      42412,
+      43687,
+      44,
+      "bracket min/max",
+      "user-confirmed 2026-11-03",
+      "40-83"
+    ],
+    [
+      "UT",
+      "485",
+      43607,
+      44333,
+      84,
+      "bracket min/max",
+      "user-confirmed 2026-11-03",
+      "84-167"
+    ],
+    [
+      "UT",
+      "486",
+      44233,
+      44844,
+      40,
+      "bracket min/max",
+      "user-confirmed 2026-11-03",
+      "168-197, 200-209"
+    ],
+    [
+      "UT",
+      "487",
+      44871,
+      45026,
+      8,
+      "bracket min/max",
+      "user-confirmed 2026-11-03",
+      "198-199, 210-215"
+    ],
+    [
+      "PL",
+      "481",
+      41455,
+      42522,
+      38,
+      "bracket min/max",
+      "user-confirmed 2026-11-03",
+      "2-39"
+    ],
+    [
+      "PL",
+      "482",
+      42548,
+      42704,
+      7,
+      "bracket min/max",
+      "user-confirmed 2026-11-03",
+      "40-43, 45, 48, 50"
+    ],
+    [
+      "PL",
+      "483",
+      42647,
+      43609,
+      29,
+      "bracket min/max",
+      "user-confirmed 2026-11-03",
+      "44, 46-47, 49, 52, 54, 59-81"
+    ],
+    [
+      "PL",
+      "484",
+      42734,
+      42905,
+      6,
+      "bracket min/max",
+      "user-confirmed 2026-11-03",
+      "51, 53, 55-58"
+    ]
+  ]
+}

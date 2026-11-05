@@ -20,6 +20,20 @@ INTERVAL_FLOAT_DECIMALS = 4
 class TOV1050MetadataManager(TOV1050CapabilitiesMixin, MetadataManager):
     """Expose TOV1050 metadata through the TOV640 detector contract."""
 
+    def approved_interval_provider(self):
+        from .tov1050_approved_intervals import ApprovedIntervalProvider
+        from .tov1050_wide_enrichment import WideExcelEnrichmentProvider
+        if not hasattr(self, "_approved_provider"):
+            self._approved_provider = (WideExcelEnrichmentProvider.detect(self)
+                                       or ApprovedIntervalProvider(self.config_path))
+        return self._approved_provider
+
+    def map_approved_enrichment(self, frame, line, section, track):
+        return self.approved_interval_provider().map_frame(frame, line, section, track)
+
+    def enrichment_evidence(self, position, line, section, track):
+        return self.approved_interval_provider().lookup(position, line, section, track)
+
     def _uses_wide_intervals(self) -> bool:
         if not hasattr(self, "_interval_sheet_names"):
             with pd.ExcelFile(self.config_path) as workbook:
@@ -37,6 +51,8 @@ class TOV1050MetadataManager(TOV1050CapabilitiesMixin, MetadataManager):
         direction = str(track).strip().upper()
         if direction not in {"UT", "DT"}:
             raise ValueError(f"Unsupported TOV1050 direction: {track}")
+        if str(line).strip().upper() == "DRL" and str(section).strip().upper() in {"PL", "PASSING LOOP"}:
+            direction = "PL"
         return workbook.name.removesuffix(" metadata.xlsx"), direction
 
     @staticmethod
@@ -84,7 +100,8 @@ class TOV1050MetadataManager(TOV1050CapabilitiesMixin, MetadataManager):
         frame = frame.loc[frame["Line"].astype(str).str.strip().str.upper() == identity.upper()]
         if frame.empty:
             raise ValueError(f"TOV1050 Exception Boundarys has no rows for {identity}")
-        prefix = "UP" if direction == "UT" else "DN"
+        # DRL's independent routes use UT/PL headers; other wide lines use UP/DN.
+        prefix = direction if f"{direction} Track FromM" in frame.columns else "UP" if direction == "UT" else "DN"
         return self._wide_intervals(
             frame, "Exception Boundarys", f"{prefix} Track FromM", f"{prefix} Track ToM", "Class",
         )
@@ -164,9 +181,15 @@ class TOV1050MetadataManager(TOV1050CapabilitiesMixin, MetadataManager):
         return result.rename(columns={"track type": "Track Type"})
 
     def get_overlap_intervals(self, line: str, section: str, track: str) -> pd.DataFrame:
+        provider = self.approved_interval_provider()
+        if hasattr(provider, "intervals_frame"):
+            return provider.intervals_frame(line, section, track)
         return pd.DataFrame(columns=["Overlap", "Tension Length"])
 
     def get_landmark_intervals(self, line: str, section: str, track: str) -> pd.DataFrame:
+        provider = self.approved_interval_provider()
+        if hasattr(provider, "intervals_frame"):
+            return provider.intervals_frame(line, section, track, landmarks=True)
         return pd.DataFrame(columns=["Landmark"])
 
     def get_all_thresholds(self) -> pd.DataFrame:

@@ -1,0 +1,78 @@
+ M "00 Reference Document/Raw data/AEL/20260822_AEL_UT_SHO_AWE.csv"
+ D "00 Reference Document/~$TOV1050 TL-BK No.xlsx"
+ M "02 Output Document/TWL/20260907_TWL_UT_MAINLINE_CEN_TSW_Exception_Report.xlsx"
+ M backend/app/api/endpoints/analysis.py
+ M backend/app/core/analyzers.py
+ M backend/app/core/background_jobs.py
+ M backend/app/core/chainage_reduction.py
+ M backend/app/core/exporter.py
+ M backend/app/core/metadata.py
+ M backend/app/core/report_context.py
+ M backend/app/core/tov1050_capabilities.py
+ M backend/app/core/tov1050_metadata.py
+ M backend/app/core/tov1050_report_export.py
+ M backend/tests/test_api_analysis.py
+ M backend/tests/test_chart_viewport_contract.py
+ M backend/tests/test_tov1050_capabilities.py
+ M docs/plans/2026-10-29-followup-stagger-metadata-chart-plan.md
+ M docs/requests/2026-10-29-followup-stagger-metadata-chart.md
+ M docs/superpowers/specs/2026-10-29-followup-stagger-metadata-chart-design.md
+ M frontend/src/api/errorMessage.ts
+ M frontend/src/components/About/DeveloperReference.tsx
+ M frontend/src/components/About/aboutGuideContent.ts
+ M frontend/src/components/ChartComponent.tsx
+ M frontend/src/components/ExceptionTable.tsx
+ M frontend/src/components/HistoryCompare/ComparisonChart.tsx
+ M frontend/src/components/HistoryCompare/SaveToDBDialog.tsx
+ M frontend/src/components/HistoryCompare/__tests__/SaveToDBDialog.test.tsx
+ M frontend/src/components/__tests__/ChartComponent.test.tsx
+ M frontend/src/components/__tests__/ExceptionTable.test.tsx
+ M frontend/src/store/__tests__/useCalculationStore.test.ts
+ M frontend/src/store/useAnalysisStore.ts
+ M frontend/src/store/useCalculationStore.ts
+ M frontend/src/types/api.ts
+ M frontend/src/views/CalculationView.tsx
+ M frontend/src/views/ExceptionGeneratorView.tsx
+ M frontend/src/views/HistoryCompareView.tsx
+ M frontend/src/views/__tests__/ExceptionGeneratorView.test.tsx
+ M frontend/src/views/__tests__/HistoryCompareView.test.tsx
+ M frontend/tests/dual-system.spec.ts
+?? "02 Output Document/TWL/20260630_TWL_UT_MAINLINE_CEN_TSW_Exception_Report.xlsx"
+?? backend/app/core/history_report_reader.py
+?? backend/app/core/tov1050_approved_intervals.py
+?? backend/app/core/tov1050_boundary_review.py
+?? backend/tests/test_followup_metadata_review.py
+?? backend/tests/test_history_compare_jobs.py
+?? backend/tests/test_raw_detection_contract.py
+?? backend/tests/test_stagger_magnitude_policy.py
+?? backend/tests/test_tov1050_approved_intervals.py
+?? backend/tests/test_tov1050_boundary_review.py
+?? docs/metadata-approved-intervals.md
+?? docs/plans/2026-11-03-test-feedback-development-plan.md
+?? docs/requests/2026-11-03-metadata-p3-revalidation.md
+?? docs/requests/2026-11-03-test-feedback-development-plan.md
+?? docs/superpowers/specs/2026-11-03-test-feedback-design.md
+?? frontend/src/api/__tests__/errorMessage.test.ts
+?? frontend/src/components/Calculation/StaggerDiagnosticAlert.tsx
+?? frontend/src/components/Calculation/__tests__/StaggerDiagnosticAlert.test.tsx
+?? frontend/src/components/__tests__/chartMarkerHitTest.test.ts
+?? frontend/src/components/chartMarkerHitTest.ts
+?? frontend/tests/chart-pointer.spec.ts
+?? outputs/followup-chart-2026-10-29/
+?? outputs/followup-electron-2026-10-29/
+?? outputs/followup-runtime-2026-10-29/
+?? outputs/followup-stagger-2026-10-29/
+?? outputs/metadata-review-2026-10-29/
+?? outputs/metadata-review-2026-11-03/
+?? outputs/validation-2026-11-03/
+?? scripts/build_followup_metadata_workbooks.mjs
+?? scripts/history_postchecks_20261103.mjs
+?? scripts/review_followup_metadata.py
+?? scripts/validate_followup_electron.mjs
+?? scripts/validate_followup_metadata_workbooks.py
+?? scripts/validate_followup_runtime.py
+?? scripts/validate_history_electron_20261103.mjs
+?? scripts/validate_history_http_20261103.py
+?? scripts/validate_history_postchecks_20261103.py
+?? scripts/validate_raw_history_20261103.py
+?? scripts/validate_stagger_policy_20261103.py

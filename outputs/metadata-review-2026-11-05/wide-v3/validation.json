@@ -1,0 +1,143 @@
+{
+  "status": "passed",
+  "workbooks": 8,
+  "production_activation": false,
+  "results": [
+    {
+      "file": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\metadata-review-2026-11-05\\wide-v3\\candidates\\ISL metadata.xlsx",
+      "sha256": "c87b12fc82770f33d8a876ece816a89247a0840046ccaa9e7b5e5635041cdca4",
+      "routes": [
+        {
+          "sheet": "ISL UT",
+          "tl_atoms": 73,
+          "landmarks": 1
+        },
+        {
+          "sheet": "ISL DT",
+          "tl_atoms": 107,
+          "landmarks": 2
+        }
+      ],
+      "status": "passed"
+    },
+    {
+      "file": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\metadata-review-2026-11-05\\wide-v3\\candidates\\KTL metadata.xlsx",
+      "sha256": "3f9f40fa0343eba7017ad3a7beaf5c4f63b1a656a552cd60be8f089c19b2bf4a",
+      "routes": [
+        {
+          "sheet": "KTL UT",
+          "tl_atoms": 107,
+          "landmarks": 4
+        },
+        {
+          "sheet": "KTL DT",
+          "tl_atoms": 119,
+          "landmarks": 1
+        }
+      ],
+      "status": "passed"
+    },
+    {
+      "file": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\metadata-review-2026-11-05\\wide-v3\\candidates\\LAR_AEL metadata.xlsx",
+      "sha256": "24e1ca05156a412ee3a57416418cdd037d63499964489587e012431287089f9c",
+      "routes": [
+        {
+          "sheet": "LAR_AEL UT",
+          "tl_atoms": 187,
+          "landmarks": 0
+        },
+        {
+          "sheet": "LAR_AEL DT",
+          "tl_atoms": 195,
+          "landmarks": 0
+        }
+      ],
+      "status": "passed"
+    },
+    {
+      "file": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\metadata-review-2026-11-05\\wide-v3\\candidates\\LAR_TCL metadata.xlsx",
+      "sha256": "fbb480b4b2f083b2933d5da600c04c7ce1013aaea8bf0117bc516adc69006a3e",
+      "routes": [
+        {
+          "sheet": "LAR_TCL UT",
+          "tl_atoms": 163,
+          "landmarks": 0
+        },
+        {
+          "sheet": "LAR_TCL DT",
+          "tl_atoms": 167,
+          "landmarks": 0
+        }
+      ],
+      "status": "passed"
+    },
+    {
+      "file": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\metadata-review-2026-11-05\\wide-v3\\candidates\\TKL metadata.xlsx",
+      "sha256": "2bb6f342f80350875de5be9e124f41ecfb2f269803aac7349992ef99ab9f00ca",
+      "routes": [
+        {
+          "sheet": "TKL UT",
+          "tl_atoms": 75,
+          "landmarks": 22
+        },
+        {
+          "sheet": "TKL DT",
+          "tl_atoms": 75,
+          "landmarks": 19
+        }
+      ],
+      "status": "passed"
+    },
+    {
+      "file": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\metadata-review-2026-11-05\\wide-v3\\candidates\\TKS metadata.xlsx",
+      "sha256": "536ceeec00d6526ffc264613570d58f778d97b2f3b00c614f97082e74a0ede31",
+      "routes": [
+        {
+          "sheet": "TKS UT",
+          "tl_atoms": 15,
+          "landmarks": 1
+        },
+        {
+          "sheet": "TKS DT",
+          "tl_atoms": 15,
+          "landmarks": 5
+        }
+      ],
+      "status": "passed"
+    },
+    {
+      "file": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\metadata-review-2026-11-05\\wide-v3\\candidates\\TWL metadata.xlsx",
+      "sha256": "1c7a514390001690334ecb7fd7344d7372903efb94e353e485ddc13eeae3a2a0",
+      "routes": [
+        {
+          "sheet": "TWL UT",
+          "tl_atoms": 85,
+          "landmarks": 0
+        },
+        {
+          "sheet": "TWL DT",
+          "tl_atoms": 87,
+          "landmarks": 0
+        }
+      ],
+      "status": "passed"
+    },
+    {
+      "file": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\metadata-review-2026-11-05\\wide-v3\\candidates\\DRL metadata.xlsx",
+      "sha256": "faa95a37ddb755612fb00eca2542c3f2ef956be1731b0db458b97390641ea3a2",
+      "routes": [
+        {
+          "sheet": "DRL UT",
+          "tl_atoms": 19,
+          "landmarks": 0
+        },
+        {
+          "sheet": "DRL PL",
+          "tl_atoms": 15,
+          "landmarks": 0
+        }
+      ],
+      "status": "passed"
+    }
+  ]
+}

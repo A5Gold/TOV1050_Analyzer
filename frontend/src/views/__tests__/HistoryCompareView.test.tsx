@@ -1,6 +1,6 @@
 import React from 'react';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { render, screen, within } from '@testing-library/react';
+import { act, render, screen, within, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
 
@@ -9,6 +9,8 @@ import { useAnalysisStore, type CompareSession } from '../../store/useAnalysisSt
 import { useDatabaseStore } from '../../store/useDatabaseStore';
 
 const comparisonDataGridSpy = vi.fn();
+const apiMocks = vi.hoisted(() => ({ post: vi.fn(), get: vi.fn() }));
+vi.mock('../../api/client', () => ({ default: apiMocks }));
 
 vi.mock('../../components/HistoryCompare/ComparisonDataGrid', () => ({
   __esModule: true,
@@ -90,6 +92,8 @@ const buildCompareSession = (): CompareSession => ({
 
 describe('HistoryCompareView result toolbar', () => {
   beforeEach(() => {
+    apiMocks.post.mockReset();
+    apiMocks.get.mockReset();
     comparisonDataGridSpy.mockClear();
     useAnalysisStore.getState().resetCompareSessions();
     useAnalysisStore.setState({
@@ -146,5 +150,54 @@ describe('HistoryCompareView result toolbar', () => {
 
     expect(await screen.findByText('Grid rows: 0')).toBeInTheDocument();
     expect(comparisonDataGridSpy.mock.calls.at(-1)?.[0]?.data).toEqual([]);
+  });
+
+  it('submits a background job and publishes its scoped result without full ChartData', async () => {
+    apiMocks.post.mockResolvedValue({ data: { job_id: 'job-a', status: 'ready' } });
+    apiMocks.get.mockResolvedValue({ data: {
+      status: 'success', repeated: { 'Low Height': [{ id: 'NEW', FromM: 99, ToM: 101 }] },
+      chain_order: ['latest.xlsx', 'previous.xlsx'], metadata: { line: 'TWL', track: 'UT' },
+    } });
+    render(<HistoryCompareView />);
+    await userEvent.click(screen.getByRole('button', { name: 'Compare', exact: true }));
+    await waitFor(() => expect(useAnalysisStore.getState().compareSessions[0].compareJobId).toBe('job-a'));
+    expect(apiMocks.post.mock.calls[0][0]).toBe('/analyze/compare/jobs?client_session_id=compare-1');
+    expect(apiMocks.get).toHaveBeenCalledWith('/jobs/job-a/result', { params: { client_session_id: 'compare-1' } });
+    expect(useAnalysisStore.getState().compareSessions[0].resultMetadata?.line).toBe('TWL');
+    expect(useAnalysisStore.getState().compareSessions[0].chartData).toBeUndefined();
+  });
+
+  it.each([404, 410])('starts a new comparison after an old job expires (%s)', async status => {
+    useAnalysisStore.getState().updateCompareSession('compare-1', { comparePendingJobId: 'expired' });
+    apiMocks.post.mockRejectedValueOnce({ response: { status } })
+      .mockResolvedValueOnce({ data: { job_id: 'new-job', status: 'ready' } });
+    apiMocks.get.mockResolvedValue({ data: { status: 'success', repeated: {}, chain_order: [], metadata: {} } });
+    render(<HistoryCompareView />);
+    await userEvent.click(screen.getByRole('button', { name: 'Compare', exact: true }));
+    await waitFor(() => expect(useAnalysisStore.getState().compareSessions[0].compareJobId).toBe('new-job'));
+  });
+
+  it('retains the successful result after a new comparison request fails', async () => {
+    apiMocks.post.mockRejectedValue(new Error('Backend unavailable'));
+    render(<HistoryCompareView />);
+    await userEvent.click(screen.getByRole('button', { name: 'Compare', exact: true }));
+    await waitFor(() => expect(useAnalysisStore.getState().compareSessions[0].loading).toBe(false));
+    expect(useAnalysisStore.getState().compareSessions[0].repeatedData[0].id).toBe('EX-001');
+  });
+
+  it('discards a response for files changed during upload and cancels that job', async () => {
+    let resolveUpload!: (response: any) => void;
+    apiMocks.post.mockImplementationOnce(() => new Promise(resolve => { resolveUpload = resolve; }))
+      .mockResolvedValue({ data: {} });
+    render(<HistoryCompareView />);
+    await userEvent.click(screen.getByRole('button', { name: 'Compare', exact: true }));
+    await act(async () => {
+      useAnalysisStore.getState().updateCompareSession('compare-1', { latestFile: new File(['changed'], 'changed.xlsx') });
+      resolveUpload({ data: { job_id: 'stale', status: 'ready' } });
+    });
+    await waitFor(() => expect(apiMocks.post).toHaveBeenCalledWith('/jobs/stale/cancel', null,
+      { params: { client_session_id: 'compare-1' } }));
+    expect(useAnalysisStore.getState().compareSessions[0].repeatedData[0].id).toBe('EX-001');
+    expect(apiMocks.get).not.toHaveBeenCalled();
   });
 });

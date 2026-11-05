@@ -1,0 +1,131 @@
+Process 30948: "C:\Users\chusiukd\AppData\Local\Programs\Python\Python312\python.exe" -c "import sys,runpy; sys.path.append('C:/Users/chusiukd/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/Lib/site-packages'); sys.argv=['scripts/validate_wide_reports_20261105.py','--resume']; runpy.run_path(sys.argv[0],run_name='__main__')"
+Python v3.12.8 (C:\Users\chusiukd\AppData\Local\Programs\Python\Python312\python.exe)
+
+Thread 26468 (active+gil): "MainThread"
+    lxml_write_cell (openpyxl\cell\_writer.py:96)
+        Arguments:
+            xf: <lxml.etree._IncrementalFileWriter at 0x2999a1d5a80>
+            worksheet: <WriteOnlyWorksheet at 0x299a0f4e210>
+            cell: <Cell at 0x2999af68900>
+            styled: False
+        Locals:
+            value: 692684
+            attributes: {"r": "AT68857", "t": "n"}
+    WorksheetWriter.write_row (openpyxl\worksheet\_writer.py:147)
+        Arguments:
+            self: <WorksheetWriter at 0x299a38912e0>
+            xf: <lxml.etree._IncrementalFileWriter at 0x2999a1d5a80>
+            row: <generator at 0x2999ee71440>
+            row_idx: 68857
+        Locals:
+            attrs: {"r": "68857"}
+            dims: {}
+            cell: <Cell at 0x2999af68900>
+    WriteOnlyWorksheet._write_rows (openpyxl\worksheet\_write_only.py:72)
+        Arguments:
+            self: <WriteOnlyWorksheet at 0x299a0f4e210>
+        Locals:
+            xf: <lxml.etree._IncrementalFileWriter at 0x2999a1d5a80>
+            row_idx: 68857
+            row: <generator at 0x2999ee71440>
+    WriteOnlyWorksheet.append (openpyxl\worksheet\_write_only.py:120)
+        Arguments:
+            self: <WriteOnlyWorksheet at 0x299a0f4e210>
+            row: ["20260630", "TWL", "UT", "Mainline", None, "CEN", "TSW", <Cell at 0x2999af69bd0>, <Cell at 0x2999af68740>, ...]
+    export_tov1050_report.<locals>.write_frame (tov1050_report_export.py:85)
+        Arguments:
+            title: "ChartData"
+            frame: <DataFrame at 0x299a032ae40>
+            columns: ["task_run_date", "line", "track", "Section", "task_no", "station_start", "station_end", "Chainage", "height1", ...]
+        Locals:
+            sheet: <WriteOnlyWorksheet at 0x299a0f4e210>
+            formatted: [False, False, False, False, False, False, False, True, True, True, True, True, True, True, True, True, True, True, ...]
+            total: 83244
+            index: 68856
+            row: ("20260630", "TWL", "UT", "Mainline", None, "CEN", "TSW", 2918.6, 3910.583, 3912.637, NaN, NaN, 182.784, 133.678, NaN, ...)
+            cells: ["20260630", "TWL", "UT", "Mainline", None, "CEN", "TSW", <Cell at 0x2999af69bd0>, <Cell at 0x2999af68740>, ...]
+            value: 0
+            should_format: False
+            cell: <Cell at 0x2999af6b370>
+    export_tov1050_report (tov1050_report_export.py:109)
+        Arguments:
+            results: {"Low Height": <DataFrame at 0x2999a521a00>, "High Height": <DataFrame at 0x299a03227b0>, ...}
+            chart_df: <DataFrame at 0x299a032ae40>
+            metadata: {"analysis_revision": "4a250ab0e79d41c3beb0f39207b29486", "chart_data_mode": "chainage_median", ...}
+        Locals:
+            chart_statistics_df: None
+            output_path: <WindowsPath at 0x2999a1a8b30>
+            progress: <cell at 0x299a13f6620>
+            _numeric_format: <cell at 0x299a13f52a0>
+            report_results: {"Low Height": <DataFrame at 0x299a30f2a50>, "High Height": <DataFrame at 0x299a0320830>, ...}
+            boundary_review: <DataFrame at 0x299a30735f0>
+            small: <_io.BytesIO at 0x299a030fa10>
+            source: <Workbook at 0x299ade95700>
+            original_header: <ReadOnlyCell at 0x2999a374810>
+            prototype: <Cell at 0x2999a3705f0>
+            attribute: "alignment"
+            write_frame: <function at 0x299a0e718a0>
+            original: <ReadOnlyWorksheet at 0x299a381e030>
+            sheet: <WriteOnlyWorksheet at 0x29999fea810>
+            index: 330
+            row: (<ReadOnlyCell at 0x2999ba2de40>, <ReadOnlyCell at 0x2999ba2db70>, <ReadOnlyCell at 0x2999ba2f4c0>, ...)
+            cell: <Cell at 0x2999af6bed0>
+            cells: [<Cell at 0x2999af6bf40>, <Cell at 0x2999af6bdf0>, <Cell at 0x2999af6be60>, <Cell at 0x2999af6bd10>, ...]
+            original_cell: <ReadOnlyCell at 0x2999ba2e700>
+    export_analysis_report (tov1050_report_export.py:144)
+        Arguments:
+            results: {"Low Height": <DataFrame at 0x2999a521a00>, "High Height": <DataFrame at 0x299a03227b0>, ...}
+            chart_df: <DataFrame at 0x299a032ae40>
+            metadata: {"analysis_revision": "4a250ab0e79d41c3beb0f39207b29486", "chart_data_mode": "chainage_median", ...}
+            line: "TWL"
+        Locals:
+            chart_statistics_df: None
+            output_path: <WindowsPath at 0x2999a1a8b30>
+            progress: <function at 0x2999a1934c0>
+    _export_job_work.<locals>.work (analysis.py:878)
+        Arguments:
+            context: <types.SimpleNamespace at 0x2999902ad40>
+        Locals:
+            chart_df: <DataFrame at 0x299a032ae40>
+            statistics: None
+            metadata: {"analysis_revision": "4a250ab0e79d41c3beb0f39207b29486", "chart_data_mode": "chainage_median", ...}
+            output: <WindowsPath at 0x2999a1a8b30>
+    <module> (validate_wide_reports_20261105.py:70)
+        Locals:
+            key: <cell at 0x299fc7eca00>
+    _run_code (<frozen runpy>:88)
+        Arguments:
+            code: <code at 0x299fc988e20>
+            run_globals: {"__name__": "__main__", ...}
+            init_globals: None
+            mod_name: "__main__"
+            mod_spec: None
+            pkg_name: ""
+            script_name: "scripts/validate_wide_reports_20261105.py"
+        Locals:
+            loader: None
+            fname: "scripts/validate_wide_reports_20261105.py"
+            cached: None
+    _run_module_code (<frozen runpy>:98)
+        Arguments:
+            code: <code at 0x299fc988e20>
+            init_globals: None
+            mod_name: "__main__"
+            mod_spec: None
+            pkg_name: ""
+            script_name: "scripts/validate_wide_reports_20261105.py"
+        Locals:
+            fname: "scripts/validate_wide_reports_20261105.py"
+            temp_module: <_TempModule at 0x299fc7ec9e0>
+            mod_globals: {"__name__": "__main__", ...}
+    run_path (<frozen runpy>:287)
+        Arguments:
+            path_name: "scripts/validate_wide_reports_20261105.py"
+            init_globals: None
+            run_name: "__main__"
+        Locals:
+            pkg_name: ""
+            get_importer: <function at 0x299fc70f920>
+            importer: None
+            code: <code at 0x299fc988e20>
+    <module> (<string>:1)

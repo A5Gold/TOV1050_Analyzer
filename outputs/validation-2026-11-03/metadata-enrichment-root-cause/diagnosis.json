@@ -1,0 +1,87 @@
+{
+  "workbooks": [
+    {
+      "file": "config\\TWL metadata.xlsx",
+      "headers": [
+        "Track Type",
+        "Track Type FromM",
+        "Track Type ToM",
+        "Unnamed: 3",
+        "Bracket FromM",
+        "Tension Length",
+        "Bracket"
+      ],
+      "overlap_interval_rows": 0,
+      "landmark_interval_rows": 0,
+      "sidecar_path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\config\\TWL metadata.approved-intervals.json",
+      "sidecar_exists": false,
+      "sidecar_digest": null,
+      "lookup_154_2": {
+        "Tension Length": null,
+        "Overlap": null,
+        "Landmark": null,
+        "tl_status": "no_approved_interval",
+        "overlap_status": "unresolved_pairing",
+        "landmark_status": "no_approved_interval"
+      },
+      "mapped_rows": [
+        {
+          "Chainage": 154.2,
+          "Tension Length": null,
+          "Overlap": null,
+          "Landmark": null
+        },
+        {
+          "Chainage": 750.0,
+          "Tension Length": null,
+          "Overlap": null,
+          "Landmark": null
+        }
+      ]
+    },
+    {
+      "file": "outputs\\metadata-review-2026-11-03\\other-lines-wide-v1\\candidates\\TWL metadata.xlsx",
+      "headers": [
+        "Landmark FromM",
+        "Landmark ToM",
+        "Landmark",
+        "Overlap FromM",
+        "Overlap ToM",
+        "Overlap",
+        "Tension Length",
+        "Track Type",
+        "Track Type FromM",
+        "Track Type ToM",
+        "Interval Closed"
+      ],
+      "overlap_interval_rows": 0,
+      "landmark_interval_rows": 0,
+      "sidecar_path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\outputs\\metadata-review-2026-11-03\\other-lines-wide-v1\\candidates\\TWL metadata.approved-intervals.json",
+      "sidecar_exists": false,
+      "sidecar_digest": null,
+      "lookup_154_2": {
+        "Tension Length": null,
+        "Overlap": null,
+        "Landmark": null,
+        "tl_status": "no_approved_interval",
+        "overlap_status": "unresolved_pairing",
+        "landmark_status": "no_approved_interval"
+      },
+      "mapped_rows": [
+        {
+          "Chainage": 154.2,
+          "Tension Length": null,
+          "Overlap": null,
+          "Landmark": null
+        },
+        {
+          "Chainage": 750.0,
+          "Tension Length": null,
+          "Overlap": null,
+          "Landmark": null
+        }
+      ]
+    }
+  ],
+  "source_files_unchanged": true
+}

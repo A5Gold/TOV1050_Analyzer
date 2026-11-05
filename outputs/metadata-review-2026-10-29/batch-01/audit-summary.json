@@ -1,0 +1,26 @@
+{
+  "status": "review-only; NOT runtime approved",
+  "review_version": "contact-boundary-review-2026-10-29-v1",
+  "source_count": 25,
+  "release_workbooks": 7,
+  "release_cell_differences": 64,
+  "release_digest_mismatch": 7,
+  "source_digest_drift": 0,
+  "mapping_points": 14437,
+  "mapping_invalid": 0,
+  "tl_groups": 382,
+  "contact_candidates": 1,
+  "gap_counts": {
+    "no_contact_boundaries": 370,
+    "termination_contact_role_unresolved": 46,
+    "single_point_tl": 2,
+    "one_contact_boundary_missing_other_end": 11
+  },
+  "runtime_files_unchanged": true,
+  "blockers": [
+    "TL-BK incomplete; missing Contact endpoints/roles/pairing",
+    "DRL Mainline DT and PL direction semantics unresolved",
+    "DRL reference/runtime Wire Wear 9.1/8.9 conflict; candidate preserves runtime",
+    "No approved interval promotion"
+  ]
+}

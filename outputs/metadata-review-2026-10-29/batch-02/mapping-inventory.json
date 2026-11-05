@@ -1,0 +1,192 @@
+[
+  {
+    "source_sheet": "AEL UT",
+    "source_rows": 1422,
+    "component_points": 1422,
+    "classifications": {
+      "normal": 1422
+    },
+    "canonical_line": "AEL",
+    "canonical_branch": "Mainline",
+    "canonical_direction": "UT"
+  },
+  {
+    "source_sheet": "AEL DT",
+    "source_rows": 1449,
+    "component_points": 1449,
+    "classifications": {
+      "normal": 1449
+    },
+    "canonical_line": "AEL",
+    "canonical_branch": "Mainline",
+    "canonical_direction": "DT"
+  },
+  {
+    "source_sheet": "TCL UT",
+    "source_rows": 1242,
+    "component_points": 1242,
+    "classifications": {
+      "normal": 1242
+    },
+    "canonical_line": "TCL",
+    "canonical_branch": "Mainline",
+    "canonical_direction": "UT"
+  },
+  {
+    "source_sheet": "TCL DT",
+    "source_rows": 1247,
+    "component_points": 1247,
+    "classifications": {
+      "normal": 1247
+    },
+    "canonical_line": "TCL",
+    "canonical_branch": "Mainline",
+    "canonical_direction": "DT"
+  },
+  {
+    "source_sheet": "DRL UT",
+    "source_rows": 214,
+    "component_points": 214,
+    "classifications": {
+      "normal": 213,
+      "termination": 1
+    },
+    "canonical_line": "DRL",
+    "canonical_branch": "Mainline",
+    "canonical_direction": "unresolved"
+  },
+  {
+    "source_sheet": "DRL PL",
+    "source_rows": 80,
+    "component_points": 80,
+    "classifications": {
+      "normal": 80
+    },
+    "canonical_line": "DRL",
+    "canonical_branch": "PL",
+    "canonical_direction": "unresolved"
+  },
+  {
+    "source_sheet": "TWL UT",
+    "source_rows": 1176,
+    "component_points": 1176,
+    "classifications": {
+      "normal": 1176
+    },
+    "canonical_line": "TWL",
+    "canonical_branch": "Mainline",
+    "canonical_direction": "UT"
+  },
+  {
+    "source_sheet": "TWL DT",
+    "source_rows": 1192,
+    "component_points": 1192,
+    "classifications": {
+      "normal": 1192
+    },
+    "canonical_line": "TWL",
+    "canonical_branch": "Mainline",
+    "canonical_direction": "DT"
+  },
+  {
+    "source_sheet": "KTL UT",
+    "source_rows": 1583,
+    "component_points": 1583,
+    "classifications": {
+      "normal": 1579,
+      "landmark": 4
+    },
+    "canonical_line": "KTL",
+    "canonical_branch": "Mainline",
+    "canonical_direction": "UT"
+  },
+  {
+    "source_sheet": "KTL DT",
+    "source_rows": 1650,
+    "component_points": 1678,
+    "classifications": {
+      "normal": 1673,
+      "landmark": 1,
+      "termination": 4
+    },
+    "canonical_line": "KTL",
+    "canonical_branch": "Mainline",
+    "canonical_direction": "DT"
+  },
+  {
+    "source_sheet": "ISL UT",
+    "source_rows": 672,
+    "component_points": 678,
+    "classifications": {
+      "normal": 677,
+      "landmark": 1
+    },
+    "canonical_line": "ISL",
+    "canonical_branch": "Mainline",
+    "canonical_direction": "UT"
+  },
+  {
+    "source_sheet": "ISL DT",
+    "source_rows": 820,
+    "component_points": 830,
+    "classifications": {
+      "normal": 828,
+      "landmark": 2
+    },
+    "canonical_line": "ISL",
+    "canonical_branch": "Mainline",
+    "canonical_direction": "DT"
+  },
+  {
+    "source_sheet": "TKL UT",
+    "source_rows": 639,
+    "component_points": 639,
+    "classifications": {
+      "termination": 37,
+      "normal": 580,
+      "landmark": 22
+    },
+    "canonical_line": "TKL",
+    "canonical_branch": "Mainline",
+    "canonical_direction": "UT"
+  },
+  {
+    "source_sheet": "TKL DT",
+    "source_rows": 657,
+    "component_points": 657,
+    "classifications": {
+      "termination": 39,
+      "normal": 599,
+      "landmark": 19
+    },
+    "canonical_line": "TKL",
+    "canonical_branch": "Mainline",
+    "canonical_direction": "DT"
+  },
+  {
+    "source_sheet": "TKS UT",
+    "source_rows": 170,
+    "component_points": 170,
+    "classifications": {
+      "termination": 7,
+      "normal": 162,
+      "landmark": 1
+    },
+    "canonical_line": "TKL",
+    "canonical_branch": "TKS",
+    "canonical_direction": "UT"
+  },
+  {
+    "source_sheet": "TKS DT",
+    "source_rows": 180,
+    "component_points": 180,
+    "classifications": {
+      "termination": 12,
+      "normal": 163,
+      "landmark": 5
+    },
+    "canonical_line": "TKL",
+    "canonical_branch": "TKS",
+    "canonical_direction": "DT"
+  }
+]

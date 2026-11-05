@@ -1,0 +1,15 @@
+{
+  "job_id": "94bdbb6b5ab348618d20c81582a3c6c1",
+  "kind": "history_compare",
+  "client_session_id": "mw0eb19g2i06pddgffi",
+  "analysis_revision": null,
+  "status": "queued",
+  "stage": "queued",
+  "processed": 0,
+  "total": null,
+  "unit": null,
+  "error": null,
+  "error_code": null,
+  "elapsed_seconds": 0,
+  "stage_percent": null
+}
