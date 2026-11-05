@@ -84,3 +84,22 @@ Next action：完成最終backend、electron-builder dir及實機封裝啟動驗
 
 
 最終frontend-build-final.log通過（2m30s，assets/index-f97bdf44.js）。Electron builder首次嘗試重建gitnexus的13項tree-sitter原生套件；code graph與electron/frontend/backend/scripts字串查找均無產品使用gitnexus，僅package依賴宣告。已停止自建builder樹，將gitnexus從dependencies移至devDependencies，使用NODE_USE_SYSTEM_CA=1 npm install --package-lock-only --ignore-scripts --offline成功（576 packages、0 vulnerabilities），不更新其版本或執行安裝腳本。正式runtime依賴仍保留axios／docx／util；前後端來源與已完成bundle無變更。再次electron-builder組裝使用最後建置。
+
+### 中斷後接續（2026-11-06）
+已找回原工作階段及DAV-29，Linear MCP已實際驗證並同步目前進度。現有HEAD為5d8a58b，electron-builder已退出且dir內已有app.asar、backend及config；先驗證現成產物，避免重複清理建置。接續驗收：verify_portable_release.py、實際EXE smoke、隔離smoke DB、記錄SHA與交付路徑。
+
+### 完成驗收（2026-11-06）
+
+狀態：完成。來源commit 5d8a58b0b2b00c5a6b129f8803c6f4fb59a67b38，git ls-remote確認origin/master相同。
+
+- verify_portable_release.py：passed；8份wide-v3 metadata SHA、release manifest、1499個backend檔及backend/app來源一致；PYZ不含build-only sitecustomize，包含wide provider及history reader。最終乾淨目錄無DB、CSV、DATAC、backup。
+- bundled Node scripts/smoke_portable_release.mjs：passed，health 2.0.1、portable模式、resources/config與data/analysis.db路徑正確，About及Developer diagnostics、Exception Logic、History Logic均通過，無API mock；截圖about.png及console.log已保存。Backend ready約47897ms。
+- app.asar另以@electron/asar.extractFile及SHA256核對9份electron/frontend dist檔，含最終index-f97bdf44.js及4份演算法圖片；package版本2.0.1、runtime無gitnexus，passed。輔助唯讀核對初次有括號語法錯誤及Windows路徑分隔符錯誤，修正後通過，未變更產品。
+- smoke產生的data整個移至outputs/release-2026-11-06/portable-smoke/generated-data，未刪除或帶入交付。測試程序已結束。再次verify通過。
+- 驗證程序首次未設定build-tools仍自行完成；曾嘗試結束該PID時已不存在。第二次只對驗證子程序設定PYTHONPATH使用既有fallback並通過；未變更OS或正式runtime。
+
+交付：dist/portable-2.0.1-20261106/win-unpacked。包含README-portable.txt及portable-release.json，需複製整個資料夾，首次啟動建立DB。runtime及metadata已在GitHub；本次提交只記錄驗收文件／證據，不需重建runtime。
+
+相關修改：本request、outputs/release-2026-11-06/README.md、package-verification.json、asar-verification.json、portable-smoke/result.json、console.log、about.png；portable與測試DB/profile留本機，不提交。原有AEL CSV及TWL輸出Exception Report仍保留未提交，符合使用者排除要求。
+
+剩餘範圍：本次打包無阻塞；大型資料分析／Excel匯出效能仍依原需求追蹤，不屬本輪發佈驗收。Next action：使用者複製完整資料夾進行業務資料驗收，若有問題提供重現步驟。Linear DAV-29同步完成後標記Done。

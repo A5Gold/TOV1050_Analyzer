@@ -14,3 +14,5 @@
 開發設定：project/config。Portable設定：EXE同層resources/config，app_settings.json、line_catalog.json、各線metadata.xlsx及release manifest都在此。Portable DB：EXE同層data/analysis.db，首次啟動建立；沒有從開發環境複製DB。請複製完整win-unpacked資料夾，不要只取EXE。
 
 驗收狀態以package-verification.json及portable-smoke/result.json為準，兩者passed後才算交付完成。資料缺口或無Landmark來源仍沿用已確認規則，不因打包猜補；一般大型Excel匯出效能不在本次修正範圍。
+
+2026-11-06 最終結果：package-verification.json、asar-verification.json、portable-smoke/result.json皆passed。交付來源5d8a58b；9份Electron／frontend dist檔、1499份backend檔及8份metadata核對一致。EXE health=2.0.1；About與兩個Logic驗收通過，首次backend ready約48秒。smoke資料庫保存於portable-smoke/generated-data（不提交），交付資料夾無DB／raw。驗收截圖about.png，細節見console.log。

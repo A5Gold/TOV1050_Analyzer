@@ -1,0 +1,47 @@
+{
+  "status": "passed",
+  "verified_at_utc": "2026-11-05T21:00:44.047476+00:00",
+  "version": "2.0.1",
+  "source_commit": "5d8a58b0b2b00c5a6b129f8803c6f4fb59a67b38",
+  "portable_directory": "C:\\Smart Maintanence\\TOV1050_Analyzer\\dist\\portable-2.0.1-20261106\\win-unpacked",
+  "metadata_release": "2026-11-05-wide-v3",
+  "metadata": [
+    {
+      "file": "ISL metadata.xlsx",
+      "sha256": "c87b12fc82770f33d8a876ece816a89247a0840046ccaa9e7b5e5635041cdca4"
+    },
+    {
+      "file": "KTL metadata.xlsx",
+      "sha256": "3f9f40fa0343eba7017ad3a7beaf5c4f63b1a656a552cd60be8f089c19b2bf4a"
+    },
+    {
+      "file": "LAR_AEL metadata.xlsx",
+      "sha256": "24e1ca05156a412ee3a57416418cdd037d63499964489587e012431287089f9c"
+    },
+    {
+      "file": "LAR_TCL metadata.xlsx",
+      "sha256": "fbb480b4b2f083b2933d5da600c04c7ce1013aaea8bf0117bc516adc69006a3e"
+    },
+    {
+      "file": "TKL metadata.xlsx",
+      "sha256": "2bb6f342f80350875de5be9e124f41ecfb2f269803aac7349992ef99ab9f00ca"
+    },
+    {
+      "file": "TKS metadata.xlsx",
+      "sha256": "536ceeec00d6526ffc264613570d58f778d97b2f3b00c614f97082e74a0ede31"
+    },
+    {
+      "file": "TWL metadata.xlsx",
+      "sha256": "1c7a514390001690334ecb7fd7344d7372903efb94e353e485ddc13eeae3a2a0"
+    },
+    {
+      "file": "DRL metadata.xlsx",
+      "sha256": "faa95a37ddb755612fb00eca2542c3f2ef956be1731b0db458b97390641ea3a2"
+    }
+  ],
+  "backend_file_count": 1499,
+  "backend_exe_sha256": "067d0b0dff3ec4baf7a1f9b4da571e528201c8471a6d5370cb4a174050b7c716",
+  "app_asar_sha256": "46010263c77031ff90e06cb0c8150acd70f86ab8fb09a31cc6152f5cef6b25f7",
+  "exe_sha256": "eb0379d9abb2f294c9d8cf3fe41a6dfb37a5f89e807c6a1ce0fbca6dbcfcf644",
+  "local_databases_or_raw_inputs": []
+}

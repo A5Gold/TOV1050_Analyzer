@@ -1,0 +1,27 @@
+{
+  "status": "passed",
+  "executable": "C:\\Smart Maintanence\\TOV1050_Analyzer\\dist\\portable-2.0.1-20261106\\win-unpacked\\TOV1050 Analyzer.exe",
+  "pid": 2136,
+  "health": {
+    "status": "ok",
+    "version": "2.0.1"
+  },
+  "diagnostics": {
+    "database_path": "C:\\Smart Maintanence\\TOV1050_Analyzer\\dist\\portable-2.0.1-20261106\\win-unpacked\\data\\analysis.db",
+    "database_directory": "C:\\Smart Maintanence\\TOV1050_Analyzer\\dist\\portable-2.0.1-20261106\\win-unpacked\\data",
+    "config_directory": "C:\\Smart Maintanence\\TOV1050_Analyzer\\dist\\portable-2.0.1-20261106\\win-unpacked\\resources\\config",
+    "mode": "portable",
+    "packaging": {
+      "recommended_target": "dir",
+      "current_target": "dir",
+      "writable_data_root": "C:\\Smart Maintanence\\TOV1050_Analyzer\\dist\\portable-2.0.1-20261106\\win-unpacked\\data",
+      "portable_database_pattern": "<packaged app root>\\data\\analysis.db",
+      "single_exe_note": "Single exe packages must store SQLite data in an external writable folder such as %APPDATA%; embedded executable resources are not a database storage location."
+    }
+  },
+  "about": "wide format, interval rules and config paths visible",
+  "developer_diagnostics": "actual packaged config path visible",
+  "exception_logic": "wide format and full raw detection descriptions visible",
+  "history_logic": "median report chain and preserved metadata descriptions visible",
+  "renderer_url": "file:///C:/Smart%20Maintanence/TOV1050_Analyzer/dist/portable-2.0.1-20261106/win-unpacked/resources/app.asar/frontend/dist/index.html"
+}
